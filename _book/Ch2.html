@@ -1,0 +1,2313 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.555">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>STAT 255 Notes - 2&nbsp; Introduction to Statistical Models</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Ch3.html" rel="next">
+<link href="./Ch1.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Ch2.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to Statistical Models</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">STAT 255 Notes</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Ch1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Visualizing and Summarizing Data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Ch2.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to Statistical Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Ch3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Simulation-Based Inference</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Ch4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Inference from Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Ch5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Building and Assessing Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Ch6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Ch7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Predictive Modeling</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#fitting-models-to-data" id="toc-fitting-models-to-data" class="nav-link active" data-scroll-target="#fitting-models-to-data"><span class="header-section-number">2.1</span> Fitting Models to Data</a>
+  <ul class="collapse">
+  <li><a href="#terminology" id="toc-terminology" class="nav-link" data-scroll-target="#terminology"><span class="header-section-number">2.1.1</span> Terminology</a></li>
+  <li><a href="#quantitative-explanatory-variable" id="toc-quantitative-explanatory-variable" class="nav-link" data-scroll-target="#quantitative-explanatory-variable"><span class="header-section-number">2.1.2</span> Quantitative Explanatory Variable</a></li>
+  <li><a href="#categorical-explanatory-variable" id="toc-categorical-explanatory-variable" class="nav-link" data-scroll-target="#categorical-explanatory-variable"><span class="header-section-number">2.1.3</span> Categorical Explanatory Variable</a></li>
+  <li><a href="#multiple-explanatory-variables" id="toc-multiple-explanatory-variables" class="nav-link" data-scroll-target="#multiple-explanatory-variables"><span class="header-section-number">2.1.4</span> Multiple Explanatory Variables</a></li>
+  <li><a href="#no-explanatory-variable" id="toc-no-explanatory-variable" class="nav-link" data-scroll-target="#no-explanatory-variable"><span class="header-section-number">2.1.5</span> No Explanatory Variable</a></li>
+  </ul></li>
+  <li><a href="#variability-explained-by-a-model" id="toc-variability-explained-by-a-model" class="nav-link" data-scroll-target="#variability-explained-by-a-model"><span class="header-section-number">2.2</span> Variability Explained by a Model</a>
+  <ul class="collapse">
+  <li><a href="#total-variability" id="toc-total-variability" class="nav-link" data-scroll-target="#total-variability"><span class="header-section-number">2.2.1</span> Total Variability</a></li>
+  <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals"><span class="header-section-number">2.2.2</span> Residuals</a></li>
+  <li><a href="#variability-explained-by-sq.-ft.-model" id="toc-variability-explained-by-sq.-ft.-model" class="nav-link" data-scroll-target="#variability-explained-by-sq.-ft.-model"><span class="header-section-number">2.2.3</span> Variability Explained by Sq. Ft. Model</a></li>
+  <li><a href="#linear-correlation-coefficient" id="toc-linear-correlation-coefficient" class="nav-link" data-scroll-target="#linear-correlation-coefficient"><span class="header-section-number">2.2.4</span> Linear Correlation Coefficient</a></li>
+  <li><a href="#variability-explained-by-waterfront-model" id="toc-variability-explained-by-waterfront-model" class="nav-link" data-scroll-target="#variability-explained-by-waterfront-model"><span class="header-section-number">2.2.5</span> Variability Explained by Waterfront Model</a></li>
+  <li><a href="#variability-explained-by-multiple-regression-model" id="toc-variability-explained-by-multiple-regression-model" class="nav-link" data-scroll-target="#variability-explained-by-multiple-regression-model"><span class="header-section-number">2.2.6</span> Variability Explained by Multiple Regression Model</a></li>
+  <li><a href="#summary-sst-ssr-ssm-r2" id="toc-summary-sst-ssr-ssm-r2" class="nav-link" data-scroll-target="#summary-sst-ssr-ssm-r2"><span class="header-section-number">2.2.7</span> Summary: SST, SSR, SSM, <span class="math inline">\(R^2\)</span></a></li>
+  <li><a href="#model-comparison-summary" id="toc-model-comparison-summary" class="nav-link" data-scroll-target="#model-comparison-summary"><span class="header-section-number">2.2.8</span> Model Comparison Summary</a></li>
+  </ul></li>
+  <li><a href="#models-with-interaction" id="toc-models-with-interaction" class="nav-link" data-scroll-target="#models-with-interaction"><span class="header-section-number">2.3</span> Models with Interaction</a>
+  <ul class="collapse">
+  <li><a href="#definition-of-interaction" id="toc-definition-of-interaction" class="nav-link" data-scroll-target="#definition-of-interaction"><span class="header-section-number">2.3.1</span> Definition of Interaction</a></li>
+  <li><a href="#interaction-term" id="toc-interaction-term" class="nav-link" data-scroll-target="#interaction-term"><span class="header-section-number">2.3.2</span> Interaction Term</a></li>
+  <li><a href="#interaction-models-in-r" id="toc-interaction-models-in-r" class="nav-link" data-scroll-target="#interaction-models-in-r"><span class="header-section-number">2.3.3</span> Interaction Models in R</a></li>
+  <li><a href="#r2-for-interaction-model" id="toc-r2-for-interaction-model" class="nav-link" data-scroll-target="#r2-for-interaction-model"><span class="header-section-number">2.3.4</span> <span class="math inline">\(R^2\)</span> for Interaction Model</a></li>
+  <li><a href="#considerations-for-using-interactions" id="toc-considerations-for-using-interactions" class="nav-link" data-scroll-target="#considerations-for-using-interactions"><span class="header-section-number">2.3.5</span> Considerations for Using Interactions</a></li>
+  <li><a href="#interaction-vs-correlation" id="toc-interaction-vs-correlation" class="nav-link" data-scroll-target="#interaction-vs-correlation"><span class="header-section-number">2.3.6</span> Interaction vs Correlation</a></li>
+  </ul></li>
+  <li><a href="#least-squares-estimation-lse" id="toc-least-squares-estimation-lse" class="nav-link" data-scroll-target="#least-squares-estimation-lse"><span class="header-section-number">2.4</span> Least Squares Estimation (LSE)</a>
+  <ul class="collapse">
+  <li><a href="#estimating-regression-coefficients" id="toc-estimating-regression-coefficients" class="nav-link" data-scroll-target="#estimating-regression-coefficients"><span class="header-section-number">2.4.1</span> Estimating Regression Coefficients</a></li>
+  <li><a href="#mathematics-of-lse-for-slr" id="toc-mathematics-of-lse-for-slr" class="nav-link" data-scroll-target="#mathematics-of-lse-for-slr"><span class="header-section-number">2.4.2</span> Mathematics of LSE for SLR</a></li>
+  <li><a href="#lse-for-categorical-variable" id="toc-lse-for-categorical-variable" class="nav-link" data-scroll-target="#lse-for-categorical-variable"><span class="header-section-number">2.4.3</span> LSE for Categorical Variable</a></li>
+  <li><a href="#lse-more-generally" id="toc-lse-more-generally" class="nav-link" data-scroll-target="#lse-more-generally"><span class="header-section-number">2.4.4</span> LSE More Generally</a></li>
+  </ul></li>
+  <li><a href="#analysis-of-variance" id="toc-analysis-of-variance" class="nav-link" data-scroll-target="#analysis-of-variance"><span class="header-section-number">2.5</span> ANalysis Of VAriance</a>
+  <ul class="collapse">
+  <li><a href="#submodels" id="toc-submodels" class="nav-link" data-scroll-target="#submodels"><span class="header-section-number">2.5.1</span> Submodels</a></li>
+  <li><a href="#f-statistics" id="toc-f-statistics" class="nav-link" data-scroll-target="#f-statistics"><span class="header-section-number">2.5.2</span> F-Statistics</a></li>
+  <li><a href="#comparing-3-or-more-categories" id="toc-comparing-3-or-more-categories" class="nav-link" data-scroll-target="#comparing-3-or-more-categories"><span class="header-section-number">2.5.3</span> Comparing 3 or More Categories</a></li>
+  <li><a href="#f-statistic-illustration" id="toc-f-statistic-illustration" class="nav-link" data-scroll-target="#f-statistic-illustration"><span class="header-section-number">2.5.4</span> F-Statistic Illustration</a></li>
+  <li><a href="#alternative-f-statistic-formula" id="toc-alternative-f-statistic-formula" class="nav-link" data-scroll-target="#alternative-f-statistic-formula"><span class="header-section-number">2.5.5</span> Alternative F-Statistic Formula</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to Statistical Models</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><strong>Learning Outcomes:</strong></p>
+<ol start="5" type="1">
+<li>Use regression models to calculate predicted values, changes, and differences.<br>
+</li>
+<li>Interpret regression coefficients for simple linear and multiple regression models, including models with interaction.<br>
+</li>
+<li>Calculate and interpret regression sums of squares SSR, SSM, and SST, and coefficient of determination,<span class="math inline">\(R^2\)</span>.<br>
+</li>
+<li>Determine how changes to sample size, number of terms in a model, or regression coefficients impact SST, SSR, and <span class="math inline">\(R^2\)</span>.<br>
+</li>
+<li>Explain what interactions between variables mean, in context.<br>
+</li>
+<li>Explain the least-squares estimation process.<br>
+</li>
+<li>Show how to calculate F-statistics.<br>
+</li>
+<li>Draw conclusions based on F-statistics.<br>
+</li>
+<li>Fit regression models using R and report conclusions.</li>
+</ol>
+<section id="fitting-models-to-data" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="fitting-models-to-data"><span class="header-section-number">2.1</span> Fitting Models to Data</h2>
+<section id="terminology" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="terminology"><span class="header-section-number">2.1.1</span> Terminology</h3>
+<p>In this section, we’ll use statistical models to predict the prices of houses in King County, WA.</p>
+<p>In a statistical model,</p>
+<ul>
+<li><p>The variable we are trying to predict (price) is called the <strong>response variable</strong> (denoted <span class="math inline">\(Y\)</span>).</p></li>
+<li><p>Variable(s) we use to help us make the prediction is(are) called <strong>explanatory variables</strong> (denoted <span class="math inline">\(X\)</span>). These are also referred to as <strong>predictor variables</strong> or <strong>covariates</strong>.</p></li>
+</ul>
+<p>In this section, we’ll attempt to predict the price of a house, using information about its size (in square feet), and whether or not it is on the waterfront. The price is our response variable, while size and waterfront location are explanatory variables.</p>
+<ul>
+<li><p><strong>Categorical variables</strong> are variables that take on groups or categories, rather than numeric values, for example, whether or not the house is on the waterfront.</p></li>
+<li><p><strong>Quantitative variables</strong> take on meaningful numeric values, for example the number of square feet in the house.</p></li>
+</ul>
+</section>
+<section id="quantitative-explanatory-variable" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="quantitative-explanatory-variable"><span class="header-section-number">2.1.2</span> Quantitative Explanatory Variable</h3>
+<p>We’ll first predict the price of the house, using the number of square feet of living space as our explanatory variable.</p>
+<p>We’ll assume that price changes linearly with square feet, and fit a trend line to the data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Houses, <span class="fu">aes</span>(<span class="at">x=</span>sqft_living, <span class="at">y=</span>price)) <span class="sc">+</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Price and Living Space"</span>) <span class="sc">+</span> </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Price"</span>) <span class="sc">+</span> </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Living Space in sq. ft. "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch2_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The model equation is</p>
+<p><span class="math display">\[
+\widehat{\text{Price}} = b_0 + b_1\times\text{Sq.Ft.}
+\]</span></p>
+<p>Note, the symbol over the response variable (Price) is read as “hat”, and means “predicted price”.</p>
+<p>We fit the model in R, using the <code>lm</code> (linear model) command. The output gives the estimates of <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>M_House_sqft <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Houses, price<span class="sc">~</span>sqft_living)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>M_House_sqft</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = price ~ sqft_living, data = Houses)
+
+Coefficients:
+(Intercept)  sqft_living  
+  -484.9575       0.5328  </code></pre>
+</div>
+</div>
+<p>The estimates are <span class="math inline">\(b_0=-484.9575\)</span> and <span class="math inline">\(b_1=0.5328\)</span>.</p>
+<p>The model equation is</p>
+<p><span class="math display">\[
+\widehat{\text{Price}} = -484.9575 + 0.5328\times\text{Sq.Ft.}
+\]</span></p>
+<p><strong>Interpretations</strong></p>
+<p>The intercept <span class="math inline">\(b_0\)</span> represents the expected (or average) value of the response variable, when the explanatory variable is equal to 0. This is not always a meaningful interpretation in context.</p>
+<p>The slope <span class="math inline">\(b_1\)</span> represents the expected (or average) change in the response variable for each one-unit increase in the explanatory variable.</p>
+<ul>
+<li><p>On average, a house with 0 square feet is expected to cost -485 thousand dollars. This is not a sensible interpretation, as there are no houses with 0 square feet.</p></li>
+<li><p>For each additional square foot in living space, the price of the house is expected to increase by 0.5328 thousand dollars (or $533).<br>
+</p>
+<ul>
+<li>Since a 1 square ft. increase is very small, it makes more sense to give the interpretation in terms of a 100-square foot increase. For each additional 100 square feet in living space, the price of the house is expected to increase by 53.28 thousand dollars.</li>
+</ul></li>
+</ul>
+<p><strong>Prediction</strong></p>
+<p>We can predict the price of a house with a given number of square feet by plugging the square feet into the model equation.</p>
+<p>The predicted price of a house with 1,500 square feet is</p>
+<p><span class="math display">\[
+\widehat{\text{Price}} = -484.9575 + 0.5328\times 1500 = \$314{ \text{ thousand}}
+\]</span></p>
+<p>We can calculate this directly in R using the <code>predict</code> command.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(M_House_sqft, <span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">sqft_living=</span><span class="dv">1500</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1 
+314.1803 </code></pre>
+</div>
+</div>
+<p>We should only try to make predictions on houses within the range of the observed data. Since the largest house in the dataset is 8,000 square feet we should not try to predict the price of house with 10,000 square feet.</p>
+</section>
+<section id="categorical-explanatory-variable" class="level3" data-number="2.1.3">
+<h3 data-number="2.1.3" class="anchored" data-anchor-id="categorical-explanatory-variable"><span class="header-section-number">2.1.3</span> Categorical Explanatory Variable</h3>
+<p>Next, we’ll predict the price of a house based on whether or not it is on the waterfront.</p>
+<p>The boxplot shows the distribution of prices for waterfront and nonwaterfront houses. The red dots indicate the mean.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Houses, <span class="fu">aes</span>(<span class="at">x=</span>waterfront, <span class="at">y=</span>price)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"House Price by Waterfront Status"</span>) <span class="sc">+</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Waterfront"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Price"</span>) <span class="sc">+</span> <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun.y=</span>mean, <span class="at">geom=</span><span class="st">"point"</span>, <span class="at">shape=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"red"</span>, <span class="at">fill=</span><span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch2_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The table displays the price summary by waterfront status.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>Houses_Grouped_Summary <span class="ot">&lt;-</span> Houses <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(waterfront) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="fu">summarize</span>(<span class="at">Mean_Price =</span> <span class="fu">mean</span>(price, <span class="at">na.rm=</span><span class="cn">TRUE</span>),</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">Median_Price =</span> <span class="fu">median</span>(price, <span class="at">na.rm=</span><span class="cn">TRUE</span>), </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">StDev_Price =</span> <span class="fu">sd</span>(price, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">Number_of_Houses =</span> <span class="fu">n</span>()) </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(Houses_Grouped_Summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">waterfront</th>
+<th style="text-align: right;">Mean_Price</th>
+<th style="text-align: right;">Median_Price</th>
+<th style="text-align: right;">StDev_Price</th>
+<th style="text-align: right;">Number_of_Houses</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">No</td>
+<td style="text-align: right;">523.7595</td>
+<td style="text-align: right;">450</td>
+<td style="text-align: right;">295.7991</td>
+<td style="text-align: right;">85</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Yes</td>
+<td style="text-align: right;">1934.3800</td>
+<td style="text-align: right;">1350</td>
+<td style="text-align: right;">1610.7959</td>
+<td style="text-align: right;">15</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The model equation is</p>
+<p><span class="math display">\[
+\widehat{\text{Price}} = b_0 + b_1\times\text{Waterfront}
+\]</span></p>
+<p>The waterfront variable takes on value of 1 if the house is on the waterfront, and 0 otherwise.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>M_House_wf <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Houses, price<span class="sc">~</span>waterfront)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>M_House_wf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = price ~ waterfront, data = Houses)
+
+Coefficients:
+  (Intercept)  waterfrontYes  
+        523.8         1410.6  </code></pre>
+</div>
+</div>
+<p>The estimates are <span class="math inline">\(b_0=523.8\)</span> and <span class="math inline">\(b_1=1410.6\)</span>.</p>
+<p>The model equation is</p>
+<p><span class="math display">\[
+\widehat{\text{Price}} = 523.8 + 1410.6\times \text{Waterfront}
+\]</span></p>
+<p><strong>Interpretations</strong></p>
+<p>The intercept <span class="math inline">\(b_0\)</span> represents the expected (or average) value of the response variable in the “baseline” category (in this case non-waterfront).</p>
+<p>The coefficient <span class="math inline">\(b_1\)</span> represents the expected (or average) difference in response between the a category and the “baseline” category.</p>
+<ul>
+<li><p>On average, a house that is not on the waterfront is expected to cost 523.8 thousand dollars.</p></li>
+<li><p>On average a house that is on the waterfront is expected to cost 1410.6 thousand (or 1.4 million) dollars more than a house that is not on the waterfront.</p></li>
+</ul>
+<p><strong>Prediction</strong></p>
+<p>We can predict the price of a house with a given number of square feet by plugging in either 1 or 0 for the waterfront variable.</p>
+<p>The predicted price of a house on the waterfront is:</p>
+<p><span class="math display">\[
+\widehat{\text{Price}} = 523.8 + 1410.6\times 1 = \$1934.6{ \text{ thousand (or 1.9 million)}}
+\]</span></p>
+<p>The predicted price of a house not on the waterfront is:</p>
+<p><span class="math display">\[
+\widehat{\text{Price}} = 523.8 + 1410.6\times 0 = \$523.8{ \text{ thousand}}
+\]</span></p>
+<p>Calculations in R:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(M_House_wf, <span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">waterfront=</span><span class="st">"Yes"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      1 
+1934.38 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(M_House_wf, <span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">waterfront=</span><span class="st">"No"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1 
+523.7595 </code></pre>
+</div>
+</div>
+<p>Notice that the predicted prices for each category correspond to the average price for that category.</p>
+</section>
+<section id="multiple-explanatory-variables" class="level3" data-number="2.1.4">
+<h3 data-number="2.1.4" class="anchored" data-anchor-id="multiple-explanatory-variables"><span class="header-section-number">2.1.4</span> Multiple Explanatory Variables</h3>
+<p>We’ve used square feet and waterfront status as explanatory variables individually. We can also build a model that uses both of these variables at the same time.</p>
+<p>A model with two or more explanatory variables is called a <strong>multiple regression model</strong>.</p>
+<p>The model equation is</p>
+<p><span class="math display">\[
+\widehat{\text{Price}} = b_0 + b_1\times\text{Sq. Ft} + b_2\times\text{Waterfront}
+\]</span></p>
+<p>For a house not on the waterfront, <span class="math inline">\(b_2=0\)</span>, so the model equation is:</p>
+<p><span class="math display">\[
+\widehat{\text{Price}} = b_0  + b_1\text{Sq. Ft}
+\]</span></p>
+<p>For a house on the waterfront, <span class="math inline">\(b_2=1\)</span>, so the model equation is:</p>
+<p><span class="math display">\[
+\widehat{\text{Price}} = (b_0 + b_2) + b_1\times\text{Sq. Ft}
+\]</span></p>
+<p>Notice that the slope is the same, regardless of whether the house is on the waterfront (<span class="math inline">\(b_1\)</span>). The intercept, however, is different (<span class="math inline">\(b_0\)</span> for houses not on the waterfront, and <span class="math inline">\(b_0 + b_2\)</span> for houses on the waterfront). Thus, the model assumes that price increases at the same rate, with respect to square feet, regardless of whether or not it is on the waterfront, but allows the predicted price for a waterfront house to differ from a non-waterfront house of the same size.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch2_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We fit the model in R.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>M_wf_sqft <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Houses, price<span class="sc">~</span>sqft_living<span class="sc">+</span>waterfront)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>M_wf_sqft</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = price ~ sqft_living + waterfront, data = Houses)
+
+Coefficients:
+  (Intercept)    sqft_living  waterfrontYes  
+    -407.6549         0.4457       814.3613  </code></pre>
+</div>
+</div>
+<p>The model equation is</p>
+<p><span class="math display">\[
+\widehat{\text{Price}} = -407.7 + 0.4457\times\text{Sq. Ft} + 814.36\times\text{Waterfront}
+\]</span></p>
+<p><strong>Interpretations</strong></p>
+<p>The intercept <span class="math inline">\(b_0\)</span> represents the expected (or average) value of the response variable, when all quantitative explanatory variables are equal to 0, and all categorical variables are in the “baseline” category. This interpretion is not always sensible.</p>
+<p>We interpret coefficients <span class="math inline">\(b_j\)</span> for categorical or quantitative variables, the same way we would in a regression model with only one variable, but we need to state that all other explanatory variables are being held constant.</p>
+<ul>
+<li><p>On average, a house that is not on the waterfront with 0 square feet is expected to cost -407.7 thousand dollars. This is not a sensible interpretation, since there are no houses with 0 square feet.<br>
+</p></li>
+<li><p>For each 1-square foot increase in size, the price of a house is expected to increase by 0.4457 thousand (or 446 hundred) dollars, assuming waterfront status is the same. Equivalently, for each 100-square foot increase in size, the price of a house is expected to increase by 44.57 thousand dollars, assuming waterfront status is the same.</p></li>
+<li><p>On average, a house on the waterfront is expected to cost 814 thousand dollars more than a house that is not on the waterfront, assuming square footage is the same.</p></li>
+</ul>
+<p><strong>Prediction</strong></p>
+<p>The predicted price of a 1,500 square foot house on the waterfront is:</p>
+<p><span class="math display">\[
+\widehat{\text{Price}} = -407.7 + 0.4457\times1500 + 814.36\times1 = \$1075{ \text{ thousand (or 1.075 million)}}
+\]</span></p>
+<p>The predicted price of a 1,500 square foot not on the waterfront is:</p>
+<p><span class="math display">\[
+\widehat{\text{Price}} = -407.7 + 0.4457\times1500 = \$260.9{ \text{ thousand}}
+\]</span></p>
+<p>Calculations in R:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(M_wf_sqft, <span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">waterfront=</span><span class="st">"Yes"</span>, <span class="at">sqft_living=</span><span class="dv">1500</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1 
+1075.227 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(M_wf_sqft, <span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">waterfront=</span><span class="st">"No"</span>, <span class="at">sqft_living=</span><span class="dv">1500</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1 
+260.8657 </code></pre>
+</div>
+</div>
+</section>
+<section id="no-explanatory-variable" class="level3" data-number="2.1.5">
+<h3 data-number="2.1.5" class="anchored" data-anchor-id="no-explanatory-variable"><span class="header-section-number">2.1.5</span> No Explanatory Variable</h3>
+<p>Finally, we’ll consider a model that makes use of no explanatory variables at all. Although this might seem silly, its relevance will be seen in the next section.</p>
+<p>The histogram shows the distribution of prices, without any information about explanatory variables. The mean price is indicated in red.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Houses, <span class="fu">aes</span>(<span class="at">x=</span>price)) <span class="sc">+</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">fill=</span><span class="st">"lightblue"</span>, <span class="at">color=</span><span class="st">"white"</span>) <span class="sc">+</span> </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribution of House Prices"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Price"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Frequency"</span>) <span class="sc">+</span> </span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">mean</span>(Houses<span class="sc">$</span>price), <span class="at">y=</span><span class="dv">0</span>), <span class="at">color=</span><span class="st">"red"</span>, <span class="at">shape=</span><span class="dv">24</span>, <span class="at">fill=</span><span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch2_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The mean, median, and standard deviation in prices is shown below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(Houses_Summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Mean_Price</th>
+<th style="text-align: right;">Median_Price</th>
+<th style="text-align: right;">StDev_Price</th>
+<th style="text-align: right;">Number_of_Houses</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">735.3525</td>
+<td style="text-align: right;">507.5</td>
+<td style="text-align: right;">835.1231</td>
+<td style="text-align: right;">100</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Suppose we know that a house sold in King County during this time, and want to predict the price, without knowing anything else about the house.</p>
+<p>The best we can do is to use the mean price for our prediction. (We’ll define what we mean by “best” later in the chapter.)</p>
+<p>The model equation is</p>
+<p><span class="math display">\[
+\widehat{\text{Price}} = b_0
+\]</span></p>
+<p>We fit a statistical model in R using the <code>lm</code> command.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># syntax for lm command</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># lm(data=DatasetName, ResponseVariable~ExplanatoryVariable(s))</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>M0_House <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Houses, price <span class="sc">~</span> <span class="dv">1</span>) <span class="co"># when there are no explanatory variables, use ~1</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>M0_House</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = price ~ 1, data = Houses)
+
+Coefficients:
+(Intercept)  
+      735.4  </code></pre>
+</div>
+</div>
+<p>The model equation is</p>
+<p><span class="math display">\[
+\widehat{\text{Price}} = 735.4
+\]</span></p>
+<p><strong>Interpretation</strong></p>
+<p>The expected price of a house in King County is 735.4 thousand dollars.</p>
+<p><strong>Predictions</strong></p>
+<p>Without knowing anything about any explanatory variables, we would predict the price of any house sold in King County, WA to cost 735.4 thousand dollars.</p>
+</section>
+</section>
+<section id="variability-explained-by-a-model" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="variability-explained-by-a-model"><span class="header-section-number">2.2</span> Variability Explained by a Model</h2>
+<p>We’ve seen four different models for predicting house price. It would be nice to have a way to assess how well the models are predicting prices, and determine which model appears to be the best.</p>
+<p>Of course we won’t know the price of the house we are trying to predict, so we can’t be sure how close or far our prediction is. We do, however, know the prices of the original 100 houses in our dataset. We can assess the models by measuring how far the actual prices of the 100 houses differ from the predicted (mean) price, and by calculating the proportion of total variation in sale price explained by each model.</p>
+<section id="total-variability" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="total-variability"><span class="header-section-number">2.2.1</span> Total Variability</h3>
+<p>Let’s start with our most basic model, which uses no explanatory variables and predicts the price of each simply using the average of all houses in the dataset.</p>
+<p>We measure the total variability in the response variable by calculating the square difference between each individual response value and the overall average. This quantity is called the total sum of squares (SST).</p>
+<p><span class="math display">\[
+\text{SST} = \displaystyle\sum_{i=1}^n (y_i - \bar{y})^2
+\]</span></p>
+<p>The plot below shows a horizontal line at the mean sale price (785 thousand). The points represent prices of individual houses, and the red lines represent the differences between the price of each house and the overall average.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch2_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The first three houses in the dataset are shown below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>First3Houses <span class="ot">&lt;-</span> Houses <span class="sc">%&gt;%</span> <span class="fu">select</span>(Id, price, waterfront, sqft_living) <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">3</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(First3Houses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Id</th>
+<th style="text-align: right;">price</th>
+<th style="text-align: left;">waterfront</th>
+<th style="text-align: right;">sqft_living</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1225</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: right;">5420</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">885</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: right;">2830</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">385</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: right;">1620</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><span class="math display">\[
+\begin{aligned}
+\text{SST} &amp; = \displaystyle\sum_{i=1}^{100} (y_i - \bar{y})^2 \\
+&amp; = (1225-785)^2 + (885-785)^2 + (385-785)^2 + \ldots
+\end{aligned}
+\]</span></p>
+<p>We could calculate SST by hand for small datasets. For larger datasets, we’ll use R to perform the calculation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>meanprice <span class="ot">&lt;-</span> <span class="fu">mean</span>(Houses<span class="sc">$</span>price)  <span class="co">#calculate mean price</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>SST <span class="ot">&lt;-</span> <span class="fu">sum</span>((Houses<span class="sc">$</span>price <span class="sc">-</span> meanprice)<span class="sc">^</span><span class="dv">2</span>)  <span class="do">## calculate SST</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>SST</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 69045634</code></pre>
+</div>
+</div>
+<p>By itself, the size of SST does not have much meaning. We cannot say whether a SST value like the one we see here is large or small, since it depends on the size and scale of the variable being measured. An SST value that is very large in one context might be very small in another.</p>
+<p>SST does, however, give us a baseline measure of the total variability in the response variable. We’ll assess the performance of a model with a given explanatory variable by measuring how much of this variability the model accounts for.</p>
+</section>
+<section id="residuals" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="residuals"><span class="header-section-number">2.2.2</span> Residuals</h3>
+<p>Now let’s consider our model that uses the size of the house in square feet as the explanatory variable. The figure on the left shows difference between actual and predicted prices, using this linear model. We compare the size of the differences to those resulting from the basic model that does not use any explanatory variables, and predicts each price using the overall average (shown on the right).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>Residplot_sqft <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Houses, <span class="fu">aes</span>(<span class="at">x =</span> sqft_living, <span class="at">y =</span> price)) <span class="sc">+</span>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>                <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">xend =</span> sqft_living, <span class="at">yend =</span> M_House_sqft<span class="sc">$</span>fitted.values), <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>                <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> M_House_sqft<span class="sc">$</span>fitted.values), <span class="at">shape =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>                <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">5500</span>)) <span class="sc">+</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>                <span class="fu">theme_bw</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch2_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Notice that the red lines are shorter in the figure on the left, indicating the predictions are closer to the actual values.</p>
+<p>The difference between the actual and predicted values is called the <strong>residual</strong>. The residual for the <span class="math inline">\(ith\)</span> case is</p>
+<p><span class="math display">\[
+r_i = (y_i-\hat{y}_i)
+\]</span></p>
+<p>We’ll calculate the residuals for the first three houses in the dataset, shown below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(First3Houses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Id</th>
+<th style="text-align: right;">price</th>
+<th style="text-align: left;">waterfront</th>
+<th style="text-align: right;">sqft_living</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1225</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: right;">5420</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">885</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: right;">2830</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">385</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: right;">1620</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The model equation is</p>
+<p><span class="math display">\[
+\widehat{\text{Price}} = -484.9575 + 0.5328\times \text{Sq. Ft}
+\]</span></p>
+<p>The predicted prices for these three houses are:</p>
+<p><span class="math display">\[
+\widehat{\text{Price}_1} = -484.9575 + 0.5328\times 5420 = 2402.6 \text{ thousand dollars}
+\]</span></p>
+<p><span class="math display">\[
+\widehat{\text{Price}_2} = -484.9575 + 0.5328\times 2830 = 1022.7 \text{ thousand dollars}
+\]</span></p>
+<p><span class="math display">\[
+\widehat{\text{Price}_3} = -484.9575 + 0.5328\times 1620 = 378.1 \text{ thousand dollars}
+\]</span></p>
+<p>To calculate the residuals, we subtract the predicted price from the actual price.</p>
+<p><span class="math display">\[r_1 = y_1-\hat{y}_1 = 1225 - 2402.6 = -1177.6 \text{ thousand dollars}\]</span></p>
+<p><span class="math display">\[r_2 = y_2-\hat{y}_2 = 885 - 1022.7 = -137.7 \text{ thousand dollars}\]</span></p>
+<p><span class="math display">\[r_2 = y_2-\hat{y}_2 = 385 - 378.1 = 6.9 \text{ thousand dollars}\]</span></p>
+<p>The fact that the first two residuals are negative indicates that these houses sold for less than the model predicts.</p>
+<p>The predicted values and residuals from a model can be calculated automatically in R. The predicted values and residuals for the first 5 houses are shown below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>Predicted <span class="ot">&lt;-</span> <span class="fu">predict</span>(M_House_sqft)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Predicted, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        1         2         3 
+2402.5937 1022.7491  378.1113 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>Residual <span class="ot">&lt;-</span> M_House_sqft<span class="sc">$</span>residuals</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Residual, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           1            2            3 
+-1177.593665  -137.749128     6.888668 </code></pre>
+</div>
+</div>
+</section>
+<section id="variability-explained-by-sq.-ft.-model" class="level3" data-number="2.2.3">
+<h3 data-number="2.2.3" class="anchored" data-anchor-id="variability-explained-by-sq.-ft.-model"><span class="header-section-number">2.2.3</span> Variability Explained by Sq. Ft. Model</h3>
+<p>The <strong>sum of squared residuals (SSR)</strong> measures the amount of unexplained variability in the response variable after accounting for all explanatory variables in the model.</p>
+<p><span class="math display">\[
+\text{SSR} = \displaystyle\sum_{i=1}^{n}(y_i-\hat{y}_i)^2.  
+\]</span></p>
+<p>Note that SSR is similar to SST, except we subtract the model’s predicted values, rather than the overall average. In the special case of a model with no explanatory variables, the predicted values are equal to the overall average, so SSR is equal to SST.</p>
+<p>We calculate SSR for the model using square feet as the explanatory variable.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\text{SSR} &amp; = \displaystyle\sum_{i=1}^{n}(y_i-\hat{y}_i)^2.  \\
+&amp; = (1225 - 2402.6)^2 + (885 - 1022.7)^2 + (385 - 378.1)^2 + \ldots
+\end{aligned}
+\]</span></p>
+<p>We can calculate the model’s SSR directly in R.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>SSR_sqft <span class="ot">&lt;-</span> <span class="fu">sum</span>(M_House_sqft<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>SSR_sqft</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 23767280</code></pre>
+</div>
+</div>
+<p>SSR represents the amount of total variability in saleprice remaining after accounting for the house’s size in square feet.</p>
+<p>The SSR=23,767,290 value is about one third of the SST value of 69,045,634. This means that about 2/3 of the total variability in sale price is explained by the model that accounts for sale price.</p>
+<p>The difference (SST-SSR) represents the variability in the response variable that is explained by the model. This quantity is called the <strong>model sum of squares (SSM)</strong>.</p>
+<p><span class="math display">\[ \text{SSM} = \text{SST} - \text{SSR} \]</span></p>
+<p>It can be shown that <span class="math inline">\(\text{SSM}=\displaystyle\sum_{i=1}^n(\hat{y}_i-\bar{y})^2\)</span>.</p>
+<p>The proportion of total variability in the response variable explained by the model is called the <strong>coefficient of determination</strong>, denoted <span class="math inline">\(R^2\)</span>. We calculate this by dividing SSM by SST.</p>
+<p><span class="math display">\[
+R^2=\frac{SSM}{SST}= \frac{SST-SSR}{SST}
+\]</span></p>
+<p><strong>Example:</strong> For the model with square feet as the explanatory variable,</p>
+<p><span class="math display">\[
+SSM = SST-SSR = 69,045,634 - 23,767,290 =45,278,344.
+\]</span></p>
+<p><span class="math display">\[
+R^2 = \frac{45,278,344}{69,045,634}=0.6557.
+\]</span></p>
+<p>Approximately 65.6% of the total variability in sale price is explained by the model using square feet as the explanatory variable.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch2_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We calculate <span class="math inline">\(R^2\)</span> directly in R.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_House_sqft)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6557743</code></pre>
+</div>
+</div>
+</section>
+<section id="linear-correlation-coefficient" class="level3" data-number="2.2.4">
+<h3 data-number="2.2.4" class="anchored" data-anchor-id="linear-correlation-coefficient"><span class="header-section-number">2.2.4</span> Linear Correlation Coefficient</h3>
+<p>For models with a single quantiative explanatory varible, the coefficient of determination is equal to the square of the correlation coefficient <span class="math inline">\(r\)</span>, discussed in Chapter 1.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Houses, <span class="fu">aes</span>(<span class="at">x=</span>sqft_living, <span class="at">y=</span>price)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch2_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><p>For linear models with a single quantitative variable, the <strong>linear correlation coefficient</strong> <span class="math inline">\(r=\sqrt{R^2}\)</span>, or <span class="math inline">\(r=-\sqrt{R^2}\)</span> (with sign matching the sign on the slope of the line), provides information about the strength and direction of the linear relationship between the variables.</p></li>
+<li><p><span class="math inline">\(-1 \leq r \leq 1\)</span>, and <span class="math inline">\(r\)</span> close to <span class="math inline">\(\pm1\)</span> provides evidence of strong linear relationship, while <span class="math inline">\(r\)</span> close to 0 suggests linear relationship is weak.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(Houses<span class="sc">$</span>price,Houses<span class="sc">$</span>sqft_living)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8097989</code></pre>
+</div>
+</div>
+<ul>
+<li><span class="math inline">\(r\)</span> is only relevant for models with a single quantitative explanatory variable and a quantitative response variable, while <span class="math inline">\(R^2\)</span> is relevant for any linear model with a quantitative response variable.</li>
+</ul>
+</section>
+<section id="variability-explained-by-waterfront-model" class="level3" data-number="2.2.5">
+<h3 data-number="2.2.5" class="anchored" data-anchor-id="variability-explained-by-waterfront-model"><span class="header-section-number">2.2.5</span> Variability Explained by Waterfront Model</h3>
+<p>We can similarly calculate the proportion of variability explained by the model using waterfront as an explanatory variable.</p>
+<p>Recall that in this model, the predicted price of a house with a waterfront is given by the average price of all waterfront houses, and the predicted price of a non-waterfront house is given by the average price of all non-waterfront houses.</p>
+<p>We can calculate residuals using these predicted values, and compare them to the residuals resulting from a model with no explanatory variables, which uses the overall average price for all predictions.</p>
+<p>The left two figures show the residuals resulting from a model that accounts for waterfront status. The figure on the right shows the residuals resulting from the model with no explanatory variables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(<span class="fu">arrangeGrob</span>(M1aResid,M1bResid, Residplot_M0 <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Model with no Exp. Vars"</span>), <span class="at">ncol=</span><span class="dv">3</span>, <span class="at">nrow=</span><span class="dv">1</span>, <span class="at">widths=</span><span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">2</span>,<span class="dv">5</span>))) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch2_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Notice that after accounting for waterfront status, the differences between observed and predicted values are bigger than they were in the model that accounted for square feet, though not as big as for the model that doesn’t use any explanatory variables.</p>
+<p>We use R to calculate SSR for the waterfront model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>SSR_wf <span class="ot">&lt;-</span> <span class="fu">sum</span>(M_House_wf<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>SSR_wf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 43675043</code></pre>
+</div>
+</div>
+<p><span class="math display">\[
+SSM = SST-SSR = 69,045,634 - 43,675,043 =25,370,591.
+\]</span></p>
+<p><span class="math display">\[
+R^2 = \frac{25,370,591}{69,045,634}=0.3674.
+\]</span></p>
+<p>Approximately 36.7% of the total variability in sale price is explained by the model using waterfront status as the explanatory variable.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch2_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We calculate <span class="math inline">\(R^2\)</span> directly in R.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_House_wf)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3674467</code></pre>
+</div>
+</div>
+</section>
+<section id="variability-explained-by-multiple-regression-model" class="level3" data-number="2.2.6">
+<h3 data-number="2.2.6" class="anchored" data-anchor-id="variability-explained-by-multiple-regression-model"><span class="header-section-number">2.2.6</span> Variability Explained by Multiple Regression Model</h3>
+<p>We’ve seen at the model using square feet accounts for about 2/3 of the total variability in house prices, while the model using waterfront status accounts for about 1/3 of the total variability. Let’s see if we can do better by using both variables together.</p>
+<p>The left figure shows the residuals resulting from a model that accounts for both waterfront status and square feet. The figure on the right shows the residuals resulting from the model with no explanatory variables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(Residplot_MR <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Multiple Regression Model"</span>) , Residplot_M0 <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Model with no Exp. Vars"</span>), <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch2_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We use R to calculate SSR for the waterfront model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>SSR_wf_sqft <span class="ot">&lt;-</span> <span class="fu">sum</span>(M_wf_sqft<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>SSR_wf_sqft</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 16521296</code></pre>
+</div>
+</div>
+<p><span class="math display">\[
+SSM = SST-SSR = 69,045,634 - 16,521,296 =52,524,338.
+\]</span></p>
+<p><span class="math display">\[
+R^2 = \frac{52,524,338}{69,045,634}=0.761.
+\]</span></p>
+<p>Approximately 76.1% of the total variability in sale price is explained by the model using square feet and waterfront status as the explanatory variables.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch2_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We calculate <span class="math inline">\(R^2\)</span> directly in R.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_wf_sqft)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7607192</code></pre>
+</div>
+</div>
+<p>Including both square feet and waterfront status allows us to explain more variability in sale price than models that include one but not both of these variables.</p>
+</section>
+<section id="summary-sst-ssr-ssm-r2" class="level3" data-number="2.2.7">
+<h3 data-number="2.2.7" class="anchored" data-anchor-id="summary-sst-ssr-ssm-r2"><span class="header-section-number">2.2.7</span> Summary: SST, SSR, SSM, <span class="math inline">\(R^2\)</span></h3>
+<ul>
+<li>the total variability in the response variable is the sum of the squared differences between the observed values and the overall average.</li>
+</ul>
+<p><span class="math display">\[\text{Total Variability in Response Var.}= \text{SST} =\displaystyle\sum_{i=1}^n(y_i-\bar{y})^2\]</span></p>
+<ul>
+<li>the variability remaining unexplained even after accounting for explanatory variable(s) in a model is given by the sum of squared residuals. We abbreviate this SSR, for sum of squared residuals.</li>
+</ul>
+<p><span class="math display">\[
+\text{SSR} = \text{Variability Remaining}=\displaystyle\sum_{i=1}^n(y_i-\hat{y}_i)^2
+\]</span></p>
+<ul>
+<li>the variability explained by the model, abbreviated SSM, is given by</li>
+</ul>
+<p><span class="math display">\[ \text{SSM} = \text{SST} - \text{SSR} \]</span></p>
+<ul>
+<li>The coefficient of determination (abbreviated <span class="math inline">\(R^2\)</span>) is defined as</li>
+</ul>
+<p><span class="math display">\[R^2=\frac{\text{Variability Explained by Model}}{\text{Total Variability}}=\frac{\text{SSM}}{\text{SST}} =\frac{\displaystyle\sum_{i=1}^n(\hat{y}_i-\bar{y})^2}{\displaystyle\sum_{i=1}^n(y_i-\bar{y})^2}\]</span></p>
+<p>Note that some texts use different abbreviations than the ones used here. When working with resources outside this class, be sure to carefully check the notation being used.</p>
+<p>For the model with a single quantitative explanatory variable.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Rsq.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Model with a single categorical explanatory variable with 3 categories:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Rsq2.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><p>Blue Area = Total Variability (SST)</p></li>
+<li><p>Red Area = Variability Remaining Unexplained by Model (SSR)</p></li>
+<li><p>Blue Area - Red Area = Variability Explained by Model (SSM)</p></li>
+<li><p><span class="math inline">\(R^2 = \frac{\text{Area of Blue Squares} - \text{Area of Red Squares}}{\text{Area of Blue Squares}} = \frac{\text{SST}-\text{SSR}}{\text{SST}}= \frac{\text{SSM}}{\text{SST}}\)</span></p></li>
+</ul>
+</section>
+<section id="model-comparison-summary" class="level3" data-number="2.2.8">
+<h3 data-number="2.2.8" class="anchored" data-anchor-id="model-comparison-summary"><span class="header-section-number">2.2.8</span> Model Comparison Summary</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Variables</th>
+<th>Unexplained Variability</th>
+<th>Variability Explained</th>
+<th><span class="math inline">\(R^2\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>None</td>
+<td>69045634.1341747</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>Sq. Ft.</td>
+<td>23767280.3817707</td>
+<td>45278353.752404</td>
+<td>0.6557743</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>Waterfront</td>
+<td>43675043.0897012</td>
+<td>25370591.0444735</td>
+<td>0.3674467</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>Sq. Ft. and Waterfront</td>
+<td>16521296.4889025</td>
+<td>52524337.6452723</td>
+<td>0.7607192</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Comments on</strong> <span class="math inline">\(R^2\)</span>:</p>
+<ul>
+<li><p><span class="math inline">\(R^2\)</span> will never decrease when a new variable is added to a model.<br>
+</p></li>
+<li><p>This does not mean that adding more variables to a model always improves its ability to make predictions on new data.<br>
+</p></li>
+<li><p><span class="math inline">\(R^2\)</span> measures how well a model fits the data on which it was built.<br>
+</p></li>
+<li><p>It is possible for a model with high <span class="math inline">\(R^2\)</span> to “overfit” the data it was built from, and thus perform poorly on new data. We will discuss this idea extensively later in the course.</p></li>
+<li><p>On some datasets, there is a lot of “natural” variability in the response variable, and no model will achieve a high <span class="math inline">\(R^2\)</span>. That’s okay. Even a model with <span class="math inline">\(R^2 = 0.10\)</span> or less can provide useful information.</p></li>
+<li><p>The goal is not to achieve a model that makes perfect predictions, but rather to be able to quantify the amount of uncertainty associated with the predictions we make.</p></li>
+</ul>
+</section>
+</section>
+<section id="models-with-interaction" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="models-with-interaction"><span class="header-section-number">2.3</span> Models with Interaction</h2>
+<section id="definition-of-interaction" class="level3" data-number="2.3.1">
+<h3 data-number="2.3.1" class="anchored" data-anchor-id="definition-of-interaction"><span class="header-section-number">2.3.1</span> Definition of Interaction</h3>
+<p>We previously used a multiple regression model of the form</p>
+<p><span class="math display">\[
+\widehat{Price} = b_0 + b_1\times\text{SqFt} + b_2\times\text{Waterfront}
+\]</span></p>
+<p>Recall that this model assumes the slope relating price and square footage is the same (<span class="math inline">\(b_1\)</span>) for houses on the waterfront as for houses not on the waterfront. An illustration of the model is shown below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>PM3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch2_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This assumption of the rate of change in price with respect to living space being the same for waterfront houses, as for non-waterfront houses might be unrealistic.</p>
+<p>Let’s fit separate lines waterfront and non-waterfront houses, without requiring them to have the same slope.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Houses, <span class="fu">aes</span>(<span class="at">x=</span>sqft_living, <span class="at">y=</span>price, <span class="at">color=</span>waterfront)) <span class="sc">+</span> <span class="fu">geom_point</span>()<span class="sc">+</span><span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">5500</span>)) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch2_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>It appears that the prices of the houses on the waterfront are increasing more rapidly, with respect to square feet of living space, than the non-waterfront houses. The effect of additional square feet on the price of the house appears to depend on whether or not the house is on the waterfront. This is an example of an <strong>interaction</strong> between square footage and waterfront status.</p>
+<p>An <strong>interaction</strong> between two explanatory variables occurs when the effect of one explanatory variable on the response depends on the other explanatory variable.</p>
+</section>
+<section id="interaction-term" class="level3" data-number="2.3.2">
+<h3 data-number="2.3.2" class="anchored" data-anchor-id="interaction-term"><span class="header-section-number">2.3.2</span> Interaction Term</h3>
+<p>If we want to allow for different slopes between waterfront and non-waterfront houses, we’ll need to change the mathematical equation of our model. To do that, we’ll add a coefficient <span class="math inline">\(b_3\)</span>, multiplied by the product of our two explanatory variables.</p>
+<p>The model equation is</p>
+<p><span class="math display">\[
+\widehat{Price} = b_0 + b_1\times\text{Sq. Ft.} + b_2\times\text{waterfront} + b_3\times\text{Sq.Ft}\times\text{Waterfront}
+\]</span></p>
+<p>The last term is called an <strong>interaction term.</strong></p>
+<p>For a house on the waterfront (<span class="math inline">\(\text{waterfront}=1\)</span>), the equation relating price to square feet is</p>
+<p><span class="math display">\[
+\begin{aligned}
+\widehat{Price} &amp; = b_0 + b_1\times\text{Sq. Ft.} + b_2\times\text{1} + b_3\times\text{Sq.Ft}\times\text{1} \\
+&amp; = (b_0+b_2) + (b_1+b_3)\times{\text{Sq. Ft.}}
+\end{aligned}
+\]</span> For a house not on the waterfront (<span class="math inline">\(\text{waterfront}=0\)</span>), the equation relating price to square feet is</p>
+<p><span class="math display">\[
+\begin{aligned}
+\widehat{Price} &amp; = b_0 + b_1\times\text{Sq. Ft.} + b_2\times\text{0} + b_3\times\text{Sq.Ft}\times\text{0} \\
+&amp; = b_0 + b_1\times{\text{Sq. Ft}}
+\end{aligned}
+\]</span></p>
+<p>The intercept is <span class="math inline">\(b_0\)</span> for non-waterfront houses, and <span class="math inline">\(b_0 + b_2\)</span> for waterfront houses.</p>
+<p>The slope is <span class="math inline">\(b_1\)</span> for non-waterfront houses, and <span class="math inline">\(b_1 + b_3\)</span> for waterfront houses.</p>
+<p>Thus, the model allows both the slope and intercept to differ between waterfront and non-waterfront houses.</p>
+</section>
+<section id="interaction-models-in-r" class="level3" data-number="2.3.3">
+<h3 data-number="2.3.3" class="anchored" data-anchor-id="interaction-models-in-r"><span class="header-section-number">2.3.3</span> Interaction Models in R</h3>
+<p>To fit an interaction model in R, use <code>*</code> instead of <code>+</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>M_House_Int <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Houses, price<span class="sc">~</span>sqft_living<span class="sc">*</span>waterfront)</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>M_House_Int</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = price ~ sqft_living * waterfront, data = Houses)
+
+Coefficients:
+              (Intercept)                sqft_living  
+                  67.3959                     0.2184  
+            waterfrontYes  sqft_living:waterfrontYes  
+                -364.5950                     0.4327  </code></pre>
+</div>
+</div>
+<p>The regression equation is</p>
+<p><span class="math display">\[
+\widehat{Price} = 67.4 + 0.2184\times\text{Sq. Ft.}  -364.6\times\text{waterfront} + 0.4327\times\text{Sq.Ft}\times\text{Waterfront}
+\]</span></p>
+<p>For a house on the waterfront (<span class="math inline">\(\text{waterfront}=1\)</span>), the equation is</p>
+<p><span class="math display">\[
+\begin{aligned}
+\widehat{Price} &amp; = 67.4 + 0.2184\times\text{Sq. Ft.} -364.6 \times\text{1} + 0.4327\times\text{Sq.Ft}\times\text{1} \\
+&amp; = (67.4 - 364.6) + (0.2184+0.4327)\times{\text{Sq. Ft.}} \\
+&amp; = -297.2 + 0.6511\times{\text{Sq. Ft.}}
+\end{aligned}
+\]</span> For a house not on the waterfront (<span class="math inline">\(\text{waterfront}=0\)</span>), the equation is</p>
+<p><span class="math display">\[
+\begin{aligned}
+\widehat{Price} &amp; = 67.4 + 0.2184\times\text{Sq. Ft.} -364.6 \times\text{0} + 0.4327\times\text{Sq.Ft}\times\text{0} \\
+&amp; = 67.4 0 + 0.2184\times{\text{Sq. Ft.}}
+\end{aligned}
+\]</span> <strong>Interpretation</strong></p>
+<p>When interpreting <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span>, we need to state that the interpretations apply only to the “baseline” category (in this case non-waterfront houses).</p>
+<p>In a model with interaction, it does not make sense to talk about holding one variable constant when interpreting the effect of the other, since the effect of one variable depends on the value or category of the other. Instead, we must state the value or category of one variable when interpreting the effect of the other.</p>
+<p><strong>Interpretations:</strong></p>
+<ul>
+<li><p><span class="math inline">\(b_0\)</span> - On average, a house with 0 square feet that is not on the waterfront is expected to cost 67 thousand dollars. This is not a sensible interpretation since there are no houses with 0 square feet.</p></li>
+<li><p><span class="math inline">\(b_1\)</span> - For each additional square foot in size, the price of a non-waterfront house is expected to increase by 0.2184 thousand dollars.</p></li>
+<li><p><span class="math inline">\(b_2\)</span> - On average, the price of a waterfront house with 0 square feet is expected to be 364.6 thousand dollars less than the price of a non-waterfront house with 0 square feet. This is not a sensible interpretation in this case.</p></li>
+<li><p><span class="math inline">\(b_3\)</span> - For each additional square foot in size, the price of a waterfront house is expected to increase by 0.4327 thousand dollars more than a non-waterfront house.</p></li>
+</ul>
+<p>Alternatively, we could interpret <span class="math inline">\(b_0+b_2\)</span> and <span class="math inline">\(b_1+b_3\)</span> together.</p>
+<ul>
+<li><p><span class="math inline">\(b_0 + b_2\)</span> - On average, a house with 0 square feet that is on the waterfront is expected to cost -297.2 thousand dollars. This is not a sensible interpretation since there are no houses with 0 square feet.</p></li>
+<li><p><span class="math inline">\(b_1\)</span> - For each additional square foot in size, the price of a waterfront house is expected to increase by 0.6511 thousand dollars.</p></li>
+</ul>
+<p><strong>Prediction</strong></p>
+<p>We calculate predicted prices for the following houses:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>Houses[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">16</span>), ] <span class="sc">%&gt;%</span> <span class="fu">select</span>(Id, price, sqft_living, waterfront)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 4
+     Id price sqft_living waterfront
+  &lt;int&gt; &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;     
+1     1  1225        5420 No        
+2    16  3075        4550 Yes       </code></pre>
+</div>
+</div>
+<p><span class="math display">\[
+\widehat{Price}_1 = 67.4 + 0.2184\times5420  -364.6\times0 + 0.4327\times5420 \times 0 = 1191 \text{ thousand dollars}
+\]</span></p>
+<p><span class="math display">\[
+\widehat{Price}_{16} = 67.4 + 0.2184\times4450  -364.6\times1 + 0.4327\times4450 \times 1 = 2600 \text{ thousand dollars}
+\]</span></p>
+</section>
+<section id="r2-for-interaction-model" class="level3" data-number="2.3.4">
+<h3 data-number="2.3.4" class="anchored" data-anchor-id="r2-for-interaction-model"><span class="header-section-number">2.3.4</span> <span class="math inline">\(R^2\)</span> for Interaction Model</h3>
+<p>We can calculate residuals, as well as SSR, SSM, SST, and <span class="math inline">\(R^2\)</span>, in the same manner we’ve seen previously.</p>
+<p>We’ll perform these calculations using R.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>SSR_int <span class="ot">&lt;-</span> <span class="fu">sum</span>(M_House_Int<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>SSR_int</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10139974</code></pre>
+</div>
+</div>
+<p><span class="math display">\[
+SSM = SST-SSR = 69,045,634 - 10,139,974 =58,905,660.
+\]</span></p>
+<p><span class="math display">\[
+R^2 = \frac{58,905,660}{69,045,634}=0.8531.
+\]</span></p>
+<p>Approximately 85.3% of the total variability in sale price is explained by the model using square feet and waterfront status, as well as an interaction between them as the explanatory variables.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch2_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We calculate <span class="math inline">\(R^2\)</span> directly in R.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_House_Int)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.853141</code></pre>
+</div>
+</div>
+<p>We see that adding an interaction term improved the proportion of variability in house price explained by the model from 0.76 to 0.85. This is a fairly notable increase.</p>
+</section>
+<section id="considerations-for-using-interactions" class="level3" data-number="2.3.5">
+<h3 data-number="2.3.5" class="anchored" data-anchor-id="considerations-for-using-interactions"><span class="header-section-number">2.3.5</span> Considerations for Using Interactions</h3>
+<p>It might be tempting to think we should always add an interaction term to a model when using two or more explanatory variables. After all, an interaction term is just another term added to the model, meaning that <span class="math inline">\(R^2\)</span> will never go down.</p>
+<p>Adding an interaction term is not always a good idea, though. We saw that doing so makes interpretations more complicated. Increasing the complexity of a model also increases the risk of overfitting, potentially hurting predictive performance on new data.</p>
+<p>We should only add an interaction term if we have strong reason to believe that the rate of change in the response variable with respect to one explanatory variable really does depend on the other variable. This might come from background knowledge about the subject, or consultation with an expert in the area. It could also come from data visualization, and the increase in variability in the response variable explained when an interaction term is added to the model.</p>
+<p>In the house price dataset, we might expect that the price of waterfront houses might increase more rapidly as they get bigger than the price of non-waterfront houses. The fact that the lines shown in the scatterplot are not close to being parallel provides further evidence of a difference in rate of increase, providing justification for the use of an interaction term in the model. Furthermore, <span class="math inline">\(R^2\)</span> increases notably (from 0.76 to 0.85), when an interaction term is added. All of these reasons support using an interaction term in this context.</p>
+<p>When examining a scatterplot, we should note that even if there is truly no interaction among all houses, the lines probably won’t be exactly parallel, due to random deviations among the sample of houses chosen. If the lines are reasonably close to parallel, then an interaction term is likely not needed.</p>
+<p>We’ll look more at criteria for determining whether to add an interaction term to a model in the coming sections.</p>
+</section>
+<section id="interaction-vs-correlation" class="level3" data-number="2.3.6">
+<h3 data-number="2.3.6" class="anchored" data-anchor-id="interaction-vs-correlation"><span class="header-section-number">2.3.6</span> Interaction vs Correlation</h3>
+<p>It is easy to confuse the concept of interaction with that of correlation. These are, in fact, very different concepts.</p>
+<p>A correlation between two variables means that as one increases, the other is more likely to increase or decrease. We only use the word correlation to describe two quantitative variables, but we could discuss the similar notion of a relationship between categorical variables.</p>
+<p>An interaction between two explanatory variables means that the effect of one on the response depends on the other.</p>
+<p><strong>Examples of Correlations (or relationships)</strong></p>
+<ol type="1">
+<li><p>Houses on the waterfront tend to be bigger than houses not on the waterfront, so there is a relationship between square feet and waterfront status.</p></li>
+<li><p>Houses with large amounts of living space in square feet are likely to have more bedrooms, so there is a correlation between living space and bedrooms.</p></li>
+<li><p>Suppose that some genres of movies (drama, comedy, action, etc.) tend to be longer than others. This is an example of a relationship between genre and length.</p></li>
+</ol>
+<p>The fact that there is a correlation between explanatory variables is NOT a reason to add an interaction term involving those variables in a model. Correlation is something entirely different than interaction!</p>
+<p><strong>Examples of Interactions</strong></p>
+<ol type="1">
+<li><p>As houses on the waterfront increase in size, their price increases more rapidly than for houses not on the waterfront. This means there is an interaction between size and waterfront location.</p></li>
+<li><p>Suppose that the effect of additional bedrooms on price is different for houses with lots of living space than for houses with little living space. This would be an example of an interaction between living space and number of bedrooms.</p></li>
+<li><p>Suppose that audiences become more favorable to dramas as they get longer, but less favorable to comedies as they get longer. In this scenario, the effect of movie length on audience rating depends on the genre of the movie, indicating an interaction between length and genre.</p></li>
+</ol>
+</section>
+</section>
+<section id="least-squares-estimation-lse" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="least-squares-estimation-lse"><span class="header-section-number">2.4</span> Least Squares Estimation (LSE)</h2>
+<section id="estimating-regression-coefficients" class="level3" data-number="2.4.1">
+<h3 data-number="2.4.1" class="anchored" data-anchor-id="estimating-regression-coefficients"><span class="header-section-number">2.4.1</span> Estimating Regression Coefficients</h3>
+<p>We’ve already used R to determine the estimates of <span class="math inline">\(b_0\)</span>, <span class="math inline">\(b_1\)</span>, <span class="math inline">\(b_2\)</span>, and <span class="math inline">\(b_3\)</span> in various kinds of linear models. At this point, it is natural to wonder where these estimates are come from.</p>
+<p>Regression coefficients <span class="math inline">\(b_0, b_1, \ldots, b_p\)</span> are chosen in a way that minimizes the sum of the squared differences between the observed and predicted values. That is, we minimize</p>
+<p><span class="math display">\[
+\text{SSR} = \displaystyle\sum_{i=1}^{n} (y_i-\hat{y}_i)^2
+\]</span></p>
+<p>Because <span class="math inline">\(\hat{y}_i\)</span> is a function of <span class="math inline">\(b_0, b_1, \ldots, b_p\)</span>, we can choose the values of <span class="math inline">\(b_0, b_1, \ldots, b_p\)</span> in a way that minimizes SSR.</p>
+<p><span class="math display">\[\text{SSR} = \displaystyle\sum_{i=1}^n (y_i -\hat{y}_i)^2  = \displaystyle\sum_{i=1}^n (y_i -(b_0 + b_1x_{i1} + b_2x_{i2} + \ldots + b_px_{ip}))^2 \]</span></p>
+<p>The process of estimating regression coefficients <span class="math inline">\(b_0, b_1, \ldots, b_p\)</span> in a way that minimizes SSR is called <strong>least-squares estimation</strong>.</p>
+<p><strong>Example: Model with one quantitative variable</strong></p>
+<p>We start with an example of estimating the regression coefficients for a model with a single explanatory variable. This is easy to illustrate, since we can draw a scatter plot displaying our explanatory and response variable.</p>
+<p>The figure below illustrates four possible trend lines that could be fit to a set of 10 points in a scatter plot. The first line is the line of best fit, in that it makes the sum of the squared residuals the smallest of all possible lines that could be drawn. The second through fourth plots all show examples of other trend lines that are not the line of best fit. The sum of squared residuals for each of these models is bigger than for the first one.</p>
+<p>In the illustration, SSR is represented by the total area of the squares. The line of best fit is the one that make the intercept the smallest.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="LSE.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>This <a href="http://www.rossmanchance.com/applets/RegShuffle.htm">Rossman-Chance applet</a> provides an illustration of the line of best fit.</li>
+</ul>
+<p>Returning to the model for predicting price of a house, using only size in square feet as an explanatory variable, the scatter plot, along with the slope and intercept of the regression line are shown below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Houses, <span class="fu">aes</span>(<span class="at">x=</span>sqft_living, <span class="at">y=</span>price)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch2_files/figure-html/unnamed-chunk-52-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>M_House_sqft</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = price ~ sqft_living, data = Houses)
+
+Coefficients:
+(Intercept)  sqft_living  
+  -484.9575       0.5328  </code></pre>
+</div>
+</div>
+<p>The line <span class="math inline">\(\text{Price} = -485 + 0.5328 \times \text{Square Feet}\)</span> is the “line of best fit” in the sense that it minimizes the sum of the squared residuals (SSR). Any other choices for the slope or intercept of the regression line would result in larger SSR than this line.</p>
+</section>
+<section id="mathematics-of-lse-for-slr" class="level3" data-number="2.4.2">
+<h3 data-number="2.4.2" class="anchored" data-anchor-id="mathematics-of-lse-for-slr"><span class="header-section-number">2.4.2</span> Mathematics of LSE for SLR</h3>
+<ul>
+<li><p>Consider a <strong>simple linear regression(SLR)</strong> model, which is one with a singe quantitative explanatory variable <span class="math inline">\(x\)</span>.</p></li>
+<li><p><span class="math inline">\(\hat{y}_i = b_0+b_1x_i\)</span></p></li>
+<li><p>we need to choose the values of <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> that minimize:</p></li>
+</ul>
+<p><span class="math display">\[
+\displaystyle\sum_{i=1}^n(y_i-\hat{y}_i)^2 =\displaystyle\sum_{i=1}^n(y_i-(b_0+b_1x_i))^2
+\]</span></p>
+<p>We setup the equation by substituting in the values of <span class="math inline">\(y_i\)</span> and <span class="math inline">\(x_i\)</span> seen in the data.</p>
+<p>Recall the first 3 houses in the dataset:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(First3Houses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Id</th>
+<th style="text-align: right;">price</th>
+<th style="text-align: left;">waterfront</th>
+<th style="text-align: right;">sqft_living</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1225</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: right;">5420</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">885</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: right;">2830</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">385</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: right;">1620</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><span class="math display">\[
+\begin{aligned}
+\displaystyle\sum_{i=1}^{100}(y_i-\hat{y}_i)^2 &amp; =\displaystyle\sum_{i=1}^n(y_i-(b_0+b_1x_i))^2 \\
+&amp; = (1225-(b_0+b_1(5420)))^2 + (885-(b_0+b_1(2830)))^2 + (385-(b_0+b_1(1620)))^2 + \ldots
+\end{aligned}
+\]</span></p>
+<p>We need to find the values of <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> that minimize this expression. This is a 2-dimensional optimization problem that can be solved using multivariable calculus or numerical or graphical methods.</p>
+<p>Using calculus, it can be shown that this quantity is minimized when</p>
+<ul>
+<li><p><span class="math inline">\(b_1=\frac{\displaystyle\sum_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y})}{\displaystyle\sum_{i=1}^{n}(x_i-\bar{x})^2}=\frac{\displaystyle\sum_{i=1}^{n} x_i y_i-\frac{\displaystyle\sum_{i=1}^{n} x_i \displaystyle\sum_{i=1}^{n} y_i }{n}}{\left(\displaystyle\sum_{i=1}^{n} x_i^2 -\frac{\left(\displaystyle\sum_{i=1}^{n} x_i\right)^2}{n}\right)}\)</span></p></li>
+<li><p><span class="math inline">\(b_0=\bar{y}-b_1\bar{x}\)</span> (where <span class="math inline">\(\bar{y}=\frac{\displaystyle\sum_{i=1}^{n}{y_i}}{n}\)</span>, and <span class="math inline">\(\bar{x}=\frac{\displaystyle\sum_{i=1}^{n}{x_i}}{n}\)</span>).</p></li>
+</ul>
+</section>
+<section id="lse-for-categorical-variable" class="level3" data-number="2.4.3">
+<h3 data-number="2.4.3" class="anchored" data-anchor-id="lse-for-categorical-variable"><span class="header-section-number">2.4.3</span> LSE for Categorical Variable</h3>
+<ul>
+<li><p>Consider a model with a single categorical variable (such as waterfront), with G+1 categories, numbered <span class="math inline">\(g=0,2, \ldots, G\)</span></p></li>
+<li><p>Then <span class="math inline">\(\hat{y}_i = b_0 + b_1x_{i1} + \ldots +b_{G}x_{iG}\)</span>.</p></li>
+<li><p>we need to minimize</p></li>
+</ul>
+<p><span class="math display">\[
+\displaystyle\sum_{i=1}^n(y_i-\hat{y}_i)^2 =\displaystyle\sum_{i=1}^n(y_i-(b_0 + b_1x_{i1} + \ldots +b_{G}x_{iG}))^2.   
+\]</span></p>
+<ul>
+<li>It can be shown that this is achieved when
+<ul>
+<li><span class="math inline">\(b_0 = \bar{y_0}\)</span> (i.e.&nbsp;the average response in the “baseline group”), and<br>
+</li>
+<li><span class="math inline">\(b_j = \bar{y_j} - \bar{y}_0\)</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="lse-more-generally" class="level3" data-number="2.4.4">
+<h3 data-number="2.4.4" class="anchored" data-anchor-id="lse-more-generally"><span class="header-section-number">2.4.4</span> LSE More Generally</h3>
+<ul>
+<li>For multiple regression models, including those involving interaction, the logic is the same. We need to choose <span class="math inline">\(b_0, b_1, \ldots, b_p\)</span> in order to minimize</li>
+</ul>
+<p><span class="math display">\[ \displaystyle\sum_{i=1}^n (y_i -\hat{y}_i)^2  = \displaystyle\sum_{i=1}^n (y_i -(b_0 + b_1x_{i1} + b_2x_{i2} + \ldots + b_px_{ip}))^2 \]</span></p>
+<ul>
+<li><p>The mathematics, however, are more complicated and require inverting a matrix. This goes beyond the scope of this class, so we will let R do the estimation and use the results.</p></li>
+<li><p>More on least squares estimation in multiple regression can be found <a href="http://www.math.chalmers.se/Stat/Grundutb/GU/MSG500/A10/lecture5.pdf">here</a>.</p></li>
+</ul>
+</section>
+</section>
+<section id="analysis-of-variance" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="analysis-of-variance"><span class="header-section-number">2.5</span> ANalysis Of VAriance</h2>
+<section id="submodels" class="level3" data-number="2.5.1">
+<h3 data-number="2.5.1" class="anchored" data-anchor-id="submodels"><span class="header-section-number">2.5.1</span> Submodels</h3>
+<p>We’ve seen 5 different models for predicting house price using some combination of square feet and waterfront status.</p>
+<p>A model A is defined to be a <strong>submodel</strong> of another model B, if every term in model A is also included in model B.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Variables</th>
+<th>Unexplained Variability</th>
+<th>Variability Explained</th>
+<th><span class="math inline">\(R^2\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>None</td>
+<td>69045634</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>Sq. Ft.</td>
+<td>23767280</td>
+<td>45278354</td>
+<td>0.656</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>Waterfront</td>
+<td>43675043</td>
+<td>25370591</td>
+<td>0.367</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>Sq. Ft. and Waterfront</td>
+<td>16521296</td>
+<td>52524338</td>
+<td>0.761</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>Sq. Ft., Waterfront, and Interaction</td>
+<td>10139974</td>
+<td>58905661</td>
+<td>0.853</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>Model 1 is a submodel of Model 3, since all variables used in Model 1 are also used in Model 3.</p></li>
+<li><p>Model 2 is also a submodel of Model 3.</p></li>
+<li><p>Models 1, 2, and 3 are all submodels of Model 4.</p></li>
+<li><p>Model 0 is a submodel of Models 1, 2, 3, and 4.</p></li>
+<li><p>Models 1 and 2 are not submodels of each other, since Model 1 contains a variable used in Model 2 and Model 2 contains a variable not used in Model 1.</p></li>
+</ul>
+</section>
+<section id="f-statistics" class="level3" data-number="2.5.2">
+<h3 data-number="2.5.2" class="anchored" data-anchor-id="f-statistics"><span class="header-section-number">2.5.2</span> F-Statistics</h3>
+<p>When one model is a submodel of another, we can compare the amount of variability explained by the models, using a technique known as <strong>ANalysis Of VAriance (ANOVA)</strong>.</p>
+<p>Reduced Model: <span class="math inline">\(\hat{y}_i = b_0 + b_1x_{i1} + b_2x_{i2} + \ldots + b_qx_{iq}\)</span></p>
+<p>Full Model: <span class="math inline">\(\hat{y}_i = b_0 + b_1x_{i1} + b_2x_{i2} + \ldots + b_qx_{iq} + b_{q+1}x_{i{q+1}} \ldots + b_px_{ip}\)</span></p>
+<p>p = # terms in Full Model, not including the intercept<br>
+q = # terms in Reduced Model, not including the intercept<br>
+n = number of observations</p>
+<p>We calculate a statistic called F that measures the amount of variability explained by adding additional variable(s) to the model, relative to the total amount of unexplained variability.</p>
+<p><span class="math display">\[
+\begin{aligned}
+F  
+&amp;= \frac{\frac{\text{SSR}_{\text{Reduced}}-\text{SSR}_{\text{Full}}}{p-q}}{\frac{\text{SSR}_{\text{Full}}}{n-(p+1)}}
+\end{aligned}
+\]</span></p>
+<ul>
+<li>Large values of F indicate that adding the additional explanatory variables is helpful in explaining variability in the response variable<br>
+</li>
+<li>Small values of F indicate that adding new explanatory variables variables does not make much of a difference in explaining variability in the response variable<br>
+</li>
+<li>What counts as “large” is depends on <span class="math inline">\(n, p,\)</span> and <span class="math inline">\(q\)</span>. We will revisit this later in the course.</li>
+</ul>
+<p><strong>Example 1</strong></p>
+<p>Let’s Calculate an ANOVA F-Statistic to compare Models 1 and 3.</p>
+<p>Reduced Model:</p>
+<p><span class="math display">\[
+\widehat{\text{Price}}= b_0+ b_1 \times\text{sqft\_living}
+\]</span></p>
+<p>Full Model:</p>
+<p><span class="math display">\[
+\widehat{\text{Price}}= b_0+ b_1 \times\text{sqft\_living}+ b_2\times\text{Waterfront}
+\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+F &amp;= \frac{\frac{\text{SSR}_{\text{Reduced}}-\text{SSR}_{\text{Full}}}{p-q}}{\frac{\text{SSR}_{\text{Full}}}{n-(p+1)}} \\
+&amp;=\frac{\frac{23,767,280-16,521,296}{2-1}}{\frac{16,521,296}{100-(2+1)}} \\
+\end{aligned}
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>((SSR_sqft<span class="sc">-</span>SSR_wf_sqft)<span class="sc">/</span>(<span class="dv">2-1</span>))<span class="sc">/</span>((SSR_wf_sqft)<span class="sc">/</span>(<span class="dv">100</span><span class="sc">-</span>(<span class="dv">2</span><span class="sc">+</span><span class="dv">1</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 42.54269</code></pre>
+</div>
+</div>
+<p>We can calculate the statistic directly in R, using the <code>anova</code> command.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(M_House_sqft, M_wf_SqFt)<span class="sc">$</span>F[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 42.54269</code></pre>
+</div>
+</div>
+<p>In the coming chapters, we’ll talk about what to conclude from an F-statistic of 42.5 Is this big enough to say that adding waterfront status to a model already including square feet helps better explain variability in sale price? (Spoiler alert: YES - an F-statistic of 42.5 is quite large and indicative that the full model is a better choice than the reduced model.) We previously saw that the model including both square feet and waterfront status had a <span class="math inline">\(R^2\)</span> value considerably higher than the one including only square feet. This large F-statistic is further evidence to the benefit of considering both variables in our model.</p>
+<p><strong>Example 2</strong></p>
+<p>We’ll calculate an F-statistic to compare Models 3 and 4. This can help us determine whether it is worthwhile to include an interaction term in our model.</p>
+<p>Reduced Model: <span class="math display">\[\widehat{\text{Price}}= b_0+ b_1 \times\text{sqft\_living} + b_2\times\text{Waterfront}\]</span></p>
+<p>Full Model: <span class="math display">\[\widehat{\text{Price}}= b_0+ b_1 \times\text{sqft\_living}+ b_2\times\text{Waterfront} + b_3\times\text{sqft\_living}\times\text{Waterfront}\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+F &amp;= \frac{\frac{\text{SSR}_{\text{Reduced}}-\text{SSR}_{\text{Full}}}{p-q}}{\frac{\text{SSR}_{\text{Full}}}{n-(p+1)}} \\
+&amp;=\frac{\frac{16,521,296-10,139,974}{3-2}}{\frac{10,139,974}{100-(3+1)}} \\
+\end{aligned}
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>((SSR_wf_sqft<span class="sc">-</span>SSR_int)<span class="sc">/</span>(<span class="dv">3-2</span>))<span class="sc">/</span>((SSR_int)<span class="sc">/</span>(<span class="dv">100</span><span class="sc">-</span>(<span class="dv">3</span><span class="sc">+</span><span class="dv">1</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 60.41505</code></pre>
+</div>
+</div>
+<p>We can calculate the statistic directly in R, using the <code>anova</code> command.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(M_wf_SqFt, M_House_Int)<span class="sc">$</span>F[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 60.41505</code></pre>
+</div>
+</div>
+<p>We observe an F-statistic of 60, which is even bigger than the one seen previously! This suggests that adding the interaction term does indeed improve the model’s ability to account for variability in prices.</p>
+</section>
+<section id="comparing-3-or-more-categories" class="level3" data-number="2.5.3">
+<h3 data-number="2.5.3" class="anchored" data-anchor-id="comparing-3-or-more-categories"><span class="header-section-number">2.5.3</span> Comparing 3 or More Categories</h3>
+<p>F-statistics are commonly used when making comparisons involving categorical variables with 3 or more categories.</p>
+<p>One variable in the houses dataset, which we haven’t looked at yet, is the condition of the house at the time of sale. The table shows the number of houses in each condition listed.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Houses<span class="sc">$</span>condition)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>average or below             good        very_good 
+              61               30                9 </code></pre>
+</div>
+</div>
+<p>We notice that there is only one house in poor condition and one house in fair condition. These sample sizes are too small to analyze. We’ll combine these two houses with those in the “average” category, creating a new category called “average or below).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>Houses<span class="sc">$</span>condition <span class="ot">&lt;-</span> <span class="fu">fct_collapse</span>(Houses<span class="sc">$</span>condition, <span class="st">"average or below"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"poor"</span>,<span class="st">"fair"</span>, <span class="st">"average"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The boxplot shows the distribution of houses in each category, and the table below it provides a numerical summary.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Houses, <span class="fu">aes</span>(<span class="at">x=</span>condition, <span class="at">y=</span>price)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span><span class="fu">coord_flip</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch2_files/figure-html/unnamed-chunk-61-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>Cond_Tab <span class="ot">&lt;-</span> Houses <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(condition) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">Mean_Price =</span> <span class="fu">mean</span>(price), </span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">SD_Price=</span> <span class="fu">sd</span> (price), </span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">N=</span> <span class="fu">n</span>())</span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(Cond_Tab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">condition</th>
+<th style="text-align: right;">Mean_Price</th>
+<th style="text-align: right;">SD_Price</th>
+<th style="text-align: right;">N</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">average or below</td>
+<td style="text-align: right;">700.6349</td>
+<td style="text-align: right;">768.1179</td>
+<td style="text-align: right;">61</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">good</td>
+<td style="text-align: right;">861.0000</td>
+<td style="text-align: right;">1048.9521</td>
+<td style="text-align: right;">30</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">very_good</td>
+<td style="text-align: right;">551.8361</td>
+<td style="text-align: right;">332.8597</td>
+<td style="text-align: right;">9</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>It can be helpful to calculate a single statistic that quantifies the size of the differences between the conditions. If we were just comparing two different categories, we could simply find the difference in mean prices between them. But, with three or more categories, we need a way to represent the size of the differences with a single number. An F-statistic can serve this purpose.</p>
+<p>We’ll calculate an F-statistic for a model that includes condition, compared to a model with only an intercept term.</p>
+<p>Reduced Model: <span class="math display">\[\widehat{\text{Price}}= b_0\]</span></p>
+<p>Full Model: <span class="math display">\[\widehat{\text{Price}}= b_0+ b_1 \times\text{good condition}+ b_2\times\text{very good condition}\]</span></p>
+<p>Notice that the equation includes separate variables for the “good” and “very” good conditions. These variables take on value 0 if the house is not in that condition, and 1 if the house is in that condition. Here, houses in “average or below” condition are considered the “baseline” category.</p>
+<p>We’ll fit the model in R. The coefficient estimates for <span class="math inline">\(b_0\)</span>, <span class="math inline">\(b_1\)</span> and <span class="math inline">\(b_2\)</span> are shown below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>M_House_Cond <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Houses, price<span class="sc">~</span>condition)</span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>M_House_Cond</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = price ~ condition, data = Houses)
+
+Coefficients:
+       (Intercept)       conditiongood  conditionvery_good  
+             700.6               160.4              -148.8  </code></pre>
+</div>
+</div>
+<p>The model equation is</p>
+<p><span class="math display">\[
+\widehat{\text{Price}}= b_0+ b_1 \times\text{good condition}+ b_2\times\text{very good condition}
+\]</span></p>
+<p><strong>Interpretations</strong></p>
+<ul>
+<li>On average, houses in average or below condition cost 700.6 thousand dollars.<br>
+</li>
+<li>On average, houses in good condition cost 160.4 thousand dollars more than those in average or below condition.<br>
+</li>
+<li>On average, houses in very good condition cost 148.8 thousand dollars less than those in average or below condition.</li>
+</ul>
+<p>This last sentence is surprising and merits further investigation. We’ll leave that for future consideration.</p>
+<p>For now, we’ll calculate an F-statistic based on the models.</p>
+<p>Note that in this case, the reduced model does not include any explanatory variables, so SSR is equal to SST, which we calculate previously.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>SST</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 69045634</code></pre>
+</div>
+</div>
+<p>We calculate SSR for the full model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>SSR_cond <span class="ot">&lt;-</span> <span class="fu">sum</span>(M_House_Cond<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>SSR_cond  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 68195387</code></pre>
+</div>
+</div>
+<p><span class="math display">\[
+\begin{aligned}
+F &amp;= \frac{\frac{\text{SSR}_{\text{Reduced}}-\text{SSR}_{\text{Full}}}{p-q}}{\frac{\text{SSR}_{\text{Full}}}{n-(p+1)}} \\
+&amp;=\frac{\frac{69,045,634-68,195,387}{2-0}}{\frac{68,195,387}{100-(2+1)}} \\
+\end{aligned}
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>((SST <span class="sc">-</span> SSR_cond)<span class="sc">/</span>(<span class="dv">2-0</span>))<span class="sc">/</span>(SSR_cond<span class="sc">/</span>(<span class="dv">100</span><span class="sc">-</span>(<span class="dv">2</span><span class="sc">+</span><span class="dv">1</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6046888</code></pre>
+</div>
+</div>
+<p>We perform the calculation directly in R.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(M_House_Cond, M0_House)<span class="sc">$</span>F[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6046888</code></pre>
+</div>
+</div>
+<p>Notice that the F-statistic of 0.6 is considerably smaller than the F-statistics we’ve seen previously.</p>
+<p>This indicates that adding condition to a model with no other explanatory variables doesn’t seem to help improve the model’s ability to account for variation in price. Put another way, there doesn’t appear to be much evidence of difference in price between houses in the different conditions.</p>
+</section>
+<section id="f-statistic-illustration" class="level3" data-number="2.5.4">
+<h3 data-number="2.5.4" class="anchored" data-anchor-id="f-statistic-illustration"><span class="header-section-number">2.5.4</span> F-Statistic Illustration</h3>
+<p>The figure below gives an illustration of data that would produce a large F-statistic (Scenario 1), and also data that would produce a small F-statistic (Scenario 2), like the one seen in the house condition data.</p>
+<p>An F-statistic compares the amount of variability between groups to the amount of variability within groups.</p>
+<p>In scenario 1, we notice considerable differences between the groups, relative to the amount of variability within groups. In this scenario, knowing the group an observation is in will help us predict the response for that group, so we should include account for the groups in our model. We would obtain a large F-statistic when comparing a model that includes group to one that contains only an intercept term.</p>
+<p>In scenario 2, there is little difference between the overall averages in each group, and more variability between individual observations within each group. In a scenario like this, knowing the group an observation lies in does little to help us predict the response. In this scenario, predictions from a model that includes group as an explantory variable would not be much better than those from a model that does not. Hence, we would obtain a small F-statistic.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch2_files/figure-html/unnamed-chunk-69-1.png" class="img-fluid figure-img" width="864"></p>
+</figure>
+</div>
+</div>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 31%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Scenario 1</th>
+<th>Scenario 2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>variation between groups</td>
+<td>High</td>
+<td>Low</td>
+</tr>
+<tr class="even">
+<td>variation within groups</td>
+<td>Low</td>
+<td>High</td>
+</tr>
+<tr class="odd">
+<td>F Statistic</td>
+<td>Large</td>
+<td>Small</td>
+</tr>
+<tr class="even">
+<td>Result</td>
+<td>Evidence of Group Differences</td>
+<td>No evidence of differences</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="alternative-f-statistic-formula" class="level3" data-number="2.5.5">
+<h3 data-number="2.5.5" class="anchored" data-anchor-id="alternative-f-statistic-formula"><span class="header-section-number">2.5.5</span> Alternative F-Statistic Formula</h3>
+<p>The above illustration suggests alternative (and mathematically equivalent) way to calculate the F-statistic. We calculate the ratio of variability between different groups, relative to the amount of variability within each group</p>
+<p>For a categorical variable with <span class="math inline">\(g\)</span> groups,</p>
+<ul>
+<li><p>let <span class="math inline">\(\bar{y}_{1\cdot}, \ldots, \bar{y}_{g\cdot}\)</span> represent the mean response for each group.</p></li>
+<li><p>let <span class="math inline">\(n_1, \ldots, n_g\)</span> represent the sample size for each group</p></li>
+<li><p>Then <span class="math inline">\(\frac{\displaystyle\sum_{i=1}^g\sum_{j=1}^{n_i}n_i(y_{i\cdot}-\bar{y}_{\cdot\cdot})^2}{g-1}\)</span> gives a measure of how much the group means differ, and</p></li>
+<li><p><span class="math inline">\(\frac{\displaystyle\sum_{i=1}^g\sum_{j=1}^{n_i}(y_{ij}-\bar{y}_{i\cdot})^2}{n-g}\)</span> gives a measure of how much individual observations differ within groups</p></li>
+<li><p>An alternative formula for this F-statistic is:</p></li>
+</ul>
+<p><span class="math display">\[
+F= \frac{\text{Variability between groups}}{\text{Variability within groups}}= \frac{\frac{\displaystyle\sum_{i=1}^g\sum_{j=1}^{n_i}n_i(y_{i\cdot}-\bar{y}_{\cdot\cdot})^2}{g-1}}{\frac{\displaystyle\sum_{i=1}^g\sum_{j=1}^{n_i}(y_{ij}-\bar{y}_{i\cdot})^2}{n-g}}
+\]</span></p>
+<ul>
+<li>It can be shown that this statistic is equivalent to the one we saw previously.</li>
+</ul>
+<p><strong>Example</strong></p>
+<p>Let’s recalculate the F-statistic for the conditions of the houses, using this alternate formula. The first 3 houses are shown.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(Houses <span class="sc">%&gt;%</span> <span class="fu">select</span>(Id, price, condition),<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Id</th>
+<th style="text-align: right;">price</th>
+<th style="text-align: left;">condition</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1225</td>
+<td style="text-align: left;">average or below</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">885</td>
+<td style="text-align: left;">average or below</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">385</td>
+<td style="text-align: left;">good</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>We have seen previously that:</p>
+<ul>
+<li><span class="math inline">\(\bar{y}_{\cdot\cdot}=735.3526\)</span> (overall average price), and <span class="math inline">\(n=10\)</span></li>
+<li><span class="math inline">\(\bar{y}_{1\cdot}=700.6349\)</span> (average price for average or below houses), and <span class="math inline">\(n_1=61\)</span><br>
+</li>
+<li><span class="math inline">\(\bar{y}_{2\cdot}=861.0\)</span> (average price for good houses), and <span class="math inline">\(n_2=30\)</span><br>
+</li>
+<li><span class="math inline">\(\bar{y}_{3\cdot}=551.8361\)</span> (average price for very good houses), and <span class="math inline">\(n_3=9\)</span></li>
+</ul>
+<p>Then,</p>
+<ul>
+<li><p><span class="math inline">\(\frac{\displaystyle\sum_{i=1}^g\sum_{j=1}^{n_i}(y_{i\cdot}-\bar{y}_{\cdot\cdot})^2}{g-1} = \frac{61(700.6349-735.3526)^2+30(861.0-735.3526)^2+9(551.8361-735.3526)^2}{3-1} = \frac{850247.3}{2}\)</span>, and</p></li>
+<li><p><span class="math inline">\(\frac{\displaystyle\sum_{i=1}^g\sum_{j=1}^{n_i}(y_{ij}-\bar{y}_{i\cdot})^2}{n-g} = \frac{(1225.0-700.6349)^2+ (885.0 - 700.6349)^2 + (385.0-861.0)^2+\ldots}{100-3} = \frac{68195387}{97}\)</span></p></li>
+</ul>
+<p><span class="math display">\[
+F= \frac{\frac{\displaystyle\sum_{i=1}^g\sum_{j=1}^{n_i}n_i(y_{i\cdot}-\bar{y}_{\cdot\cdot})^2}{g-1}}{\frac{\displaystyle\sum_{i=1}^g\sum_{j=1}^{n_i}(y_{ij}-\bar{y}_{i\cdot})^2}{n-g}} = \frac{\frac{61(700.6349-735.3526)^2+30(861.0-735.3526)^2+9(551.8361-735.3526)^2}{3-1}}{\frac{(1225.0-700.6349)^2+ (885.0 - 700.6349)^2 + (385.0-861.0)^2+\ldots}{100-3}} = \frac{\frac{850247.3}{2}}{\frac{68195387}{97}}
+\]</span></p>
+<ul>
+<li>Note that the quantity in the the quantity in the third line is equivalent to the sum of the squared residuals using M2. Thus, we can calculate F using:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>((<span class="dv">61</span><span class="sc">*</span>(<span class="fl">700.6349-735.3526</span>)<span class="sc">^</span><span class="dv">2</span><span class="sc">+</span><span class="dv">30</span><span class="sc">*</span>(<span class="fl">861.0-735.3526</span>)<span class="sc">^</span><span class="dv">2</span><span class="sc">+</span><span class="dv">9</span><span class="sc">*</span>(<span class="fl">551.8361-735.3526</span>)<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span>(<span class="dv">3-1</span>))<span class="sc">/</span>((SSR_cond)<span class="sc">/</span>(<span class="dv">100-3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6046889</code></pre>
+</div>
+</div>
+<p>For models with only one categorical explanatory variable, “variability within vs variability between” interpretation of an F-statistic is very popular. This statistic is often relevant in studies in the natural and social sciences. Such studies are often referred to as One-Way ANOVA’s. In fact, these are just a special case of the full vs reduced model interpretation of the F-statistic, which can be applied to any two models, as long as one is a submodel of the other.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Ch1.html" class="pagination-link" aria-label="Visualizing and Summarizing Data">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Visualizing and Summarizing Data</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./Ch3.html" class="pagination-link" aria-label="Simulation-Based Inference">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Simulation-Based Inference</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

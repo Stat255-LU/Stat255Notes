@@ -1,0 +1,35 @@
+# Preface {.unnumbered}
+
+These notes serve as the primary textual resource for Stat 255: Statistics for Data Science at Lawrence University.
+
+**What is this course about?**
+
+Stat 255 provides an introduction to essential statistical tasks including modeling, inference, prediction, and computation. The course employs a modern approach, intended to equip students with skills needed for working with today's complex data. Traditional concepts, like interval estimation and hypothesis testing, are introduced through the lens of multivariate models and simulation. Data computation in R plays a central role throughout the course.
+
+The course's overarching learning outcomes are:
+
+1.  Visualize and wrangle data using statistical software R.\
+2.  Build and assess multivariate models to predict future outcomes.\
+3.  Use statistics from samples to draw inferences about larger populations or processes.\
+4.  Quantify uncertainty associated with estimates and predictions.\
+5.  Explain the assumptions associated with statistical models, and evaluate whether these assumptions are reasonably satisfied in context.\
+6.  Write reproducible analyses, using statistical software.\
+7.  Make ethical decisions based on data.
+
+More specific learning tasks, related to these outcomes are provided in each chapter.
+
+**Who is this course intended for?**
+
+This course is intended for students who are interested in learning statistical modeling and data computation skills that might prove useful in further courses, research, or career.
+
+Stat 255 can serve as either:
+
+-   a first course in statistics for students with a strong quantitative background, typically including calculus.
+
+-   a second course in statistics, building on introductory topics taught in courses like Lawrence's Stat 107: Principles of Statistics or AP Statistics.
+
+At Lawrence, this course is required for the statistics track of the mathematics major, the economics and mathematics-economics majors, the business analytics track of the business and entrepreneurship major, and the statistics and data science minor. It also satisfies the statistics requirement for several other majors and minors.
+
+The prerequisite for the course is either 1) a prior college-level course in statistics (i.e. STAT 107, BIOL 170 or 280, ANTH 207, AP Stats) OR 2) Calculus. (Math 140, AP Calculus, or equivalent).
+
+The course does not assume any prior knowledge of statistics, but does move more rapidly than a typical introductory statistics course. Students engage rigorously in statistical thinking and computation, intended to equip them with essential skills for further study in statistics and data science.

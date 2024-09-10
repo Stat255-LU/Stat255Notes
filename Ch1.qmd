@@ -1,0 +1,486 @@
+# Visualizing and Summarizing Data
+
+**Learning Outcomes:**
+
+1. Distinguish between categorical and quantitative variables.    
+2.  Interpret data graphics (histogram, density plot, box plot, violin plot, scatterplot, bar graph).       
+3.  Interpret summary statistics (mean, median, standard deviation, and IQR).
+4.  Use R to create data graphics and calculate summary statistics.      
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=FALSE)
+library(ggformula)
+library(moderndive)
+library(gridExtra)
+library(skimr)
+library(Bolstad)
+library(GGally)
+library(Lock5Data)
+library(knitr)
+library(caret)
+library(MASS)
+library(tidyverse)
+library(KingCountyHouses)
+options(scipen=999)
+set.seed(07302020)
+```
+
+## Getting Started in R
+
+We'll work with data on houses that sold in King County, WA, (home of Seattle) between 2014 and 2015.
+
+We begin by loading the `tidyverse` package which can be used to create professional data graphics and summaries.
+
+```{r}
+library(tidyverse)
+```
+
+```{r, echo=FALSE}
+library(KingCountyHouses)
+data(home_prices)
+Houses <- home_prices
+Houses <- Houses |> mutate(price = 10^price) # price is given in log10, convert to thousands
+Houses <- Houses |> mutate(waterfront= ifelse(waterfront==1, "Yes", "No") |> as.factor()) |> mutate(price=price/1000)
+Houses <- Houses |> select(date_sold, price, bedrooms, bathrooms, sqft_living, sqft_lot, condition, waterfront, yr_built)
+W <- Houses |> filter(waterfront=="Yes") 
+NW <- Houses |> filter(waterfront=="No") 
+Houses <- rbind(W[1:15,], NW[1:85,]) 
+Houses <- Houses |> arrange(date_sold) |> select(-c(date_sold))
+Houses$Id <- 1:nrow(Houses)
+Houses <- Houses |> select(Id, everything())
+```
+
+### Previewing the Data
+
+**`head()`**
+
+The `head()` function displays the first 5 rows of the dataset.
+
+```{r}
+head(Houses)
+```
+
+The rows of the dataset are called **observations.** In this case, the observations are the houses.
+
+The columns of the dataset, which contain information about the houses, are called **variables.**
+
+**`glimpse`**
+
+The `glimpse()` command shows the number of observations (rows), and the number of variables, (columns). We also see the name of each variable and its type. Variable types include
+
+-   **Categorical variables**, which take on groups or categories, rather than numeric values. In R, these might be coded as logical `<logi>`, character `<chr>`, factor `<fct>` and ordered factor `<ord>`.
+
+-   **Quantitative variables**, which take on meaningful numeric values. These include numeric `<num>`, integer `<int>`, and double `<dbl>`.
+
+-   **Date and time variables** take on values that are dates and times, and are denoted `<dttm>`
+
+```{r}
+glimpse(Houses)
+```
+
+There are 100 houses in the dataset, and 9 variables on each house.
+
+**`summary`**
+
+`summary` displays the mean, minimum, first quartile, median, third quartile, and maximum for each numeric variable, and the number of observations in each category, for categorical variables.
+
+```{r}
+summary(Houses)
+```
+
+### Modifying the Data
+
+Next we'll look at how to manipulate the data and create new variables.
+
+#### Adding a New Variable {.unnumbered}
+
+We can use the `mutate()` function to create a new variable based on variables already in the dataset.
+
+Let's add a variable giving the age of the house, as of 2015.
+
+```{r}
+Houses <- Houses |> mutate(age = 2015-yr_built)
+head(Houses)
+```
+
+#### Selecting Columns {.unnumbered}
+
+If the dataset contains a large number of variables, narrow down to the ones you are interested in working with. This can be done with the `select()` command. If there are not very many variables to begin with, or you are interested in all of them, then you may skip this step.
+
+Let's create a smaller version of the dataset, with only the columns price, sqft_living, and waterfront. We'll call this `Houses_3var.`
+
+```{r}
+Houses_3var <- Houses |> select(price, sqft_living, waterfront)
+head(Houses_3var)
+```
+
+#### Filtering by Row {.unnumbered}
+
+The `filter()` command narrows a dataset down to rows that meet specified conditions.
+
+We'll filter the data to include only houses built after 2000.
+
+```{r}
+New_Houses <- Houses |> filter(yr_built>=2000)
+head(New_Houses)
+```
+
+Now, we'll filter the data to include only houses on the waterfront.
+
+```{r}
+New_Houses <- Houses |> filter(waterfront == "Yes")
+head(New_Houses)
+```
+
+## Summary Statistics
+
+### Measures of Center
+
+Common ways to characterize the center of a distribution include mean, median, and mode.
+
+For a set of $n$ values $y_i, \ldots, y_n$:
+
+-   **mean** ($\bar{y}$) represents the numerical average and is calculated by $\bar{y} =\frac{1}{n}\displaystyle\sum_{i=1}^n y_i$.
+
+-   **median** represents the middle number when the values are arranged from least to greatest. If there are an even number of values in the dataset, then the median is given by the average of the middle two numbers.
+
+    -   The median of the upper half of the values is called the **upper (or 3rd) quartile.** This represents the 75th percentile in the distribution.
+
+    -   The median of the upper half of the values is called the **lower (or 1st) quartile.** This represents the 25th percentile in the distribution.
+
+-   **mode** is the most frequently occurring number in the data.
+
+### Measures of Spread
+
+Common ways of measuring the amount of spread, or variability, in a variable include:
+
+-   **range:** the difference between the maximum and minimum values
+
+-   **interquartile range:** the difference between the upper and lower quartiles (i.e. the range of the middle 50% of the values).
+
+-   **standard deviation** ($s$): standard deviation is approximately the average deviation between an observation and the mean. It is calculated by
+
+    $s =\sqrt{\displaystyle\sum_{i=1}^n \frac{(y_i-\bar{y})^2}{n-1}}$.
+
+    The square of the standard deviation, called the **variance** is denoted $s^2$.
+
+### Calcularing Summary Statistics in R
+
+Let's calculate the mean, median, and standard deviation, in prices.
+
+```{r}
+Houses_Summary <- Houses |> summarize(Mean_Price = mean(price, na.rm=TRUE), 
+                                          Median_Price = median(price, na.rm=TRUE), 
+                                          StDev_Price = sd(price, na.rm = TRUE),
+                                          Number_of_Houses = n()) 
+Houses_Summary
+```
+
+Notes:\
+1. The `n()` command calculates the number of observations.\
+2. The `na.rm=TRUE` command removes missing values, so that summary statistics can be calculated. It's not needed here, since this dataset doesn't include missing values, but if the dataset does include missing values, you will need to include this, in order to do the calculation.
+
+The `kable()` function in the `knitr()` package creates tables with professional appearance.
+
+```{r}
+library(knitr)
+kable(Houses_Summary)
+```
+
+### Grouped Summaries
+
+**`group_by()`**
+
+The `group_by()` command allows us to calculate summary statistics, with the data broken down by by category.We'll compare waterfront houses to non-waterfront houses.
+
+```{r}
+Houses_Grouped_Summary <- Houses |> group_by(waterfront) |> 
+                                      summarize(Mean_Price = mean(price, na.rm=TRUE),
+                                                Median_Price = median(price, na.rm=TRUE), 
+                                                StDev_Price = sd(price, na.rm = TRUE),
+                                                Number_of_Houses = n()) 
+kable(Houses_Grouped_Summary)
+```
+
+Note: `arrange(desc(Mean_Gross))` arranges the table in descending order of Mean_Gross. To arrange in ascending order, use `arrange(Mean_Gross)`.
+
+## Data Visualization
+
+Next, we'll create graphics to help us visualize the distributions and relationships between variables. We'll use the `ggplot()` function, which is part of the `tidyverse` package.
+
+### Histogram
+
+Histograms are useful for displaying the distribution of a single quantitative variable. In a histogram, the x-axis breaks the variable into ranges of values, and the y-axis displays the number of observations with a value falling in that category (frequency).
+
+**General Template for Histogram**
+
+```{r, eval=FALSE}
+ggplot(data=DatasetName, aes(x=VariableName)) + 
+  geom_histogram(fill="colorchoice", color="colorchoice") + 
+  ggtitle("Plot Title") +
+  xlab("x-axis label") + 
+  ylab("y-axis label")
+```
+
+**Histogram of House Prices**
+
+```{r}
+ggplot(data=Houses, aes(x=price)) + 
+  geom_histogram(fill="lightblue", color="white") + 
+  ggtitle("Distribution of House Prices") +
+  xlab("Price (in thousands)") + 
+  ylab("Frequency")
+```
+
+We see that the distribution of house prices is right-skewed. Most houses cost less than \$1,000,000, though there are a few houses that are much more expensive. The most common price range is around \$400,000 to \$500,000.
+
+### Density Plot
+
+Density plots show the distribution for a quantitative variable price. Scores can be compared across categories, like whether or not the house is on a waterfront.
+
+**General Template for Density Plot**
+
+```{r, eval=FALSE}
+ggplot(data=DatasetName, aes(x=QuantitativeVariable,
+                             color=CategoricalVariable, fill=CategoricalVariable)) + 
+  geom_density(alpha=0.2) + 
+  ggtitle("Plot Title") +
+  xlab("Axis Label") + 
+  ylab("Frequency") 
+```
+
+`alpha`, ranging from 0 to 1 dictates transparency.
+
+**Density Plot of House Prices**
+
+```{r}
+ggplot(data=Houses, aes(x=price, color=waterfront, fill=waterfront)) + 
+  geom_density(alpha=0.2) + 
+  ggtitle("Distribution of Prices") +
+  xlab("House price (in thousands)") + 
+  ylab("Frequency") 
+```
+
+We see that on average, houses on the waterfront tend to be more expensive and have a greater price range than houses not on the waterfront.
+
+### Boxplot
+
+Boxplots can be used to compare a quantitative variable with a categorical variable. The middle 50% of observations are contained in the "box", with the upper and lower 25% of the observations in each tail.
+
+**General Template for Boxplot**
+
+```{r, eval=FALSE}
+ggplot(data=DatasetName, aes(x=CategoricalVariable, 
+                             y=QuantitativeVariable)) + 
+  geom_boxplot() + 
+  ggtitle("Plot Title") + 
+  xlab("Variable Name") + ylab("Variable Name") 
+```
+
+You can make the plot horizontal by adding `+ coordflip()`. You can turn the axis text vertical by adding `theme(axis.text.x = element_text(angle = 90))`.
+
+**Boxplot Comparing Price by Waterfront Status**
+
+```{r}
+ggplot(data=Houses, aes(x=waterfront, y=price)) + geom_boxplot() + 
+  ggtitle("House Price by Waterfront Status") + 
+  xlab("Waterfront") + ylab("Price (in thousands)") + coord_flip()
+```
+
+For houses not on the waterfront, the median price is about \$400,000, and the middle 50% of prices range from about \$300,000 to \$600,000.
+
+For waterfront houses, the median price is about \$1,500,000, and the middle 50% of prices range from about \$900,000 to \$1,900,000.
+
+### Violin Plot
+
+Violin plots are an alternative to boxplots. The width of the violin tells us the density of observations in a given range.
+
+**General Template for Violin Plot**
+
+```{r, eval=FALSE}
+ggplot(data=DatasetName, aes(x=CategoricalVariable, y=QuantitativeVariable, 
+                             fill=CategoricalVariable)) + 
+  geom_violin() + 
+  ggtitle("Plot Title") + 
+  xlab("Variable Name") + ylab("Variable Name") 
+```
+
+**Violin Plot Comparing Prices by Waterfront**
+
+```{r}
+ggplot(data=Houses, aes(x=waterfront, y=price, fill=waterfront)) + 
+  geom_violin() + 
+  ggtitle("Price by Waterfront Status") + 
+  xlab("Waterfront") + ylab("Price (in thousands)") + 
+  theme(axis.text.x = element_text(angle = 90))
+```
+
+Again, we see that houses on the waterfront tend to be more expensive than those not on the waterfront, and have a wider range in prices.
+
+### Scatterplot
+
+Scatterplots are used to visualize the relationship between two quantitative variables.
+
+**Scatterplot Template**
+
+```{r, eval=FALSE}
+ggplot(data=DatasetName, aes(x=CategoricalVariable, y=QuantitativeVariable)) + 
+  geom_point() +
+  ggtitle("Plot Title") + 
+  ylab("Axis Label") + 
+  xlab("Axis Label")
+```
+
+**Scatterplot Comparing Price and Square Feet of Living Space**
+
+```{r}
+ggplot(data=Houses, aes(x=sqft_living, y=price)) + 
+  geom_point() +
+  ggtitle("Price and Living Space") + 
+  ylab("Price (in thousands)") + 
+  xlab("Living Space in sq. ft. ")
+```
+
+We see that there is an upward trend, indicating that houses with more living space tend to, on average, be higher priced than those with less living space. The relationship appears to be roughly linear, though there might be some curvature, as living space gets very large. There are some exceptions to this trend, most notably a house with more than 7,000 square feet, priced just over \$1,000,000.
+
+We can also add color, size, and shape to the scatterplot to display information about other variables.
+
+We'll use color to illustrate whether the house is on the waterfront, and size to represent the square footage of the entire lot (including the yard and the house).
+
+```{r}
+ggplot(data=Houses, 
+       aes(x=sqft_living, y=price, color=waterfront, size=sqft_lot)) + 
+  geom_point() +
+  ggtitle("Price of King County Houses") + 
+  ylab("Price (in thousands)") + 
+  xlab("Living Space in sq. ft. ")
+```
+
+We notice that many of the largest and most expensive houses are on the waterfront.
+
+### Bar Graph
+
+Bar graphs can be used to visualize one or more categorical variables. A bar graph is similar to a histogram, in that the y-axis again displays frequency, but the x-axis displays categories, instead of ranges of values.
+
+**Bar Graph Template**
+
+```{r, eval=FALSE}
+ggplot(data=DatasetName, aes(x=CategoricalVariable)) + 
+  geom_bar(fill="colorchoice",color="colorchoice")  + 
+  ggtitle("Plot Title") + 
+  xlab("Variable Name") + 
+  ylab("Frequency") 
+```
+
+**Bar Graph by Condition**
+
+```{r}
+ggplot(data=Houses, aes(x=condition)) + 
+  geom_bar(fill="lightblue",color="white")  + 
+  ggtitle("Number of Houses by Condition") + 
+  xlab("Condition") + 
+  ylab("Frequency") +   
+  theme(axis.text.x = element_text(angle = 90))
+```
+
+We see that the majority of houses are in average condition. Some are in good or very good condition, while very few are in poor or very poor condition.
+
+### Stacked and Side-by-Side Bar Graphs
+
+**Stacked Bar Graph Template**
+
+```{r, eval=FALSE}
+ggplot(data = DatasetName, mapping = aes(x = CategoricalVariable1, 
+                                         fill = CategoricalVariable2)) +
+    stat_count(position="fill")  +
+  theme_bw() + ggtitle("Plot Title") + 
+  xlab("Variable 1") + 
+  ylab("Proportion of Variable 2") +   
+  theme(axis.text.x = element_text(angle = 90)) 
+```
+
+**Stacked Bar Graph Example**
+
+The `stat_count(position="fill")` command creates a stacked bar graph, comparing two categorical variables. Let's explore whether waterfront status is related to condition.
+
+```{r}
+ggplot(data = Houses, mapping = aes(x = waterfront, fill = condition)) +
+    stat_count(position="fill")  +
+  theme_bw() + ggtitle("Condition by Waterfront Status") + 
+  xlab("Waterfront Status") + 
+  ylab("Condition") +   
+  theme(axis.text.x = element_text(angle = 90)) 
+```
+
+We see that a higher proportion of waterfront houses are in good or excellent condition than non-waterfront houses.
+
+**Side-by-side Bar Graph Template**
+
+We can create a side-by-side bar graph, using `position=dodge`.
+
+```{r, eval=FALSE}
+ggplot(data = DatasetName, mapping = aes(x = CategoricalVariable1, 
+                                         fill = CategoricalVariable2)) +
+    geom_bar(position = "dodge") +
+  ggtitle("Plot Title") + 
+  xlab("Genre") + 
+  ylab("Frequency") 
+```
+
+**Side-by-side Bar Graph Example**
+
+```{r}
+ggplot(data = Houses, mapping = aes(x = waterfront, fill = condition)) +
+    geom_bar(position = "dodge") +
+  ggtitle("Condition by Waterfront Status") + 
+  xlab("Waterfront Status") + 
+  ylab("Condition") +   
+  theme(axis.text.x = element_text(angle = 90)) 
+```
+
+In this case, since there are so few waterfront houses, the graph is hard to read and not very useful.
+
+The stacked bar graph is a better way to convey information in this instance, though you may find that for a different dataset, the side-by-side bar graph could be a better choice.
+
+### Correlation Plot
+
+Correlation plots can be used to visualize relationships between quantitative variables. Correlation is a number between -1 and 1, describing the strength of the linear relationship between two variables. Variables with strong positive correlations will have correlation close to +1, while variables with strong negative correlations will have correlations close to -1. Variables with little to no relationship will have correlation close to 0.
+
+The `cor()` function calculates correlations between quantitative variables. We'll use `select_if` to select only numeric variables. The \`use="complete.obs" command tells R to ignore observations with missing data.
+
+```{r}
+cor(select_if(Houses, is.numeric), use="complete.obs") |> round(2)
+```
+
+The `corrplot()` function in the `corrplot()` package provides a visualization of the correlations. Larger, thicker circles indicate stronger correlations.
+
+```{r, fig.height=12, fig.width=12}
+library(corrplot)
+Corr <- cor(select_if(Houses, is.numeric), use="complete.obs")
+corrplot(Corr)
+```
+
+We see that price has a strong positive correlation with square feet of living space, and is also positively correlated with number of bedrooms and bathrooms. Living space, bedrooms, and bathrooms are all positively correlated, which makes sense, since we would expect bigger houses to have more bedrooms and bathrooms. Price does not show much correlation with the other variables. We notice that bathrooms is negatively correlated with age, which means older houses tend to have fewer bathrooms than newer ones. Not surprisingly, age is very strongly correlated with year built.
+
+### Scatterplot Matrix
+
+A scatterplot matrix is a grid of plots. It can be created using the `ggpairs()` function in the `GGally` package.
+
+The scatterplot matrix shows us:
+
+1.  Along the diagonal are density plots for quantitative variables, or bar graphs for categorical variables, showing the distribution of each variable.\
+2.  Under the diagonal are plots showing the relationships between the variables in the corresponding row and column. Scatterplots are used when both variables are quantitative, bar graphs are used when both variables are categorical, and boxplots are used when one variable is categorical, and the other is quantitative.\
+3.  Above the diagonal are correlations between quantitative variables.
+
+Including too many variables can make these hard to read, so it's a good idea to use `select` to narrow down the number of variables.
+
+```{r, fig.height=12, fig.width=12}
+library(GGally)
+ggpairs(Houses |> select(price, sqft_living, condition, age))
+```
+
+The scatterplot matrix is useful for helping us notice key trends in our data. However, the plot can hard to read as it is quite dense, especially when there are a large number of variables. These can help us look for trends from a distance, but we should then focus in on more specific plots.
+
+```{r, echo=FALSE}
+#save.image(file = "Environment.RData")
+```

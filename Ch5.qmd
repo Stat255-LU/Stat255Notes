@@ -1,0 +1,1080 @@
+# Building and Assessing Models
+
+**Learning Outcomes:**
+
+31. Check the validity of model assumptions using plots and other information.     
+32. Interpret regression coefficients in models involving log transformations.    
+33. Calculate predicted values and confidence/prediction intervals for models involving log transformations.     
+34. Identify instances of confounding and Simpson's paradox and draw conclusions in these situations.     
+35. Explain how multicollinearity impacts predictions and confidence/prediction intervals.     
+36. Build and interpret multiple and polynomial regression models in R.
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=TRUE)
+library(ggformula)
+library(moderndive)
+library(gridExtra)
+library(skimr)
+library(Bolstad)
+library(GGally)
+library(Lock5Data)
+library(knitr)
+library(caret)
+library(MASS)
+library(tidyverse)
+options(scipen=999)
+set.seed(07302020)
+```
+
+```{r, echo=FALSE}
+load("Environment.Rdata")
+```
+
+## Checking Regression Assumptions
+
+We've seen that tests and intervals based on the normal error regression model depend on four assumptions. If these assumptions are not reasonable then the tests and intervals may not be reliable.
+
+The statement $Y_i = \beta_0 + \beta_1X_{i1}+ \ldots + \beta_pX_{ip} + \epsilon_i$, with $\epsilon_i\sim\mathcal{N}(0,\sigma)$ implies the following:
+
+1.  Linearity: the expected value of $Y$ is a linear function of $X_1, X_2, \ldots, X_p$. (This assumption is only relevant for models including at least one quantitative explanatory variable.)
+
+2.  Normality: Given the values of $X_1, X_2, \ldots, X_p$, $Y$ follows a normal distribution.
+
+3.  Constant Variance: Regardless of the values of $X_1, X_2, \ldots, X_p$, the variance (or standard deviation) in the normal distribution for $Y$ is the same.
+
+4.  Independence: The response value for each observation is not affected by any of the other observations (expect due to explanatory variables included in the model).
+
+**Illustration of Model Assumptions**
+
+```{r echo=FALSE, out.width = '50%'}
+knitr::include_graphics("SLR_Model_Assumptions.png")
+```
+
+We know that these assumptions held true in the ice cream example, because we generated the data in a way that was consistent with these.
+
+In practice, we will have only the data, without knowing the exact mechanism that produced it. We should only rely on the t-distribution based p-values and confidence intervals in the R output if these appear to be reasonable assumptions.
+
+Of course, these assumptions will almost never be truly satisfied, but they should at least be a reasonable approximation if we are to draw meaningful conclusions.
+
+### Checking Model Assumptions
+
+The following plots are useful when assessing the appropriateness of the normal error regression model.
+
+1.  Scatterplot of residuals against predicted values
+
+2.  Histogram of standardized residuals
+
+    -   heavy skewness indicates a problem with normality assumption
+
+3.  Normal quantile plot
+
+    -   severe departures from diagonal line indicate problem with normality assumption
+
+```{r, include=FALSE}
+set.seed(10102021)
+N <- 100
+time <- runif(N, 1,3)
+amount <- 2*time + rnorm(N, 0, 0.5)  ## no violation
+amount_lin_viol <- 2*time^2 + rnorm(N, 0, 0.5) ## linearity violation
+amount_norm_viol <- 2*time + 5*rexp(N, 1) -1
+amount_cvar_viol <- 2*time + rnorm(N,0,time^2)
+Violations <- data.frame(amount, amount_lin_viol, amount_norm_viol, amount_cvar_viol)
+no_viol_Model <- lm(data=Violations, amount ~ time)
+lin_viol_Model <- lm(data=Violations, amount_lin_viol~time)
+norm_viol_Model <- lm(data=Violations, amount_norm_viol~time)
+cvar_viol_Model <- lm(data=Violations, amount_cvar_viol~time)
+```
+
+**Residual vs Predicted Plots**
+
+A residual vs predicted plot is useful for detecting issues with the linearity or constant variance assumption.
+
+-   curvature indicates a problem with linearity assumption\
+-   "funnel" or "megaphone" shape indicates problem with constant variance assumption
+
+```{r, fig.height=4, fig.width=8}
+P1 <- ggplot(data=Violations, aes(y=no_viol_Model$residuals, x=no_viol_Model$fitted.values)) + geom_point() + ggtitle("No Violation") + xlab("Predicted Values") + ylab("Residuals")
+P2 <- ggplot(data=Violations, aes(y=lin_viol_Model$residuals, x=no_viol_Model$fitted.values)) + geom_point() + ggtitle("Violation of Linearity Assumption")+ xlab("Predicted Values") + ylab("Residuals")
+P3 <- ggplot(data=Violations, aes(y=cvar_viol_Model$residuals, x=no_viol_Model$fitted.values)) + geom_point() + ggtitle("Violation of Constant Variance Assumption")+ xlab("Predicted Values") + ylab("Residuals")
+grid.arrange(P1, P2, P3, ncol=3)
+```
+
+If there is only one explanatory variable, plotting the residuals against that variable reveals the same information as a residual vs predicted plot.
+
+**Histogram of Residuals**
+
+A histogram of the residuals is useful for assessing the normality assumption.
+
+-   Severe skewness indicates violation of normality assumption
+
+```{r, fig.height=4, fig.width=8}
+P1 <- ggplot(data=Violations, aes(x=no_viol_Model$residuals)) + geom_histogram() + ggtitle("No Violation") +xlab("Residual")
+P2 <- ggplot(data=Violations, aes(x=norm_viol_Model$residuals)) + geom_histogram() + ggtitle("Violation of Normality Assumption") + xlab("Residual")
+grid.arrange(P1, P2, ncol=2)
+```
+
+**Normal Quantile-Quantile (QQ) Plot**
+
+Sometimes histograms can be inconclusive, especially when sample size is smaller.
+
+A Normal quantile-quantile plot displays quantiles of the residuals against the expected quantiles of a normal distribution.
+
+-   Severe departures from diagonal line indicate a problem with normality assumption.
+
+```{r, fig.height=4, fig.width=8}
+P1 <- ggplot(data=Violations, aes(sample = scale(no_viol_Model$residuals))) + stat_qq() + stat_qq_line() + xlab("Normal Quantiles") + ylab("Residual Quantiles") + ggtitle("No Violation") + xlim(c(-4,4)) + ylim(c(-4,4))
+P2 <- ggplot(data=Violations, aes(sample = scale(norm_viol_Model$residuals))) + stat_qq() + stat_qq_line() + xlab("Normal Quantiles") + ylab("Residual Quantiles") + ggtitle("Violation of Normality Assumption") + xlim(c(-4,4)) + ylim(c(-4,4))
+grid.arrange(P1, P2, ncol=2)
+```
+
+**Checking Model Assumptions - Independence**
+
+Independence is often difficult to assess through plots of data, but it is important to think about whether there were factors in the data collection that would cause some observations to be more highly correlated than others.
+
+For example:
+
+1.  People in the study who are related.\
+2.  Some plants grown in the same greenhouse and others in different greenhouses.\
+3.  Some observations taken in same time period and others at different times.
+
+All of these require more complicated models that account for correlation using spatial and time structure.
+
+### Summary of Checks for Model Assumptions
+
+| Model assumption  | How to detect violation                                                    |
+|-------------------|-----------------------------------------------------|
+| Linearity         | Curvature in residual plot                                                 |
+| Constant Variance | Funnel shape in residual plot                                              |
+| Normality         | Skewness in histogram of residuals or departure from diag. line in QQ plot |
+| Independence      | No graphical check, carefully examine data collection                      |
+
+### Example: N v S Lakes
+
+Recall our sample of 53 Florida Lakes, 33 in the north, and 20 in the south.
+
+$\text{Mercury}_i = \beta_0 + \beta_1\times{\text{South}_i} + \epsilon_i$, where $\epsilon_i\sim\mathcal{N}(0, \sigma)$.
+
+```{r, fig.height=4, fig.width=8}
+LakesBP
+```
+
+When we use the normal error regression model, we are assuming the following:
+
+1.  Linearity: there is an expected mercury concentration for lakes in North Florida, and another for lakes in South Florida.
+
+2.  Normality: mercury concentrations of individual lakes in the north are normally distributed, and so are mercury concentrations in the south. These normal distributions might have different means.
+
+3.  Constant Variance: the normal distribution for mercury concentrations in North Florida has the same standard deviation as the normal distribution for mercury concentrations in South Florida
+
+4.  Independence: no two lakes are any more alike than any others, except for being in the north or south, which we account for in the model. We might have concerns about this, do to some lakes being geographically closer to each other than others.
+
+We should only use the p-values and confidence intervals provided by R, which depend on the t-distribution approximation, if we believe these assumptions are reasonable.
+
+A residual by predicted plot, histogram of residuals, and normal quantile-quantile plot are shown below.
+
+```{r, fig.width=10}
+P1 <- ggplot(data=FloridaLakes, aes(y=Lakes_M$residuals, x=Lakes_M$fitted.values)) + geom_point() + ggtitle("Residual vs Predicted Plot") + xlab("Predicted Values") + ylab("Residuals")
+P2 <- ggplot(data=FloridaLakes, aes(x=Lakes_M$residuals)) + geom_histogram() + ggtitle("Histogram of Residuals") + xlab("Residual")
+P3 <- ggplot(data=FloridaLakes, aes(sample = scale(Lakes_M$residuals))) + stat_qq() + stat_qq_line() + xlab("Normal Quantiles") + ylab("Residual Quantiles") + ggtitle("Normal QQ Plot")
+grid.arrange(P1, P2, P3, ncol=3)
+```
+
+Notice that we see two lines of predicted values and residuals. This makes sense since all lakes in North Florida will have the same predicted value, as will all lakes in Southern Florida.
+
+There appears to be a little more variability in residuals for Southern Florida (on the right), than Northern Florida, causing some concern about the constant variance assumption.
+
+Overall, though, the assumptions seem mostly reasonable.
+
+We shouldn't be concerned about using theory-based hypothesis tests or confidence intervals for the mean mercury level or difference in mean mercury levels. There might be some concern that prediction intervals could be either too wide or too narrow, but this is not a major concern, since the constant variance assumption is not severe.
+
+### Example: pH Model
+
+Recall the regression line estimating the relationship between a lake's mercury level and pH.
+
+$\text{Mercury}_i = \beta_0 + \beta_1\times\text{pH}_i + \epsilon_i$, where $\epsilon_i\sim\mathcal{N}(0, \sigma)$.
+
+The model assumes:
+
+1.  Linearity: the expected mercury level of a lake is a linear function of pH.
+
+2.  Normality: for any given pH, the mercury levels of lakes with that pH follow a normal distribution. For example, mercury levels for lakes with pH of 6 is are normally distributed, and mercury levels for lakes with pH of 9 are normally distributed, though these normal distributions may have different means.
+
+3.  Constant Variance: the variance (or standard deviation) in the normal distribution for mercury level is the same for each pH. For example, there is the same amount of variability associated with lakes with pH level 6, as pH level 8.
+
+4.  Independence: no two lakes are any more alike than any others, except with respect to pH, which is accounted for in the model. This may not be a reasonable assumption, but it's unclear what the effects of such a violation would be.
+
+We should only use the p-values and confidence intervals provided by R, which depend on the t-distribution approximation, if we believe these assumptions are reasonable.
+
+The plots for checking these assumptions are shown below.
+
+```{r, fig.width=10}
+P1 <- ggplot(data=FloridaLakes, aes(y=M_pH$residuals, x=M_pH$fitted.values)) + geom_point() + ggtitle("Residual vs Predicted Plot") + xlab("Predicted Values") + ylab("Residuals")
+P2 <- ggplot(data=FloridaLakes, aes(x=M_pH$residuals)) + geom_histogram() + ggtitle("Histogram of Residuals") + xlab("Residual")
+P3 <- ggplot(data=FloridaLakes, aes(sample = scale(M_pH$residuals))) + stat_qq() + stat_qq_line() + xlab("Normal Quantiles") + ylab("Residual Quantiles") + ggtitle("Normal QQ Plot")
+grid.arrange(P1, P2, P3, ncol=3)
+```
+
+The residual vs predicted plot does not show any linear trend, and variability appears to be about the same for low predicted values as for high ones. Thus, the linearity and constant variance assumptions appear reasonable.
+
+The histogram shows some right-skewness, and the right-most points on the normal-qq plot are above the line, indicating a possible concern with the normality assumption. There is some evidence of right-skewness, which might impact the appropriatness of the normal error regression model.
+
+Nevertheless, we obtained similar results using the simulation-based results as the normal error regression model, suggesting that the concern about normality did not have much impact on the estimation of $\beta_1$. It is possible that this concern could have implications for other kinds of inference, such as confidence intervals for an expected response, and prediction intervals, which we'll explore later in the chapter.
+
+### Example: House Prices
+
+Recall the model for estimating price of a house, using size, waterfront status, and an interaction term.
+
+$\text{Price}_i = \beta_0 + \beta_1\text{Sq.Ft.}_{i}+ \beta_2\text{Waterfront}_{i}+ \beta_3\times\text{Sq.Ft.}_i\times\text{Waterfront}_{i} + \epsilon_i$, where $\epsilon_i\sim\mathcal{N}(0,\sigma)$.
+
+The model assumes:
+
+1.  Linearity: the expected price of a house is a linear function of its size. The slope and intercept of this function may be different for houses on the waterfront, compared to houses not on the waterfront.
+
+2.  Normality: prices of houses of a given size and waterfront status are normally distributed.
+
+3.  Constant Variance: the variance (or standard deviation) in the normal distribution for prices is the same for all sizes and waterfront statuses.
+
+4.  Independence: no two houses are any more alike than any others, except with respect to size and waterfront status.
+
+We should only use the p-values and confidence intervals provided by R, which depend on the t-distribution approximation, if we believe these assumptions are reasonable.
+
+Several reasons come to mind that might cause us to doubt the validity of these assumptions, but let's investigate them emperically, using our data on 100 houses.
+
+The plots for checking these assumptions are shown below.
+
+```{r, fig.width=10}
+P1 <- ggplot(data=Houses, aes(y=M_House_Int$residuals, x=M_House_Int$fitted.values)) + geom_point() + ggtitle("Residual vs Predicted Plot") + xlab("Predicted Values") + ylab("Residuals")
+P2 <- ggplot(data=Houses, aes(x=M_House_Int$residuals)) + geom_histogram() + ggtitle("Histogram of Residuals") + xlab("Residual")
+P3 <- ggplot(data=Houses, aes(sample = scale(M_House_Int$residuals))) + stat_qq() + stat_qq_line() + xlab("Normal Quantiles") + ylab("Residual Quantiles") + ggtitle("Normal QQ Plot")
+grid.arrange(P1, P2, P3, ncol=3)
+```
+
+Although we might have had some initial concerns about the model assumptions, the plots do not raise any serious concerns. There is no sign of a nonlinear relationship in the residual vs predicted plot, so the linearity assumption appears reasonable.
+
+There is possibly more variability associated with prices or more expensive houses than less expensive ones, so we might have some concerns about constant variance, but since there are only a few very high-priced houses, and the increasing variance is not too severe, this may not be much of a concern.
+
+There are a few houses on each end of the normal qq plot that deviate from their expected line, but not very many. It's not uncommon to have a few points deviate from the line on the end, so we do not have severe concerns about normality. The histogram of residuals is roughly symmetric.
+
+Thus, the normal error regression model appears to be reasonable for these data.
+
+### Impact of Model Assumption Violations
+
+In this chapter, we've studied the normal error regression model and its underlying assumptions. We've seen that when these assumptions are realistic, we can use distributions derived from probability theory, such as t and F distributions to approximate sampling distributions, in place of the simulation-based methods seen in Chapters 3 and 4.
+
+Of course, real data don't come exactly from processes like the fictional ice cream dispenser described in Section 5.1, so it's really a question of whether this model is a realistic approximation (or simplification) of the true mechanism that led to the data we observe. We can use diagnostics like residual and Normal-QQ plots, as well as our intuition and background knowledge to assess whether the normal error regression model is a reasonable approximation.
+
+The p-values provided by the `lm` summary output, and `anova` commands, and the and intervals produced by the `confint`, and `predict` command, as well as many other R commands, depend on the assumptions of the normal error regression model, and should only be used when these assumptions are reasonable.
+
+In situations where some model assumptions appear to be violated, we might be okay using certain tests/intervals, but not others. In general, we should proceed with caution in these situations.
+
+The table below provides guidance on the potential impact of model assumption violation on predicted values, confidence intervals, and prediction intervals.
+
+| Model assumption Violated | Predicted Values  | Confidence Intervals                                                                                                             | Prediction Intervals                                       |
+|----------------|----------------|-------------------------|----------------|
+| Linearity                 | Unreliable        | Unreliable                                                                                                                       | Unreliable                                                 |
+| Constant Variance         | Reliable          | Somewhat unreliable - Some too wide, others too narrow                                                                           | Very unreliable - Some too wide, others too narrow         |
+| Normality                 | Reliable          | Possibly unreliable - might be symmetric when they shouldn't be. Might be okay when skewness isn't bad and sample size is large. | Very unreliable - will be symmetric when they shouldn't be |
+| Independence              | might be reliable | unreliable - either too wide or too narrow                                                                                       | unreliable - either too wide or too narrow                 |
+
+When model assumptions are a concern, consider a using a transformation of the data, a more advanced model, or a more flexible technique, such as a nonparametric approach or statistical machine learning algorithm.
+
+## Transformations
+
+When there are violations of model assumptions, we can sometimes correct for these by modeling a a function of the response variable, rather than the response variable itself. When the histogram of residuals and normal qq plot show signs of right-skewness, modeling $log(Y)$ is often helpful.
+
+### Example: Modeling Car Prices
+
+We'll look at the assumptions associated with the model for predicting car price, using acceleration time as the explanatory variable.
+
+Diagnostic plots are shown below.
+
+```{r, fig.width=12, fig.height=3}
+P1 <- ggplot(data=Cars2015, aes(y=Cars_M_A060$residuals, x=Cars_M_A060$fitted.values)) + geom_point() + ggtitle("Residual Plot") + xlab("Predicted Values") + ylab("Residuals")
+P2 <- ggplot(data=Cars2015, aes(x=Cars_M_A060$residuals)) + geom_histogram() + ggtitle("Histogram of Residuals") + xlab("Residual")
+P3 <- ggplot(data=Cars2015, aes(sample = scale(Cars_M_A060$residuals))) + stat_qq() + stat_qq_line() + xlab("Normal Quantiles") + ylab("Residual Quantiles") + ggtitle("Normal QQ Plot")
+grid.arrange(P1, P2, P3, ncol=3)
+```
+
+There is a funnel-shape in the residual plot, indicating a concern about the constant variance assumption. There appears to be more variability in prices for more expensive cars than for cheaper cars. There is also some concern about the normality assumption, as the histogram and QQ plot indicate right-skew in the residuals.
+
+### Log Transformation
+
+When residual plots yield model inadequacy, we might try to correct these by applying a transformation to the response variable.
+
+When working a nonnegative, right-skewed response variable, it is often helpful to work with the logarithm of the response variable.
+
+Note: In R, `log()` denotes the natural (base e) logarithm, often denoted `ln()`. We can actually use any logarithm, but the natural logarithm is commonly used.
+
+We'll use the model:
+
+$$
+\text{Log Price} = \beta_0 + \beta_1\times \text{Acc060} + \epsilon_i , \text{ where } \epsilon_i\sim\mathcal{N}(0, \sigma)
+$$
+
+The plot shows log(price) on the y-axis. We see that the relationship appears more linear than when we plot price itself.
+
+```{r}
+ggplot(data=Cars2015, aes(x=Acc060, y=log(Price))) + geom_point() + 
+  xlab("Acceleration Time") + ylab("Log of Price") + 
+  ggtitle("Acceleration Time and Log Price") + stat_smooth(method="lm", se=FALSE)
+```
+
+**Log Transformation Model - What We're Assuming**
+
+1.  Linearity: the log of expected price of a car is a linear function of its acceleration time.
+
+2.  Normality: for any given acceleration time, the log of prices of actual cars follow a normal distribution.
+
+3.  Constant Variance: the normal distribution for log of price is the same for all acceleration times.
+
+4.  Independence: no two cars are any more alike than any others.
+
+We should only use the p-values and confidence intervals provided by R, which depend on the t-distribution approximation, if we believe these assumptions are reasonable.
+
+**Assumption Check for Model on Log Price**
+
+```{r,  fig.width=9}
+P1 <- ggplot(data=Cars2015, aes(y=Cars_M_Log$residuals, x=Cars_M_Log$fitted.values)) + geom_point() + ggtitle("Cars Log Model Residual Plot") + xlab("Predicted Values") + ylab("Residuals")
+P2 <- ggplot(data=Cars2015, aes(x=Cars_M_Log$residuals)) + geom_histogram() + ggtitle("Histogram of Residuals") + xlab("Residual")
+P3 <- ggplot(data=Cars2015, aes(sample = scale(Cars_M_Log$residuals))) + stat_qq() + stat_qq_line() + xlab("Normal Quantiles") + ylab("Residual Quantiles") + ggtitle("Cars Model QQ Plot")
+grid.arrange(P1, P2, P3, ncol=3)
+```
+
+There is still some concern about constant variance, though perhaps not as much. The normality assumption appears more reasonable.
+
+### Inference for Log Model
+
+R output for the model is shown below.
+
+```{r}
+Cars_M_Log <- lm(data=Cars2015, log(Price)~Acc060)
+summary(Cars_M_Log)
+```
+
+Prediction Equation:
+
+$$
+\begin{aligned}
+\widehat{\text{Price}} & = e^{5.13582-0.22064 \times \text{Acc060}}
+\end{aligned}
+$$
+
+Predicted price for car that takes 7 seconds to accelerate:
+
+$$
+\begin{aligned}
+\widehat{\text{Price}} & = e^{5.13582-0.22064 \times \text{7}} = 36.3
+\end{aligned}
+$$
+
+Predicted price for car that takes 10 seconds to accelerate:
+
+$$
+\begin{aligned}
+\widehat{\text{Price}} & = e^{5.13582-0.22064 \times \text{10}}= 18.7
+\end{aligned}
+$$
+
+Predictions are for log(Price), so we need to exponentiate.
+
+```{r}
+predict(Cars_M_Log, newdata=data.frame(Acc060=c(7)))
+```
+
+```{r}
+exp(predict(Cars_M_Log, newdata=data.frame(Acc060=c(7))))
+```
+
+A car that accelerates from 0 to 60 mph in 7 seconds is expected to cost 36.3 thousand dollars.
+
+### Log Model Interpretations
+
+$$
+\begin{aligned}
+\text{Log of Expected Price} & = \beta_0 + \beta_1\times \text{Acc060}\  \text{, Thus:} \\
+\text{ Expected Price} & = e^{\beta_0 + \beta_1\times \text{Acc060} } \\
+ & e^{\beta_0}e^{\beta_1 \times \text{Acc060}} \\
+ & e^{\beta_0}(e^{\beta_1})^\text{Acc060}
+\end{aligned}
+$$
+
+-   $e^{\beta_0}$ is theoretically the expected price of a car that can accelerate from 0 to 60 mph in no time, but this is not a meaningful interpretation.
+
+-   For each additional second it takes a car to accelerate, price is expected to multiply by a factor of $e^{b_1}$.
+
+Exponentiating the model coefficients gives:
+
+```{r}
+exp(Cars_M_Log$coefficients)
+```
+
+-   For each additional second in acceleration time, price is expected to multiply by a a factor of $e^{-0.22} = 0.80$. Thus, each 1-second increase in acceleration time is estimated to be associated with a 20% drop in price, on average.
+
+**Confidence Intervals for** $\beta_0$ and $\beta_1$
+
+```{r}
+confint(Cars_M_Log)
+```
+
+```{r}
+exp(confint(Cars_M_Log))
+```
+
+-   We are 95% confident that the price of a car changes, on average, by multiplicative factor between $e^{-0.252} = 0.7773$ and $e^{-0.189}=0.828$ for each additional second in acceleration time. That is, we believe the price decreases between 17% and 23% on average for each additional second in acceleration time.
+
+**Log Model CI for Expected Response**
+
+If we just use the `predict` function, we get a confidence interval for `log(price)`.
+
+```{r}
+predict(Cars_M_Log, newdata=data.frame(Acc060=c(7)), interval="confidence")
+```
+
+To get an interval for price itself, we exponentiate, using `exp`.
+
+```{r}
+exp(predict(Cars_M_Log, newdata=data.frame(Acc060=c(7)), interval="confidence"))
+```
+
+We are 95% confident that the mean price amoung all cars that accelerate from 0 to 60 mph in 7 seconds is between $e^{3.53225} =34.2$ and $e^{3.652436}=38.6$ thousand dollars.
+
+**Log Model Prediction Interval**
+
+```{r}
+predict(Cars_M_Log, newdata=data.frame(Acc060=c(7)), interval="prediction")
+```
+
+```{r}
+exp(predict(Cars_M_Log, newdata=data.frame(Acc060=c(7)), interval="prediction"))
+```
+
+We are 95% confident that the expected price for a car that accelerates from 0 to 60 mph in 7 seconds is between $e^{3.04} =20.9$ and $e^{4.14}=63.9$ thousand dollars.
+
+### Model Comparisons
+
+We'll compare the intervals we obtain using the `log` transformation to those from the model without the transformation.
+
+**95% Confidence interval for average price of cars that take 7 seconds to accelerate:**
+
+Original Model:
+
+```{r}
+predict(Cars_M_A060, newdata=data.frame(Acc060=7), interval="confidence", level=0.95)
+```
+
+Transformed Model:
+
+```{r}
+exp(predict(Cars_M_Log, newdata=data.frame(Acc060=c(7)), interval="confidence", level=0.95))
+```
+
+**95% Prediction interval for price of an individual car that takes 7 seconds to accelerate:**
+
+Original Model:
+
+```{r}
+predict(Cars_M_A060, newdata=data.frame(Acc060=7), interval="prediction", level=0.95)
+```
+
+Transformed Model:
+
+```{r}
+exp(predict(Cars_M_Log, newdata=data.frame(Acc060=c(7)), interval="prediction", level=0.95))
+```
+
+Notice that the transformed interval is not symmetric and allows for a longer "tail" on the right than the left.
+
+### Log Model Visualization
+
+```{r, fig.height=5, fig.width=10, echo=FALSE}
+temp_var <- data.frame(exp(predict(Cars_M_Log, interval="prediction")))
+temp_var2 <- data.frame(exp(predict(Cars_M_Log, interval="confidence")))
+new_df <- cbind(Cars2015, temp_var, temp_var2[,2:3])
+names(new_df)[ncol(new_df)-1] <- "lwrCI"
+names(new_df)[ncol(new_df)] <- "uprCI"
+gf_point(Price~Acc060, data=new_df) %>% 
+  gf_labs(x="Acc060 Time", 
+          y="Price") %>% +
+    geom_line(aes(y=lwr), color = "red", linetype = "dashed") +
+    geom_line(aes(y=upr), color = "red", linetype = "dashed") + 
+    geom_line(aes(y=fit), color = "blue", linetype = "solid") + 
+    geom_line(aes(y=lwrCI), color = "black", linetype = "dashed") + 
+    geom_line(aes(y=uprCI), color = "black", linetype = "dashed") + theme_bw()
+
+  
+```
+
+The log model suggests an nonlinear trend in price with respect to acceleration time and gives wider confidence and prediction intervals for cars that accelerate faster and tend to be more expensive. It also gives non-symmetric intervals. These results appear to be consistent with the observed data.
+
+### Comments on Transformations
+
+-   We could have used another transformation, such as $\sqrt{\text{Price}}$
+
+-   The log tranform leads to a nice interpretation involving percent change. Other transformations might yield better predictions, but are often hard to interpret.
+
+-   There is often a tradeoff between model complexity and interpretability. We'll talk more about this.
+
+-   We did an example of a transformation in a model with a single explanatory variable.
+
+-   If the explanatory variable is categorical:\
+
+    -   $e^{\beta_0}$ represents the expected response in the baseline category\
+    -   $e^{\beta_j}$ represents the number of times larger the expected response in category $j$ is, compared to the baseline category.
+
+-   When working with multiple regression models, it is still important to mention holding other variables constant when interpreting parameters associated with one of the variables.
+
+## Building Models for Interpretation: Confounding, Multicollinearity, and Polynomial Regression
+
+So far, we've dealt with models with 2 or fewer variables. Some real questions require accounting for more than two variables. In these situations, we'll need to develop a model that is complex enough to capture the important aspects of the mechanism we're modeling, but also simple enough for us to be able to explain and interpret. We'll need to decide how many variables to include in the model, and whether to use transformations, or to include interaction terms.
+
+We'll examine strategies for modeling in two different contexts. In this chapter, we'll focus on building models for situations when we want to make interpretations and draw conclusions about relationships between variables. In Chapter 7, we focus on modeling solely for the purpose of prediction, when we are not interested in making interpretations or conclusions about relationships between variables.
+
+When building a model for the purpose of interpretation, we are typically interested in investigating a research question pertaining to relationships between explanatory and response variables. We'll need to think about things like:
+
+-   which explanatory variables should we include in the model, and how many?\
+-   should we include any interaction terms?\
+-   should we use any nonlinear terms?\
+-   should we use a transformation of the response variable?
+
+We'll go through a couple example to see how we can address these questions in building a model.
+
+Keep in mind, there is no single correct model, but there are common characteristics of a good model. While two statisticians might use different models for a given set of data, they will hopefully lead to reasonably similar conclusions if constructed carefully.
+
+### Modeling SAT Scores
+
+We'll now look at a dataset containing education data on all 50 states. It includes the following variables.
+
+`state` - a factor with names of each state
+
+`expend` - expenditure per pupil in average daily attendance in public elementary and secondary schools, 1994-95 (in thousands of US dollars)
+
+`ratio` - average pupil/teacher ratio in public elementary and secondary schools, Fall 1994
+
+`salary` - estimated average annual salary of teachers in public elementary and secondary schools, 1994-95 (in thousands of US dollars)
+
+`frac` - percentage of all eligible students taking the SAT, 1994-95
+
+`sat` - average total SAT score, 1994-95
+
+`region` - region of the country
+
+```{r, fig.width=5}
+library(mosaicData)
+data(SAT)
+SAT <- SAT %>% dplyr::select(-c(verbal, math))
+library(Lock5Data)
+data("USStates")
+SAT <- SAT %>% left_join(USStates %>% select(State, Region), by=c("state"="State")) %>% rename(region = Region)
+```
+
+```{r}
+SAT
+```
+
+Note that the dataset is quite old (from 1994-95), so the financial information may be out of date. Nevertheless, it is useful for exploring relationships between SAT scores and other variables.
+
+**Research Question**
+
+A good statistical research question should be one that has practical implications that people would care about. It should be complex enough to be worth investigating. If the answer is obvious, then there would be no need to use statistics, or scientific reasoning in general.
+
+For the SAT score dataset, we'll focus on the question:
+
+**Do students in states that prioritize education spending achieve better SAT scores?**
+
+While this may seem like a straightforward question, we'll see that answering it properly requires careful thought and analysis.
+
+#### Initial Model
+
+One way to measure a state's investment in education is in how much it pays its teachers. The plot displays average SAT score against average teacher salary for all 50 US states.
+
+```{r, fig.height=4, fig.width=6}
+ggplot(data=SAT, aes(y=sat, x=salary)) + geom_point() +
+  stat_smooth(method="lm", se=FALSE) + 
+  ggtitle("Average SAT score vs Average Teacher Salary") + 
+  xlab("Average Teacher Salary in Thousands") 
+```
+
+Fitting a simple linear regression model to the data, we obtain the following:
+
+```{r}
+SAT_M1 <- lm(data=SAT, sat~salary)
+summary(SAT_M1)
+```
+
+On average, SAT score is expected to decrease by about 5.5 points for each additional one thousand dollars in average teacher salary in the state. The low p-value suggests a relationship like this is unlikely to occur by chance, though the practical importance of a 5-point decrease in SAT score (out of 1600) seems minimal. Furthermore, only 19% of the total variation in SAT score is explained by teaching salary. Nevertheless, a person looking to argue against raising teacher salaries might use the negative estimate and low p-value as a justification for their position.
+
+#### A Deeper Investigation
+
+Notice that there are large discrepancies in the `frac` variable, representing the percentage of students taking the SAT. In Connecticut, 81% of high school students took the SAT, compared to only 6% in Arkansas.
+
+Let's break the data down by the percentage of students who take the SAT. We'll (somewhat arbitrarily), divide the states into
+
+Low = 0%-22%\
+Medium = 22-49%\
+High = 49-81%
+
+```{r}
+SAT <- mutate(SAT, fracgrp = cut(frac, 
+      breaks=c(0, 22, 49, 81), 
+      labels=c("low", "medium", "high")))
+```
+
+Plotting SAT score against average teacher salary in each state, we see that the picture changes.
+
+```{r, fig.height=2.5, fig.width=9}
+ggplot(data=SAT, aes( y=sat, x=salary )) +geom_point() + facet_wrap(facets = ~fracgrp) +
+stat_smooth(method="lm", se=FALSE) + xlab("Average Teacher Salary in Thousands")
+```
+
+There appears to be a slight positive relationship between teacher salary and SAT score in each state.
+
+While breaking up the data into these three groups helps us visualize, we'll simply add the `frac` variable to the model as a quantitative variable, rather than breaking it into these arbitrary categories.
+
+```{r}
+SAT_M2 <- lm(data=SAT, sat~salary+frac)
+summary(SAT_M2)
+```
+
+For each one thousand dollar increase in average teacher salary, a state's average SAT score is expected to increase by 2.18 points, assuming percentage of students taking the test is the same.
+
+For each one percent increase in percentage of students taking the SAT, a state's average score is expected to decrease by 2.78 points, assuming average teacher salary is the same.
+
+Both of these estimates are associated with low p-values. While the effect of a 2 point increase per \$1,000 in average teacher salary might seem small, the \~3 point decrease for each percentage point of students taking the exam is quite meaningful. According to the model, if the percentage of students taking the SAT is 10 percentage points higher than another, and the states pay their teachers the same, then the state with more people taking the exam is expected to have an average score almost 30 points lower.
+
+Adding percentage of students taking the exam increased the $R^2$ value substantially.
+
+We see that the relationship between SAT score and salary appears to reverse when we account for percentage of students taking the test. States with low percentages of people taking the SAT tend to get higher scores, as the people taking the test tend to be those who are best prepared and have strong incentive for taking it, perhaps because they are trying to get into an elite college. At the same time, states that pay their teachers more tend to have higher percentages of people taking the SAT. This may be because states that prioritize education are more likely to cover the cost of students taking the test, or even to require it. It may also be that many of the states that require the SAT are coastal states, where cost of living, and thus teacher salaries, tend to be higher in general. Thus, it appears initially that teacher salaries are negatively correlated with SAT scores, but after accounting for percentage taking the test, the trend reverses. Situations where an apparent trend disappears or reverses after accounting for another variable are called **Simpson's Paradox.**
+
+#### Student-to-Teacher Ratio
+
+Let's see what other possible explanatory variables we might want to add to the model. Keep in mind that our goal is to understand the relationship between teacher salary and SAT scores in the state, so we should only use variables that help us understand this relationship.\
+In addition to teacher salaries, student-to-teacher ratio might be an indication of a state's investment in education. We'll add student-to-teacher ratio to the model and explore whether there is evidence that hiring enough teachers to keep student-to-teacher ratio low has a benefit, in terms of SAT score.
+
+```{r}
+SAT_M3 <- lm(data=SAT, sat~salary+frac+ratio)
+summary(SAT_M3)
+```
+
+**Interpretations**
+
+On average, a \$1,000 dollar increase in average teacher salary is associated with a 2.5 point increase in average SAT score assuming fraction of students taking the SAT, and student to teacher ratio are held constant.
+
+On average, a 1% increase in percentage of students taking the SAT is associated with a 2.9 point decrease in average SAT score assuming average teacher salary, and student to teacher ratio are held constant.
+
+On average, a 1 student per teacher increase in student to teacher ratio is associated with a 4.6 point from in average SAT score, assuming average teacher salary, and percentage of students taking the SAT are held constant.
+
+We see that student to teacher ratio is negatively associated with SAT score, with an expected drop of about 4.6 points in average SAT score for each additional student per teacher, assuming average teacher salary and percentage of students taking the exam are held constant. This suggests that states should try to keep student to teacher ratios low. We see teacher salary remains positively correlated with SAT score and percentage taking the test remains negatively correlated, after accounting for student to teacher ratio.
+
+#### Multicollinearity
+
+Next, let's add the variable `expend`, which measures the state's expenditure per pupil.
+
+```{r}
+SAT_M4 <- lm(data=SAT, sat~salary+frac+ratio+expend)
+summary(SAT_M4)
+```
+
+It may be surprising to see that after accounting for expenditure per student, teacher salary is still positively correlated with SAT score, but that the p-value associated with teacher salary is quite large. Likewise, while student-to-teacher ratio is still negatively associated, it too has a large p-value. Also notice that $R^2$ barely increased when accounting for total expenditures.
+
+This happens because expenditures are highly correlated with teacher salary. States that pay their teacher more also spend more on education per pupil. The scatterplot matrix below shows a strong correlation of 0.87 between teacher salary and expenditures.
+
+```{r}
+SAT_Num <- select_if(SAT, is.numeric)
+C <- cor(SAT_Num, use = "pairwise.complete.obs")
+round(C,2)
+```
+
+```{r}
+library(corrplot)
+corrplot(C)
+```
+
+Because these variables are highly correlated, it doesn't make sense to talk about the effect of increasing teacher salary, while holding expenditure constant, or vice-versa. Notice the standard error on the `salary` line in model `SAT_M4` (which includes expenditures) is more than twice as high as in `SAT_M3`, which did not. This happens because the model is not able to separate the effect of salary from the effect of expenditure, and thus becomes very uncertain of the effect of both, resulting in high standard errors. In addition to reducing the t-statistic, and increasing the p-value, this leads to much wider and less informative confidence intervals associated with the effect of teacher salary.
+
+**Confidence intervals for model involving teacher salary, percentage taking the test, and student-to-teacher ratio.**
+
+```{r}
+confint(SAT_M3)
+```
+
+**Confidence intervals for model with above variables plus expenditure.**
+
+```{r}
+confint(SAT_M4)
+```
+
+Models with highly correlated explanatory variables suffer from **multicollinearity**, which increases standard errors, making the effect of variables harder to discern. When we have explanatory variables that are highly correlated (usually with correlation greater than 0.8), we should pick out just one to include in the model. In this case, we'll stick with teacher salary.
+
+#### Check Model Assumptions
+
+Let's return to the model with salary, ratio, and fraction taking test. We use residual plots to assess model assumptions.
+
+```{r, fig.width=9}
+P1 <- ggplot(data=data.frame(SAT_M3$residuals), aes(y=SAT_M3$residuals, x=SAT_M3$fitted.values)) + geom_point() + ggtitle("Residual Plot") + xlab("Predicted Values") + ylab("Residuals")
+P2 <- ggplot(data=data.frame(SAT_M3$residuals), aes(x=SAT_M3$residuals)) + geom_histogram() + ggtitle("Histogram of Residuals") + xlab("Residual")
+P3 <- ggplot(data=data.frame(SAT_M3$residuals), aes(sample = scale(SAT_M3$residuals))) + stat_qq() + stat_qq_line() + xlab("Normal Quantiles") + ylab("Residual Quantiles") + ggtitle("QQ Plot")
+grid.arrange(P1, P2, P3, ncol=3)
+```
+
+There is some sign of a quadratic trend in the residual plot, creating concern about the linearity assumption.
+
+In models with multiple explanatory variables, it is helpful to also plot our residuals against the explanatory variables to see whether the model is properly accounting for relationships involving each variable. If we see nonlinear trends, we should consider adding a nonlinear function of that explanatory variable.
+
+```{r,  fig.width=9}
+P1 <- ggplot(data=data.frame(SAT_M3$residuals), aes(y=SAT_M3$residuals, x=SAT_M3$model$salary)) + geom_point() + ggtitle("Residual by Predictor Plot") + xlab("Salary") + ylab("Residuals") 
+P2 <- ggplot(data=data.frame(SAT_M3$residuals), aes(y=SAT_M3$residuals, x=SAT_M3$model$frac)) + geom_point() + ggtitle("Residual by Predictor Plot") + xlab("Fraction Taking Test") + ylab("Residuals")
+P3 <- ggplot(data=data.frame(SAT_M3$residuals), aes(y=SAT_M3$residuals, x=SAT_M3$model$ratio)) + geom_point() + ggtitle("Residual by Predictor Plot") + xlab("Student to Teach Ratio") + ylab("Residuals")
+grid.arrange(P1, P2, P3, ncol=3)
+```
+
+There is also a quadratic trend in the plot involving the fraction variable. We might account for this by adding a quadratic term for `frac` to the model.
+
+#### Quadratic Term
+
+```{r}
+SAT_M5 <- lm(data=SAT, sat~salary+frac+I(frac^2)+ratio )
+summary(SAT_M5)
+```
+
+We notice a small p-value associated with the quadratic term, indicating SAT scores do indeed show evidence of a quadratic trend with respect to the percentage of students taking the test.
+
+We now examine residual plots for the model that includes the quadratic term for `frac`.
+
+```{r, fig.width=9}
+P1 <- ggplot(data=data.frame(SAT_M5$residuals), aes(y=SAT_M5$residuals, x=SAT_M5$fitted.values)) + geom_point() + ggtitle("Residual Plot") + xlab("Predicted Values") + ylab("Residuals")
+P2 <- ggplot(data=data.frame(SAT_M5$residuals), aes(x=SAT_M5$residuals)) + geom_histogram() + ggtitle("Histogram of Residuals") + xlab("Residual")
+P3 <- ggplot(data=data.frame(SAT_M5$residuals), aes(sample = scale(SAT_M5$residuals))) + stat_qq() + stat_qq_line() + xlab("Normal Quantiles") + ylab("Residual Quantiles") + ggtitle("QQ Plot")
+grid.arrange(P1, P2, P3, ncol=3)
+```
+
+```{r,  fig.width=9}
+P1 <- ggplot(data=data.frame(SAT_M3$residuals), aes(y=SAT_M5$residuals, x=SAT_M5$model$salary)) + geom_point() + ggtitle("Residual by Predictor Plot") + xlab("Salary") + ylab("Residuals") 
+P2 <- ggplot(data=data.frame(SAT_M3$residuals), aes(y=SAT_M5$residuals, x=SAT_M5$model$frac)) + geom_point() + ggtitle("Residual by Predictor Plot") + xlab("Fraction Taking Test") + ylab("Residuals")
+P3 <- ggplot(data=data.frame(SAT_M3$residuals), aes(y=SAT_M5$residuals, x=SAT_M5$model$ratio)) + geom_point() + ggtitle("Residual by Predictor Plot") + xlab("Student to Teach Ratio") + ylab("Residuals")
+grid.arrange(P1, P2, P3, ncol=3)
+```
+
+The quadratic trend in the residual by predicted plot and second residual by fraction plot appear to have disappeared, suggesting this model has properly accounted for the quadratic trend.
+
+**Interpretations for Model with Quadratic Term**
+
+On average, a \$1,000 dollar increase in average teacher salary is associated with a 1.8 point increase in average SAT score assuming fraction of students taking the SAT, and student to teacher ratio are held constant.
+
+On average, a 1 student per teacher increase in student to teacher ratio is associated with a 0.05 point from in average SAT score, assuming average teacher salary, and percentage of students taking the SAT are held constant.
+
+We cannot give a clear interpretation of the fraction variable, since it occurs in both linear and quadratic terms. In fact, the vertex of the parabola given by $y=-6.64x + 0.05x^2$ occurs at $x=\frac{6.64}{2(0.05)}\approx 66$. So the model estimates that SAT score decreases in a quadratic fashion with respect to fraction taking the test, until that fraction reaches 66 percent of student, then is expected to increase.
+
+```{r}
+ggplot(data=SAT, aes(x=frac, y=sat)) + geom_point() + stat_smooth(se=FALSE)
+```
+
+We do see some possible quadratic trend, but we should be really careful about extrapolation. Although the trend does seem to level off in a quadratic way, we wouldn't expect SAT scores to start to increase if more than 80 percent of students took the exam!
+
+#### Account for Region?
+
+So far, we've considered only quantitative explanatory variables. What if we add region of the country to the model.
+
+```{r}
+SAT_M6 <- lm(data=SAT, sat~salary+frac+I(frac^2)+ratio + region )
+summary(SAT_M6)
+```
+
+We find that on average, SAT scores were lower in the NE, S, and W regions, compared to the baseline region of MW, though only in the S is the difference large enough to yield a small p-value.
+
+Notice that the effect of teacher salary and student-to-teacher ratio are no longer statistically significant. This happens because now we are only comparing states in the same region of the country. The p-value associated with teacher salary is now testing the null hypothesis "There is no relationship between average teacher salary and SAT score among states in the same region of the country, with the same percentage of students taking the test, and same student to teacher ratio."
+
+Because we only have 50 states to begin with, breaking down by region results in small sample sizes, which contributes to the large p-values. Furthermore, it is unclear why we would need to account for region here. If our goal is to assess the impact of educational spending on SAT scores, it is probably okay to compare states in different regions of the country. Unless we have some reason for wanting to compare states in the same region, we shouldn't include region as an explanatory variable (even though including it did raise our $R^2$ value above 0.9). In general, we should only include variables if they help us address our research question. In this case, it's not clear that accounting for region helps us better understand the relationship between a state's investment in education, and its students average SAT scores.
+
+It is important to note that we **should not** decide whether to include a variable based on whether or not it yielded a small p-value. Adding or deleting variables from a model until we get a desired p-value on a variable we're interested in can lead to **Confirmation bias** (that is choosing our model in a way that intentionally confirms what we expected or hoped to be true), and to detecting spurious correlations that will not be replicable in future studies. This phenomenon, known as **p-hacking** has led to incorrect and unethical conclusions. We should make modeling decisions about which variables to include in a model before looking at the p-values and then draw conclusions based on the results we see, keeping in mind that p-values are only a part of the picture.
+
+**Predictions and Intervals**
+
+Going back to Model M5, which did not include region, we can make confidence and predictions intervals corresponding to hypothetical states.
+
+```{r}
+newstate <- data.frame(salary = 45, frac=0.5, ratio=15)
+```
+
+```{r}
+predict(SAT_M5, newdata = newstate, interval="confidence", conf.level=0.95)
+```
+
+We are 95% confident that the average of average SAT scores among all states with average teacher salary of 45 thousand dollars, where 50% of students take the SAT and having student-to-teacher ratio of 15 is between 1085 and 1147.
+
+```{r}
+predict(SAT_M5, newdata = newstate, interval="prediction", conf.level=0.95)
+```
+
+We are 95% confident that an individual state with average teacher salary of 45 thousand dollars, where 50% of students take the SAT and having student-to-teacher ratio of 15 will have an average SAT score between 1055 and 1178.
+
+### Modeling Car Price
+
+We'll build a model for the price of a new 2015 car, to help us understand what factors are related to the price of a car.
+
+```{r}
+data(Cars2015)
+Cars2015 <- Cars2015 %>% rename(Price=LowPrice)
+Cars2015 <- Cars2015%>% select(-HighPrice)
+glimpse(Cars2015)
+```
+
+**Exploratory Analysis**
+
+We'll look at a summary of the categorical variables in the dataset.
+
+```{r, fig.height=4, fig.width=6}
+Cars_Cat <- select_if(Cars2015, is.factor)
+summary(Cars_Cat)
+```
+
+We examine the correlation matrix of quantitative variables.
+
+```{r}
+Cars_Num <- select_if(Cars2015, is.numeric)
+C <- cor(Cars_Num, use = "pairwise.complete.obs")
+round(C,2)
+```
+
+```{r, fig.height=12, fig.width=12}
+library(corrplot)
+C <- corrplot(C)
+```
+
+Note the high correlation between many variables in the dataset. We'll need to be careful about multicollinearity.
+
+#### Acc. and Qrt. Mile Time
+
+We saw in Section 5.2 that it was better to model log(Price) than price itself, so we'll continue modeling logprice here.
+
+**Model Using Just Acceleration Time**
+
+First, we fit a model using only the time it takes to accelerate from 0 to 60 mph as an explanatory variable.
+
+```{r}
+Cars_M1 <- lm(data=Cars2015, log(Price) ~ Acc060)
+summary(Cars_M1)
+```
+
+Confidence Interval for Effect of Acceleration Time:
+
+```{r}
+exp(confint(Cars_M1))
+```
+
+We are 95% confident that a 1-second increase in acceleration time is associated with an average price decrease between 17% and 22.5%.
+
+**Model Using Just Quarter Mile Time**
+
+Now, let's fit a different model using only the time it takes to drive a quarter mile as an explanatory variable.
+
+```{r}
+Cars_M2 <- lm(data=Cars2015, log(Price) ~ QtrMile)
+summary(Cars_M2)
+```
+
+Confidence Interval for Effect of Quarter Mile Time:
+
+```{r}
+exp(confint(Cars_M2))
+```
+
+We are 95% confident that a 1-second increase in quarter mile time is associated with a price decrease between 21% and 27%, on average.
+
+**Model Using Both Acceleration and Quarter Mile Time**
+
+```{r}
+Cars_M3 <- lm(data=Cars2015, log(Price) ~ QtrMile + Acc060)
+summary(Cars_M3)
+```
+
+**Confidence Intervals from 2-variable Model**
+
+```{r}
+exp(confint(Cars_M3))
+```
+
+It does not make sense to talk about holding QtrMile constant as Acc060 increases, or vice-versa. Trying to do so leads to nonsensical answers.
+
+We are 95% confident that a 1-second increase in quarter mile time is associated with an average price change between a 38% decrease and 15% increase, assuming acceleration time is held constant.
+
+We are 95% confident that a 1-second increase in acceleration time is associated with an average price change between a 28% decrease and 18% increase, assuming quarter mile time is held constant.
+
+Because these variables are so highly correlated, it the model cannot separate the effect of one from the other, and thus is uncertain about both. Notice the very large standard errors associated with both regression coefficients, which lead to very wide confidence intervals.
+
+In fact, if two variables are perfectly correlated, it will be impossible to fit them both in a model, and you will get an error message.
+
+**Impact on Prediction**
+
+Suppose we want to predict the price of a car that can accelerate from 0 to 60 mph in 9.5 seconds, and completes a quarter mile in 17.3 seconds.
+
+```{r}
+exp(predict(Cars_M1, newdata = data.frame(Acc060=9.5, QtrMile=17.3)))
+```
+
+```{r}
+exp(predict(Cars_M2, newdata = data.frame(Acc060=9.5, QtrMile=17.3)))
+```
+
+```{r}
+exp(predict(Cars_M3, newdata = data.frame(Acc060=9.5, QtrMile=17.3)))
+```
+
+The predicted values are similar. Multicollinearity does not hurt predictions, only interpretations.
+
+#### Adding Weight to Model
+
+We could use either quarter mile time or acceleration time as an explanatory variable, but we shouldn't use both. We'll proceed with quarter mile time.
+
+```{r}
+Cars_M4 <- lm(data=Cars2015, log(Price) ~ QtrMile + Weight)
+summary(Cars_M4)
+```
+
+$R^2$ went up from 0.64 to 0.76!
+
+We might consider adding an interaction term between quarter mile time and weight. This would mean that we think the effect of quarter mile time on price of a car is different for heavier cars than for lighter cars. It's not clear to me why that would be the case.
+
+```{r}
+Cars_M5 <- lm(data=Cars2015, log(Price) ~ QtrMile * Weight)
+summary(Cars_M5)
+```
+
+p-value on interaction is not that small. $R^2$ didn't go up much. There doesn't seem to be much reason to complicate the model by adding an interaction term.
+
+#### Adding More Variables
+
+We'll consider adding highway MPG to the model.
+
+```{r}
+Cars_M6 <- lm(data=Cars2015, log(Price) ~ QtrMile + Weight + HwyMPG)
+summary(Cars_M6)
+```
+
+HwyMPG doesn't make change $R^2$ much, and has a high correlation with weight. Let's not include it.
+
+Next, we'll consider adding categorical explanatory variables Size, and Drive.
+
+```{r}
+P1 <- ggplot(data=Cars2015, aes(x=log(Price), y=Size)) + geom_boxplot() + ggtitle("Price by Size")
+P2 <- ggplot(data=Cars2015, aes(x=log(Price), y=Drive)) + geom_boxplot() + ggtitle("Price by Drive")
+grid.arrange(P1, P2, ncol=2)
+```
+
+Information about size is already included, through the weight variable. Let's add drive type to the model.
+
+```{r}
+Cars_M7 <- lm(data=Cars2015, log(Price) ~ QtrMile + Weight + Drive)
+summary(Cars_M7)
+```
+
+We found evidence of differences in price between front-wheel drive and rear-wheel drive, compared to all wheel drive cars.
+
+Next, we'll explore adding size to the model.
+
+```{r}
+Cars_M8 <- lm(data=Cars2015, log(Price) ~ QtrMile + Weight + Drive + Size)
+summary(Cars_M8)
+```
+
+Adding size barely increased $R^2$ at all. We find no evidence of differences in price between the three sizes, after accounting for the other variables.
+
+Note: Information about car size is already being taken into account through the `Weight` variable.
+
+We could keep looking at other variables to add, but at this point, we have a model that gives us a good sense of the factors related to price of a car, capturing 80% of total variability in car price, and is still easy to interpret.
+
+For our research purposes, this model is good enough.
+
+#### Check of Model Assumptions
+
+We'll use residuals to check the model assumptions.
+
+**Residual by Predicted Plot, Histogram of Residuals, and Normal Quantile-Quantile Plot**
+
+```{r, fig.width=9}
+P1 <- ggplot(data=data.frame(Cars_M7$residuals), aes(y=Cars_M7$residuals, x=Cars_M7$fitted.values)) + geom_point() + ggtitle("Residual Plot") + xlab("Predicted Values") + ylab("Residuals")
+P2 <- ggplot(data=data.frame(Cars_M7$residuals), aes(x=Cars_M7$residuals)) + geom_histogram() + ggtitle("Histogram of Residuals") + xlab("Residual")
+P3 <- ggplot(data=data.frame(Cars_M7$residuals), aes(sample = scale(Cars_M7$residuals))) + stat_qq() + stat_qq_line() + xlab("Normal Quantiles") + ylab("Residual Quantiles") + ggtitle("QQ Plot")
+grid.arrange(P1, P2, P3, ncol=3)
+```
+
+There is slight concern about constant variance, but otherwise, the model assumptions look good.
+
+**Residual by Predictor Plots**
+
+```{r,  fig.width=9}
+P1 <- ggplot(data=data.frame(Cars_M7$residuals), aes(y=Cars_M7$residuals, x=Cars_M7$model$QtrMile)) + geom_point() + ggtitle("Residual by Predictor Plot") + xlab("QtrMile") + ylab("Residuals") 
+P2 <- ggplot(data=data.frame(Cars_M7$residuals), aes(y=Cars_M7$residuals, x=Cars_M7$model$Weight)) + geom_point() + ggtitle("Residual by Predictor Plot") + xlab("Weight") + ylab("Residuals") 
+P3 <- ggplot(data=data.frame(Cars_M7$residuals), aes(y=Cars_M7$residuals, x=Cars_M7$model$Drive)) + geom_point() + ggtitle("Residual by Predictor Plot") + xlab("Drive") + ylab("Residuals") 
+grid.arrange(P1, P2, P3, ncol=3)
+```
+
+These plots don't raise any concerns.
+
+#### Coefficients and Exponentiation
+
+The model coefficients are shown below.
+
+```{r}
+Cars_M7$coefficients
+```
+
+Since we used a log transformation, we should interpret $e^{b_j}$ rather than $b_j$ itself.
+
+```{r}
+exp(Cars_M7$coefficients)
+```
+
+The price of a car is expected to decrease by 17% for each additional second it takes to drive a quartermile, assuming weight, and drive type are held constant.
+
+The price of a car is expected to increase by 0.02% for each additional pound, assuming quarter mile time, and drive type are held constant. Thus, a 100 lb increase is associated with an expected 2% increase in price, assuming quarter mile time, and drive type are held constant.
+
+FWD cars are expected to cost 20% less than AWD cars, assuming quarter mile time and weight are held constant.
+
+RWD cars are expected to cost 13% less than AWD cars, assuming quarter mile time and weight are held constant.
+
+#### Confidence and Prediction Intevals
+
+We'll use our model to estimate the average price with the following characteristics, and also to predict the price of a new car with the given characteristics.
+
+```{r}
+newcar <- data.frame(QtrMile = 18, Weight=2400, Drive = "AWD")
+```
+
+This is an interval for log(Price).
+
+```{r}
+predict(Cars_M7, newdata=newcar, interval="confidence", level=0.95)
+```
+
+Exponentiating, we obtain
+
+```{r}
+exp(predict(Cars_M7, newdata=newcar, interval="confidence", level=0.95))
+```
+
+We are 95% Confident that the average price of all new 2015 cars that weigh 2400 lbs, drive a quarter mile in 18 seconds on a fast track, and have all wheel drive is between 15.5 thousand and 20.7 thousand dollars.
+
+Next, we calculate a prediction interval for an individual car with these characteristics.
+
+```{r}
+exp(predict(Cars_M7, newdata=newcar, interval="prediction", level=0.95))
+```
+
+We are 95% Confident that the price of an individual new 2015 car that weighs 2400 lbs, drives a quarter mile in 18 seconds on a fast track, and has all wheel drive will be between 11.6 thousand and 27.7 thousand dollars.
+
+#### Model Building Summary
+
+Consider the following when building a model for the purpose of interpreting parameters and understanding and drawing conclusions about a population or process.
+
+-   Model driven by research question
+-   Include variables of interest\
+-   Include potential confounders (like in SAT example)\
+-   Avoid including highly correlated explanatory variables\
+-   Avoid messy transformations and interactions where possible\
+-   Use residual plots to assess appropriateness of model assumptions\
+-   Aim for high $R^2$ but not highest\
+-   Aim for model complex enough to capture nature of data, but simple enough to give clear interpretations\
+
+```{r, echo=FALSE}
+#save.image(file = "Environment.RData")
+```
