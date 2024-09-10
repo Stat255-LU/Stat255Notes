@@ -7,12 +7,11 @@
 16. Explain how to use bootstrapping to calculate confidence intervals.\
 17. Interpret confidence intervals in context.\
 18. Calculate confidence intervals in R.
-19. Write null and alternative hypotheses, identify test statistics, and state conclusions in context.    
-20. Interpret p-values in context.    
-21. Explain how to use simulation to perform hypothesis tests. 
-22. Compare and contrast the conclusions we can draw from confidence intervals and hypothesis tests.   
-23. Perform hypothesis tests in R.    
-
+19. Write null and alternative hypotheses, identify test statistics, and state conclusions in context.\
+20. Interpret p-values in context.\
+21. Explain how to use simulation to perform hypothesis tests.
+22. Compare and contrast the conclusions we can draw from confidence intervals and hypothesis tests.\
+23. Perform hypothesis tests in R.
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=TRUE)

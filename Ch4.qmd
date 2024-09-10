@@ -320,7 +320,7 @@ So far, we've used simulation (permutation tests and bootstrap intervals) to det
 **Theory-Based Standard Error Formulas**
 
 | Statistic                             | Standard Error                                                                                                           |
-|---------------------|--------------------------------------------------|
+|----------------------|--------------------------------------------------|
 | Single Mean                           | $SE(b_0)=\frac{s}{\sqrt{n}}$                                                                                             |
 | Difference in Means                   | $SE(b_j)=s\sqrt{\frac{1}{n_1}+\frac{1}{n_2}}$                                                                            |
 | Single Proportion                     | $SE(\hat{p}) = \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$                                                                      |

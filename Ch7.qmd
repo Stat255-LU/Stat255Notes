@@ -2,14 +2,11 @@
 
 **Learning Outcomes:**
 
-41. Explain how model complexity relates to training and test error, prediction variance and bias, and overfitting.     
-42. Explain how to use cross-validation in model selection.     
-43. Explain how complexity parameters associated with ridge regression, decision trees, and splines impact variance, bias, and likelihood of overfitting.     
-44. Make predictions from a decision tree.      
-45. Calculate classification accuracy, sensitivity, specificity, confusion matrix, and receiver operating characteristic curves.
-Identify ethical considerations associated with predictive models in context.     
-
-
+41. Explain how model complexity relates to training and test error, prediction variance and bias, and overfitting.\
+42. Explain how to use cross-validation in model selection.\
+43. Explain how complexity parameters associated with ridge regression, decision trees, and splines impact variance, bias, and likelihood of overfitting.\
+44. Make predictions from a decision tree.\
+45. Calculate classification accuracy, sensitivity, specificity, confusion matrix, and receiver operating characteristic curves. Identify ethical considerations associated with predictive models in context.
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=FALSE)
@@ -609,7 +606,6 @@ In OLS, we choose $b_0, b_1, \ldots, b_p$ are chosen in a way that minimizes
 $$
 \displaystyle\sum*{i=1}\^n (y_i -\hat{y}i)\^2 =\* \displaystyle\sum{i=1}\^n (y_i -(b_0 + b_1x{i1} + b_2x\_{i2} + \ldots + b_px\_{ip}))\^2
 $$
-
 
 OLS: $\displaystyle\sum_{i=1}^n (y_i -\hat{y}_i)^2$
 

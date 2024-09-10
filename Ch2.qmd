@@ -2,15 +2,15 @@
 
 **Learning Outcomes:**
 
-5. Use regression models to calculate predicted values, changes, and differences.     
-6.  Interpret regression coefficients for simple linear and multiple regression models, including models with interaction.      
-7.  Calculate and interpret regression sums of squares SSR, SSM, and SST, and coefficient of determination,$R^2$.     
-8.  Determine how changes to sample size, number of terms in a model, or regression coefficients impact SST, SSR, and $R^2$.    
-9. Explain what interactions between variables mean, in context.    
-10. Explain the least-squares estimation process.     
-11. Show how to calculate F-statistics.     
-12. Draw conclusions based on F-statistics.     
-13. Fit regression models using R and report conclusions. 
+5.  Use regression models to calculate predicted values, changes, and differences.\
+6.  Interpret regression coefficients for simple linear and multiple regression models, including models with interaction.\
+7.  Calculate and interpret regression sums of squares SSR, SSM, and SST, and coefficient of determination,$R^2$.\
+8.  Determine how changes to sample size, number of terms in a model, or regression coefficients impact SST, SSR, and $R^2$.\
+9.  Explain what interactions between variables mean, in context.\
+10. Explain the least-squares estimation process.\
+11. Show how to calculate F-statistics.\
+12. Draw conclusions based on F-statistics.\
+13. Fit regression models using R and report conclusions.
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=FALSE)
@@ -713,7 +713,7 @@ knitr::include_graphics("Rsq2.png")
 ### Model Comparison Summary
 
 | Model | Variables              | Unexplained Variability | Variability Explained | $R^2$                     |
-|---------------|---------------|---------------|---------------|---------------|
+|-------|------------------------|-------------------------|-----------------------|---------------------------|
 | 0     | None                   | `r SST`                 | 0                     | 0                         |
 | 1     | Sq. Ft.                | `r SSR_sqft`            | `r SST-SSR_sqft`      | `r (SST-SSR_sqft)/SST`    |
 | 2     | Waterfront             | `r SSR_wf`              | `r SST-SSR_wf`        | `r (SST-SSR_wf)/SST`      |
@@ -1055,7 +1055,7 @@ We've seen 5 different models for predicting house price using some combination 
 A model A is defined to be a **submodel** of another model B, if every term in model A is also included in model B.
 
 | Model | Variables                            | Unexplained Variability  | Variability Explained        | $R^2$                              |
-|---------------|---------------|---------------|---------------|---------------|
+|-------|--------------------------------------|--------------------------|------------------------------|------------------------------------|
 | 0     | None                                 | `r round(SST,0)`         | 0                            | 0                                  |
 | 1     | Sq. Ft.                              | `r round(SSR_sqft,0)`    | `r round(SST-SSR_sqft,0)`    | `r round((SST-SSR_sqft)/SST,3)`    |
 | 2     | Waterfront                           | `r round(SSR_wf,0)`      | `r round(SST-SSR_wf,0)`      | `r round((SST-SSR_wf)/SST,3)`      |
@@ -1282,7 +1282,7 @@ grid.arrange(p1, p2, ncol=2)
 ```
 
 |                          | Scenario 1                    | Scenario 2                 |
-|-------------------------|-----------------------|-------------------------|
+|--------------------------|-------------------------------|----------------------------|
 | variation between groups | High                          | Low                        |
 | variation within groups  | Low                           | High                       |
 | F Statistic              | Large                         | Small                      |

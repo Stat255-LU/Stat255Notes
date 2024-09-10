@@ -2,11 +2,11 @@
 
 **Learning Outcomes:**
 
-31. Check the validity of model assumptions using plots and other information.     
-32. Interpret regression coefficients in models involving log transformations.    
-33. Calculate predicted values and confidence/prediction intervals for models involving log transformations.     
-34. Identify instances of confounding and Simpson's paradox and draw conclusions in these situations.     
-35. Explain how multicollinearity impacts predictions and confidence/prediction intervals.     
+31. Check the validity of model assumptions using plots and other information.\
+32. Interpret regression coefficients in models involving log transformations.\
+33. Calculate predicted values and confidence/prediction intervals for models involving log transformations.\
+34. Identify instances of confounding and Simpson's paradox and draw conclusions in these situations.\
+35. Explain how multicollinearity impacts predictions and confidence/prediction intervals.\
 36. Build and interpret multiple and polynomial regression models in R.
 
 ```{r, include=FALSE}
@@ -142,7 +142,7 @@ All of these require more complicated models that account for correlation using 
 ### Summary of Checks for Model Assumptions
 
 | Model assumption  | How to detect violation                                                    |
-|-------------------|-----------------------------------------------------|
+|-------------------|----------------------------------------------------------------------------|
 | Linearity         | Curvature in residual plot                                                 |
 | Constant Variance | Funnel shape in residual plot                                              |
 | Normality         | Skewness in histogram of residuals or departure from diag. line in QQ plot |
@@ -270,7 +270,7 @@ In situations where some model assumptions appear to be violated, we might be ok
 The table below provides guidance on the potential impact of model assumption violation on predicted values, confidence intervals, and prediction intervals.
 
 | Model assumption Violated | Predicted Values  | Confidence Intervals                                                                                                             | Prediction Intervals                                       |
-|----------------|----------------|-------------------------|----------------|
+|---------------------------|-------------------|----------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------|
 | Linearity                 | Unreliable        | Unreliable                                                                                                                       | Unreliable                                                 |
 | Constant Variance         | Reliable          | Somewhat unreliable - Some too wide, others too narrow                                                                           | Very unreliable - Some too wide, others too narrow         |
 | Normality                 | Reliable          | Possibly unreliable - might be symmetric when they shouldn't be. Might be okay when skewness isn't bad and sample size is large. | Very unreliable - will be symmetric when they shouldn't be |

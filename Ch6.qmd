@@ -2,10 +2,10 @@
 
 **Learning Outcomes:**
 
-37. Identify situations where it is appropriate to use a logistic regression model.    
-38. Calculate probabilities and odds using logistic regression.    
-39. Interpret logistic regression coefficients in context.     
-40. Implement logistic regression models in R.   
+37. Identify situations where it is appropriate to use a logistic regression model.\
+38. Calculate probabilities and odds using logistic regression.\
+39. Interpret logistic regression coefficients in context.\
+40. Implement logistic regression models in R.
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=TRUE)
