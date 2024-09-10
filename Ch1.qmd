@@ -2,10 +2,10 @@
 
 **Learning Outcomes:**
 
-1. Distinguish between categorical and quantitative variables.    
-2.  Interpret data graphics (histogram, density plot, box plot, violin plot, scatterplot, bar graph).       
+1.  Distinguish between categorical and quantitative variables.\
+2.  Interpret data graphics (histogram, density plot, box plot, violin plot, scatterplot, bar graph).\
 3.  Interpret summary statistics (mean, median, standard deviation, and IQR).
-4.  Use R to create data graphics and calculate summary statistics.      
+4.  Use R to create data graphics and calculate summary statistics.
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=FALSE)
