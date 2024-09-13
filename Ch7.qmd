@@ -490,7 +490,9 @@ A statistical technique for doing this is called **ridge regression.**
 
 We've seen that in ordinary least-squares regression, $b_0, b_1, \ldots, b_p$ are chosen in a way that to minimizes
 
-\[ \displaystyle\sum*{i=1}\^n (y_i -\hat{y}i)\^2 =\* \displaystyle\sum{i=1}\^n (y_i -(b_0 + b_1x{i1} + b_2{x_i2} + \ldots +b_px\_{ip}))\^2 \]
+$$
+\displaystyle\sum_{i=1}^n (y_i -\hat{y}i)^2 =\displaystyle\sum_{i=1}^{n} (y_i -(b_0 + b_1x{i1} + b_2{x_i2} + \ldots +b_px\_{ip}))^2
+$$
 
 When $p$ is large and we want to be careful of overfitting, a common approach is to add a "penalty term" to this function, to incentive choosing values of $b_1, \ldots, b_p$ that are closer to 0, thereby "shrinking" the predictions toward the overall mean house price.
 
@@ -693,7 +695,7 @@ Let L and R represent the left and right nodes from a possible split. Let $n_L$ 
 For each possible split, involving an explanatory variable, we calculate:
 
 $$
-\displaystyle\sum\_{i=1}\^{n_L} (y_i -\bar{y}*L)\^2 +* \displaystyle\sum{i=1}\^{n_R} (y_i -\bar{y}\_R)\^2
+\displaystyle\sum_{i=1}^{n_L} (y_i -\bar{y}_L)^2 + \displaystyle\sum_{i=1}^{n_R} (y_i -\bar{y}_R)^2
 $$
 
 We choose the split that minimizes this quantity.
