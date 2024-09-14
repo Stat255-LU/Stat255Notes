@@ -1706,7 +1706,9 @@ For example, let's consider the model for Seattle house prices that involved squ
 
 The model is
 
-\[ \widehat{Price} = b_0 + b_1\times\text{Sq. Ft.} + b_2\times\text{waterfront} + b_3\times\text{Sq.Ft}\times\text{Waterfront} \]
+$$
+\widehat{Price} = b_0 + b_1\times\text{Sq. Ft.} + b_2\times\text{waterfront} + b_3\times\text{Sq.Ft}\times\text{Waterfront}
+$$
 
 We fit the model and obtain the parameter estimates shown below.
 

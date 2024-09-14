@@ -589,7 +589,9 @@ window.Quarto = {
 <section id="evaluating-predictions---rmspe" class="level3" data-number="7.1.4">
 <h3 data-number="7.1.4" class="anchored" data-anchor-id="evaluating-predictions---rmspe"><span class="header-section-number">7.1.4</span> Evaluating Predictions - RMSPE</h3>
 <p>For quantitative response variables, we can evaluate the predictions by calculating the average of the squared differences between the true and predicted values. Often, we look at the square root of this quantity. This is called the Root Mean Square Prediction Error (RMSPE).</p>
-<p>[ = , ]</p>
+<p><span class="math display">\[
+\text{RMSPE} = \sqrt{\displaystyle\sum_{i=1}^{n'}\frac{(y_i-\hat{y}_i)^2}{n'}},
+\]</span></p>
 <p>where <span class="math inline">\(n'\)</span> represents the number of new cases being predicted.</p>
 <p>We calcuate RMSPE for each of the 9 models.</p>
 <div class="cell">

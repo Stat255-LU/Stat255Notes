@@ -882,7 +882,9 @@ summary(M_pH)
 
 The estimated regression equation is
 
-\[ \text{Mercury} = 1.53 - 0.15 \times\text{pH}, \text{where } \epsilon\_i\sim\mathcal{N}(0, \sigma) \]
+$$
+\text{Mercury} = 1.53 - 0.15 \times\text{pH}, \text{where } \epsilon\_i\sim\mathcal{N}(0, \sigma) 
+$$
 
 We can use $b_1$ to test whether there is evidence of a relationship between mercury concentration and pH level.
 

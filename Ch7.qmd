@@ -154,7 +154,9 @@ kable(Newdf %>% dplyr::select(-c(samp)) %>% round(2) %>% head(5))
 
 For quantitative response variables, we can evaluate the predictions by calculating the average of the squared differences between the true and predicted values. Often, we look at the square root of this quantity. This is called the Root Mean Square Prediction Error (RMSPE).
 
-\[ \text{RMSPE} = \sqrt{\displaystyle\sum_{i=1}^{n'}\frac{(y_i-\hat{y}_i)^2}{n'}}, \]
+$$
+\text{RMSPE} = \sqrt{\displaystyle\sum_{i=1}^{n'}\frac{(y_i-\hat{y}_i)^2}{n'}},
+$$
 
 where $n'$ represents the number of new cases being predicted.
 

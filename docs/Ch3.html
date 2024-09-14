@@ -3183,7 +3183,9 @@ Coefficients:
 <p>We saw in the previous two examples how to calculate a confidence interval for the slope of a regression line, and for an expected response in regression. In fact, we can calculate confidence intervals for any function involving regression coefficients <span class="math inline">\(\beta_0, \beta_1, \ldots, \beta_p\)</span>, in a similar manner.</p>
 <p>For example, let’s consider the model for Seattle house prices that involved square feet, whether or not the house was on the waterfront, and an interaction term between these variables.</p>
 <p>The model is</p>
-<p>[ = b_0 + b_1 + b_2 + b_3 ]</p>
+<p><span class="math display">\[
+\widehat{Price} = b_0 + b_1\times\text{Sq. Ft.} + b_2\times\text{waterfront} + b_3\times\text{Sq.Ft}\times\text{Waterfront}
+\]</span></p>
 <p>We fit the model and obtain the parameter estimates shown below.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb207"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb207-1"><a href="#cb207-1" aria-hidden="true" tabindex="-1"></a>M <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Houses, price<span class="sc">~</span>sqft_living <span class="sc">+</span> waterfront <span class="sc">+</span></span>
