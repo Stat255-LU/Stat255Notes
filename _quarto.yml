@@ -22,10 +22,13 @@ book:
 format:
   html:
     theme: cosmo
-#  pdf:
-#      toc: true
-#      toc-depth: 2
-#      documentclass: scrreprt
+  pdf:
+      toc: true
+      toc-depth: 2
+      documentclass: scrreprt
+
+
+
 
 editor: visual
 
