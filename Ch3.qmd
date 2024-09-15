@@ -404,6 +404,8 @@ kable(data.frame(Sample_Size, SE))
 
 As sample size increases, variability between means of different samples decreases. Standard error of the mean decreases. This is also true of standard errors for other statistics (i.e. difference in means, regression slopes, etc.)
 
+\newpage
+
 ## Confidence Intervals
 
 ### Constructing Confidence Intervals
@@ -571,6 +573,8 @@ This brings us back to the question "what does 95% confidence mean?". An approxi
 It might be tempting to say that "there is approximately a 95% chance" that the population parameter lies within the confidence interval, but this is incorrect. In the statistical framework used here (known as classical, or frequentist statistics), the population parameter is assumed to be a fixed, but (typically) unknown number. It either is within the interval, or it isn't. We just (typically) don't know which. There's nothing random about whether or not the parameter value is in our interval, so it doesn't make sense to speak of it in terms of chance or randomness. Randomness comes into play due to the fact that we selected a random sample, which will produce a statistic likely to differ from the population parameter due to sampling variability. A different statistical framework, known as *Bayesian statistics* approaches this differently, and would allow us to use randomness and chance to describe our beliefs about any uncertain quantity, including a population proportion. In this class, however, we'll stick to the classical frequentist interpretation.
 
 Of course, you might ask why we needed to calculate a confidence interval for the proportion of on-time flights in the first place, since we actually have data on all 20,591 flights in the population and already know the true proportion of on-time arrivals and mean arrival delay. The answer is that we don't. But, in most real situations, we will only have data from a single sample, not the entire population, and we won't know the true population parameter. We'll be able to build on the ideas of sampling distributions and standard error that we learned about in this section to calculate confidence intervals in those scenarios.
+
+\newpage
 
 ## Bootstrapping
 
@@ -786,6 +790,8 @@ Lakes_Bootstrap_Prop_plot +
 ```
 
 We are 95% confident that the proportion of all Florida lakes with mercury levels exceeding 1 ppm is between `r round(p_hat - 2*SE_p_hat, 4)` and `r round(p_hat + 2*SE_p_hat,4)`.
+
+\newpage
 
 ## More Bootstrap Examples
 
@@ -2088,6 +2094,8 @@ We are 95% confident that for each 100 square foot increase, the average price a
 
 While bootstrapping is a popular and robust procedure for calculating confidence intervals, it does have cautions and limitations. We should be sure to use the bootstrap procedure appropriate for our context. A standard-error bootstrap interval is appropriate when the sampling distribution for our statistic is roughly symmetric and bell-shaped. When this is not true, a percentile bootstrap interval can be used as long as there are no gaps or breaks in the bootstrap distribution. In situations where there are gaps and breaks in the bootstrap distribution, then the bootstrap distribution may not be a reasonable approximation of the sampling distribution we are interested in.
 
+\newpage
+
 ## Hypothesis Testing
 
 ### Mercury Levels in Florida Lakes
@@ -2151,7 +2159,9 @@ Lakes_M <- lm(data=FloridaLakes, Mercury ~ Location)
 Lakes_M
 ```
 
-$\widehat{\text{Hg}} = `r Lakes_M$coef[1]`+`r Lakes_M$coef[2]`\times\text{South}$
+$$
+\widehat{\text{Hg}} = `r Lakes_M$coef[1]`+`r Lakes_M$coef[2]`\times\text{South}
+$$
 
 -   $b_1 = 0.272= 0.6965 - 0.4245$ is equal to the difference in mean mercury levels between Northern and Southern lakes. (We've already seen that for categorical variables, the least-squares estimate is the mean, so this makes sense.)
 
@@ -2406,6 +2416,8 @@ At this point, a reasonable question is "how small must a p-value be in order to
 ```{r, out.width = '100%'}
 knitr::include_graphics("pvals.png")
 ```
+
+\newpage
 
 ## More Hypothesis Test Examples
 
@@ -2879,6 +2891,8 @@ More than half of our simulations resulted in an F-statistic as extreme or more 
 Since the p-value is large, we cannot reject the null hypothesis. We do not have evidence to say that average price differs between houses of the different condition types.
 
 It is important to note that we are not saying that we believe the average price is the same for each condition. Recall that the average prices among the conditions in our sample differed by more than 300 thousand dollars! It's just that given the size of our samples, and the amount of variability in our data, we cannot rule out the possibility that this difference occurred purely by chance.
+
+\newpage
 
 ## Responsible Hypothesis Testing
 

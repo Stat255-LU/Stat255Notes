@@ -202,7 +202,10 @@ where $Y_i$ represents amount dispensed, and $X_i$ represents time. $\beta_0, \b
 
 Using the values of $b_0$ and $b_1$ obtained by fitting a model to our observed data as estimates of $\beta_0$ and $\beta_1$, our estimated regression equation is
 
-\[Y_i = b_0 + b_1X_i + \epsilon\_i = `r IC_Model$coefficients[1]` + `r IC_Model$coefficients[2]`X_i + \epsilon\_i \]
+$$
+Y_i = b_0 + b_1X_i + \epsilon\_i = `r IC_Model$coefficients[1]` + `r IC_Model$coefficients[2]`X_i + \epsilon\_i
+
+$$
 
 where $\epsilon_i\sim\mathcal{N}(0,\sigma)$.
 
@@ -305,6 +308,8 @@ Do data really come about from processes like the normal error regression model?
 
 We won't attempt to answer that question here, but it is worth thinking about. After all, it is an assumption on which many frequently employed methods of statistical inference depends.
 
+\newpage
+
 ## Standard Error and Confidence Intervals
 
 ### Common Standard Error Formulas
@@ -320,7 +325,7 @@ So far, we've used simulation (permutation tests and bootstrap intervals) to det
 **Theory-Based Standard Error Formulas**
 
 | Statistic                             | Standard Error                                                                                                           |
-|----------------------|--------------------------------------------------|
+|-----------------------|-------------------------------------------------|
 | Single Mean                           | $SE(b_0)=\frac{s}{\sqrt{n}}$                                                                                             |
 | Difference in Means                   | $SE(b_j)=s\sqrt{\frac{1}{n_1}+\frac{1}{n_2}}$                                                                            |
 | Single Proportion                     | $SE(\hat{p}) = \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$                                                                      |
@@ -718,6 +723,8 @@ The table below tells us what must be true of the sampling distribution for a st
 | Bootstrap Standard Error | x       | x           |                      |
 | Theory-Based             | x       | x           | x                    |
 
+\newpage
+
 ## t-tests
 
 ### t-Distribution
@@ -941,6 +948,7 @@ Proponents of simulation-based inference include Tim Hesterberg, Senior Statisti
 
 We will move forward by using probability-based inference where appropriate, while understanding that we are merely approximating what we would obtain via simulation. Meanwhile, we'll continue to employ simulation-based approaches where probability-based techniques are inappropriate or unavailable.
 
+\newpage
 
 ## F-tests
 
@@ -1373,6 +1381,8 @@ The large t-statistic (7.773) and small p-value provide strong evidence against 
 
 Note that if the interaction term had yielded a large p-value, indicating a lack of evidence of an interaction, we might have wanted to drop the interaction term from the model, in order to make the interpretations of the other estimates and hypothesis tests simpler.
 
+\newpage
+
 ## Intervals for Expected Response
 
 ### Parameter Values and Expected Responses
@@ -1651,6 +1661,8 @@ We are 95% confident that the mean mercury level in South Florida is between 0.0
 
 Note that the normality assumption, which allows for negative mercury levels leads to a somewhat nonsensical result.
 
+\newpage
+
 ## The Regression Effect
 
 ### The Regression Effect
@@ -1748,15 +1760,17 @@ Kahneman and Tversky write that :
 
 *"We normally reinforce others when their behavior is good and punish them when their behavior is bad. By regression alone, therefore, they \[the trainees\] are most likely to improve after being punished and most likely to deteriorate after being rewarded. Consequently, we are exposed to a lifetime schedule in which we are most often rewarded for punishing others, and punished for rewarding."*
 
+\newpage
+
 ## Responsible Statistical Inference
 
-While statistics offer insight that have lead to great advances in science, medicine, business and economics and many other areas, they have also been misused, (either intentionally or unintentionally) in ways that have resulted in harm. In an effort to better educate the public, the American Statistical Association released a report in 2016, highlighting common misuses of p-values, and the notion of statistical significance. Kenneth Rothman, Professor of Epidemiology at Boston University School of Public Health wrote:     
+While statistics offer insight that have lead to great advances in science, medicine, business and economics and many other areas, they have also been misused, (either intentionally or unintentionally) in ways that have resulted in harm. In an effort to better educate the public, the American Statistical Association released a report in 2016, highlighting common misuses of p-values, and the notion of statistical significance. Kenneth Rothman, Professor of Epidemiology at Boston University School of Public Health wrote:
 
 -   “(S)cientists have embraced and even avidly pursued meaningless differences solely because they are statistically significant, and have ignored important effects because they failed to pass the screen of statistical significance...It is a safe bet that people have suffered or died because scientists (and editors, regulators, journalists and others) have used significance tests to interpret results, and have consequently failed to identify the most beneficial courses of action.” -ASA statement on p-values, 2016
 
-In this section, we'll look at some real scenarios where it might be tempting to make an improper conclusion based on data. Think carefully about each scenario and identify possible misinterpretations that might arise. Then think about what conclusions or actions would be appropriate in each scenario. 
+In this section, we'll look at some real scenarios where it might be tempting to make an improper conclusion based on data. Think carefully about each scenario and identify possible misinterpretations that might arise. Then think about what conclusions or actions would be appropriate in each scenario.
 
-Keep in mind the following guidelines for responsible statistical inference.   
+Keep in mind the following guidelines for responsible statistical inference.
 
 **What a p-value tells us**
 
@@ -1776,20 +1790,19 @@ Performing responsible statistical inference requires understanding what p-value
 
 -   Sometimes, a p-value tells us more about sample size, than relationship we're actually interested in.
 
--   A p-value does not tell us the "size" of a difference or effect, or whether it is practically meaningful.    
+-   A p-value does not tell us the "size" of a difference or effect, or whether it is practically meaningful.
 
--   We should only generalize results from a hypothesis test performed on a sample to a larger population or process if the sample is representative of the population or process (such as when the sample is randomly selected).   
+-   We should only generalize results from a hypothesis test performed on a sample to a larger population or process if the sample is representative of the population or process (such as when the sample is randomly selected).
 
--   A correlation between two variables does not necessarily imply a causal relationship.    
+-   A correlation between two variables does not necessarily imply a causal relationship.
 
-### Breakfast Cereals and Sex of Babies     
+### Breakfast Cereals and Sex of Babies
 
-The title of a [2008 article by New Scientist](https://www.newscientist.com/article/dn13754-breakfast-cereals-boost-chances-of-conceiving-boys/) makes a surprising claim: "Breakfast cereals boost chances of conceiving boys." Although the article lacks details on the underlying study, researchers, in fact, tracked the eating habits of women who were attempting to become pregnant. They tracked 133 different food items, and tested whether there was a difference in the proportion of baby boys conceived between women who ate the food, compared to those who didn't. Of the 133 foods tested, only breakfast cereal showed a significant difference.   
+The title of a [2008 article by New Scientist](https://www.newscientist.com/article/dn13754-breakfast-cereals-boost-chances-of-conceiving-boys/) makes a surprising claim: "Breakfast cereals boost chances of conceiving boys." Although the article lacks details on the underlying study, researchers, in fact, tracked the eating habits of women who were attempting to become pregnant. They tracked 133 different food items, and tested whether there was a difference in the proportion of baby boys conceived between women who ate the food, compared to those who didn't. Of the 133 foods tested, only breakfast cereal showed a significant difference.
 
-**Question:** Why is the researcher's conclusion that eating breakfast cereal increases the chances of conceiving a boy inappropriate? Hint: think about how this situation is similar to the one in the [xkcd comic](https://xkcd.com/882/)?   
+**Question:** Why is the researcher's conclusion that eating breakfast cereal increases the chances of conceiving a boy inappropriate? Hint: think about how this situation is similar to the one in the [xkcd comic](https://xkcd.com/882/)?
 
-
-A statistical procedure called the **Bonferroni Correction** suggests that when more than one test is performed simultaneously, we should multiply observed p-values by the number of tests performed. Why might this help prevent errors? Do you see any downsides of doing this?    
+A statistical procedure called the **Bonferroni Correction** suggests that when more than one test is performed simultaneously, we should multiply observed p-values by the number of tests performed. Why might this help prevent errors? Do you see any downsides of doing this?
 
 ### Flights from New York to Chicago
 
@@ -1817,7 +1830,7 @@ Flights_NY_CHI <- flights %>%
   select(origin, dest, air_time)
 ```
 
-The plot and table compare the duration of flights from New York to Chicago from each airport.   
+The plot and table compare the duration of flights from New York to Chicago from each airport.
 
 ```{r, fig.height=4, fig.width=8}
 p1 <- ggplot(data=Flights_NY_CHI, aes(x=air_time, fill=origin, color=origin)) + geom_density(alpha=0.2) + ggtitle("Flight Time")
@@ -1833,14 +1846,14 @@ T <- Flights_NY_CHI %>% group_by(origin) %>%
 kable(T)
 ```
 
-We fit a model to test whether there is evidence of a difference in average flight time.    
+We fit a model to test whether there is evidence of a difference in average flight time.
 
 ```{r}
 M_Flights <- lm(data=Flights_NY_CHI, air_time~origin)
 summary(M_Flights)
 ```
 
-Confidence Interval for Flights:    
+Confidence Interval for Flights:
 
 ```{r}
 confint(M_Flights)
@@ -1852,8 +1865,7 @@ confint(M_Flights)
 
 -   We are 95% confident that flights from LGA to ORD take between 2.2 and 2.9 minutes longer, on average, than flights from EWR to ORD.
 
-
-**Question:** If you were planning a trip from New York to Chicago, how much of a factor would this information play in your decision? Why do you think the p-value is so small in this scenario?   
+**Question:** If you were planning a trip from New York to Chicago, how much of a factor would this information play in your decision? Why do you think the p-value is so small in this scenario?
 
 ### Smoking and Birthweight Example
 
@@ -1870,7 +1882,7 @@ samp2 <- seq(from=3, to=852, by=17)
 NCBirths <- rbind(Smokers[samp1, ], NonSmokers[samp2, ])
 ```
 
-The plot and table show the distribution of birth weights among babies whose mothers smoked, compared to those who didn't. 
+The plot and table show the distribution of birth weights among babies whose mothers smoked, compared to those who didn't.
 
 ```{r, fig.height=4, fig.width=8}
 p1 <- ggplot(data=NCBirths, aes(x=weight, fill=habit, color=habit)) + geom_density(alpha=0.2) + ggtitle("Birthweight and Smoking")
@@ -1884,13 +1896,12 @@ T <- NCBirths %>% group_by(habit) %>% summarize(Mean_Weight = mean(weight), SD =
 kable(T)
 ```
 
-We fit a model and test for differences in average birth weight.   
+We fit a model and test for differences in average birth weight.
 
 ```{r}
 M_Birthwt <- lm(data=NCBirths, weight~habit)
 summary(M_Birthwt)
 ```
-
 
 ```{r}
 confint(M_Birthwt)
@@ -1902,13 +1913,13 @@ confint(M_Birthwt)
 
 -   We are 95% confident that the average birtweight of babies whose mothers are smokers is between 1.12 lbs less and 0.27 lbs more than the average birthweight for babies whose mothers are nonsmokers.
 
-**Question:** Many studies have shown that a mother's smoking puts a baby at risk of low birthweight. Do our results contradict this research? Should we conclude that smoking has no impact on birthweights? 
+**Question:** Many studies have shown that a mother's smoking puts a baby at risk of low birthweight. Do our results contradict this research? Should we conclude that smoking has no impact on birthweights?
 
 #### Larger Study
 
 In fact, this sample of 80 babies is part of a larger dataset, consisting of 1,000 babies born in NC in 2004. When we consider the full dataset, notice that the difference between the groups is similar, but the p-value is much smaller, providing stronger evidence of a relationship between a mother's smoking and lower birthweight.
 
-We'll now fit a model to the larger dataset.   
+We'll now fit a model to the larger dataset.
 
 ```{r}
 M_Birthwt_Full <- lm(data=ncbirths, weight~habit)
@@ -1921,11 +1932,7 @@ Confidence interval based on larger dataset:
 confint(M_Birthwt_Full)
 ```
 
-Notice that the estimated difference in birth weights is actually smaller in the full dataset than in the subset (though 0.3 lbs is still a pretty big difference for babies), and yet now the p-value is much smaller. Why do you think this happened? What should we learn from this?    
-
-
-
-
+Notice that the estimated difference in birth weights is actually smaller in the full dataset than in the subset (though 0.3 lbs is still a pretty big difference for babies), and yet now the p-value is much smaller. Why do you think this happened? What should we learn from this?
 
 ### Cautions and Advice
 
@@ -1942,10 +1949,6 @@ Notice that the estimated difference in birth weights is actually smaller in the
 -   Is sample representative of larger population?\
 -   Were treatments randomly assigned (for experiments)?\
 -   Are there other variables to consider?
-
-
-
-
 
 ```{r, echo=FALSE}
 #save.image(file = "Environment.RData")

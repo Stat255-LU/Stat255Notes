@@ -132,6 +132,10 @@ New_Houses <- Houses |> filter(waterfront == "Yes")
 head(New_Houses)
 ```
 
+
+\newpage
+
+
 ## Summary Statistics
 
 ### Measures of Center
@@ -203,6 +207,8 @@ kable(Houses_Grouped_Summary)
 ```
 
 Note: `arrange(desc(Mean_Gross))` arranges the table in descending order of Mean_Gross. To arrange in ascending order, use `arrange(Mean_Gross)`.
+
+\newpage
 
 ## Data Visualization
 

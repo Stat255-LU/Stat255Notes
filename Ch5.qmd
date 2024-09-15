@@ -142,7 +142,7 @@ All of these require more complicated models that account for correlation using 
 ### Summary of Checks for Model Assumptions
 
 | Model assumption  | How to detect violation                                                    |
-|-----------------|-------------------------------------------------------|
+|------------------|------------------------------------------------------|
 | Linearity         | Curvature in residual plot                                                 |
 | Constant Variance | Funnel shape in residual plot                                              |
 | Normality         | Skewness in histogram of residuals or departure from diag. line in QQ plot |
@@ -270,13 +270,15 @@ In situations where some model assumptions appear to be violated, we might be ok
 The table below provides guidance on the potential impact of model assumption violation on predicted values, confidence intervals, and prediction intervals.
 
 | Model assumption Violated | Predicted Values  | Confidence Intervals                                                                                                             | Prediction Intervals                                       |
-|-------------|-------------|---------------------------------|-------------|
+|---------------|---------------|-----------------------------|---------------|
 | Linearity                 | Unreliable        | Unreliable                                                                                                                       | Unreliable                                                 |
 | Constant Variance         | Reliable          | Somewhat unreliable - Some too wide, others too narrow                                                                           | Very unreliable - Some too wide, others too narrow         |
 | Normality                 | Reliable          | Possibly unreliable - might be symmetric when they shouldn't be. Might be okay when skewness isn't bad and sample size is large. | Very unreliable - will be symmetric when they shouldn't be |
 | Independence              | might be reliable | unreliable - either too wide or too narrow                                                                                       | unreliable - either too wide or too narrow                 |
 
 When model assumptions are a concern, consider a using a transformation of the data, a more advanced model, or a more flexible technique, such as a nonparametric approach or statistical machine learning algorithm.
+
+\newpage
 
 ## Transformations
 
@@ -522,6 +524,8 @@ The log model suggests an nonlinear trend in price with respect to acceleration 
     -   $e^{\beta_j}$ represents the number of times larger the expected response in category $j$ is, compared to the baseline category.
 
 -   When working with multiple regression models, it is still important to mention holding other variables constant when interpreting parameters associated with one of the variables.
+
+\newpage
 
 ## Building Models for Interpretation: Confounding, Multicollinearity, and Polynomial Regression
 

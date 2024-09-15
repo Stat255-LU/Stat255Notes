@@ -267,6 +267,9 @@ text("RMSE on Training Data", x=3.5, y=1, col="red")
 text("RMSPE on Test Data", x=3.1, y=1.85, col="blue")
 ```
 
+
+\newpage
+
 ## Variance-Bias Tradeoff
 
 ### What Contributes to Prediction Error?
@@ -440,6 +443,8 @@ We create a csv file containing the predictions, using the code below.
 ```{r}
 write.csv(predictions, file = "predictions.csv")
 ```
+
+\newpage
 
 ## Ridge Regression
 
@@ -664,6 +669,8 @@ $$
 & \displaystyle\sum_{i=1}^n (y_i -\hat{y}_i)^2  + \lambda\displaystyle\sum_{j=1}^p|b_j|\\ =  & \displaystyle\sum_{i=1}^n (y_i -(b_0 + b_1x_{i1} + b_2x_{i2} + \ldots + b_px_{ip}))^2 + \lambda_1\displaystyle\sum_{j=1}^pb_j^2+ \lambda_2\displaystyle\sum_{j=1}^p|b_j|
 \end{aligned}
 $$
+
+\newpage
 
 ## Decision Trees
 
@@ -936,6 +943,8 @@ A popular extension of a decision tree is a random forest. A random forest consi
 
 Growing deep trees ensures low bias. In a random forest, averaging across many deep trees decreases variance, while maintaining low bias.
 
+\newpage
+
 ## Regression Splines
 
 ### Regression Splines
@@ -1126,6 +1135,8 @@ Important Considerations:
 
 The best choices for all of these will vary between datasets and can be assessed through cross-validation.
 
+\newpage
+
 ## Summary and Comparision
 
 In the previous sections, we've applied various predictive modeling techniques to predict house prices in Ames, IA. In each section, we've focused on an individual predictive technique (OLS, ridge/lasso regression, trees, splines), but in practice, we often test out these techniques together to find which is likely to perform best on a set of data. Here, we'll go through the steps to test out and evaluate these techniques on the Ames Housing dataset.
@@ -1306,6 +1317,8 @@ Decision tree:
 tree_pred <- predict(Housing_Best_Tree, newdata=Houses_sc_New)
 head(tree_pred)
 ```
+
+\newpage
 
 ## Assessing a Classifier's Performance
 
@@ -1489,6 +1502,8 @@ $$\frac{960}{960+5} \approx 0.9948 $$
 
 In a given situation, we should think about the cost of a false negative vs a false positive when determining whether to place more weight on sensitivity or specificity. For example, "is it worse to tell a patient they tested positive for a disease when they really don't have it, or to not tell them they tested positive when they really do have it?"
 
+\newpage
+
 ## Receiver Operating Characteristic Curve
 
 ### Separating +'s and -'s
@@ -1605,6 +1620,8 @@ auc(response=Default_Test$default, predictor = RandProb)
 ```
 
 Even though a model that assigns predictions randomly, with 97% predicted as negatives will have a high accuracy rate, it will yield a poor ROC curve indicating an inability to separate positive cases from negative ones.
+
+\newpage
 
 ## Ethical Considerations in Predictive Modeling
 

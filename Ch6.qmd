@@ -161,6 +161,9 @@ predict(CCDefault_M, newdata=data.frame((balance=2000)), type="response")
 
 Recall that for a quantitative response variable, the values of $b_1, b_2, \ldots, b_p$ are chosen in a way that minimizes $\displaystyle\sum_{i=1}^n \left(y_i-(\beta_0+\beta_1x_{i1}+\ldots+\beta_px_{ip})^2\right)$. Least squares does not work well in this generalized setting. Instead, the b's are calculated using a more advanced technique, known as **maximum likelihood estimation**. We won't say anything more about that topic here, but it is a prominent technique, widely used in statistic modeling. It is explored in more detail in advanced statistics courses, such as STAT 445:Mathematical Statistics.
 
+
+\newpage
+
 ## Interpreting Coefficients in Logistic Regression
 
 ### Odds and Odds Ratio
@@ -230,6 +233,9 @@ confint(CCDefault_M, level = 0.95)
 We are 95% confident that for each 1 dollar increase in credit card balance, the odds of default are expected to multiply by a factor between $e^{0.00508}\approx 1.0051$ and $e^{0.00594}\approx 1.0060$.
 
 This is a profile-likelihood interval, which you can read more about [here](https://rpubs.com/FJRubio/PLCIN).
+
+
+\newpage
 
 ## Multiple Logistic Regression
 

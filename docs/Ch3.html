@@ -793,6 +793,7 @@ window.Quarto = {
 </div>
 </div>
 <p>As sample size increases, variability between means of different samples decreases. Standard error of the mean decreases. This is also true of standard errors for other statistics (i.e.&nbsp;difference in means, regression slopes, etc.)</p>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="confidence-intervals" class="level2" data-number="3.2">
@@ -840,7 +841,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="Emp_Rule.png" class="img-fluid figure-img"></p>
+<p><img src="Emp_Rule.png" class="img-fluid figure-img" width="1800"></p>
 <figcaption>Image from https://openintro-ims.netlify.app/foundations-mathematical</figcaption>
 </figure>
 </div>
@@ -1270,6 +1271,7 @@ window.Quarto = {
 <p>This brings us back to the question “what does 95% confidence mean?”. An approximate 95% confidence interval means that if we take a large number of samples and calculate confidence intervals from each of them, then approximately 95% of the samples will produce intervals containing the true population parameter. In reality, we’ll only have on sample, and won’t know whether or not our interval contains the true parameter value. Assuming we have taken the sample and calculated the interval correctly, we can rest assured in the knowledge that that 95% of all intervals taken would contain the true parameter value, and hope that ours is among that 95%.</p>
 <p>It might be tempting to say that “there is approximately a 95% chance” that the population parameter lies within the confidence interval, but this is incorrect. In the statistical framework used here (known as classical, or frequentist statistics), the population parameter is assumed to be a fixed, but (typically) unknown number. It either is within the interval, or it isn’t. We just (typically) don’t know which. There’s nothing random about whether or not the parameter value is in our interval, so it doesn’t make sense to speak of it in terms of chance or randomness. Randomness comes into play due to the fact that we selected a random sample, which will produce a statistic likely to differ from the population parameter due to sampling variability. A different statistical framework, known as <em>Bayesian statistics</em> approaches this differently, and would allow us to use randomness and chance to describe our beliefs about any uncertain quantity, including a population proportion. In this class, however, we’ll stick to the classical frequentist interpretation.</p>
 <p>Of course, you might ask why we needed to calculate a confidence interval for the proportion of on-time flights in the first place, since we actually have data on all 20,591 flights in the population and already know the true proportion of on-time arrivals and mean arrival delay. The answer is that we don’t. But, in most real situations, we will only have data from a single sample, not the entire population, and we won’t know the true population parameter. We’ll be able to build on the ideas of sampling distributions and standard error that we learned about in this section to calculate confidence intervals in those scenarios.</p>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="bootstrapping" class="level2" data-number="3.3">
@@ -1870,6 +1872,7 @@ $ AgeData           &lt;int&gt; 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 
 </div>
 </div>
 <p>We are 95% confident that the proportion of all Florida lakes with mercury levels exceeding 1 ppm is between 0.0268 and 0.1996.</p>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="more-bootstrap-examples" class="level2" data-number="3.4">
@@ -3676,6 +3679,7 @@ Coefficients:
 <section id="bootstrapping-cautions" class="level3" data-number="3.4.9">
 <h3 data-number="3.4.9" class="anchored" data-anchor-id="bootstrapping-cautions"><span class="header-section-number">3.4.9</span> Bootstrapping Cautions</h3>
 <p>While bootstrapping is a popular and robust procedure for calculating confidence intervals, it does have cautions and limitations. We should be sure to use the bootstrap procedure appropriate for our context. A standard-error bootstrap interval is appropriate when the sampling distribution for our statistic is roughly symmetric and bell-shaped. When this is not true, a percentile bootstrap interval can be used as long as there are no gaps or breaks in the bootstrap distribution. In situations where there are gaps and breaks in the bootstrap distribution, then the bootstrap distribution may not be a reasonable approximation of the sampling distribution we are interested in.</p>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="hypothesis-testing" class="level2" data-number="3.5">
@@ -3832,7 +3836,9 @@ Coefficients:
      0.4245       0.2720  </code></pre>
 </div>
 </div>
-<p><span class="math inline">\(\widehat{\text{Hg}} = 0.4245455+0.2719545\times\text{South}\)</span></p>
+<p><span class="math display">\[
+\widehat{\text{Hg}} = 0.4245455+0.2719545\times\text{South}
+\]</span></p>
 <ul>
 <li><p><span class="math inline">\(b_1 = 0.272= 0.6965 - 0.4245\)</span> is equal to the difference in mean mercury levels between Northern and Southern lakes. (We’ve already seen that for categorical variables, the least-squares estimate is the mean, so this makes sense.)</p></li>
 <li><p>We can use <span class="math inline">\(b_1\)</span> to assess the size of the difference in mean mercury concentration levels.</p></li>
@@ -4461,6 +4467,7 @@ Coefficients:
 </div>
 </div>
 </div>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="more-hypothesis-test-examples" class="level2" data-number="3.6">
@@ -5294,6 +5301,7 @@ Coefficients:
 <p>More than half of our simulations resulted in an F-statistic as extreme or more extreme than the one we saw in our actual data, even though the simulation was performed in a situation where there was no relationship between price and condition. Thus, it is very plausible that we would observe an F-statistic as extreme or more extreme than we saw in our data, even if there is no relationship between price and condition (or no difference in average price between the conditions), among all houses.</p>
 <p>Since the p-value is large, we cannot reject the null hypothesis. We do not have evidence to say that average price differs between houses of the different condition types.</p>
 <p>It is important to note that we are not saying that we believe the average price is the same for each condition. Recall that the average prices among the conditions in our sample differed by more than 300 thousand dollars! It’s just that given the size of our samples, and the amount of variability in our data, we cannot rule out the possibility that this difference occurred purely by chance.</p>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="responsible-hypothesis-testing" class="level2" data-number="3.7">

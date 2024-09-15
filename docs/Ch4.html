@@ -590,7 +590,8 @@ Coefficients:
 <p><span class="math inline">\(Y_i = \beta_0 + \beta_1X_{i} + \epsilon_i\)</span>, where <span class="math inline">\(\epsilon_i\sim\mathcal{N}(0,\sigma)\)</span>,</p>
 <p>where <span class="math inline">\(Y_i\)</span> represents amount dispensed, and <span class="math inline">\(X_i\)</span> represents time. <span class="math inline">\(\beta_0, \beta_1,\)</span>, and <span class="math inline">\(\sigma\)</span> are the unknown model parameters associated with the ice cream machine’s process.</p>
 <p>Using the values of <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> obtained by fitting a model to our observed data as estimates of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>, our estimated regression equation is</p>
-<p>[Y_i = b_0 + b_1X_i + _i = -0.1299087 + 2.0312489X_i + _i ]</p>
+<p>$$ Y_i = b_0 + b_1X_i + _i = -0.1299087 + 2.0312489X_i + _i</p>
+<p>$$</p>
 <p>where <span class="math inline">\(\epsilon_i\sim\mathcal{N}(0,\sigma)\)</span>.</p>
 <p>An estimate for <span class="math inline">\(\sigma\)</span> is given by</p>
 <p><span class="math inline">\(s =\sqrt{\frac{\text{SSR}}{n-(p+1)}} = \sqrt{\frac{\displaystyle\sum_{i=1}^n(y_i-\hat{y}_i)^2}{(n-(p+1))}}\)</span>.</p>
@@ -659,6 +660,7 @@ Coefficients:
 <p>We close the section with a philosophical question:</p>
 <p>Do data really come about from processes like the normal error regression model? That is, do you think it is reasonable to believe that data we see in the real world (perhaps the amount of ice cream dispensed by an ice cream machine) represent independent outcomes of a process in which expected outcomes are a linear function of explanatory variables, and deviate from their expectation according to a normal distribution with constant variance?</p>
 <p>We won’t attempt to answer that question here, but it is worth thinking about. After all, it is an assumption on which many frequently employed methods of statistical inference depends.</p>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="standard-error-and-confidence-intervals" class="level2" data-number="4.2">
@@ -672,8 +674,8 @@ Coefficients:
 <p><strong>Theory-Based Standard Error Formulas</strong></p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 30%">
-<col style="width: 69%">
+<col style="width: 31%">
+<col style="width: 68%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1116,6 +1118,7 @@ Residual standard error: 0.341 on 52 degrees of freedom</code></pre>
 </tr>
 </tbody>
 </table>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="t-tests" class="level2" data-number="4.3">
@@ -1314,6 +1317,7 @@ F-statistic: 25.24 on 1 and 51 DF,  p-value: 0.000006573</code></pre>
 <p>Fisher’s comment emphasizes the fact that probability-based tests, like the t-test are simply approximations to what we would obtain via simulation-based approaches, which were not possible in his day, but are now.</p>
 <p>Proponents of simulation-based inference include Tim Hesterberg, Senior Statistician at Instacart, and former Senior Statistician at Google, which heavily used simulation-based tests associated with computer experiments associated with their search settings. Hesterberg wrote a <a href="https://browse.arxiv.org/pdf/1411.5279.pdf">2015 paper</a>, arguing for the use and teaching of simulation-based techniques.</p>
 <p>We will move forward by using probability-based inference where appropriate, while understanding that we are merely approximating what we would obtain via simulation. Meanwhile, we’ll continue to employ simulation-based approaches where probability-based techniques are inappropriate or unavailable.</p>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="f-tests" class="level2" data-number="4.4">
@@ -1804,6 +1808,7 @@ F-statistic: 185.9 on 3 and 96 DF,  p-value: &lt; 0.00000000000000022</code></pr
 <p><strong>Null Hypothesis</strong>: There is no interaction between square feet and waterfront. (<span class="math inline">\(\beta_3=0\)</span>) (That is, the effect of size on price is the same for waterfront and non-waterfront houses).</p>
 <p>The large t-statistic (7.773) and small p-value provide strong evidence against this null hypothesis. It appears there really is evidence of an interaction between price and waterfront status, as we previously suspected, based on graphical representation and background knowledge.</p>
 <p>Note that if the interaction term had yielded a large p-value, indicating a lack of evidence of an interaction, we might have wanted to drop the interaction term from the model, in order to make the interpretations of the other estimates and hypothesis tests simpler.</p>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="intervals-for-expected-response" class="level2" data-number="4.6">
@@ -2099,6 +2104,7 @@ Note: these are confidence intervals for <span class="math inline">\(\beta_0\)</
 <p>We are 95% confident that an individual lake in North Florida will have mercury level between 0 and 1.07 ppm.</p>
 <p>We are 95% confident that the mean mercury level in South Florida is between 0.04 and 1.35 ppm.</p>
 <p>Note that the normality assumption, which allows for negative mercury levels leads to a somewhat nonsensical result.</p>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="the-regression-effect" class="level2" data-number="4.7">
@@ -2280,6 +2286,7 @@ Note: these are confidence intervals for <span class="math inline">\(\beta_0\)</
 <p>Trainees were praised after performing well and criticized after performing badly. The flight instructors observed that “high praise for good execution of complex maneuvers typically results in a decrement of performance on the next try.”</p>
 <p>Kahneman and Tversky write that :</p>
 <p><em>“We normally reinforce others when their behavior is good and punish them when their behavior is bad. By regression alone, therefore, they [the trainees] are most likely to improve after being punished and most likely to deteriorate after being rewarded. Consequently, we are exposed to a lifetime schedule in which we are most often rewarded for punishing others, and punished for rewarding.”</em></p>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="responsible-statistical-inference" class="level2" data-number="4.8">

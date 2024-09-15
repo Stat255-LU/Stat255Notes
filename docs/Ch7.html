@@ -763,6 +763,7 @@ F-statistic: 12.41 on 3 and 96 DF,  p-value: 0.0000006309</code></pre>
 </div>
 </div>
 </div>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="variance-bias-tradeoff" class="level2" data-number="7.2">
@@ -966,6 +967,7 @@ F-statistic: 12.41 on 3 and 96 DF,  p-value: 0.0000006309</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(predictions, <span class="at">file =</span> <span class="st">"predictions.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="ridge-regression" class="level2" data-number="7.3">
@@ -1372,6 +1374,7 @@ Q=&amp; \displaystyle\sum_{i=1}^n (y_i -\hat{y}_i)^2  + \lambda\displaystyle\sum
 &amp; \displaystyle\sum_{i=1}^n (y_i -\hat{y}_i)^2  + \lambda\displaystyle\sum_{j=1}^p|b_j|\\ =  &amp; \displaystyle\sum_{i=1}^n (y_i -(b_0 + b_1x_{i1} + b_2x_{i2} + \ldots + b_px_{ip}))^2 + \lambda_1\displaystyle\sum_{j=1}^pb_j^2+ \lambda_2\displaystyle\sum_{j=1}^p|b_j|
 \end{aligned}
 \]</span></p>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="decision-trees" class="level2" data-number="7.4">
@@ -1682,6 +1685,7 @@ y    155</code></pre>
 </ol></li>
 </ul>
 <p>Growing deep trees ensures low bias. In a random forest, averaging across many deep trees decreases variance, while maintaining low bias.</p>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="regression-splines" class="level2" data-number="7.5">
@@ -1799,6 +1803,7 @@ y    155</code></pre>
 <li>degree of polynomial</li>
 </ul>
 <p>The best choices for all of these will vary between datasets and can be assessed through cross-validation.</p>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="summary-and-comparision" class="level2" data-number="7.6">
@@ -2083,6 +2088,7 @@ Paved.DriveY       709.1532   1324.2704</code></pre>
 132926.5 287045.1 183978.6 207079.4 207079.4 </code></pre>
 </div>
 </div>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="assessing-a-classifiers-performance" class="level2" data-number="7.7">
@@ -2633,6 +2639,7 @@ Prediction  No Yes
 <p><strong>Tree Specificity</strong></p>
 <p><span class="math display">\[\frac{960}{960+5} \approx 0.9948 \]</span></p>
 <p>In a given situation, we should think about the cost of a false negative vs a false positive when determining whether to place more weight on sensitivity or specificity. For example, “is it worse to tell a patient they tested positive for a disease when they really don’t have it, or to not tell them they tested positive when they really do have it?”</p>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="receiver-operating-characteristic-curve" class="level2" data-number="7.8">
@@ -2855,6 +2862,7 @@ Prediction  No Yes
 </div>
 </div>
 <p>Even though a model that assigns predictions randomly, with 97% predicted as negatives will have a high accuracy rate, it will yield a poor ROC curve indicating an inability to separate positive cases from negative ones.</p>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="ethical-considerations-in-predictive-modeling" class="level2" data-number="7.9">
