@@ -249,6 +249,7 @@ window.Quarto = {
   <li><a href="#t-distribution" id="toc-t-distribution" class="nav-link" data-scroll-target="#t-distribution"><span class="header-section-number">4.3.1</span> t-Distribution</a></li>
   <li><a href="#t-tests-1" id="toc-t-tests-1" class="nav-link" data-scroll-target="#t-tests-1"><span class="header-section-number">4.3.2</span> t-tests</a></li>
   <li><a href="#t-test-examples" id="toc-t-test-examples" class="nav-link" data-scroll-target="#t-test-examples"><span class="header-section-number">4.3.3</span> t-test Examples</a></li>
+  <li><a href="#limitations-of-model-based-inference" id="toc-limitations-of-model-based-inference" class="nav-link" data-scroll-target="#limitations-of-model-based-inference"><span class="header-section-number">4.3.4</span> Limitations of Model-Based Inference</a></li>
   </ul></li>
   <li><a href="#f-tests" id="toc-f-tests" class="nav-link" data-scroll-target="#f-tests"><span class="header-section-number">4.4</span> F-tests</a>
   <ul class="collapse">
@@ -286,28 +287,10 @@ window.Quarto = {
   </ul></li>
   <li><a href="#responsible-statistical-inference" id="toc-responsible-statistical-inference" class="nav-link" data-scroll-target="#responsible-statistical-inference"><span class="header-section-number">4.8</span> Responsible Statistical Inference</a>
   <ul class="collapse">
-  <li><a href="#statistical-significance-vs-practical-importance" id="toc-statistical-significance-vs-practical-importance" class="nav-link" data-scroll-target="#statistical-significance-vs-practical-importance"><span class="header-section-number">4.8.1</span> Statistical Significance vs Practical Importance</a></li>
-  <li><a href="#what-a-p-value-tells-us" id="toc-what-a-p-value-tells-us" class="nav-link" data-scroll-target="#what-a-p-value-tells-us"><span class="header-section-number">4.8.2</span> What a p-value tells us</a></li>
-  <li><a href="#flights-from-new-york-to-chicago" id="toc-flights-from-new-york-to-chicago" class="nav-link" data-scroll-target="#flights-from-new-york-to-chicago"><span class="header-section-number">4.8.3</span> Flights from New York to Chicago</a></li>
-  <li><a href="#visualizing-new-york-to-chicago-flights" id="toc-visualizing-new-york-to-chicago-flights" class="nav-link" data-scroll-target="#visualizing-new-york-to-chicago-flights"><span class="header-section-number">4.8.4</span> Visualizing New York to Chicago Flights</a></li>
-  <li><a href="#model-for-airlines-data" id="toc-model-for-airlines-data" class="nav-link" data-scroll-target="#model-for-airlines-data"><span class="header-section-number">4.8.5</span> Model for Airlines Data</a></li>
-  <li><a href="#confidence-interval-for-flights" id="toc-confidence-interval-for-flights" class="nav-link" data-scroll-target="#confidence-interval-for-flights"><span class="header-section-number">4.8.6</span> Confidence Interval for Flights</a></li>
-  <li><a href="#flights-conclusions" id="toc-flights-conclusions" class="nav-link" data-scroll-target="#flights-conclusions"><span class="header-section-number">4.8.7</span> Flights Conclusions?</a></li>
-  <li><a href="#smoking-and-birthweight-example" id="toc-smoking-and-birthweight-example" class="nav-link" data-scroll-target="#smoking-and-birthweight-example"><span class="header-section-number">4.8.8</span> Smoking and Birthweight Example</a></li>
-  <li><a href="#model-for-birthweight" id="toc-model-for-birthweight" class="nav-link" data-scroll-target="#model-for-birthweight"><span class="header-section-number">4.8.9</span> Model for Birthweight</a></li>
-  <li><a href="#conclusions-from-birthweight-data" id="toc-conclusions-from-birthweight-data" class="nav-link" data-scroll-target="#conclusions-from-birthweight-data"><span class="header-section-number">4.8.10</span> Conclusions from Birthweight Data</a></li>
-  <li><a href="#impact-of-small-sample-size" id="toc-impact-of-small-sample-size" class="nav-link" data-scroll-target="#impact-of-small-sample-size"><span class="header-section-number">4.8.11</span> Impact of Small Sample Size</a></li>
-  <li><a href="#larger-dataset" id="toc-larger-dataset" class="nav-link" data-scroll-target="#larger-dataset"><span class="header-section-number">4.8.12</span> Larger Dataset</a></li>
-  <li><a href="#multiple-testing" id="toc-multiple-testing" class="nav-link" data-scroll-target="#multiple-testing"><span class="header-section-number">4.8.13</span> Multiple Testing</a></li>
-  <li><a href="#cautions-and-advice" id="toc-cautions-and-advice" class="nav-link" data-scroll-target="#cautions-and-advice"><span class="header-section-number">4.8.14</span> Cautions and Advice</a></li>
-  <li><a href="#limitations-of-model-based-inference" id="toc-limitations-of-model-based-inference" class="nav-link" data-scroll-target="#limitations-of-model-based-inference"><span class="header-section-number">4.8.15</span> Limitations of Model-Based Inference</a></li>
-  <li><a href="#statistical-significance-vs-practical-importance-1" id="toc-statistical-significance-vs-practical-importance-1" class="nav-link" data-scroll-target="#statistical-significance-vs-practical-importance-1"><span class="header-section-number">4.8.16</span> Statistical Significance vs Practical Importance</a></li>
-  <li><a href="#what-a-p-value-tells-us-1" id="toc-what-a-p-value-tells-us-1" class="nav-link" data-scroll-target="#what-a-p-value-tells-us-1"><span class="header-section-number">4.8.17</span> What a p-value tells us</a></li>
-  <li><a href="#multiple-testing-1" id="toc-multiple-testing-1" class="nav-link" data-scroll-target="#multiple-testing-1"><span class="header-section-number">4.8.18</span> Multiple Testing</a></li>
-  <li><a href="#flights-from-ny-to-chi" id="toc-flights-from-ny-to-chi" class="nav-link" data-scroll-target="#flights-from-ny-to-chi"><span class="header-section-number">4.8.19</span> Flights from NY to CHI</a></li>
-  <li><a href="#smoking-during-pregnancy" id="toc-smoking-during-pregnancy" class="nav-link" data-scroll-target="#smoking-during-pregnancy"><span class="header-section-number">4.8.20</span> Smoking During Pregnancy</a></li>
-  <li><a href="#smoking-during-pregnancy-cont" id="toc-smoking-during-pregnancy-cont" class="nav-link" data-scroll-target="#smoking-during-pregnancy-cont"><span class="header-section-number">4.8.21</span> Smoking During Pregnancy (cont)</a></li>
-  <li><a href="#cautions-and-advice-1" id="toc-cautions-and-advice-1" class="nav-link" data-scroll-target="#cautions-and-advice-1"><span class="header-section-number">4.8.22</span> Cautions and Advice</a></li>
+  <li><a href="#breakfast-cereals-and-sex-of-babies" id="toc-breakfast-cereals-and-sex-of-babies" class="nav-link" data-scroll-target="#breakfast-cereals-and-sex-of-babies"><span class="header-section-number">4.8.1</span> Breakfast Cereals and Sex of Babies</a></li>
+  <li><a href="#flights-from-new-york-to-chicago" id="toc-flights-from-new-york-to-chicago" class="nav-link" data-scroll-target="#flights-from-new-york-to-chicago"><span class="header-section-number">4.8.2</span> Flights from New York to Chicago</a></li>
+  <li><a href="#smoking-and-birthweight-example" id="toc-smoking-and-birthweight-example" class="nav-link" data-scroll-target="#smoking-and-birthweight-example"><span class="header-section-number">4.8.3</span> Smoking and Birthweight Example</a></li>
+  <li><a href="#cautions-and-advice" id="toc-cautions-and-advice" class="nav-link" data-scroll-target="#cautions-and-advice"><span class="header-section-number">4.8.4</span> Cautions and Advice</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -1316,6 +1299,22 @@ F-statistic: 25.24 on 1 and 51 DF,  p-value: 0.000006573</code></pre>
 <p>Since there are no lakes with pH level 0, this is not a meaningful test.</p>
 </section>
 </section>
+<section id="limitations-of-model-based-inference" class="level3" data-number="4.3.4">
+<h3 data-number="4.3.4" class="anchored" data-anchor-id="limitations-of-model-based-inference"><span class="header-section-number">4.3.4</span> Limitations of Model-Based Inference</h3>
+<p>We’ve seen that in situations where the sampling distribution for a regression coefficient <span class="math inline">\(b_j\)</span> is symmetric and bell-shaped, we can create confidence intervals and perform hypothesis tests using the t-distribution without performing permutation for hypothesis tests, or bootstrapping for confidence intervals.</p>
+<p>There are, however, limitations to this approach, which underscore the importance of the simulation-based approaches seen in Chapters 3 and 4.</p>
+<p>These include:</p>
+<ol type="1">
+<li><p>There are lots of statistics, like medians and standard deviations, that do not have known standard error formulas, and do not follow symmetric bell-shaped distributions. In more advanced and complicated models, it is common to encounter statistics of interest with unknown sampling distributions. In these cases, we can estimate p-values and build confidence intervals via simulation, even if we cannot identify the distribution by name.</p></li>
+<li><p>Even for statistics with known standard error formulas, the t-test is only appropriate when the sampling distribution for <span class="math inline">\(b_j\)</span> is symmetric and bell-shaped. While there is probability theory that shows this will happen when the sample size is “large enough,” there is no set sample size that guarantees this. Datasets with heavier skewness in the response variable will require larger sample sizes than datasets with less skewness in the response.</p></li>
+<li><p>The simulation-based approaches provide valuable insight to the logic behind hypothesis tests. When we permute values of an explanatory variable in a hypothesis test it is clear that we are simulating a situation where the null hypothesis is true. Likewise, when we simulate taking many samples in bootstrapping, it is clear that we are assessing the variability in a statistic across samples. Simply jumping to the t-based approximations of these distributions makes it easy to lose our sense of what they actually represent, and thus increases the likelihood of interpreting them incorrectly.</p></li>
+</ol>
+<p>In fact prominent statistician R.A. Fisher wrote of simulation-based methods in 1936:</p>
+<p><em>“Actually, the statistician does not carry out this very simple and very tedious process, but his conclusions have no justification beyond the fact that they agree with those which could have been arrived at by this elementary method.”</em></p>
+<p>Fisher’s comment emphasizes the fact that probability-based tests, like the t-test are simply approximations to what we would obtain via simulation-based approaches, which were not possible in his day, but are now.</p>
+<p>Proponents of simulation-based inference include Tim Hesterberg, Senior Statistician at Instacart, and former Senior Statistician at Google, which heavily used simulation-based tests associated with computer experiments associated with their search settings. Hesterberg wrote a <a href="https://browse.arxiv.org/pdf/1411.5279.pdf">2015 paper</a>, arguing for the use and teaching of simulation-based techniques.</p>
+<p>We will move forward by using probability-based inference where appropriate, while understanding that we are merely approximating what we would obtain via simulation. Meanwhile, we’ll continue to employ simulation-based approaches where probability-based techniques are inappropriate or unavailable.</p>
+</section>
 </section>
 <section id="f-tests" class="level2" data-number="4.4">
 <h2 data-number="4.4" class="anchored" data-anchor-id="f-tests"><span class="header-section-number">4.4</span> F-tests</h2>
@@ -2285,14 +2284,13 @@ Note: these are confidence intervals for <span class="math inline">\(\beta_0\)</
 </section>
 <section id="responsible-statistical-inference" class="level2" data-number="4.8">
 <h2 data-number="4.8" class="anchored" data-anchor-id="responsible-statistical-inference"><span class="header-section-number">4.8</span> Responsible Statistical Inference</h2>
-<section id="statistical-significance-vs-practical-importance" class="level3" data-number="4.8.1">
-<h3 data-number="4.8.1" class="anchored" data-anchor-id="statistical-significance-vs-practical-importance"><span class="header-section-number">4.8.1</span> Statistical Significance vs Practical Importance</h3>
+<p>While statistics offer insight that have lead to great advances in science, medicine, business and economics and many other areas, they have also been misused, (either intentionally or unintentionally) in ways that have resulted in harm. In an effort to better educate the public, the American Statistical Association released a report in 2016, highlighting common misuses of p-values, and the notion of statistical significance. Kenneth Rothman, Professor of Epidemiology at Boston University School of Public Health wrote:</p>
 <ul>
 <li>“(S)cientists have embraced and even avidly pursued meaningless differences solely because they are statistically significant, and have ignored important effects because they failed to pass the screen of statistical significance…It is a safe bet that people have suffered or died because scientists (and editors, regulators, journalists and others) have used significance tests to interpret results, and have consequently failed to identify the most beneficial courses of action.” -ASA statement on p-values, 2016</li>
 </ul>
-</section>
-<section id="what-a-p-value-tells-us" class="level3" data-number="4.8.2">
-<h3 data-number="4.8.2" class="anchored" data-anchor-id="what-a-p-value-tells-us"><span class="header-section-number">4.8.2</span> What a p-value tells us</h3>
+<p>In this section, we’ll look at some real scenarios where it might be tempting to make an improper conclusion based on data. Think carefully about each scenario and identify possible misinterpretations that might arise. Then think about what conclusions or actions would be appropriate in each scenario.</p>
+<p>Keep in mind the following guidelines for responsible statistical inference.</p>
+<p><strong>What a p-value tells us</strong></p>
 <p>Performing responsible statistical inference requires understanding what p-values do and do not tell us, and how they should and should not be interpreted.</p>
 <ul>
 <li><p>A low p-value tells us that the data we observed are inconsistent with our null hypothesis or some assumption we make in our model.</p></li>
@@ -2308,10 +2306,17 @@ Note: these are confidence intervals for <span class="math inline">\(\beta_0\)</
 </ul></li>
 <li><p>Sometimes, a p-value tells us more about sample size, than relationship we’re actually interested in.</p></li>
 <li><p>A p-value does not tell us the “size” of a difference or effect, or whether it is practically meaningful.</p></li>
+<li><p>We should only generalize results from a hypothesis test performed on a sample to a larger population or process if the sample is representative of the population or process (such as when the sample is randomly selected).</p></li>
+<li><p>A correlation between two variables does not necessarily imply a causal relationship.</p></li>
 </ul>
+<section id="breakfast-cereals-and-sex-of-babies" class="level3" data-number="4.8.1">
+<h3 data-number="4.8.1" class="anchored" data-anchor-id="breakfast-cereals-and-sex-of-babies"><span class="header-section-number">4.8.1</span> Breakfast Cereals and Sex of Babies</h3>
+<p>The title of a <a href="https://www.newscientist.com/article/dn13754-breakfast-cereals-boost-chances-of-conceiving-boys/">2008 article by New Scientist</a> makes a surprising claim: “Breakfast cereals boost chances of conceiving boys.” Although the article lacks details on the underlying study, researchers, in fact, tracked the eating habits of women who were attempting to become pregnant. They tracked 133 different food items, and tested whether there was a difference in the proportion of baby boys conceived between women who ate the food, compared to those who didn’t. Of the 133 foods tested, only breakfast cereal showed a significant difference.</p>
+<p><strong>Question:</strong> Why is the researcher’s conclusion that eating breakfast cereal increases the chances of conceiving a boy inappropriate? Hint: think about how this situation is similar to the one in the <a href="https://xkcd.com/882/">xkcd comic</a>?</p>
+<p>A statistical procedure called the <strong>Bonferroni Correction</strong> suggests that when more than one test is performed simultaneously, we should multiply observed p-values by the number of tests performed. Why might this help prevent errors? Do you see any downsides of doing this?</p>
 </section>
-<section id="flights-from-new-york-to-chicago" class="level3" data-number="4.8.3">
-<h3 data-number="4.8.3" class="anchored" data-anchor-id="flights-from-new-york-to-chicago"><span class="header-section-number">4.8.3</span> Flights from New York to Chicago</h3>
+<section id="flights-from-new-york-to-chicago" class="level3" data-number="4.8.2">
+<h3 data-number="4.8.2" class="anchored" data-anchor-id="flights-from-new-york-to-chicago"><span class="header-section-number">4.8.2</span> Flights from New York to Chicago</h3>
 <p>A traveler lives in New York and wants to fly to Chicago. They consider flying out of two New York airports:</p>
 <ul>
 <li>Newark (EWR)<br>
@@ -2332,9 +2337,7 @@ Note: these are confidence intervals for <span class="math inline">\(\beta_0\)</
 <span id="cb126-2"><a href="#cb126-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(origin <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"EWR"</span>, <span class="st">"LGA"</span>) <span class="sc">&amp;</span> dest <span class="sc">==</span><span class="st">"ORD"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb126-3"><a href="#cb126-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(origin, dest, air_time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="visualizing-new-york-to-chicago-flights" class="level3" data-number="4.8.4">
-<h3 data-number="4.8.4" class="anchored" data-anchor-id="visualizing-new-york-to-chicago-flights"><span class="header-section-number">4.8.4</span> Visualizing New York to Chicago Flights</h3>
+<p>The plot and table compare the duration of flights from New York to Chicago from each airport.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb127"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Flights_NY_CHI, <span class="fu">aes</span>(<span class="at">x=</span>air_time, <span class="at">fill=</span>origin, <span class="at">color=</span>origin)) <span class="sc">+</span> <span class="fu">geom_density</span>(<span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Flight Time"</span>)</span>
 <span id="cb127-2"><a href="#cb127-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Flights_NY_CHI, <span class="fu">aes</span>(<span class="at">x=</span>air_time, <span class="at">y=</span>origin)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Flight Time"</span>)</span>
@@ -2380,10 +2383,7 @@ Note: these are confidence intervals for <span class="math inline">\(\beta_0\)</
 </table>
 </div>
 </div>
-<p><strong>Question:</strong> If you were flying from New York to Chicago, would this information influence which airport you would fly out of? If so, which would you be more likely to choose?</p>
-</section>
-<section id="model-for-airlines-data" class="level3" data-number="4.8.5">
-<h3 data-number="4.8.5" class="anchored" data-anchor-id="model-for-airlines-data"><span class="header-section-number">4.8.5</span> Model for Airlines Data</h3>
+<p>We fit a model to test whether there is evidence of a difference in average flight time.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb129"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb129-1"><a href="#cb129-1" aria-hidden="true" tabindex="-1"></a>M_Flights <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Flights_NY_CHI, air_time<span class="sc">~</span>origin)</span>
 <span id="cb129-2"><a href="#cb129-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Flights)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2409,9 +2409,7 @@ Multiple R-squared:  0.01558,   Adjusted R-squared:  0.01551
 F-statistic: 226.9 on 1 and 14333 DF,  p-value: &lt; 0.00000000000000022</code></pre>
 </div>
 </div>
-</section>
-<section id="confidence-interval-for-flights" class="level3" data-number="4.8.6">
-<h3 data-number="4.8.6" class="anchored" data-anchor-id="confidence-interval-for-flights"><span class="header-section-number">4.8.6</span> Confidence Interval for Flights</h3>
+<p>Confidence Interval for Flights:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb131"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb131-1"><a href="#cb131-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(M_Flights)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -2425,16 +2423,12 @@ originLGA     2.20905   2.869984</code></pre>
 <li><p>The very low p-value provides strong evidence of a difference in mean flight time.</p></li>
 <li><p>We are 95% confident that flights from LGA to ORD take between 2.2 and 2.9 minutes longer, on average, than flights from EWR to ORD.</p></li>
 </ul>
+<p><strong>Question:</strong> If you were planning a trip from New York to Chicago, how much of a factor would this information play in your decision? Why do you think the p-value is so small in this scenario?</p>
 </section>
-<section id="flights-conclusions" class="level3" data-number="4.8.7">
-<h3 data-number="4.8.7" class="anchored" data-anchor-id="flights-conclusions"><span class="header-section-number">4.8.7</span> Flights Conclusions?</h3>
-<p>Although we have a low p-value, indicating a discernable difference, the size of this difference (2-3 minutes in airtime) is very small. A travelor would most likely have other, more important considerations when deciding which airport to fly from.</p>
-<p>The low p-value is due to the very large sample size, rather than the size of the difference.</p>
-<p>Note: there is also some question about whether it is appropriate to use a hypothesis test or confidence interval here at all. We have data on all flights in 2013, so one could argue that we have the entire population already. Perhaps, we could view this as a sample and generalize to flights in other years, though conditions change, so it is not clear that these flights from 2013 would be representative of flights in other years.</p>
-</section>
-<section id="smoking-and-birthweight-example" class="level3" data-number="4.8.8">
-<h3 data-number="4.8.8" class="anchored" data-anchor-id="smoking-and-birthweight-example"><span class="header-section-number">4.8.8</span> Smoking and Birthweight Example</h3>
-<p>We consider data on the relationship between a pregnant mother’s smoking and the birthweight of the baby. Data come from a sample of 80 babies born in North Carolina in 2004. Thirty of the mothers were smokers, and fifty were nonsmokers.</p>
+<section id="smoking-and-birthweight-example" class="level3" data-number="4.8.3">
+<h3 data-number="4.8.3" class="anchored" data-anchor-id="smoking-and-birthweight-example"><span class="header-section-number">4.8.3</span> Smoking and Birthweight Example</h3>
+<p>We consider data on the relationship between a pregnant mother’s smoking and the birth weight of the baby. Data come from a sample of 80 babies born in North Carolina in 2004. Thirty of the mothers were smokers, and fifty were nonsmokers.</p>
+<p>The plot and table show the distribution of birth weights among babies whose mothers smoked, compared to those who didn’t.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb133"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb133-1"><a href="#cb133-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>NCBirths, <span class="fu">aes</span>(<span class="at">x=</span>weight, <span class="at">fill=</span>habit, <span class="at">color=</span>habit)) <span class="sc">+</span> <span class="fu">geom_density</span>(<span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Birthweight and Smoking"</span>)</span>
 <span id="cb133-2"><a href="#cb133-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>NCBirths, <span class="fu">aes</span>(<span class="at">x=</span>weight, <span class="at">y=</span>habit)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Birthweight and Smoking"</span>)</span>
@@ -2478,9 +2472,7 @@ originLGA     2.20905   2.869984</code></pre>
 </table>
 </div>
 </div>
-</section>
-<section id="model-for-birthweight" class="level3" data-number="4.8.9">
-<h3 data-number="4.8.9" class="anchored" data-anchor-id="model-for-birthweight"><span class="header-section-number">4.8.9</span> Model for Birthweight</h3>
+<p>We fit a model and test for differences in average birth weight.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb135"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb135-1"><a href="#cb135-1" aria-hidden="true" tabindex="-1"></a>M_Birthwt <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>NCBirths, weight<span class="sc">~</span>habit)</span>
 <span id="cb135-2"><a href="#cb135-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Birthwt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2505,9 +2497,6 @@ Multiple R-squared:  0.01842,   Adjusted R-squared:  0.005834
 F-statistic: 1.464 on 1 and 78 DF,  p-value: 0.23</code></pre>
 </div>
 </div>
-</section>
-<section id="conclusions-from-birthweight-data" class="level3" data-number="4.8.10">
-<h3 data-number="4.8.10" class="anchored" data-anchor-id="conclusions-from-birthweight-data"><span class="header-section-number">4.8.10</span> Conclusions from Birthweight Data</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb137"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb137-1"><a href="#cb137-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(M_Birthwt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -2517,22 +2506,15 @@ habitsmoker -1.118735 0.2730012</code></pre>
 </div>
 </div>
 <ul>
-<li><p>The average birtweight of babies whose mothers are smokers is estimated to be about 0.42 lbs less than the average birthweight for babies whose mothers are nonsmokers.</p></li>
-<li><p>The large p-value of 0.23, tells us that there is not enough evidence to say that a mother’s smoking is associated with lower birthweights. It is plausible that this difference could have occurred by chance.</p></li>
+<li><p>The average birth weight of babies whose mothers are smokers is estimated to be about 0.42 lbs less than the average birthweight for babies whose mothers are nonsmokers.</p></li>
+<li><p>The large p-value of 0.23, tells us that there is not enough evidence to say that a mother’s smoking is associated with lower birth weights. It is plausible that this difference could have occurred by chance.</p></li>
 <li><p>We are 95% confident that the average birtweight of babies whose mothers are smokers is between 1.12 lbs less and 0.27 lbs more than the average birthweight for babies whose mothers are nonsmokers.</p></li>
 </ul>
 <p><strong>Question:</strong> Many studies have shown that a mother’s smoking puts a baby at risk of low birthweight. Do our results contradict this research? Should we conclude that smoking has no impact on birthweights?</p>
-</section>
-<section id="impact-of-small-sample-size" class="level3" data-number="4.8.11">
-<h3 data-number="4.8.11" class="anchored" data-anchor-id="impact-of-small-sample-size"><span class="header-section-number">4.8.11</span> Impact of Small Sample Size</h3>
-<p>Notice that we observed a difference of about 0.4 lbs. in mean birthweight, which is a considerable difference.</p>
-<p>The large p-value is mosty due to the relatively small sample size. Even though we observed a mean difference of 0.4 lbs, the sample is to small to allow us to say conclusively that smoking is associated with lower birthweights.</p>
-<p>This is very different from concluding that smoking does not impact birthweight.</p>
-<p>This is an example of why we should never “accept the null hypothesis” or say that our data “support the null hypothesis.”</p>
-</section>
-<section id="larger-dataset" class="level3" data-number="4.8.12">
-<h3 data-number="4.8.12" class="anchored" data-anchor-id="larger-dataset"><span class="header-section-number">4.8.12</span> Larger Dataset</h3>
+<section id="larger-study" class="level4" data-number="4.8.3.1">
+<h4 data-number="4.8.3.1" class="anchored" data-anchor-id="larger-study"><span class="header-section-number">4.8.3.1</span> Larger Study</h4>
 <p>In fact, this sample of 80 babies is part of a larger dataset, consisting of 1,000 babies born in NC in 2004. When we consider the full dataset, notice that the difference between the groups is similar, but the p-value is much smaller, providing stronger evidence of a relationship between a mother’s smoking and lower birthweight.</p>
+<p>We’ll now fit a model to the larger dataset.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb139"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb139-1"><a href="#cb139-1" aria-hidden="true" tabindex="-1"></a>M_Birthwt_Full <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>ncbirths, weight<span class="sc">~</span>habit)</span>
 <span id="cb139-2"><a href="#cb139-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Birthwt_Full)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2558,297 +2540,20 @@ Multiple R-squared:  0.004846,  Adjusted R-squared:  0.003848
 F-statistic: 4.855 on 1 and 997 DF,  p-value: 0.02779</code></pre>
 </div>
 </div>
-</section>
-<section id="multiple-testing" class="level3" data-number="4.8.13">
-<h3 data-number="4.8.13" class="anchored" data-anchor-id="multiple-testing"><span class="header-section-number">4.8.13</span> Multiple Testing</h3>
-</section>
-<section id="cautions-and-advice" class="level3" data-number="4.8.14">
-<h3 data-number="4.8.14" class="anchored" data-anchor-id="cautions-and-advice"><span class="header-section-number">4.8.14</span> Cautions and Advice</h3>
-<p><strong>p-values are only (a small) part of a statistical analysis.</strong></p>
-<ul>
-<li>For small samples, real differences might not be statistically significant.<br>
--Don’t accept null hypothesis. Gather more information.<br>
-</li>
-<li>For large, even very small differences will be statistically significant.<br>
--Look at confidence interval. Is difference practically important?<br>
-</li>
-<li>When many hypotheses are tested at once (such as many food items) some will produce a significant result just by change.<br>
--Use a multiple testing correction, such as Bonferroni<br>
-</li>
-<li>Interpret p-values on a “sliding scale”
-<ul>
-<li>0.049 is practically the same as 0.051</li>
-</ul></li>
-<li>Is sample representative of larger population?<br>
-</li>
-<li>Were treatments randomly assigned (for experiments)?<br>
-</li>
-<li>Are there other variables to consider?</li>
-</ul>
-<p>&lt;!— ## Responsible Inference - Case Studies</p>
-</section>
-<section id="limitations-of-model-based-inference" class="level3" data-number="4.8.15">
-<h3 data-number="4.8.15" class="anchored" data-anchor-id="limitations-of-model-based-inference"><span class="header-section-number">4.8.15</span> Limitations of Model-Based Inference</h3>
-<p>We’ve seen that in situations where the sampling distribution for a regression coefficient <span class="math inline">\(b_j\)</span> is symmetric and bell-shaped, we can create confidence intervals and perform hypothesis tests using the t-distribution without performing permutation for hypothesis tests, or bootstrapping for confidence intervals.</p>
-<p>There are, however, limitations to this approach, which underscore the importance of the simulation-based approaches seen in Chapters 3 and 4.</p>
-<p>These include:</p>
-<ol type="1">
-<li><p>There are lots of statistics, like medians and standard deviations, that do not have known standard error formulas, and do not follow symmetric bell-shaped distributions. In more advanced and complicated models, it is common to encounter statistics of interest with unknown sampling distributions. In these cases, we can estimate p-values and build confidence intervals via simulation, even if we cannot identify the distribution by name.</p></li>
-<li><p>Even for statistics with known standard error formulas, the t-test is only appropriate when the sampling distribution for <span class="math inline">\(b_j\)</span> is symmetric and bell-shaped. While there is probability theory that shows this will happen when the sample size is “large enough,” there is no set sample size that guarantees this. Datasets with heavier skewness in the response variable will require larger sample sizes than datasets with less skewness in the response.</p></li>
-<li><p>The simulation-based approaches provide valuable insight to the logic behind hypothesis tests. When we permute values of an explanatory variable in a hypothesis test it is clear that we are simulating a situation where the null hypothesis is true. Likewise, when we simulate taking many samples in bootstrapping, it is clear that we are assessing the variability in a statistic across samples. Simply jumping to the t-based approximations of these distributions makes it easy to lose our sense of what they actually represent, and thus increases the likelihood of interpreting them incorrectly.</p></li>
-</ol>
-<p>In fact prominent statistician R.A. Fisher wrote of simulation-based methods in 1936:</p>
-<p><em>“Actually, the statistician does not carry out this very simple and very tedious process, but his conclusions have no justification beyond the fact that they agree with those which could have been arrived at by this elementary method.”</em></p>
-<p>Fisher’s comment emphasizes the fact that probability-based tests, like the t-test are simply approximations to what we would obtain via simulation-based approaches, which were not possible in his day, but are now.</p>
-<p>Proponents of simulation-based inference include Tim Hesterberg, Senior Statistician at Instacart, and former Senior Statistician at Google, which heavily used simulation-based tests associated with computer experiments associated with their search settings. Hesterberg wrote a <a href="https://browse.arxiv.org/pdf/1411.5279.pdf">2015 paper</a>, arguing for the use and teaching of simulation-based techniques.</p>
-<p>We will move forward by using probability-based inference where appropriate, while understanding that we are merely approximating what we would obtain via simulation. Meanwhile, we’ll continue to employ simulation-based approaches where probability-based techniques are inappropriate or unavailable.</p>
-</section>
-<section id="statistical-significance-vs-practical-importance-1" class="level3" data-number="4.8.16">
-<h3 data-number="4.8.16" class="anchored" data-anchor-id="statistical-significance-vs-practical-importance-1"><span class="header-section-number">4.8.16</span> Statistical Significance vs Practical Importance</h3>
-<ul>
-<li>“(S)cientists have embraced and even avidly pursued meaningless differences solely because they are statistically significant, and have ignored important effects because they failed to pass the screen of statistical significance…It is a safe bet that people have suffered or died because scientists (and editors, regulators, journalists and others) have used significance tests to interpret results, and have consequently failed to identify the most beneficial courses of action.” -ASA statement on p-values, 2016</li>
-</ul>
-</section>
-<section id="what-a-p-value-tells-us-1" class="level3" data-number="4.8.17">
-<h3 data-number="4.8.17" class="anchored" data-anchor-id="what-a-p-value-tells-us-1"><span class="header-section-number">4.8.17</span> What a p-value tells us</h3>
-<p>Performing responsible statistical inference requires understanding what p-values do and do not tell us, and how they should and should not be interpreted.</p>
-<ul>
-<li><p>A low p-value tells us that the data we observed are inconsistent with our null hypothesis or some assumption we make in our model.</p></li>
-<li><p>A large p-value tells us that the data we observed could have plausibly been obtained under our supposed model and null hypothesis.</p></li>
-<li><p>A p-value never provides evidence supporting the null hypothesis, it only tells us the strength of evidence against it.</p></li>
-<li><p>A p-value is impacted by</p>
-<ul>
-<li>the size of the difference between group, or change per unit increase (effect size)<br>
-</li>
-<li>the amount of variability in the data<br>
-</li>
-<li>the sample size</li>
-</ul></li>
-<li><p>Sometimes, a p-value tells us more about sample size, than relationship we’re actually interested in.</p></li>
-<li><p>A p-value does not tell us the “size” of a difference or effect, or whether it is practically meaningful.</p></li>
-</ul>
-<p>In this section, we’ll examine three case studies and think about what we should or shouldn’t conclude in each situation.</p>
-</section>
-<section id="multiple-testing-1" class="level3" data-number="4.8.18">
-<h3 data-number="4.8.18" class="anchored" data-anchor-id="multiple-testing-1"><span class="header-section-number">4.8.18</span> Multiple Testing</h3>
-</section>
-<section id="flights-from-ny-to-chi" class="level3" data-number="4.8.19">
-<h3 data-number="4.8.19" class="anchored" data-anchor-id="flights-from-ny-to-chi"><span class="header-section-number">4.8.19</span> Flights from NY to CHI</h3>
-<p>A traveler lives in New York and wants to fly to Chicago. They consider flying out of two New York airports:</p>
-<ul>
-<li>Newark (EWR)<br>
-</li>
-<li>LaGuardia (LGA)</li>
-</ul>
-<p>We have data on the times of flights from both airports to Chicago’s O’Hare airport from 2013 (more than 14,000 flights).</p>
-<p>Assuming these flights represent a random sample of all flights from these airports to Chicago, consider how the traveler might use this information to decide which airport to fly out of.</p>
+<p>Confidence interval based on larger dataset:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb141"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb141-1"><a href="#cb141-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nycflights13)</span>
-<span id="cb141-2"><a href="#cb141-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(flights)</span>
-<span id="cb141-3"><a href="#cb141-3" aria-hidden="true" tabindex="-1"></a>flights<span class="sc">$</span>origin <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(flights<span class="sc">$</span>origin)</span>
-<span id="cb141-4"><a href="#cb141-4" aria-hidden="true" tabindex="-1"></a>flights<span class="sc">$</span>dest <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(flights<span class="sc">$</span>dest)</span>
-<span id="cb141-5"><a href="#cb141-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb141-6"><a href="#cb141-6" aria-hidden="true" tabindex="-1"></a>Flights_NY_CHI <span class="ot">&lt;-</span> flights <span class="sc">%&gt;%</span> </span>
-<span id="cb141-7"><a href="#cb141-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(origin <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"EWR"</span>, <span class="st">"LGA"</span>) <span class="sc">&amp;</span> dest <span class="sc">==</span><span class="st">"ORD"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb141-8"><a href="#cb141-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(origin, dest, air_time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb142"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb142-1"><a href="#cb142-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Flights_NY_CHI, <span class="fu">aes</span>(<span class="at">x=</span>air_time, <span class="at">fill=</span>origin, <span class="at">color=</span>origin)) <span class="sc">+</span> <span class="fu">geom_density</span>(<span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Flight Time"</span>)</span>
-<span id="cb142-2"><a href="#cb142-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Flights_NY_CHI, <span class="fu">aes</span>(<span class="at">x=</span>air_time, <span class="at">y=</span>origin)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Flight Time"</span>)</span>
-<span id="cb142-3"><a href="#cb142-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(p1, p2, <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-107-1.png" class="img-fluid figure-img" width="768"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb143"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb143-1"><a href="#cb143-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb143-2"><a href="#cb143-2" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> Flights_NY_CHI <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(origin) <span class="sc">%&gt;%</span> </span>
-<span id="cb143-3"><a href="#cb143-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Mean_Airtime =</span> <span class="fu">mean</span>(air_time, <span class="at">na.rm=</span><span class="cn">TRUE</span>), </span>
-<span id="cb143-4"><a href="#cb143-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">SD =</span> <span class="fu">sd</span>(air_time, <span class="at">na.rm=</span><span class="cn">TRUE</span>), <span class="at">n=</span><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(air_time)))</span>
-<span id="cb143-5"><a href="#cb143-5" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: left;">origin</th>
-<th style="text-align: right;">Mean_Airtime</th>
-<th style="text-align: right;">SD</th>
-<th style="text-align: right;">n</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">EWR</td>
-<td style="text-align: right;">113.2603</td>
-<td style="text-align: right;">9.987122</td>
-<td style="text-align: right;">5828</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">LGA</td>
-<td style="text-align: right;">115.7998</td>
-<td style="text-align: right;">9.865270</td>
-<td style="text-align: right;">8507</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><strong>Model for Flights Data</strong></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb144"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb144-1"><a href="#cb144-1" aria-hidden="true" tabindex="-1"></a>M_Flights <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Flights_NY_CHI, air_time<span class="sc">~</span>origin)</span>
-<span id="cb144-2"><a href="#cb144-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Flights)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb141"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb141-1"><a href="#cb141-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(M_Birthwt_Full)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = air_time ~ origin, data = Flights_NY_CHI)
-
-Residuals:
-   Min     1Q Median     3Q    Max 
--26.26  -7.26  -1.26   5.20  84.74 
-
-Coefficients:
-            Estimate Std. Error t value            Pr(&gt;|t|)    
-(Intercept) 113.2603     0.1299  872.06 &lt;0.0000000000000002 ***
-originLGA     2.5395     0.1686   15.06 &lt;0.0000000000000002 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 9.915 on 14333 degrees of freedom
-  (622 observations deleted due to missingness)
-Multiple R-squared:  0.01558,   Adjusted R-squared:  0.01551 
-F-statistic: 226.9 on 1 and 14333 DF,  p-value: &lt; 0.00000000000000022</code></pre>
+<pre><code>                 2.5 %      97.5 %
+(Intercept)  7.0444697  7.24407557
+habitsmoker -0.5965648 -0.03452013</code></pre>
 </div>
 </div>
-<p><strong>Confidence Interval</strong></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb146"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb146-1"><a href="#cb146-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(M_Flights)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>                2.5 %     97.5 %
-(Intercept) 113.00572 113.514871
-originLGA     2.20905   2.869984</code></pre>
-</div>
-</div>
-<p><strong>Question:</strong> If you were flying from New York to Chicago, would this information influence which airport you would fly out of? If so, which would you be more likely to choose?</p>
+<p>Notice that the estimated difference in birth weights is actually smaller in the full dataset than in the subset (though 0.3 lbs is still a pretty big difference for babies), and yet now the p-value is much smaller. Why do you think this happened? What should we learn from this?</p>
 </section>
-<section id="smoking-during-pregnancy" class="level3" data-number="4.8.20">
-<h3 data-number="4.8.20" class="anchored" data-anchor-id="smoking-during-pregnancy"><span class="header-section-number">4.8.20</span> Smoking During Pregnancy</h3>
-<p>Many studies have shown that a mother’s smoking during pregnancy puts a baby at risk of low birth weight.</p>
-<p>We have data on the from a sample of 80 babies born in North Carolina in 2004. Thirty of the mothers were smokers, and fifty were nonsmokers.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb148"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb148-1"><a href="#cb148-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>NCBirths, <span class="fu">aes</span>(<span class="at">x=</span>weight, <span class="at">fill=</span>habit, <span class="at">color=</span>habit)) <span class="sc">+</span> <span class="fu">geom_density</span>(<span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Birthweight and Smoking"</span>)</span>
-<span id="cb148-2"><a href="#cb148-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>NCBirths, <span class="fu">aes</span>(<span class="at">x=</span>weight, <span class="at">y=</span>habit)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Birthweight and Smoking"</span>)</span>
-<span id="cb148-3"><a href="#cb148-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(p1, p2, <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-112-1.png" class="img-fluid figure-img" width="768"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb149"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb149-1"><a href="#cb149-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb149-2"><a href="#cb149-2" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> NCBirths <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(habit) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">Mean_Weight =</span> <span class="fu">mean</span>(weight), <span class="at">SD =</span> <span class="fu">sd</span>(weight), <span class="at">n=</span><span class="fu">n</span>())</span>
-<span id="cb149-3"><a href="#cb149-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: left;">habit</th>
-<th style="text-align: right;">Mean_Weight</th>
-<th style="text-align: right;">SD</th>
-<th style="text-align: right;">n</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">nonsmoker</td>
-<td style="text-align: right;">7.039200</td>
-<td style="text-align: right;">1.709388</td>
-<td style="text-align: right;">50</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">smoker</td>
-<td style="text-align: right;">6.616333</td>
-<td style="text-align: right;">1.106418</td>
-<td style="text-align: right;">30</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><strong>Model for Birth Weights Data</strong></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb150"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb150-1"><a href="#cb150-1" aria-hidden="true" tabindex="-1"></a>M_Birthwt <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>NCBirths, weight<span class="sc">~</span>habit)</span>
-<span id="cb150-2"><a href="#cb150-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Birthwt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = weight ~ habit, data = NCBirths)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--6.0392 -0.6763  0.2372  0.8280  2.4437 
-
-Coefficients:
-            Estimate Std. Error t value            Pr(&gt;|t|)    
-(Intercept)   7.0392     0.2140   32.89 &lt;0.0000000000000002 ***
-habitsmoker  -0.4229     0.3495   -1.21                0.23    
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 1.514 on 78 degrees of freedom
-Multiple R-squared:  0.01842,   Adjusted R-squared:  0.005834 
-F-statistic: 1.464 on 1 and 78 DF,  p-value: 0.23</code></pre>
-</div>
-</div>
-<p><strong>Confidence Interval</strong></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb152"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb152-1"><a href="#cb152-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(M_Birthwt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>                2.5 %    97.5 %
-(Intercept)  6.613070 7.4653303
-habitsmoker -1.118735 0.2730012</code></pre>
-</div>
-</div>
-<p><strong>Question:</strong></p>
-<p>What should we conclude about the effect of smoking on birth weight based on these results?</p>
 </section>
-<section id="smoking-during-pregnancy-cont" class="level3" data-number="4.8.21">
-<h3 data-number="4.8.21" class="anchored" data-anchor-id="smoking-during-pregnancy-cont"><span class="header-section-number">4.8.21</span> Smoking During Pregnancy (cont)</h3>
-<p>In fact, this sample of 80 babies is part of a larger dataset, consisting of 1,000 babies born in NC in 2004. When we consider the full dataset, notice that the difference between the groups is similar, but the p-value is much smaller, providing stronger evidence of a relationship between a mother’s smoking and lower birthweight.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb154"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb154-1"><a href="#cb154-1" aria-hidden="true" tabindex="-1"></a>M_Birthwt_Full <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>ncbirths, weight<span class="sc">~</span>habit)</span>
-<span id="cb154-2"><a href="#cb154-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Birthwt_Full)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = weight ~ habit, data = ncbirths)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--6.1443 -0.7043  0.1657  0.9157  4.6057 
-
-Coefficients:
-            Estimate Std. Error t value            Pr(&gt;|t|)    
-(Intercept)  7.14427    0.05086 140.472 &lt;0.0000000000000002 ***
-habitsmoker -0.31554    0.14321  -2.203              0.0278 *  
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 1.503 on 997 degrees of freedom
-  (1 observation deleted due to missingness)
-Multiple R-squared:  0.004846,  Adjusted R-squared:  0.003848 
-F-statistic: 4.855 on 1 and 997 DF,  p-value: 0.02779</code></pre>
-</div>
-</div>
-</section>
-<section id="cautions-and-advice-1" class="level3" data-number="4.8.22">
-<h3 data-number="4.8.22" class="anchored" data-anchor-id="cautions-and-advice-1"><span class="header-section-number">4.8.22</span> Cautions and Advice</h3>
+<section id="cautions-and-advice" class="level3" data-number="4.8.4">
+<h3 data-number="4.8.4" class="anchored" data-anchor-id="cautions-and-advice"><span class="header-section-number">4.8.4</span> Cautions and Advice</h3>
 <p><strong>p-values are only (a small) part of a statistical analysis.</strong></p>
 <ul>
 <li>For small samples, real differences might not be statistically significant.<br>

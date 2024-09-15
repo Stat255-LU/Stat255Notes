@@ -917,6 +917,31 @@ The p-value is extremely small, providing strong evidence of a relationship betw
 
 Since there are no lakes with pH level 0, this is not a meaningful test.
 
+### Limitations of Model-Based Inference
+
+We've seen that in situations where the sampling distribution for a regression coefficient $b_j$ is symmetric and bell-shaped, we can create confidence intervals and perform hypothesis tests using the t-distribution without performing permutation for hypothesis tests, or bootstrapping for confidence intervals.
+
+There are, however, limitations to this approach, which underscore the importance of the simulation-based approaches seen in Chapters 3 and 4.
+
+These include:
+
+1.  There are lots of statistics, like medians and standard deviations, that do not have known standard error formulas, and do not follow symmetric bell-shaped distributions. In more advanced and complicated models, it is common to encounter statistics of interest with unknown sampling distributions. In these cases, we can estimate p-values and build confidence intervals via simulation, even if we cannot identify the distribution by name.
+
+2.  Even for statistics with known standard error formulas, the t-test is only appropriate when the sampling distribution for $b_j$ is symmetric and bell-shaped. While there is probability theory that shows this will happen when the sample size is "large enough," there is no set sample size that guarantees this. Datasets with heavier skewness in the response variable will require larger sample sizes than datasets with less skewness in the response.
+
+3.  The simulation-based approaches provide valuable insight to the logic behind hypothesis tests. When we permute values of an explanatory variable in a hypothesis test it is clear that we are simulating a situation where the null hypothesis is true. Likewise, when we simulate taking many samples in bootstrapping, it is clear that we are assessing the variability in a statistic across samples. Simply jumping to the t-based approximations of these distributions makes it easy to lose our sense of what they actually represent, and thus increases the likelihood of interpreting them incorrectly.
+
+In fact prominent statistician R.A. Fisher wrote of simulation-based methods in 1936:
+
+*"Actually, the statistician does not carry out this very simple and very tedious process, but his conclusions have no justification beyond the fact that they agree with those which could have been arrived at by this elementary method."*
+
+Fisher's comment emphasizes the fact that probability-based tests, like the t-test are simply approximations to what we would obtain via simulation-based approaches, which were not possible in his day, but are now.
+
+Proponents of simulation-based inference include Tim Hesterberg, Senior Statistician at Instacart, and former Senior Statistician at Google, which heavily used simulation-based tests associated with computer experiments associated with their search settings. Hesterberg wrote a [2015 paper](https://browse.arxiv.org/pdf/1411.5279.pdf), arguing for the use and teaching of simulation-based techniques.
+
+We will move forward by using probability-based inference where appropriate, while understanding that we are merely approximating what we would obtain via simulation. Meanwhile, we'll continue to employ simulation-based approaches where probability-based techniques are inappropriate or unavailable.
+
+
 ## F-tests
 
 Just as we've seen that the ratio of a regression statistic to its standard error follows a t-distribution when can be thought of as having come from a process that can be approximated with the normal error regression model, F-statistics also follow a known probability distribution under this assumption.
@@ -1725,11 +1750,15 @@ Kahneman and Tversky write that :
 
 ## Responsible Statistical Inference
 
-### Statistical Significance vs Practical Importance
+While statistics offer insight that have lead to great advances in science, medicine, business and economics and many other areas, they have also been misused, (either intentionally or unintentionally) in ways that have resulted in harm. In an effort to better educate the public, the American Statistical Association released a report in 2016, highlighting common misuses of p-values, and the notion of statistical significance. Kenneth Rothman, Professor of Epidemiology at Boston University School of Public Health wrote:     
 
 -   “(S)cientists have embraced and even avidly pursued meaningless differences solely because they are statistically significant, and have ignored important effects because they failed to pass the screen of statistical significance...It is a safe bet that people have suffered or died because scientists (and editors, regulators, journalists and others) have used significance tests to interpret results, and have consequently failed to identify the most beneficial courses of action.” -ASA statement on p-values, 2016
 
-### What a p-value tells us
+In this section, we'll look at some real scenarios where it might be tempting to make an improper conclusion based on data. Think carefully about each scenario and identify possible misinterpretations that might arise. Then think about what conclusions or actions would be appropriate in each scenario. 
+
+Keep in mind the following guidelines for responsible statistical inference.   
+
+**What a p-value tells us**
 
 Performing responsible statistical inference requires understanding what p-values do and do not tell us, and how they should and should not be interpreted.
 
@@ -1747,7 +1776,20 @@ Performing responsible statistical inference requires understanding what p-value
 
 -   Sometimes, a p-value tells us more about sample size, than relationship we're actually interested in.
 
--   A p-value does not tell us the "size" of a difference or effect, or whether it is practically meaningful.
+-   A p-value does not tell us the "size" of a difference or effect, or whether it is practically meaningful.    
+
+-   We should only generalize results from a hypothesis test performed on a sample to a larger population or process if the sample is representative of the population or process (such as when the sample is randomly selected).   
+
+-   A correlation between two variables does not necessarily imply a causal relationship.    
+
+### Breakfast Cereals and Sex of Babies     
+
+The title of a [2008 article by New Scientist](https://www.newscientist.com/article/dn13754-breakfast-cereals-boost-chances-of-conceiving-boys/) makes a surprising claim: "Breakfast cereals boost chances of conceiving boys." Although the article lacks details on the underlying study, researchers, in fact, tracked the eating habits of women who were attempting to become pregnant. They tracked 133 different food items, and tested whether there was a difference in the proportion of baby boys conceived between women who ate the food, compared to those who didn't. Of the 133 foods tested, only breakfast cereal showed a significant difference.   
+
+**Question:** Why is the researcher's conclusion that eating breakfast cereal increases the chances of conceiving a boy inappropriate? Hint: think about how this situation is similar to the one in the [xkcd comic](https://xkcd.com/882/)?   
+
+
+A statistical procedure called the **Bonferroni Correction** suggests that when more than one test is performed simultaneously, we should multiply observed p-values by the number of tests performed. Why might this help prevent errors? Do you see any downsides of doing this?    
 
 ### Flights from New York to Chicago
 
@@ -1775,7 +1817,7 @@ Flights_NY_CHI <- flights %>%
   select(origin, dest, air_time)
 ```
 
-### Visualizing New York to Chicago Flights
+The plot and table compare the duration of flights from New York to Chicago from each airport.   
 
 ```{r, fig.height=4, fig.width=8}
 p1 <- ggplot(data=Flights_NY_CHI, aes(x=air_time, fill=origin, color=origin)) + geom_density(alpha=0.2) + ggtitle("Flight Time")
@@ -1791,16 +1833,14 @@ T <- Flights_NY_CHI %>% group_by(origin) %>%
 kable(T)
 ```
 
-**Question:** If you were flying from New York to Chicago, would this information influence which airport you would fly out of? If so, which would you be more likely to choose?
-
-### Model for Airlines Data
+We fit a model to test whether there is evidence of a difference in average flight time.    
 
 ```{r}
 M_Flights <- lm(data=Flights_NY_CHI, air_time~origin)
 summary(M_Flights)
 ```
 
-### Confidence Interval for Flights
+Confidence Interval for Flights:    
 
 ```{r}
 confint(M_Flights)
@@ -1812,17 +1852,12 @@ confint(M_Flights)
 
 -   We are 95% confident that flights from LGA to ORD take between 2.2 and 2.9 minutes longer, on average, than flights from EWR to ORD.
 
-### Flights Conclusions?
 
-Although we have a low p-value, indicating a discernable difference, the size of this difference (2-3 minutes in airtime) is very small. A travelor would most likely have other, more important considerations when deciding which airport to fly from.
-
-The low p-value is due to the very large sample size, rather than the size of the difference.
-
-Note: there is also some question about whether it is appropriate to use a hypothesis test or confidence interval here at all. We have data on all flights in 2013, so one could argue that we have the entire population already. Perhaps, we could view this as a sample and generalize to flights in other years, though conditions change, so it is not clear that these flights from 2013 would be representative of flights in other years.
+**Question:** If you were planning a trip from New York to Chicago, how much of a factor would this information play in your decision? Why do you think the p-value is so small in this scenario?   
 
 ### Smoking and Birthweight Example
 
-We consider data on the relationship between a pregnant mother's smoking and the birthweight of the baby. Data come from a sample of 80 babies born in North Carolina in 2004. Thirty of the mothers were smokers, and fifty were nonsmokers.
+We consider data on the relationship between a pregnant mother's smoking and the birth weight of the baby. Data come from a sample of 80 babies born in North Carolina in 2004. Thirty of the mothers were smokers, and fifty were nonsmokers.
 
 ```{r, include=FALSE}
 set.seed(10212019)
@@ -1834,6 +1869,8 @@ samp1 <- seq(from=3, to=122, by=4)
 samp2 <- seq(from=3, to=852, by=17)
 NCBirths <- rbind(Smokers[samp1, ], NonSmokers[samp2, ])
 ```
+
+The plot and table show the distribution of birth weights among babies whose mothers smoked, compared to those who didn't. 
 
 ```{r, fig.height=4, fig.width=8}
 p1 <- ggplot(data=NCBirths, aes(x=weight, fill=habit, color=habit)) + geom_density(alpha=0.2) + ggtitle("Birthweight and Smoking")
@@ -1847,47 +1884,48 @@ T <- NCBirths %>% group_by(habit) %>% summarize(Mean_Weight = mean(weight), SD =
 kable(T)
 ```
 
-### Model for Birthweight
+We fit a model and test for differences in average birth weight.   
 
 ```{r}
 M_Birthwt <- lm(data=NCBirths, weight~habit)
 summary(M_Birthwt)
 ```
 
-### Conclusions from Birthweight Data
 
 ```{r}
 confint(M_Birthwt)
 ```
 
--   The average birtweight of babies whose mothers are smokers is estimated to be about 0.42 lbs less than the average birthweight for babies whose mothers are nonsmokers.
+-   The average birth weight of babies whose mothers are smokers is estimated to be about 0.42 lbs less than the average birthweight for babies whose mothers are nonsmokers.
 
--   The large p-value of 0.23, tells us that there is not enough evidence to say that a mother's smoking is associated with lower birthweights. It is plausible that this difference could have occurred by chance.
+-   The large p-value of 0.23, tells us that there is not enough evidence to say that a mother's smoking is associated with lower birth weights. It is plausible that this difference could have occurred by chance.
 
 -   We are 95% confident that the average birtweight of babies whose mothers are smokers is between 1.12 lbs less and 0.27 lbs more than the average birthweight for babies whose mothers are nonsmokers.
 
-**Question:** Many studies have shown that a mother's smoking puts a baby at risk of low birthweight. Do our results contradict this research? Should we conclude that smoking has no impact on birthweights?
+**Question:** Many studies have shown that a mother's smoking puts a baby at risk of low birthweight. Do our results contradict this research? Should we conclude that smoking has no impact on birthweights? 
 
-### Impact of Small Sample Size
-
-Notice that we observed a difference of about 0.4 lbs. in mean birthweight, which is a considerable difference.
-
-The large p-value is mosty due to the relatively small sample size. Even though we observed a mean difference of 0.4 lbs, the sample is to small to allow us to say conclusively that smoking is associated with lower birthweights.
-
-This is very different from concluding that smoking does not impact birthweight.
-
-This is an example of why we should never "accept the null hypothesis" or say that our data "support the null hypothesis."
-
-### Larger Dataset
+#### Larger Study
 
 In fact, this sample of 80 babies is part of a larger dataset, consisting of 1,000 babies born in NC in 2004. When we consider the full dataset, notice that the difference between the groups is similar, but the p-value is much smaller, providing stronger evidence of a relationship between a mother's smoking and lower birthweight.
+
+We'll now fit a model to the larger dataset.   
 
 ```{r}
 M_Birthwt_Full <- lm(data=ncbirths, weight~habit)
 summary(M_Birthwt_Full)
 ```
 
-### Multiple Testing
+Confidence interval based on larger dataset:
+
+```{r}
+confint(M_Birthwt_Full)
+```
+
+Notice that the estimated difference in birth weights is actually smaller in the full dataset than in the subset (though 0.3 lbs is still a pretty big difference for babies), and yet now the p-value is much smaller. Why do you think this happened? What should we learn from this?    
+
+
+
+
 
 ### Cautions and Advice
 
@@ -1905,181 +1943,9 @@ summary(M_Birthwt_Full)
 -   Were treatments randomly assigned (for experiments)?\
 -   Are there other variables to consider?
 
-\<!--- \## Responsible Inference - Case Studies
 
-### Limitations of Model-Based Inference
 
-We've seen that in situations where the sampling distribution for a regression coefficient $b_j$ is symmetric and bell-shaped, we can create confidence intervals and perform hypothesis tests using the t-distribution without performing permutation for hypothesis tests, or bootstrapping for confidence intervals.
 
-There are, however, limitations to this approach, which underscore the importance of the simulation-based approaches seen in Chapters 3 and 4.
-
-These include:
-
-1.  There are lots of statistics, like medians and standard deviations, that do not have known standard error formulas, and do not follow symmetric bell-shaped distributions. In more advanced and complicated models, it is common to encounter statistics of interest with unknown sampling distributions. In these cases, we can estimate p-values and build confidence intervals via simulation, even if we cannot identify the distribution by name.
-
-2.  Even for statistics with known standard error formulas, the t-test is only appropriate when the sampling distribution for $b_j$ is symmetric and bell-shaped. While there is probability theory that shows this will happen when the sample size is "large enough," there is no set sample size that guarantees this. Datasets with heavier skewness in the response variable will require larger sample sizes than datasets with less skewness in the response.
-
-3.  The simulation-based approaches provide valuable insight to the logic behind hypothesis tests. When we permute values of an explanatory variable in a hypothesis test it is clear that we are simulating a situation where the null hypothesis is true. Likewise, when we simulate taking many samples in bootstrapping, it is clear that we are assessing the variability in a statistic across samples. Simply jumping to the t-based approximations of these distributions makes it easy to lose our sense of what they actually represent, and thus increases the likelihood of interpreting them incorrectly.
-
-In fact prominent statistician R.A. Fisher wrote of simulation-based methods in 1936:
-
-*"Actually, the statistician does not carry out this very simple and very tedious process, but his conclusions have no justification beyond the fact that they agree with those which could have been arrived at by this elementary method."*
-
-Fisher's comment emphasizes the fact that probability-based tests, like the t-test are simply approximations to what we would obtain via simulation-based approaches, which were not possible in his day, but are now.
-
-Proponents of simulation-based inference include Tim Hesterberg, Senior Statistician at Instacart, and former Senior Statistician at Google, which heavily used simulation-based tests associated with computer experiments associated with their search settings. Hesterberg wrote a [2015 paper](https://browse.arxiv.org/pdf/1411.5279.pdf), arguing for the use and teaching of simulation-based techniques.
-
-We will move forward by using probability-based inference where appropriate, while understanding that we are merely approximating what we would obtain via simulation. Meanwhile, we'll continue to employ simulation-based approaches where probability-based techniques are inappropriate or unavailable.
-
-### Statistical Significance vs Practical Importance
-
--   “(S)cientists have embraced and even avidly pursued meaningless differences solely because they are statistically significant, and have ignored important effects because they failed to pass the screen of statistical significance...It is a safe bet that people have suffered or died because scientists (and editors, regulators, journalists and others) have used significance tests to interpret results, and have consequently failed to identify the most beneficial courses of action.” -ASA statement on p-values, 2016
-
-### What a p-value tells us
-
-Performing responsible statistical inference requires understanding what p-values do and do not tell us, and how they should and should not be interpreted.
-
--   A low p-value tells us that the data we observed are inconsistent with our null hypothesis or some assumption we make in our model.
-
--   A large p-value tells us that the data we observed could have plausibly been obtained under our supposed model and null hypothesis.
-
--   A p-value never provides evidence supporting the null hypothesis, it only tells us the strength of evidence against it.
-
--   A p-value is impacted by
-
-    -   the size of the difference between group, or change per unit increase (effect size)\
-    -   the amount of variability in the data\
-    -   the sample size
-
--   Sometimes, a p-value tells us more about sample size, than relationship we're actually interested in.
-
--   A p-value does not tell us the "size" of a difference or effect, or whether it is practically meaningful.
-
-In this section, we'll examine three case studies and think about what we should or shouldn't conclude in each situation.
-
-### Multiple Testing
-
-### Flights from NY to CHI
-
-A traveler lives in New York and wants to fly to Chicago. They consider flying out of two New York airports:
-
--   Newark (EWR)\
--   LaGuardia (LGA)
-
-We have data on the times of flights from both airports to Chicago's O'Hare airport from 2013 (more than 14,000 flights).
-
-Assuming these flights represent a random sample of all flights from these airports to Chicago, consider how the traveler might use this information to decide which airport to fly out of.
-
-```{r}
-library(nycflights13)
-data(flights)
-flights$origin <- as.factor(flights$origin)
-flights$dest <- as.factor(flights$dest)
-
-Flights_NY_CHI <- flights %>% 
-  filter(origin %in% c("EWR", "LGA") & dest =="ORD") %>%
-  select(origin, dest, air_time)
-```
-
-```{r, fig.height=4, fig.width=8}
-p1 <- ggplot(data=Flights_NY_CHI, aes(x=air_time, fill=origin, color=origin)) + geom_density(alpha=0.2) + ggtitle("Flight Time")
-p2 <- ggplot(data=Flights_NY_CHI, aes(x=air_time, y=origin)) + geom_boxplot() + ggtitle("Flight Time")
-grid.arrange(p1, p2, ncol=2)
-```
-
-```{r, fig.height=3, fig.width=5}
-library(knitr)
-T <- Flights_NY_CHI %>% group_by(origin) %>% 
-  summarize(Mean_Airtime = mean(air_time, na.rm=TRUE), 
-            SD = sd(air_time, na.rm=TRUE), n=sum(!is.na(air_time)))
-kable(T)
-```
-
-**Model for Flights Data**
-
-```{r}
-M_Flights <- lm(data=Flights_NY_CHI, air_time~origin)
-summary(M_Flights)
-```
-
-**Confidence Interval**
-
-```{r}
-confint(M_Flights)
-```
-
-**Question:** If you were flying from New York to Chicago, would this information influence which airport you would fly out of? If so, which would you be more likely to choose?
-
-### Smoking During Pregnancy
-
-Many studies have shown that a mother's smoking during pregnancy puts a baby at risk of low birth weight.
-
-We have data on the from a sample of 80 babies born in North Carolina in 2004. Thirty of the mothers were smokers, and fifty were nonsmokers.
-
-```{r, include=FALSE}
-set.seed(10212019)
-library(openintro)
-data(ncbirths)
-Smokers <- ncbirths%>%filter(habit=="smoker")
-NonSmokers <- ncbirths%>%filter(habit=="nonsmoker")
-samp1 <- seq(from=3, to=122, by=4)
-samp2 <- seq(from=3, to=852, by=17)
-NCBirths <- rbind(Smokers[samp1, ], NonSmokers[samp2, ])
-```
-
-```{r, fig.height=4, fig.width=8}
-p1 <- ggplot(data=NCBirths, aes(x=weight, fill=habit, color=habit)) + geom_density(alpha=0.2) + ggtitle("Birthweight and Smoking")
-p2 <- ggplot(data=NCBirths, aes(x=weight, y=habit)) + geom_boxplot() + ggtitle("Birthweight and Smoking")
-grid.arrange(p1, p2, ncol=2)
-```
-
-```{r, fig.height=3, fig.width=5}
-library(knitr)
-T <- NCBirths %>% group_by(habit) %>% summarize(Mean_Weight = mean(weight), SD = sd(weight), n=n())
-kable(T)
-```
-
-**Model for Birth Weights Data**
-
-```{r}
-M_Birthwt <- lm(data=NCBirths, weight~habit)
-summary(M_Birthwt)
-```
-
-**Confidence Interval**
-
-```{r}
-confint(M_Birthwt)
-```
-
-**Question:**
-
-What should we conclude about the effect of smoking on birth weight based on these results?
-
-### Smoking During Pregnancy (cont)
-
-In fact, this sample of 80 babies is part of a larger dataset, consisting of 1,000 babies born in NC in 2004. When we consider the full dataset, notice that the difference between the groups is similar, but the p-value is much smaller, providing stronger evidence of a relationship between a mother's smoking and lower birthweight.
-
-```{r}
-M_Birthwt_Full <- lm(data=ncbirths, weight~habit)
-summary(M_Birthwt_Full)
-```
-
-### Cautions and Advice
-
-**p-values are only (a small) part of a statistical analysis.**
-
--   For small samples, real differences might not be statistically significant.\
-    -Don't accept null hypothesis. Gather more information.\
--   For large, even very small differences will be statistically significant.\
-    -Look at confidence interval. Is difference practically important?\
--   When many hypotheses are tested at once (such as many food items) some will produce a significant result just by change.\
-    -Use a multiple testing correction, such as Bonferroni\
--   Interpret p-values on a “sliding scale”
-    -   0.049 is practically the same as 0.051
--   Is sample representative of larger population?\
--   Were treatments randomly assigned (for experiments)?\
--   Are there other variables to consider?
 
 ```{r, echo=FALSE}
 #save.image(file = "Environment.RData")
