@@ -132,9 +132,7 @@ New_Houses <- Houses |> filter(waterfront == "Yes")
 head(New_Houses)
 ```
 
-
 \newpage
-
 
 ## Summary Statistics
 
@@ -150,7 +148,7 @@ For a set of $n$ values $y_i, \ldots, y_n$:
 
     -   The median of the upper half of the values is called the **upper (or 3rd) quartile.** This represents the 75th percentile in the distribution.
 
-    -   The median of the upper half of the values is called the **lower (or 1st) quartile.** This represents the 25th percentile in the distribution.
+    -   The median of the lower half of the values is called the **lower (or 1st) quartile.** This represents the 25th percentile in the distribution.
 
 -   **mode** is the most frequently occurring number in the data.
 
