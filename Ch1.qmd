@@ -293,7 +293,7 @@ ggplot(data=Houses, aes(x=waterfront, y=price)) + geom_boxplot() +
 
 For houses not on the waterfront, the median price is about \$400,000, and the middle 50% of prices range from about \$300,000 to \$600,000.
 
-For waterfront houses, the median price is about \$1,500,000, and the middle 50% of prices range from about \$900,000 to \$1,900,000.
+For waterfront houses, the median price is about \$1,500,000, and the middle 50% of prices range from about \$900,000 to \$2,700,000.
 
 ### Violin Plot
 
@@ -328,7 +328,7 @@ Scatterplots are used to visualize the relationship between two quantitative var
 **Scatterplot Template**
 
 ```{r, eval=FALSE}
-ggplot(data=DatasetName, aes(x=CategoricalVariable, y=QuantitativeVariable)) + 
+ggplot(data=DatasetName, aes(x=QuantitativeVariable, y=QuantitativeVariable)) + 
   geom_point() +
   ggtitle("Plot Title") + 
   ylab("Axis Label") + 

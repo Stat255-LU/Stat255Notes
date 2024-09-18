@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.555">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -81,13 +81,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
+  "limit": 20,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -96,7 +90,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
-    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -106,33 +99,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
 </head>
 
 <body class="nav-sidebar floating">
@@ -141,12 +107,12 @@ window.Quarto = {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Ch4.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Inference from Models</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Ch4.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Inference from Models</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -156,7 +122,7 @@ window.Quarto = {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">STAT 255 Notes</a> 
@@ -220,7 +186,7 @@ window.Quarto = {
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -313,9 +279,7 @@ window.Quarto = {
   </div>
   
 
-
 </header>
-
 
 <p><strong>Learning Outcomes:</strong></p>
 <ol start="24" type="1">
@@ -340,21 +304,13 @@ window.Quarto = {
 <h3 data-number="4.1.1" class="anchored" data-anchor-id="example-ice-cream-dispenser"><span class="header-section-number">4.1.1</span> Example: Ice Cream dispenser</h3>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ice_Cream.png" class="img-fluid figure-img" style="width:50.0%"></p>
-</figure>
-</div>
+<p><img src="Ice_Cream.png" class="img-fluid" style="width:50.0%"></p>
 </div>
 </div>
 <p>Suppose an ice cream machine is manufactured to dispense 2 oz. of ice cream per second, on average. If 15 people used the ice cream machine, holding the dispenser for different amounts of time, and each person got exactly 2 oz. per second, the relationship between time holding the dispenser and amount dispensed would look like this:</p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>In reality, however, the actual amount dispensed each time it is used will vary due to unknown factors like:</p>
@@ -370,11 +326,7 @@ window.Quarto = {
 <p>Thus, if 15 real people held the dispenser and recorded the amount of ice cream they got, the scatter plot we would see would look something like this:</p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>We can think of the amount of ice cream a person receives as being a result of two separate components, often referred to as <strong>signal</strong> and <strong>noise</strong>.</p>
@@ -387,11 +339,7 @@ window.Quarto = {
 <p>It is common to model noise using a symmetric, bell-shaped distribution, known as a <strong>normal distribution</strong>.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="576"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="576"></p>
 </div>
 </div>
 <p>We can think of the error term as a random draw from somewhere in the area below the bell-curve. For example, in the above illustration, most of the area under the curve lies between <span class="math inline">\(-1\leq x\leq 1\)</span>. If this curve represented the noise term in the ice cream example, it would mean that most people’s actual amount of ice cream dispensed would be within <span class="math inline">\(\pm 1\)</span> ounce of their expected amount (or signal). Notice that the normal distribution is centered at 0, indicating that on average, a person would be expected to get an amount exactly equal to their signal, but that they might deviate above or below this amount by unexplained factors, which can be modeled by random chance.</p>
@@ -401,11 +349,7 @@ window.Quarto = {
 <p>This distribution is denoted <span class="math inline">\(\mathcal{N}(\mu, \sigma)\)</span>.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="576"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="576"></p>
 </div>
 </div>
 <p>When the standard deviation is small, such as for the blue curve, noise tends to be close to 0, meaning the observed values will be close to their expectation. On the other hand, the green curve, which has higher standard deviation, would often produce noise values as extreme as <span class="math inline">\(\pm 2\)</span> or more.</p>
@@ -424,7 +368,7 @@ Y_i = 2x_i+\epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, 0.5)
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="SLR_Model_Assumptions.png" class="img-fluid figure-img" style="width:50.0%"></p>
-<figcaption>The amount dispensed follows a normal distribution with mean equal to twice the time holding the dispensor and standard deviation 0.5</figcaption>
+<figcaption class="figure-caption">The amount dispensed follows a normal distribution with mean equal to twice the time holding the dispensor and standard deviation 0.5</figcaption>
 </figure>
 </div>
 </div>
@@ -440,7 +384,7 @@ Y_i = 2x_i+\epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, 0.5)
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>Icecream <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(time, signal, noise, amount) <span class="co"># set up data table</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>((Icecream)) <span class="co">#display table</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
+<table class="table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: right;">time</th>
@@ -549,11 +493,7 @@ Y_i = 2x_i+\epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, 0.5)
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Icecream1, <span class="fu">aes</span>(<span class="at">x=</span>time, <span class="at">y=</span>amount)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Icecream Dispensed"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Time Pressing dispenser"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Amount Dispensed"</span>) <span class="sc">+</span> <span class="fu">geom_abline</span>(<span class="at">slope=</span><span class="dv">2</span>, <span class="at">intercept=</span><span class="dv">0</span>, <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span> </span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">label=</span><span class="st">"y=2x"</span>, <span class="at">x=</span> <span class="fl">3.5</span>, <span class="at">y=</span><span class="fl">6.5</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">color=</span><span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p><strong>Estimating Regression Line</strong></p>
@@ -563,11 +503,7 @@ Y_i = 2x_i+\epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, 0.5)
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Icecream1, <span class="fu">aes</span>(<span class="at">x=</span>time, <span class="at">y=</span>amount)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Icecream Dispensed"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Time Pressing dispenser"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Amount Dispensed"</span>) <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">geom_abline</span>(<span class="at">slope=</span><span class="dv">2</span>, <span class="at">intercept=</span><span class="dv">0</span>, <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span> </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">label=</span><span class="st">"y=2x"</span>, <span class="at">x=</span> <span class="fl">3.5</span>, <span class="at">y=</span><span class="fl">6.5</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">color=</span><span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>The blue line is close, but not identical to the red line, representing the true (usually unknown) signal.</p>
@@ -672,7 +608,7 @@ Coefficients:
 <p><span class="math inline">\(s\)</span> is not the same as the standard errors of statistics we estimated using bootstrapping in Chapter 3. It is, however, related to these standard errors. In fact, standard errors for common statistics like sample means, differences in means, and regression coefficients can be approximated using formulas involving <span class="math inline">\(s\)</span>.</p>
 <p>So far, we’ve used simulation (permutation tests and bootstrap intervals) to determine the amount of variability associated with a test statistic or estimate, in order to perform hypotheses tests and create confidence intervals. In special situations, there are mathematical formulas, based on probability theory, that can be used to approximate these standard errors without having to perform the simulations.</p>
 <p><strong>Theory-Based Standard Error Formulas</strong></p>
-<table class="caption-top table">
+<table class="table">
 <colgroup>
 <col style="width: 31%">
 <col style="width: 68%">
@@ -839,11 +775,7 @@ LocationS   0.09157768 0.4523314</code></pre>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x=</span>Sample_b1 <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>SE_b1,<span class="at">xend=</span>Sample_b1 <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>SE_b1, <span class="at">y=</span><span class="dv">50</span>, <span class="at">yend=</span><span class="dv">50</span>), </span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">color=</span><span class="st">"gold"</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">alpha=</span><span class="fl">0.01</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>The formula-based standard error and confidence interval and those produced by bootstrapping are both approximations, so they are not expected to be identical, but should be close.</p>
@@ -1069,11 +1001,7 @@ Residual standard error: 0.341 on 52 degrees of freedom</code></pre>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x=</span>mean <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>SE_mean,<span class="at">xend=</span>mean <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>SE_mean, <span class="at">y=</span><span class="dv">50</span>, <span class="at">yend=</span><span class="dv">50</span>), </span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">color=</span><span class="st">"gold"</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">alpha=</span><span class="fl">0.01</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>The standard error and interval are very close to those obtained using the approximation formulas.</p>
@@ -1082,7 +1010,7 @@ Residual standard error: 0.341 on 52 degrees of freedom</code></pre>
 <h3 data-number="4.2.5" class="anchored" data-anchor-id="ci-method-comparison"><span class="header-section-number">4.2.5</span> CI Method Comparison</h3>
 <p>We’ve now seen 3 different ways to obtain confidence intervals based on statistics calculated from data.</p>
 <p>The table below tells us what must be true of the sampling distribution for a statistic in order to use each technique.</p>
-<table class="caption-top table">
+<table class="table">
 <colgroup>
 <col style="width: 37%">
 <col style="width: 12%">
@@ -1130,11 +1058,7 @@ Residual standard error: 0.341 on 52 degrees of freedom</code></pre>
 <p>As the degrees of freedom grow large, we see that the t-distributions get closer together, converging to a bell-shaped curve. This distribution is called a <strong>standard normal distribution.</strong></p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="768"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 </section>
@@ -1196,11 +1120,7 @@ F-statistic: 9.162 on 1 and 51 DF,  p-value: 0.003868</code></pre>
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>ts<span class="ot">=</span><span class="fl">3.027</span></span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_dist</span>(<span class="st">"t"</span>, <span class="at">df=</span><span class="dv">51</span>, <span class="at">geom =</span> <span class="st">"area"</span>, <span class="at">fill =</span> <span class="sc">~</span> (<span class="fu">abs</span>(x)<span class="sc">&lt;</span> <span class="fu">abs</span>(ts)), <span class="at">show.legend=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fu">c</span>(ts, <span class="sc">-</span>ts), <span class="at">color=</span><span class="st">"red"</span>)  <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"t"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="768"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>The <code>pt</code> function returns the probability of getting a t-statistic higher than 3.027. We multiply by 2 to also get the area in the left tail.</p>
@@ -1217,11 +1137,7 @@ F-statistic: 9.162 on 1 and 51 DF,  p-value: 0.003868</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>NSLakes_SimulationResultsPlot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>p-value:</p>
@@ -1281,11 +1197,7 @@ F-statistic: 25.24 on 1 and 51 DF,  p-value: 0.000006573</code></pre>
 <div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>ts<span class="ot">=</span><span class="fl">5.024</span></span>
 <span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_dist</span>(<span class="st">"t"</span>, <span class="at">df=</span><span class="dv">51</span>, <span class="at">geom =</span> <span class="st">"area"</span>, <span class="at">fill =</span> <span class="sc">~</span> (<span class="fu">abs</span>(x)<span class="sc">&lt;</span> <span class="fu">abs</span>(ts)), <span class="at">show.legend=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fu">c</span>(ts, <span class="sc">-</span>ts), <span class="at">color=</span><span class="st">"red"</span>)  <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"t"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid figure-img" width="768"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p><strong>p-value:</strong></p>
@@ -1328,11 +1240,7 @@ F-statistic: 25.24 on 1 and 51 DF,  p-value: 0.000006573</code></pre>
 <p>An <strong>F distribution</strong> is a right-skewed distribution. It is defined by two parameters, <span class="math inline">\(\nu_1, \nu_2\)</span>, called numerator and denominator degrees of freedom.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid figure-img" width="960"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid" width="960"></p>
 </div>
 </div>
 <p>Under certain conditions (which we’ll examine in the next chapter), the F-statistic</p>
@@ -1365,11 +1273,7 @@ F &amp;= \frac{\frac{\text{SSR}_{\text{Reduced}}-\text{SSR}_{\text{Full}}}{p-q}}
 <div class="cell">
 <div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>House_Cond_SimulationResults_Plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid figure-img" width="768"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p><strong>simulation-based p-value:</strong></p>
@@ -1384,11 +1288,7 @@ F &amp;= \frac{\frac{\text{SSR}_{\text{Reduced}}-\text{SSR}_{\text{Full}}}{p-q}}
 <div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>ts<span class="ot">=</span><span class="fl">0.605</span></span>
 <span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_dist</span>(<span class="st">"f"</span>, <span class="at">df1=</span><span class="dv">2</span>, <span class="at">df2=</span><span class="dv">97</span>, <span class="at">geom =</span> <span class="st">"area"</span>, <span class="at">fill =</span> <span class="sc">~</span> (<span class="fu">abs</span>(x)<span class="sc">&lt;</span> <span class="fu">abs</span>(ts)), <span class="at">show.legend=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fu">c</span>(ts), <span class="at">color=</span><span class="st">"red"</span>)  <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"F"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid figure-img" width="768"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p><strong>p-value:</strong></p>
@@ -1437,11 +1337,7 @@ F &amp;= \frac{\frac{\text{SSR}_{\text{Reduced}}-\text{SSR}_{\text{Full}}}{p-q}}
 <div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>ts<span class="ot">=</span><span class="fl">60.41505</span></span>
 <span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_dist</span>(<span class="st">"f"</span>, <span class="at">df1=</span><span class="dv">1</span>, <span class="at">df2=</span><span class="dv">96</span>, <span class="at">geom =</span> <span class="st">"area"</span>, <span class="at">fill =</span> <span class="sc">~</span> (<span class="fu">abs</span>(x)<span class="sc">&gt;!</span> <span class="fu">abs</span>(ts)), <span class="at">show.legend=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fu">c</span>(ts), <span class="at">color=</span><span class="st">"red"</span>)  <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"F"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-53-1.png" class="img-fluid figure-img" width="768"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-53-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p><strong>p-value:</strong></p>
@@ -1583,11 +1479,7 @@ SE(b_1) = SE(\bar{x}*{South}-*\bar{x}{North})=s\sqrt{\frac{1}{n_{North}}+\frac{1
 <div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>ts<span class="ot">=</span><span class="fl">3.027</span></span>
 <span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_dist</span>(<span class="st">"t"</span>, <span class="at">df=</span><span class="dv">51</span>, <span class="at">geom =</span> <span class="st">"area"</span>, <span class="at">fill =</span> <span class="sc">~</span> (<span class="fu">abs</span>(x)<span class="sc">&lt;</span> <span class="fu">abs</span>(ts)), <span class="at">show.legend=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fu">c</span>(ts, <span class="sc">-</span>ts), <span class="at">color=</span><span class="st">"red"</span>)  <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"t"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-59-1.png" class="img-fluid figure-img" width="768"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-59-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <div class="cell">
@@ -1604,11 +1496,7 @@ SE(b_1) = SE(\bar{x}*{South}-*\bar{x}{North})=s\sqrt{\frac{1}{n_{North}}+\frac{1
 <div class="cell">
 <div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>NSLakes_SimulationResultsPlot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-61-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-61-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>p-value:</p>
@@ -1712,11 +1600,7 @@ F-statistic: 25.24 on 1 and 51 DF,  p-value: 0.000006573</code></pre>
 <div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a>ts<span class="ot">=</span><span class="fl">5.024</span></span>
 <span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_dist</span>(<span class="st">"t"</span>, <span class="at">df=</span><span class="dv">51</span>, <span class="at">geom =</span> <span class="st">"area"</span>, <span class="at">fill =</span> <span class="sc">~</span> (<span class="fu">abs</span>(x)<span class="sc">&lt;</span> <span class="fu">abs</span>(ts)), <span class="at">show.legend=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fu">c</span>(ts, <span class="sc">-</span>ts), <span class="at">color=</span><span class="st">"red"</span>)  <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"t"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-68-1.png" class="img-fluid figure-img" width="768"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-68-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <div class="cell">
@@ -1844,11 +1728,7 @@ F-statistic: 185.9 on 3 and 96 DF,  p-value: &lt; 0.00000000000000022</code></pr
 <p>Thus, intervals for predictions of individual observations carry more uncertainty and are wider than confidence intervals for <span class="math inline">\(E(Y|X)\)</span>.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="SLR_Model_Assumptions.png" class="img-fluid figure-img" style="width:50.0%"></p>
-</figure>
-</div>
+<p><img src="SLR_Model_Assumptions.png" class="img-fluid" style="width:50.0%"></p>
 </div>
 </div>
 <section id="example-ice-cream-machine" class="level4" data-number="4.6.2.1">
@@ -1858,11 +1738,7 @@ F-statistic: 185.9 on 3 and 96 DF,  p-value: &lt; 0.00000000000000022</code></pr
 <div class="cell">
 <div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Icecream1, <span class="fu">aes</span>(<span class="at">x=</span>time, <span class="at">y=</span>amount)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Icecream Dispensed"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Time Pressing dispenser"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Amount Dispensed"</span>) <span class="sc">+</span> <span class="fu">geom_abline</span>(<span class="at">slope=</span><span class="dv">2</span>, <span class="at">intercept=</span><span class="dv">0</span>, <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-73-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-73-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
@@ -1936,21 +1812,13 @@ F-statistic: 161.6 on 1 and 13 DF,  p-value: 0.00000001042</code></pre>
 <p>We are 95% confident that in individual who holds the dispenser for 1.5 seconds will get between 1.86 and 3.97 oz of ice cream.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-78-1.png" class="img-fluid figure-img" width="768"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-78-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>The prediction interval (in red) is wider than the confidence interval (in blue), since it must account for variability between individuals, in addition to sampling variability.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="C_P_Band.png" class="img-fluid figure-img" style="width:75.0%"></p>
-</figure>
-</div>
+<p><img src="C_P_Band.png" class="img-fluid" style="width:75.0%"></p>
 </div>
 </div>
 </section>
@@ -1999,11 +1867,7 @@ SE(\hat{Y}|X=x^*) = \sqrt{\frac{1}{n}+ \frac{(x^*-\bar{x})^2}{\displaystyle\sum_
 <div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a>CarsA060 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Cars2015, <span class="fu">aes</span>(<span class="at">x=</span>Acc060, <span class="at">y=</span>Price)) <span class="sc">+</span> <span class="fu">geom_point</span>() </span>
 <span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>CarsA060 <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-81-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-81-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p><span class="math inline">\(Price = \beta_0 + \beta_1\times\text{Acc. Time} , \text{where } \epsilon_i\sim\mathcal{N}(0, \sigma)\)</span></p>
@@ -2068,11 +1932,7 @@ F-statistic: 133.1 on 1 and 108 DF,  p-value: &lt; 0.00000000000000022</code></p
 <p>We are 95% confident that a single new 2015 car that accelerates from 0 to 60 mph in 7 seconds will cost between 18.2 and 60.9 thousand dollars.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-85-1.png" class="img-fluid figure-img" width="768"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-85-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 </section>
@@ -2115,11 +1975,7 @@ Note: these are confidence intervals for <span class="math inline">\(\beta_0\)</
 <p>Exam 1 vs Exam 2 scores for intro stat students at another college</p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-88-1.png" class="img-fluid figure-img" width="768"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-88-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>What is the relationship between scores on the two exams?</p>
@@ -2129,11 +1985,7 @@ Note: these are confidence intervals for <span class="math inline">\(\beta_0\)</
 <p>Exam 1 vs Exam 2 scores for intro stat students at another college</p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-89-1.png" class="img-fluid figure-img" width="768"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-89-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>How many of the 6 students who scored below 70 on Exam 1 improved their scores on Exam 2?</p>
@@ -2158,11 +2010,7 @@ Note: these are confidence intervals for <span class="math inline">\(\beta_0\)</
 <span id="cb122-7"><a href="#cb122-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>TestSim, <span class="fu">aes</span>(<span class="at">y=</span>Score2, <span class="at">x=</span>Score1))<span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>) <span class="sc">+</span></span>
 <span id="cb122-8"><a href="#cb122-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope=</span><span class="dv">1</span>) <span class="sc">+</span> <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span>Understanding), <span class="at">vjust =</span> <span class="dv">0</span>, <span class="at">nudge_y =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-90-1.png" class="img-fluid figure-img" width="768"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-90-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>This phenomon is called the <strong>regression effect</strong>.</p>
@@ -2172,7 +2020,7 @@ Note: these are confidence intervals for <span class="math inline">\(\beta_0\)</
 <div class="cell">
 <div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(TestSim<span class="sc">%&gt;%</span><span class="fu">arrange</span>(<span class="fu">desc</span>(Score1))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
+<table class="table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: right;">Understanding</th>
@@ -2222,7 +2070,7 @@ Note: these are confidence intervals for <span class="math inline">\(\beta_0\)</
 <div class="cell">
 <div class="sourceCode cell-code" id="cb124"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(TestSim<span class="sc">%&gt;%</span><span class="fu">arrange</span>(Score1)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
+<table class="table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: right;">Understanding</th>
@@ -2272,11 +2120,7 @@ Note: these are confidence intervals for <span class="math inline">\(\beta_0\)</
 <p>Wins by NFL teams in 2021 and 2022</p>
 <div class="cell" data-each="false">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-93-1.png" class="img-fluid figure-img" width="768"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-93-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 </section>
@@ -2350,11 +2194,7 @@ Note: these are confidence intervals for <span class="math inline">\(\beta_0\)</
 <span id="cb127-2"><a href="#cb127-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Flights_NY_CHI, <span class="fu">aes</span>(<span class="at">x=</span>air_time, <span class="at">y=</span>origin)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Flight Time"</span>)</span>
 <span id="cb127-3"><a href="#cb127-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(p1, p2, <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-96-1.png" class="img-fluid figure-img" width="768"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-96-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <div class="cell">
@@ -2364,7 +2204,7 @@ Note: these are confidence intervals for <span class="math inline">\(\beta_0\)</
 <span id="cb128-4"><a href="#cb128-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">SD =</span> <span class="fu">sd</span>(air_time, <span class="at">na.rm=</span><span class="cn">TRUE</span>), <span class="at">n=</span><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(air_time)))</span>
 <span id="cb128-5"><a href="#cb128-5" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
+<table class="table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">origin</th>
@@ -2441,11 +2281,7 @@ originLGA     2.20905   2.869984</code></pre>
 <span id="cb133-2"><a href="#cb133-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>NCBirths, <span class="fu">aes</span>(<span class="at">x=</span>weight, <span class="at">y=</span>habit)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Birthweight and Smoking"</span>)</span>
 <span id="cb133-3"><a href="#cb133-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(p1, p2, <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch4_files/figure-html/unnamed-chunk-101-1.png" class="img-fluid figure-img" width="768"></p>
-</figure>
-</div>
+<p><img src="Ch4_files/figure-html/unnamed-chunk-101-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <div class="cell">
@@ -2453,7 +2289,7 @@ originLGA     2.20905   2.869984</code></pre>
 <span id="cb134-2"><a href="#cb134-2" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> NCBirths <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(habit) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">Mean_Weight =</span> <span class="fu">mean</span>(weight), <span class="at">SD =</span> <span class="fu">sd</span>(weight), <span class="at">n=</span><span class="fu">n</span>())</span>
 <span id="cb134-3"><a href="#cb134-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
+<table class="table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">habit</th>
@@ -2667,27 +2503,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
-      }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+  function tippyHover(el, contentFn) {
     const config = {
       allowHTML: true,
+      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -2697,17 +2516,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start',
+      placement: 'bottom-start'
     };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -2719,130 +2529,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
-          }
-        }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
-        }
-        return container.innerHTML
-      } else {
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(note);
-        }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      // TODO in 1.5, we should make sure this works without a callout special case
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
-      }
-    }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
-          }
-        } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
-          .then(res => res.text())
-          .then(html => {
-            const parser = new DOMParser();
-            const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
-            if (note !== null) {
-              const html = processXRef(id, note);
-              instance.setContent(html);
-            } 
-          }).finally(() => {
-            instance.enable();
-            instance.show();
-          });
-        }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
+      return note.innerHTML;
     });
   }
       let selectedAnnoteEl;
@@ -2886,7 +2573,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
-            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -2912,32 +2598,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -2999,18 +2659,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./Ch3.html" class="pagination-link" aria-label="Simulation-Based Inference">
+      <a href="./Ch3.html" class="pagination-link">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Simulation-Based Inference</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./Ch5.html" class="pagination-link" aria-label="Building and Assessing Models">
+      <a href="./Ch5.html" class="pagination-link">
         <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Building and Assessing Models</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
-
 
 
 

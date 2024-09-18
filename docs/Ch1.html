@@ -600,7 +600,7 @@ $ yr_built    &lt;dbl&gt; 2001, 1995, 1947, 1985, 1942, 1927, 1933, 1916, 1952, 
 </div>
 </div>
 <p>For houses not on the waterfront, the median price is about $400,000, and the middle 50% of prices range from about $300,000 to $600,000.</p>
-<p>For waterfront houses, the median price is about $1,500,000, and the middle 50% of prices range from about $900,000 to $1,900,000.</p>
+<p>For waterfront houses, the median price is about $1,500,000, and the middle 50% of prices range from about $900,000 to $2,700,000.</p>
 </section>
 <section id="violin-plot" class="level3" data-number="1.3.4">
 <h3 data-number="1.3.4" class="anchored" data-anchor-id="violin-plot"><span class="header-section-number">1.3.4</span> Violin Plot</h3>
@@ -631,7 +631,7 @@ $ yr_built    &lt;dbl&gt; 2001, 1995, 1947, 1985, 1942, 1927, 1933, 1916, 1952, 
 <p>Scatterplots are used to visualize the relationship between two quantitative variables.</p>
 <p><strong>Scatterplot Template</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>DatasetName, <span class="fu">aes</span>(<span class="at">x=</span>CategoricalVariable, <span class="at">y=</span>QuantitativeVariable)) <span class="sc">+</span> </span>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>DatasetName, <span class="fu">aes</span>(<span class="at">x=</span>QuantitativeVariable, <span class="at">y=</span>QuantitativeVariable)) <span class="sc">+</span> </span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Plot Title"</span>) <span class="sc">+</span> </span>
 <span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Axis Label"</span>) <span class="sc">+</span> </span>
