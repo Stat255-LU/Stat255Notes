@@ -849,7 +849,7 @@ Alternatively, we could interpret $b_0+b_2$ and $b_1+b_3$ together.
 
 -   $b_0 + b_2$ - On average, a house with 0 square feet that is on the waterfront is expected to cost -297.2 thousand dollars. This is not a sensible interpretation since there are no houses with 0 square feet.
 
--   $b_1$ - For each additional square foot in size, the price of a waterfront house is expected to increase by 0.6511 thousand dollars.
+-   $b_1 + b_3$ - For each additional square foot in size, the price of a waterfront house is expected to increase by 0.6511 thousand dollars.
 
 **Prediction**
 
@@ -1051,7 +1051,6 @@ $$ \displaystyle\sum_{i=1}^n (y_i -\hat{y}_i)^2  = \displaystyle\sum_{i=1}^n (y_
 -   The mathematics, however, are more complicated and require inverting a matrix. This goes beyond the scope of this class, so we will let R do the estimation and use the results.
 
 -   More on least squares estimation in multiple regression can be found [here](http://www.math.chalmers.se/Stat/Grundutb/GU/MSG500/A10/lecture5.pdf).
-
 
 \newpage
 
