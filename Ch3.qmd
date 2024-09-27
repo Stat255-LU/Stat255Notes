@@ -90,7 +90,7 @@ p <- sum(Flights_NY_CHI$ontime=="Y")/20591
 p
 ```
 
-When the population parameter is a proportion, we'll denote it with the letter $p$. Here $p=$`r p`. Keep in mind that in a real situation, we typically won't know the value of the population parameter $p$, and will need to estimate it from a sample.
+When the population parameter is a proportion, we'll denote it with the letter $p$. Here $p$=`r p`. Keep in mind that in a real situation, we typically won't know the value of the population parameter $p$, and will need to estimate it from a sample.
 
 The histogram shows the distribution of arrival delay times. Negative delays indicate the flight arriving ahead of schedule.
 
@@ -334,7 +334,7 @@ SD <- c(SD10, SD30, SD75, SD200)
 kable(data.frame(Sample_Size, SD))
 ```
 
-Sample size does not impact the amount of variability between individual flights. Standard deviation in delay times does not systematically increase or decrease based on sample size (of course it varies a little based on the lakes randomly chosen in the sample).
+Sample size does not impact the amount of variability between individual flights. Standard deviation in delay times does not systematically increase or decrease based one sample size (of course it varies a little based on the lakes randomly chosen in the sample).
 
 Now, we'll examine what happens to the standard error of the mean as the sample size changes.
 

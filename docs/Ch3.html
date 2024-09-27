@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -81,7 +81,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -90,6 +96,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -99,6 +106,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 </head>
 
 <body class="nav-sidebar floating">
@@ -107,12 +141,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Ch3.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Simulation-Based Inference</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Ch3.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Simulation-Based Inference</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -122,7 +156,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">STAT 255 Notes</a> 
@@ -186,7 +220,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -264,7 +298,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <p><strong>Learning Outcomes:</strong></p>
 <ol start="14" type="1">
@@ -331,7 +367,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">ggtitle</span>(<span class="st">"On-time Flights"</span>)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>on_time_plot_POP</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We see that the majority of flights did arrive on time.</p>
@@ -344,7 +384,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>[1] 0.6079841</code></pre>
 </div>
 </div>
-<p>When the population parameter is a proportion, we’ll denote it with the letter <span class="math inline">\(p\)</span>. Here $p=$0.6079841. Keep in mind that in a real situation, we typically won’t know the value of the population parameter <span class="math inline">\(p\)</span>, and will need to estimate it from a sample.</p>
+<p>When the population parameter is a proportion, we’ll denote it with the letter <span class="math inline">\(p\)</span>. Here <span class="math inline">\(p\)</span>=0.6079841. Keep in mind that in a real situation, we typically won’t know the value of the population parameter <span class="math inline">\(p\)</span>, and will need to estimate it from a sample.</p>
 <p>The histogram shows the distribution of arrival delay times. Negative delays indicate the flight arriving ahead of schedule.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>Delay_plot_POP <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Flights_NY_CHI, <span class="fu">aes</span>(<span class="at">x=</span>arr_delay)) <span class="sc">+</span> </span>
@@ -352,7 +392,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribution of Arrival Delays"</span>)</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>Delay_plot_POP</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We see that the distribution of arrival delays is heavily right-skewed. While most flights arrive around the scheduled time, a few were late by 3 or more hours.</p>
@@ -473,7 +517,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(Samples_df, <span class="dv">20</span>) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: right;">Sample</th>
@@ -594,7 +638,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Prop. on time in sample"</span>)</span>
 <span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>Prop_Samp_Dist</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We notice that most of our 10,000 samples yielded proportions of on-time arrivals between 0.5 and 0.7, The distribution of proportion of on-time arrivals is roughly symmetric and bell-shaped.</p>
@@ -623,7 +671,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Mean Arrival Delay"</span>)</span>
 <span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>Mean_Samp_Dist</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>How does the sampling distribution for mean arrival delays compare to the distribution of arrival delays for individual flights? Think about the shape and the variability of the distributions.</p>
@@ -657,14 +709,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The histogram shows the distribution of individual flight delays in random samples of each size.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="1152"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>For each sample, most of the flights have delays slightly below or above 0, though a small percentage of the flights in each sample have much larger delays. The variability in delays is about the same, regardless of sample size.</p>
 <p>The table shows the standard deviation in each of the samples.</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: right;">Sample_Size</th>
@@ -692,19 +748,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-<p>Sample size does not impact the amount of variability between individual flights. Standard deviation in delay times does not systematically increase or decrease based on sample size (of course it varies a little based on the lakes randomly chosen in the sample).</p>
+<p>Sample size does not impact the amount of variability between individual flights. Standard deviation in delay times does not systematically increase or decrease based one sample size (of course it varies a little based on the lakes randomly chosen in the sample).</p>
 <p>Now, we’ll examine what happens to the standard error of the mean as the sample size changes.</p>
 <p><strong>Distributions of Mean Between Different Samples</strong></p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" width="1152"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Notice that as the sample size increases, the sampling distribution of the mean becomes more symmetric and bell-shaped, and also more concentrated around the population mean <span class="math inline">\(\mu\)</span>.</p>
 <p>The table shows the standard error of the mean for samples of different size:</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: right;">Sample_Size</th>
@@ -747,7 +807,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>Prop_Samp_Dist <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept=</span>p, <span class="at">color=</span><span class="st">"green"</span>, <span class="at">linetype=</span><span class="st">"dotted"</span>, <span class="at">linewidth=</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x=</span>p <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>SE_p_hat,<span class="at">xend=</span>p <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>SE_p_hat, <span class="at">y=</span><span class="dv">50</span>, <span class="at">yend=</span><span class="dv">50</span>), <span class="at">color=</span><span class="st">"gold"</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">alpha=</span><span class="fl">0.01</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We calculate the proportion of samples whose proportion of on-time arrivals lies within <span class="math inline">\(\pm 2\)</span> standard errors of the true proportion.</p>
@@ -778,7 +842,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="Emp_Rule.png" class="img-fluid figure-img" width="1800"></p>
-<figcaption class="figure-caption">Image from https://openintro-ims.netlify.app/foundations-mathematical</figcaption>
+<figcaption>Image from https://openintro-ims.netlify.app/foundations-mathematical</figcaption>
 </figure>
 </div>
 </div>
@@ -834,7 +898,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">select</span>(Sample, p_hat_val, Lower, Upper, Containsp)  </span>
 <span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(Samples_df_p <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>), <span class="dv">20</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: right;">Sample</th>
@@ -1000,7 +1064,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"100 Different Confidence Intervals for p"</span>) <span class="sc">+</span> </span>
 <span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid" width="960"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Out of these 100 samples, 93 contain the true value of the population parameter <span class="math inline">\(p\)</span>. This is close to the desired 95% confidence level.</p>
@@ -1019,7 +1087,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">select</span>(Sample, y_bar_val, Lower, Upper, Containsmu)  </span>
 <span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(Samples_df_mu <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>), <span class="dv">20</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: right;">Sample</th>
@@ -1185,7 +1253,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">"100 Different Confidence Intervals for "</span>, mu))) <span class="sc">+</span> </span>
 <span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid" width="960"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Out of these 100 samples, 92 contain the true value of the population parameter <span class="math inline">\(\mu\)</span>.</p>
@@ -1213,7 +1285,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="Bass.png" class="img-fluid figure-img" style="width:50.0%"></p>
-<figcaption class="figure-caption">https://www.maine.gov/ifw/fish-wildlife/fisheries/species-information/largemouth-bass.html</figcaption>
+<figcaption>https://www.maine.gov/ifw/fish-wildlife/fisheries/species-information/largemouth-bass.html</figcaption>
 </figure>
 </div>
 </div>
@@ -1245,7 +1317,7 @@ $ AgeData           &lt;int&gt; 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="Florida.png" class="img-fluid figure-img" style="width:30.0%"></p>
-<figcaption class="figure-caption">from Google Maps</figcaption>
+<figcaption>from Google Maps</figcaption>
 </figure>
 </div>
 </div>
@@ -1326,7 +1398,11 @@ $ AgeData           &lt;int&gt; 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 
 <span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Mercury Level"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Frequency"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span>
 <span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>Lakes_Hist</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-46-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-46-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The proportion of lakes with mercury levels exceeding 1 ppm is calculated below.</p>
@@ -1348,7 +1424,11 @@ $ AgeData           &lt;int&gt; 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 
 <p>An illustration of the bootstrapping procedure is shown below, using a sample of 12 colored dots, instead of the 53 lakes.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="Bootstrap_Idea.png" class="img-fluid" style="width:100.0%"></p>
+<div>
+<figure class="figure">
+<p><img src="Bootstrap_Idea.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>In fact, duplicating the sample many times and selecting new samples of size <span class="math inline">\(n\)</span> has the same effect as drawing samples of size <span class="math inline">\(n\)</span> from the original sample, by putting the item drawn back in each time, a procedure called <strong>sampling with replacement</strong>. Thus, we can skip the step of copying/pasting the sample many times, and instead draw our samples with replacement.</p>
@@ -1356,7 +1436,11 @@ $ AgeData           &lt;int&gt; 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 
 <p>An illustration of the concept of bootstrapping, using sampling with replacement is shown below.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="Bootstrap.png" class="img-fluid" style="width:100.0%"></p>
+<div>
+<figure class="figure">
+<p><img src="Bootstrap.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The variability in sample means in our newly drawn samples is used to approximate the variability in proportion <span class="math inline">\(\hat{p}\)</span> that would occur between different samples of 53 lakes, drawn from the population of all Florida Lakes.</p>
@@ -1380,7 +1464,7 @@ $ AgeData           &lt;int&gt; 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 
 <div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>BootstrapSample1 <span class="ot">&lt;-</span> <span class="fu">sample_n</span>(FloridaLakes, <span class="dv">53</span>, <span class="at">replace=</span><span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(Lake)</span>
 <span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>BootstrapSample1 <span class="sc">%&gt;%</span> <span class="fu">select</span>(ID, Lake, Mercury) <span class="sc">|&gt;</span> <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: right;">ID</th>
@@ -1748,7 +1832,11 @@ $ AgeData           &lt;int&gt; 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 
 <span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
 <span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a>Lakes_Bootstrap_Prop_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-57-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-57-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The bootstrap distribution is meant to approximate the sampling distribution of the statistic of interest (in this case the proportion exceeding 1 ppm). Because it is based on the sample, the bootstrap distribution will be centered at the sample statistic (<span class="math inline">\(\hat{p}\)</span> in this case) while the sampling distribution would have been centered at the population parameter (<span class="math inline">\(p\)</span>), which is unknown. The important things, however, is that the variability in the bootstrap distribution gives a good approximation of the amount of variability in the sampling distribution, so we can use the standard deviation of the bootstrap distribution (called <strong>bootstrap standard error</strong>) in our confidence interval calculation.</p>
@@ -1776,7 +1864,11 @@ $ AgeData           &lt;int&gt; 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 
 <span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x=</span>p_hat <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>SE_p_hat,<span class="at">xend=</span>p_hat <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>SE_p_hat, <span class="at">y=</span><span class="dv">50</span>, <span class="at">yend=</span><span class="dv">50</span>),</span>
 <span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">color=</span><span class="st">"gold"</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">alpha=</span><span class="fl">0.01</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-60-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-60-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We are 95% confident that the proportion of all Florida lakes with mercury levels exceeding 1 ppm is between 0.0268 and 0.1996.</p>
@@ -1789,7 +1881,7 @@ $ AgeData           &lt;int&gt; 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 
 <h3 data-number="3.4.1" class="anchored" data-anchor-id="bootstrapping-other-statistics"><span class="header-section-number">3.4.1</span> Bootstrapping Other Statistics</h3>
 <p>We’ve seen how to use bootstrapping to calculate confidence intervals for an unknown population parameter <span class="math inline">\(p\)</span>, using an estimate <span class="math inline">\(\hat{p}\)</span>, calculated from a sample of size <span class="math inline">\(n\)</span>. This procedure can be applied to calculate confidence intervals for a wide range of population parameters, using statistics calculated from a sample.</p>
 <p>For example, we could calculate confidence intervals any of the following parameters, using the corresponding sample statistic.</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 36%">
 <col style="width: 31%">
@@ -1862,7 +1954,11 @@ $ AgeData           &lt;int&gt; 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 
 <span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Mercury Level"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Frequency"</span>) </span>
 <span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>Lakes_Hist</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-61-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-61-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We’ll calculate the mean and median mercury level for the 53 lakes in the sample.</p>
@@ -1872,7 +1968,7 @@ $ AgeData           &lt;int&gt; 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 
 <span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">N=</span><span class="fu">n</span>())</span>
 <span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(Lakes_Stats)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: right;">MeanHg</th>
@@ -2005,7 +2101,11 @@ $ AgeData           &lt;int&gt; 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 
 <span id="cb91-6"><a href="#cb91-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) </span>
 <span id="cb91-7"><a href="#cb91-7" aria-hidden="true" tabindex="-1"></a>Lakes_Bootstrap_Mean_Plot </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-70-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-70-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p><strong>Bootstrap Standard Error</strong></p>
@@ -2048,7 +2148,11 @@ $ AgeData           &lt;int&gt; 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 
 <span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x=</span>mean <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>SE_mean,<span class="at">xend=</span>mean <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>SE_mean, <span class="at">y=</span><span class="dv">50</span>, <span class="at">yend=</span><span class="dv">50</span>), </span>
 <span id="cb96-3"><a href="#cb96-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">color=</span><span class="st">"gold"</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">alpha=</span><span class="fl">0.01</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-73-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-73-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We are 95% confident that the average mercury level among all Florida lakes is between 0.44 and 0.62 parts per million.</p>
@@ -2179,7 +2283,11 @@ $ AgeData           &lt;int&gt; 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 
 <span id="cb112-6"><a href="#cb112-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) </span>
 <span id="cb112-7"><a href="#cb112-7" aria-hidden="true" tabindex="-1"></a>Lakes_Bootstrap_SD_Plot </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-82-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-82-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p><strong>Bootstrap Standard Error:</strong></p>
@@ -2215,7 +2323,11 @@ $ AgeData           &lt;int&gt; 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 
 <span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x=</span>Sample_SD <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>SE_SD,<span class="at">xend=</span>Sample_SD <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>SE_SD, <span class="at">y=</span><span class="dv">50</span>, <span class="at">yend=</span><span class="dv">50</span>), </span>
 <span id="cb117-3"><a href="#cb117-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">color=</span><span class="st">"gold"</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">alpha=</span><span class="fl">0.01</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-85-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-85-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We are 95% confident that the standard deviation in mercury levels among all Florida lakes is between 0.28 and 0.4 parts per million.</p>
@@ -2231,7 +2343,11 @@ $ AgeData           &lt;int&gt; 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 
 <span id="cb118-4"><a href="#cb118-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Price"</span>) <span class="sc">+</span> </span>
 <span id="cb118-5"><a href="#cb118-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Frequency"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-86-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-86-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>These 100 houses are a sample of all houses sold in Seattle in 2014 and 2015, so we can use statistics from our sample to draw conclusions about all houses sold in Seattle in this time period.</p>
@@ -2357,7 +2473,11 @@ $ AgeData           &lt;int&gt; 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 
 <span id="cb134-6"><a href="#cb134-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) </span>
 <span id="cb134-7"><a href="#cb134-7" aria-hidden="true" tabindex="-1"></a>Houses_Bootstrap_Med_Plot </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-95-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-95-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p><strong>Bootstrap Standard Error:</strong></p>
@@ -2395,7 +2515,11 @@ $ AgeData           &lt;int&gt; 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 
 <span id="cb141-2"><a href="#cb141-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x=</span>q<span class="fl">.025</span>,<span class="at">xend=</span>q<span class="fl">.975</span>, <span class="at">y=</span><span class="dv">50</span>, <span class="at">yend=</span><span class="dv">50</span>), </span>
 <span id="cb141-3"><a href="#cb141-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">color=</span><span class="st">"gold"</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">alpha=</span><span class="fl">0.01</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-99-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-99-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We are 95% confident that the median price among all houses that sold in Seattle between 2014 and 2015 is between 410 and 600 thousand dollars.</p>
@@ -2411,7 +2535,11 @@ $ AgeData           &lt;int&gt; 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 
 <span id="cb142-3"><a href="#cb142-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Location"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Mercury Level"</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>)) <span class="sc">+</span> <span class="fu">coord_flip</span>()</span>
 <span id="cb142-4"><a href="#cb142-4" aria-hidden="true" tabindex="-1"></a>LakesBP</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-101-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-101-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
@@ -2594,7 +2722,11 @@ Coefficients:
 <span id="cb160-4"><a href="#cb160-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Northern vs Southern Lakes: Bootstrap Distribution for b1"</span>) </span>
 <span id="cb160-5"><a href="#cb160-5" aria-hidden="true" tabindex="-1"></a>NS_Lakes_Bootstrap_Plot_b1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-111-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-111-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p><strong>Bootstrap Standard Error:</strong></p>
@@ -2627,7 +2759,11 @@ Coefficients:
 <span id="cb165-2"><a href="#cb165-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x=</span>Sample_b1 <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>SE_b1,<span class="at">xend=</span>Sample_b1 <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>SE_b1, <span class="at">y=</span><span class="dv">50</span>, <span class="at">yend=</span><span class="dv">50</span>), </span>
 <span id="cb165-3"><a href="#cb165-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">color=</span><span class="st">"gold"</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">alpha=</span><span class="fl">0.01</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-114-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-114-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We are 95% confident that the mean mercury level among all lakes in Southern Florida is between 0.08 and 0.46 higher than the mean mercury level among all lakes in Northern Florida.</p>
@@ -2639,7 +2775,11 @@ Coefficients:
 <div class="sourceCode cell-code" id="cb166"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb166-1"><a href="#cb166-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>FloridaLakes, <span class="fu">aes</span>(<span class="at">y=</span>Mercury, <span class="at">x=</span>pH)) <span class="sc">+</span> </span>
 <span id="cb166-2"><a href="#cb166-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-115-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-115-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The regression equation is</p>
@@ -2802,7 +2942,11 @@ Coefficients:
 <span id="cb182-4"><a href="#cb182-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Bootstrap Distribution for Slope"</span>) </span>
 <span id="cb182-5"><a href="#cb182-5" aria-hidden="true" tabindex="-1"></a>Lakes_Bootstrap_Plot_Slope</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-124-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-124-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p><strong>Bootstrap Standard Error:</strong></p>
@@ -2835,7 +2979,11 @@ Coefficients:
 <span id="cb187-2"><a href="#cb187-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x=</span>Sample_b1 <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>SE_b1,<span class="at">xend=</span>Sample_b1 <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>SE_b1, <span class="at">y=</span><span class="dv">50</span>, <span class="at">yend=</span><span class="dv">50</span>), </span>
 <span id="cb187-3"><a href="#cb187-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">color=</span><span class="st">"gold"</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">alpha=</span><span class="fl">0.01</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-127-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-127-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We are 95% confident that among all Florida lakes, for each 1 unit increase in pH, mercury level decreases between 0.2 and 0.1, on average.</p>
@@ -2986,7 +3134,11 @@ Coefficients:
 <span id="cb201-4"><a href="#cb201-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>( <span class="st">"Bootstrap Distribution for Exp. Mercury when pH=7"</span>) </span>
 <span id="cb201-5"><a href="#cb201-5" aria-hidden="true" tabindex="-1"></a>Lakes_Bootstrap_Plot_Exp7</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-135-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-135-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p><strong>Bootstrap Standard Error:</strong></p>
@@ -3019,7 +3171,11 @@ Coefficients:
 <span id="cb206-2"><a href="#cb206-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x=</span>Sample_Exp7 <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>SE_Exp7,<span class="at">xend=</span>Sample_Exp7 <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>SE_Exp7, <span class="at">y=</span><span class="dv">50</span>, <span class="at">yend=</span><span class="dv">50</span>), </span>
 <span id="cb206-3"><a href="#cb206-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">color=</span><span class="st">"gold"</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">alpha=</span><span class="fl">0.01</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-138-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-138-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We are 95% confident that average mercury level among all Florida lakes with pH level 7 is between 0.4 and 0.5 ppm.</p>
@@ -3340,7 +3496,11 @@ Coefficients:
 <span id="cb248-5"><a href="#cb248-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>( <span class="st">"Bootstrap Distribution b0+2000b1+b2+2000b3"</span>) </span>
 <span id="cb248-6"><a href="#cb248-6" aria-hidden="true" tabindex="-1"></a>Houses_Bootstrap_Plot_Q1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-160-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-160-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Standard Error:</p>
@@ -3366,7 +3526,11 @@ Coefficients:
 <span id="cb253-2"><a href="#cb253-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x=</span>Sample_Q1 <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>SE_Q1,<span class="at">xend=</span>Sample_Q1 <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>SE_Q1, <span class="at">y=</span><span class="dv">50</span>, <span class="at">yend=</span><span class="dv">50</span>), </span>
 <span id="cb253-3"><a href="#cb253-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">color=</span><span class="st">"gold"</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">alpha=</span><span class="fl">0.01</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-163-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-163-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We are 95% confident that average price among all 2,000 square foot Seattle waterfront houses is between 924.8114379 and 1084.9359281 thousand dollars.</p>
@@ -3379,7 +3543,11 @@ Coefficients:
 <span id="cb254-5"><a href="#cb254-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>( <span class="st">"Bootstrap Distribution b0+1500b1"</span>) </span>
 <span id="cb254-6"><a href="#cb254-6" aria-hidden="true" tabindex="-1"></a>Houses_Bootstrap_Plot_Q2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-164-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-164-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Standard Error:</p>
@@ -3405,7 +3573,11 @@ Coefficients:
 <span id="cb259-2"><a href="#cb259-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x=</span>Sample_Q2 <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>SE_Q2,<span class="at">xend=</span>Sample_Q2 <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>SE_Q2, <span class="at">y=</span><span class="dv">50</span>, <span class="at">yend=</span><span class="dv">50</span>), </span>
 <span id="cb259-3"><a href="#cb259-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">color=</span><span class="st">"gold"</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">alpha=</span><span class="fl">0.01</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-167-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-167-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We are 95% confident that average price among all 1,500 square foot Seattle non-waterfront houses is between 383.3247413 and 406.5749705 thousand dollars.</p>
@@ -3418,7 +3590,11 @@ Coefficients:
 <span id="cb260-5"><a href="#cb260-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>( <span class="st">"Bootstrap Distribution b2+1800b3"</span>) </span>
 <span id="cb260-6"><a href="#cb260-6" aria-hidden="true" tabindex="-1"></a>Houses_Bootstrap_Plot_Q3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-168-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-168-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Standard Error:</p>
@@ -3444,7 +3620,11 @@ Coefficients:
 <span id="cb265-2"><a href="#cb265-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x=</span>Sample_Q3 <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>SE_Q3,<span class="at">xend=</span>Sample_Q3 <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>SE_Q3, <span class="at">y=</span><span class="dv">50</span>, <span class="at">yend=</span><span class="dv">50</span>), </span>
 <span id="cb265-3"><a href="#cb265-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">color=</span><span class="st">"gold"</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">alpha=</span><span class="fl">0.01</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-171-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-171-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We are 95% confident that the average price among all 1800 square feet waterfront houses in Seattle is between 333.441699 and 494.9698429 thousand dollars more than the average price among all non-waterfront houses of the same size.</p>
@@ -3457,7 +3637,11 @@ Coefficients:
 <span id="cb266-5"><a href="#cb266-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>( <span class="st">"Bootstrap Distribution 100b3"</span>) </span>
 <span id="cb266-6"><a href="#cb266-6" aria-hidden="true" tabindex="-1"></a>Houses_Bootstrap_Plot_Q4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-172-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-172-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p><strong>Bootstrap Standard Error:</strong> We’ll calculate the bootstrap standard error of the slope <span class="math inline">\(100b_3\)</span>. This is a measure of how much the slope varies between samples.</p>
@@ -3483,7 +3667,11 @@ Coefficients:
 <span id="cb271-2"><a href="#cb271-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x=</span>Sample_Q4 <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>SE_Q4,<span class="at">xend=</span>Sample_Q4 <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>SE_Q4, <span class="at">y=</span><span class="dv">50</span>, <span class="at">yend=</span><span class="dv">50</span>), </span>
 <span id="cb271-3"><a href="#cb271-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">color=</span><span class="st">"gold"</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">alpha=</span><span class="fl">0.01</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-175-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-175-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We are 95% confident that for each 100 square foot increase, the average price among all waterfront houses increases by between 38.9150334 and 47.6183836 thousand dollars more than the increase in average price among all non-waterfront.</p>
@@ -3507,7 +3695,7 @@ Coefficients:
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="Florida.png" class="img-fluid figure-img" style="width:30.0%"></p>
-<figcaption class="figure-caption">from Google Maps</figcaption>
+<figcaption>from Google Maps</figcaption>
 </figure>
 </div>
 </div>
@@ -3585,14 +3773,18 @@ Coefficients:
 <span id="cb274-3"><a href="#cb274-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Location"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Mercury Level"</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>)) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">1.5</span>)) <span class="sc">+</span> <span class="fu">coord_flip</span>() </span>
 <span id="cb274-4"><a href="#cb274-4" aria-hidden="true" tabindex="-1"></a>LakesBP</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-178-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-178-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb275"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb275-1"><a href="#cb275-1" aria-hidden="true" tabindex="-1"></a>LakesTable <span class="ot">&lt;-</span> FloridaLakes <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(Location) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">MeanHg=</span><span class="fu">mean</span>(Mercury), <span class="at">StDevHg=</span><span class="fu">sd</span>(Mercury),  <span class="at">N=</span><span class="fu">n</span>())</span>
 <span id="cb275-2"><a href="#cb275-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(LakesTable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">Location</th>
@@ -3692,7 +3884,7 @@ Coefficients:
 <span id="cb279-3"><a href="#cb279-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(Shuffle1df) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Lake"</span>, <span class="st">"Location"</span>, <span class="st">"Mercury"</span>, <span class="st">"Shuffled Location"</span>)</span>
 <span id="cb279-4"><a href="#cb279-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(Shuffle1df))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">Lake</th>
@@ -3751,14 +3943,18 @@ Coefficients:
 <span id="cb280-4"><a href="#cb280-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Location"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Mercury Level"</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>)) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">1.5</span>)) <span class="sc">+</span> <span class="fu">coord_flip</span>()</span>
 <span id="cb280-5"><a href="#cb280-5" aria-hidden="true" tabindex="-1"></a>LakesPerm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-183-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-183-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb281"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb281-1"><a href="#cb281-1" aria-hidden="true" tabindex="-1"></a>LakesPermTable <span class="ot">&lt;-</span> Shuffle1df <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(<span class="st">`</span><span class="at">Shuffled Location</span><span class="st">`</span>) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">MeanHg=</span><span class="fu">mean</span>(Mercury), <span class="at">StDevHg=</span><span class="fu">sd</span>(Mercury),  <span class="at">N=</span><span class="fu">n</span>())</span>
 <span id="cb281-2"><a href="#cb281-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(LakesPermTable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">Shuffled Location</th>
@@ -3792,7 +3988,7 @@ Coefficients:
 <span id="cb282-2"><a href="#cb282-2" aria-hidden="true" tabindex="-1"></a>ShuffledLakes<span class="sc">$</span>Location <span class="ot">&lt;-</span> ShuffledLakes<span class="sc">$</span>Location[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(ShuffledLakes))] </span>
 <span id="cb282-3"><a href="#cb282-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(Shuffle1df))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">Lake</th>
@@ -3852,14 +4048,18 @@ Coefficients:
 <span id="cb284-3"><a href="#cb284-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Location"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Mercury Level"</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>)) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">1.5</span>)) <span class="sc">+</span> <span class="fu">coord_flip</span>()</span>
 <span id="cb284-4"><a href="#cb284-4" aria-hidden="true" tabindex="-1"></a>LakesPerm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-187-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-187-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb285"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb285-1"><a href="#cb285-1" aria-hidden="true" tabindex="-1"></a>LakesPermTable <span class="ot">&lt;-</span> Shuffle1df <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(<span class="st">`</span><span class="at">Shuffled Location</span><span class="st">`</span>) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">MeanHg=</span><span class="fu">mean</span>(Mercury), <span class="at">StDevHg=</span><span class="fu">sd</span>(Mercury),  <span class="at">N=</span><span class="fu">n</span>())</span>
 <span id="cb285-2"><a href="#cb285-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(LakesPermTable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">Shuffled Location</th>
@@ -3891,7 +4091,7 @@ Coefficients:
 <span id="cb286-2"><a href="#cb286-2" aria-hidden="true" tabindex="-1"></a>ShuffledLakes<span class="sc">$</span>Location <span class="ot">&lt;-</span> ShuffledLakes<span class="sc">$</span>Location[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(ShuffledLakes))] </span>
 <span id="cb286-3"><a href="#cb286-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(Shuffle1df))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">Lake</th>
@@ -3951,14 +4151,18 @@ Coefficients:
 <span id="cb288-3"><a href="#cb288-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Location"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Mercury Level"</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>)) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">1.5</span>)) <span class="sc">+</span> <span class="fu">coord_flip</span>()</span>
 <span id="cb288-4"><a href="#cb288-4" aria-hidden="true" tabindex="-1"></a>LakesPerm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-191-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-191-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb289"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb289-1"><a href="#cb289-1" aria-hidden="true" tabindex="-1"></a>LakesPermTable <span class="ot">&lt;-</span> Shuffle1df <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(<span class="st">`</span><span class="at">Shuffled Location</span><span class="st">`</span>) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">MeanHg=</span><span class="fu">mean</span>(Mercury), <span class="at">StDevHg=</span><span class="fu">sd</span>(Mercury),  <span class="at">N=</span><span class="fu">n</span>())</span>
 <span id="cb289-2"><a href="#cb289-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(LakesPermTable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">Shuffled Location</th>
@@ -3990,7 +4194,7 @@ Coefficients:
 <span id="cb290-2"><a href="#cb290-2" aria-hidden="true" tabindex="-1"></a>ShuffledLakes<span class="sc">$</span>Location <span class="ot">&lt;-</span> ShuffledLakes<span class="sc">$</span>Location[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(ShuffledLakes))] </span>
 <span id="cb290-3"><a href="#cb290-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(Shuffle1df))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">Lake</th>
@@ -4050,14 +4254,18 @@ Coefficients:
 <span id="cb292-3"><a href="#cb292-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Location"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Mercury Level"</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>)) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">1.5</span>)) <span class="sc">+</span> <span class="fu">coord_flip</span>()</span>
 <span id="cb292-4"><a href="#cb292-4" aria-hidden="true" tabindex="-1"></a>LakesPerm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-195-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-195-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb293"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb293-1"><a href="#cb293-1" aria-hidden="true" tabindex="-1"></a>LakesPermTable <span class="ot">&lt;-</span> Shuffle1df <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(<span class="st">`</span><span class="at">Shuffled Location</span><span class="st">`</span>) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">MeanHg=</span><span class="fu">mean</span>(Mercury), <span class="at">StDevHg=</span><span class="fu">sd</span>(Mercury),  <span class="at">N=</span><span class="fu">n</span>())</span>
 <span id="cb293-2"><a href="#cb293-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(LakesPermTable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">Shuffled Location</th>
@@ -4089,7 +4297,7 @@ Coefficients:
 <span id="cb294-2"><a href="#cb294-2" aria-hidden="true" tabindex="-1"></a>ShuffledLakes<span class="sc">$</span>Location <span class="ot">&lt;-</span> ShuffledLakes<span class="sc">$</span>Location[<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(ShuffledLakes))] </span>
 <span id="cb294-3"><a href="#cb294-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(Shuffle1df))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">Lake</th>
@@ -4149,14 +4357,18 @@ Coefficients:
 <span id="cb296-3"><a href="#cb296-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Location"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Mercury Level"</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>)) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">1.5</span>)) <span class="sc">+</span> <span class="fu">coord_flip</span>()</span>
 <span id="cb296-4"><a href="#cb296-4" aria-hidden="true" tabindex="-1"></a>LakesPerm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-199-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-199-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb297"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb297-1"><a href="#cb297-1" aria-hidden="true" tabindex="-1"></a>LakesPermTable <span class="ot">&lt;-</span> Shuffle1df <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(<span class="st">`</span><span class="at">Shuffled Location</span><span class="st">`</span>) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">MeanHg=</span><span class="fu">mean</span>(Mercury), <span class="at">StDevHg=</span><span class="fu">sd</span>(Mercury),  <span class="at">N=</span><span class="fu">n</span>())</span>
 <span id="cb297-2"><a href="#cb297-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(LakesPermTable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">Shuffled Location</th>
@@ -4210,7 +4422,11 @@ Coefficients:
 <span id="cb299-6"><a href="#cb299-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribution of b1 under assumption of no relationship"</span>)</span>
 <span id="cb299-7"><a href="#cb299-7" aria-hidden="true" tabindex="-1"></a>NSLakes_SimulationResultsPlot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-202-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-202-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The red lines are quite extreme, relative to the simulated values shown in the histogram. Based on the simulation, it is rare to obtain a difference as extreme as the 0.272 value we saw in the actual data, by chance when there is actually no difference in average mercury levels between Northern and Southern Florida lakes.</p>
@@ -4244,7 +4460,11 @@ Coefficients:
 <div class="cell">
 <div class="sourceCode cell-code" id="cb304"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb304-1"><a href="#cb304-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"pvals.png"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="pvals.png" class="img-fluid" style="width:100.0%"></p>
+<div>
+<figure class="figure">
+<p><img src="pvals.png" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
 </div>
 </div>
 <div style="page-break-after: always;"></div>
@@ -4284,7 +4504,7 @@ Coefficients:
 <div class="cell">
 <div class="sourceCode cell-code" id="cb305"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb305-1"><a href="#cb305-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(LakesTable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">Location</th>
@@ -4349,7 +4569,11 @@ Coefficients:
 <span id="cb307-5"><a href="#cb307-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribution of Difference in SD under assumption of no relationship"</span>)</span>
 <span id="cb307-6"><a href="#cb307-6" aria-hidden="true" tabindex="-1"></a>NSLakes_SDSimResultsPlot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-208-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-208-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We calculate the number of simulations (out of 10,000) resulting in standard deviations greater the 0.1142.</p>
@@ -4379,7 +4603,11 @@ Coefficients:
 <span id="cb312-2"><a href="#cb312-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span> </span>
 <span id="cb312-3"><a href="#cb312-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">10</span>)) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">1.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-211-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-211-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The regression equation is</p>
@@ -4404,7 +4632,11 @@ Coefficients:
 <p>If there was really no relationship, then the slope among all lakes would be 0. But, of course, we would not expect the slope in our sample to exactly match the slope for all lakes. Our question of interest is whether it is plausible that we could have randomly selected a sample resulting in a slope as extreme as 0.15 by chance, when there is actually no relationship between mercury and pH levels, among all lakes. In other words, could we plausible have drawn the sample of 53 lakes shown in blue from a population like the one in red, shown below?</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-213-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-213-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p><strong>Key Question:</strong></p>
@@ -4431,7 +4663,7 @@ Coefficients:
 <span id="cb316-2"><a href="#cb316-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(Shuffle1df) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Lake"</span>, <span class="st">"Mercury"</span>, <span class="st">"pH"</span>, <span class="st">"Shuffled_pH"</span>)</span>
 <span id="cb316-3"><a href="#cb316-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(Shuffle1df))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">Lake</th>
@@ -4488,7 +4720,11 @@ Coefficients:
 <span id="cb317-3"><a href="#cb317-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">10</span>)) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">1.5</span>)) <span class="sc">+</span> </span>
 <span id="cb317-4"><a href="#cb317-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope=</span><span class="sc">-</span><span class="fl">0.1523</span>, <span class="at">intercept=</span><span class="fl">1.5309</span>, <span class="at">color=</span><span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-216-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-216-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Slope of regression line from permuted data:</p>
@@ -4509,7 +4745,7 @@ Coefficients:
 <span id="cb321-2"><a href="#cb321-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(Shuffle2df) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Lake"</span>, <span class="st">"Mercury"</span>, <span class="st">"pH"</span>, <span class="st">"Shuffled_pH"</span>)</span>
 <span id="cb321-3"><a href="#cb321-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(Shuffle2df))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">Lake</th>
@@ -4565,7 +4801,11 @@ Coefficients:
 <span id="cb322-3"><a href="#cb322-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">10</span>)) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">1.5</span>)) <span class="sc">+</span> </span>
 <span id="cb322-4"><a href="#cb322-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope=</span><span class="sc">-</span><span class="fl">0.1523</span>, <span class="at">intercept=</span><span class="fl">1.5309</span>, <span class="at">color=</span><span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-220-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-220-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Slope of regression line from permuted data:</p>
@@ -4585,7 +4825,7 @@ Coefficients:
 <span id="cb326-2"><a href="#cb326-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(Shuffle3df) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Lake"</span>, <span class="st">"Mercury"</span>, <span class="st">"pH"</span>, <span class="st">"Shuffled_pH"</span>)</span>
 <span id="cb326-3"><a href="#cb326-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(Shuffle3df))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">Lake</th>
@@ -4641,7 +4881,11 @@ Coefficients:
 <span id="cb327-3"><a href="#cb327-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">10</span>)) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">1.5</span>)) <span class="sc">+</span> </span>
 <span id="cb327-4"><a href="#cb327-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope=</span><span class="sc">-</span><span class="fl">0.1523</span>, <span class="at">intercept=</span><span class="fl">1.5309</span>, <span class="at">color=</span><span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-224-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-224-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Slope of regression line from permuted data:</p>
@@ -4677,7 +4921,11 @@ Coefficients:
 <span id="cb331-6"><a href="#cb331-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribution of b1 under assumption of no relationship"</span>)</span>
 <span id="cb331-7"><a href="#cb331-7" aria-hidden="true" tabindex="-1"></a>Lakes_pHSimulationResultsPlot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-227-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-227-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p><strong>p-value:</strong> Proportion of simulations resulting in value of <span class="math inline">\(b_1\)</span> more extreme than -0.15</p>
@@ -4703,7 +4951,11 @@ Coefficients:
 <div class="sourceCode cell-code" id="cb334"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb334-1"><a href="#cb334-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Houses, <span class="fu">aes</span>(<span class="at">x=</span>condition, <span class="at">y=</span>price, <span class="at">fill=</span>condition)) <span class="sc">+</span> </span>
 <span id="cb334-2"><a href="#cb334-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span> <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span> <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Houses"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-229-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-229-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
@@ -4712,7 +4964,7 @@ Coefficients:
 <span id="cb335-3"><a href="#cb335-3" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">N=</span> <span class="fu">n</span>())</span>
 <span id="cb335-4"><a href="#cb335-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(Cond_Tab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">condition</th>
@@ -4775,7 +5027,7 @@ Coefficients:
 <span id="cb339-2"><a href="#cb339-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(Shuffle1df) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Id"</span>, <span class="st">"price"</span>, <span class="st">"condition"</span>, <span class="st">"Shuffled_Condition"</span>)</span>
 <span id="cb339-3"><a href="#cb339-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(Shuffle1df))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: right;">Id</th>
@@ -4829,7 +5081,11 @@ Coefficients:
 <div class="sourceCode cell-code" id="cb340"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb340-1"><a href="#cb340-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>ShuffledHouses, <span class="fu">aes</span>(<span class="at">x=</span>condition, <span class="at">y=</span>price, <span class="at">fill=</span>condition)) <span class="sc">+</span> </span>
 <span id="cb340-2"><a href="#cb340-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span> <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span> <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Shuffled Houses"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-234-1.png" class="img-fluid" width="768"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-234-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We fit a model to predict price using condition, and compare it to one that predicts price without using condition, and calculate the F-statistic.</p>
@@ -4851,7 +5107,7 @@ Coefficients:
 <span id="cb344-2"><a href="#cb344-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(Shuffle2df) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Id"</span>, <span class="st">"price"</span>, <span class="st">"condition"</span>, <span class="st">"Shuffled_Condition"</span>)</span>
 <span id="cb344-3"><a href="#cb344-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(Shuffle2df))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: right;">Id</th>
@@ -4905,7 +5161,11 @@ Coefficients:
 <div class="sourceCode cell-code" id="cb345"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb345-1"><a href="#cb345-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>ShuffledHouses, <span class="fu">aes</span>(<span class="at">x=</span>condition, <span class="at">y=</span>price, <span class="at">fill=</span>condition)) <span class="sc">+</span> </span>
 <span id="cb345-2"><a href="#cb345-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span> <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span> <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Shuffled Houses"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-238-1.png" class="img-fluid" width="768"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-238-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We fit a model to predict price using condition, and compare it to one that predicts price without using condition, and calculate the F-statistic.</p>
@@ -4927,7 +5187,7 @@ Coefficients:
 <span id="cb349-2"><a href="#cb349-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(Shuffle3df) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Id"</span>, <span class="st">"price"</span>, <span class="st">"condition"</span>, <span class="st">"Shuffled_Condition"</span>)</span>
 <span id="cb349-3"><a href="#cb349-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(Shuffle1df))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: right;">Id</th>
@@ -4981,7 +5241,11 @@ Coefficients:
 <div class="sourceCode cell-code" id="cb350"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb350-1"><a href="#cb350-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>ShuffledHouses, <span class="fu">aes</span>(<span class="at">x=</span>condition, <span class="at">y=</span>price, <span class="at">fill=</span>condition)) <span class="sc">+</span> </span>
 <span id="cb350-2"><a href="#cb350-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span> <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span> <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Shuffled Houses"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-242-1.png" class="img-fluid" width="768"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-242-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We fit a model to predict price using condition, and compare it to one that predicts price without using condition, and calculate the F-statistic.</p>
@@ -5018,7 +5282,11 @@ Coefficients:
 <span id="cb354-4"><a href="#cb354-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Simulated Value of F"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Frequency"</span>) <span class="sc">+</span>  <span class="fu">ggtitle</span>(<span class="st">"Distribution of F under assumption of no relationship"</span>)</span>
 <span id="cb354-5"><a href="#cb354-5" aria-hidden="true" tabindex="-1"></a>House_Cond_SimulationResults_Plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-245-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="Ch3_files/figure-html/unnamed-chunk-245-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The F-statistic in our actual we observed does not appear to be very extreme.</p>
@@ -5172,10 +5440,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -5185,8 +5470,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -5198,7 +5492,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -5242,6 +5659,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -5267,6 +5685,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -5328,17 +5772,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./Ch2.html" class="pagination-link">
+      <a href="./Ch2.html" class="pagination-link" aria-label="Introduction to Statistical Models">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to Statistical Models</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./Ch4.html" class="pagination-link">
+      <a href="./Ch4.html" class="pagination-link" aria-label="Inference from Models">
         <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Inference from Models</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 
