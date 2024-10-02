@@ -769,12 +769,16 @@ We calculate the standard deviation of this bootstrap distribution, which is an 
 
 ```{r}
 SE_p_hat <- sd(Lakes_Bootstrap_Prop$Bootstrap_prop)
+SE_p_hat
 ```
 
 Since the bootstrap distribution is roughly symmetric and bell-shaped, we can calculate a 95% confidence interval for the proportion of all Florida lakes with mercury levels exceeding 1 ppm, using bootstrap standard error confidence interval method.
 
 $$
-\hat{p} \pm 2\times\text{SE}(\hat{p})
+\begin{aligned}
+& \hat{p} \pm 2\times\text{SE}(\hat{p}) \\
+& = `r phat` \pm `r 2 \times SE_p_hat`
+\end{aligned}
 $$
 
 ```{r}
@@ -802,7 +806,7 @@ We've seen how to use bootstrapping to calculate confidence intervals for an unk
 For example, we could calculate confidence intervals any of the following parameters, using the corresponding sample statistic.
 
 | Context                       | Parameter                                          | Statistic                              |
-|--------------------------|-----------------------|-----------------------|
+|-------------------|------------------------------|------------------------|
 | Proportion                    | $p$                                                | $\hat{p}$                              |
 | Mean                          | $\mu$                                              | $\bar{x}$                              |
 | Standard Deviation            | $\sigma$                                           | $s$                                    |
