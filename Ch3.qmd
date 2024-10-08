@@ -593,8 +593,6 @@ data("FloridaLakes")
 glimpse(FloridaLakes)
 ```
 
-We are interested in whether mercury levels are higher or lower, on average, in Northern Florida compared to Southern Florida.
-
 We'll divide the state along route 50, which runs East-West, passing through Northern Orlando.
 
 ```{r, echo=FALSE, out.width = '30%', fig.cap="from Google Maps"}
@@ -776,8 +774,8 @@ Since the bootstrap distribution is roughly symmetric and bell-shaped, we can ca
 
 $$
 \begin{aligned}
-& \hat{p} \pm 2\times\text{SE}(\hat{p}) \\
-& = `r phat` \pm `r 2 \times SE_p_hat`
+& \bar{x} \pm 2\times\text{SE}(\hat{p}) \\
+& = 0.11 \pm 2\times\text{`r SE_p_hat`}
 \end{aligned}
 $$
 
@@ -845,7 +843,7 @@ Lakes_Hist <- ggplot(data=FloridaLakes, aes(x=Mercury)) +
 Lakes_Hist
 ```
 
-We'll calculate the mean and median mercury level for the 53 lakes in the sample.
+We'll calculate the mean and standard deviation in mercury level for the 53 lakes in the sample.
 
 ```{r}
 Lakes_Stats <- FloridaLakes %>% summarize(MeanHg = mean(Mercury), 
@@ -1706,7 +1704,7 @@ Lakes_Bootstrap_Plot_Exp7 +
 
 We are 95% confident that average mercury level among all Florida lakes with pH level 7 is between `r round(Sample_Exp7 - 2*SE_Exp7,1)` and `r round(Sample_Exp7 + 2*SE_Exp7,1)` ppm.
 
-Again, we are not saying that we think an individual like with a pH level of 7 will lie in this range, only that the average mercury level among all such lakes lies in this range.
+Again, we are not saying that we think an individual lake with a pH level of 7 will lie in this range, only that the average mercury level among all such lakes lies in this range.
 
 ### More CI's in Regression
 
@@ -2275,6 +2273,10 @@ LakesPermTable <- Shuffle1df %>% group_by(`Shuffled Location`) %>% summarize(Mea
 kable(LakesPermTable)
 ```
 
+Difference in Means in Permuted Sample:
+
+`r LakesPermTable[1,2] - LakesPermTable[2,2]`
+
 **Third Permutation**
 
 ```{r}
@@ -2299,6 +2301,11 @@ LakesPerm
 LakesPermTable <- Shuffle1df %>% group_by(`Shuffled Location`) %>% summarize(MeanHg=mean(Mercury), StDevHg=sd(Mercury),  N=n())
 kable(LakesPermTable)
 ```
+
+Difference in Means in Permuted Sample:
+
+`r LakesPermTable[1,2] - LakesPermTable[2,2]`
+
 
 **Fourth Permutation**
 
@@ -2325,6 +2332,11 @@ LakesPermTable <- Shuffle1df %>% group_by(`Shuffled Location`) %>% summarize(Mea
 kable(LakesPermTable)
 ```
 
+Difference in Means in Permuted Sample:
+
+`r LakesPermTable[1,2] - LakesPermTable[2,2]`
+
+
 **Fifth Permutation**
 
 ```{r}
@@ -2349,6 +2361,11 @@ LakesPerm
 LakesPermTable <- Shuffle1df %>% group_by(`Shuffled Location`) %>% summarize(MeanHg=mean(Mercury), StDevHg=sd(Mercury),  N=n())
 kable(LakesPermTable)
 ```
+
+Difference in Means in Permuted Sample:
+
+`r LakesPermTable[1,2] - LakesPermTable[2,2]`
+
 
 ### R Code for Permutation Test
 
@@ -2429,15 +2446,13 @@ knitr::include_graphics("pvals.png")
 
 The permutation test procedure can be used to test hypotheses involving lots of different test statistics, in addition to testing for a difference in means, as we saw seen in the previous section. For example we could test whether there is evidence of:
 
-1.  a difference in the median mercury level between lakes in Northern Florida, compared to southern Florida
 
-2.  a difference in the amount of variability in mercury levels between lakes in Northern Florida, compared to southern Florida\
+1.  a difference in the amount of variability in mercury levels between lakes in Northern Florida, compared to southern Florida\
 
-3.  a difference in the proportion of lakes whose mercury level exceeds 1 ppm between lakes in Northern Florida, compared to southern Florida\
 
-4.  a difference in mean price between King County houses in very good, good, and average or below conditions
+2.  a difference in mean price between King County houses in very good, good, and average or below conditions
 
-5.  a relationship between mercury level and pH level among all Florida lakes
+3.  a relationship between mercury level and pH level among all Florida lakes
 
 For each of these investigations, the null hypothesis will be that there is no difference or relationship among all lakes (that is, whatever difference or relationship occurred in the sample occurred just by random chance). We'll need to find a test statistic that measures the quantity we're interested in (for example, difference in means). Then, we use the permutation procedure to simulate a scenario where our null hypothesis is true, and see if test statistic we saw in our data is consistent with the ones we simulate under the null hypothesis.
 
