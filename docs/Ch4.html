@@ -302,13 +302,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>In this chapter, we’ll examine a set of assumptions that, if true, would ensure that statistics like means and differences in means, and regression coefficients follow symmetric and bell-shaped distributions. We’ll learn how to use facts from probability to calculate confidence intervals and p-values without actually performing simulation in these instances.</p>
 <section id="example-ice-cream-dispenser" class="level3" data-number="4.1.1">
 <h3 data-number="4.1.1" class="anchored" data-anchor-id="example-ice-cream-dispenser"><span class="header-section-number">4.1.1</span> Example: Ice Cream dispenser</h3>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-3_8fce57935d338a2443f8abc4b0b9a15f">
 <div class="cell-output-display">
 <p><img src="Ice_Cream.png" class="img-fluid" style="width:50.0%"></p>
 </div>
 </div>
 <p>Suppose an ice cream machine is manufactured to dispense 2 oz. of ice cream per second, on average. If 15 people used the ice cream machine, holding the dispenser for different amounts of time, and each person got exactly 2 oz. per second, the relationship between time holding the dispenser and amount dispensed would look like this:</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-4_4825ee3d015583a278d34f2d94f3d204">
 <div class="cell-output-display">
 <p><img src="Ch4_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -324,7 +324,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>other unknown factors</li>
 </ul>
 <p>Thus, if 15 real people held the dispenser and recorded the amount of ice cream they got, the scatter plot we would see would look something like this:</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-5_792c3d0fa7c9e6cf119858c080e45257">
 <div class="cell-output-display">
 <p><img src="Ch4_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -337,7 +337,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="normal-distribution" class="level3" data-number="4.1.2">
 <h3 data-number="4.1.2" class="anchored" data-anchor-id="normal-distribution"><span class="header-section-number">4.1.2</span> Normal Distribution</h3>
 <p>It is common to model noise using a symmetric, bell-shaped distribution, known as a <strong>normal distribution</strong>.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-6_14040d704a8369937095b19cd24781f2">
 <div class="cell-output-display">
 <p><img src="Ch4_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="576"></p>
 </div>
@@ -347,7 +347,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 - <span class="math inline">\(\mu\)</span> representing the center of the distribution<br>
 - <span class="math inline">\(\sigma\)</span> representing the standard deviation</p>
 <p>This distribution is denoted <span class="math inline">\(\mathcal{N}(\mu, \sigma)\)</span>.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-8_0e0c38ef745dccb6855cddcebed8c2c4">
 <div class="cell-output-display">
 <p><img src="Ch4_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="576"></p>
 </div>
@@ -363,7 +363,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 Y_i = 2x_i+\epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, 0.5)
 \]</span></p>
 <p><strong>Illustration</strong></p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-9_c5a09f4d4c7b3d16eff7892d35615b88">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -374,7 +374,7 @@ Y_i = 2x_i+\epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, 0.5)
 </div>
 </div>
 <p>We simulate the amount dispensed for a sample of 15 people below. The <code>rnorm</code>(n, <span class="math inline">\(\mu\)</span>, <span class="math inline">\(\sigma\)</span>) function generates <span class="math inline">\(n\)</span> random numbers from a normal distribution with mean <span class="math inline">\(\mu\)</span>, and standard deviation <span class="math inline">\(\sigma\)</span>. The code below simulates 15 random numbers and adds them to the expected amount dispensed for 15 people who hold the dispenser for the times shown.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-10_87ad60c9eda66dad414ff8ad092796c5">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">10082020</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># set times </span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>time <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">1.2</span>, <span class="fl">1.5</span>, <span class="fl">1.8</span>, <span class="fl">2.1</span>, <span class="fl">2.1</span>, <span class="fl">2.3</span>, <span class="fl">2.5</span>, <span class="fl">2.6</span>, <span class="fl">2.8</span>, <span class="fl">2.9</span>, <span class="fl">2.9</span>, <span class="fl">3.1</span>, <span class="fl">3.2</span>, <span class="fl">3.6</span>)</span>
@@ -489,7 +489,7 @@ Y_i = 2x_i+\epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, 0.5)
 </div>
 </div>
 <p>The scatterplot displays the amount dispensed, compared to the time pressing the dispenser. The red line indicates the line <span class="math inline">\(y=2x\)</span>. If there was no random noise, then each person’s amount dispensed would lie exactly on this line.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-11_df61e384e64ace29c4e4b1e033fba8cb">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Icecream1, <span class="fu">aes</span>(<span class="at">x=</span>time, <span class="at">y=</span>amount)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Icecream Dispensed"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Time Pressing dispenser"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Amount Dispensed"</span>) <span class="sc">+</span> <span class="fu">geom_abline</span>(<span class="at">slope=</span><span class="dv">2</span>, <span class="at">intercept=</span><span class="dv">0</span>, <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span> </span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">label=</span><span class="st">"y=2x"</span>, <span class="at">x=</span> <span class="fl">3.5</span>, <span class="at">y=</span><span class="fl">6.5</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">color=</span><span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -499,7 +499,7 @@ Y_i = 2x_i+\epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, 0.5)
 <p><strong>Estimating Regression Line</strong></p>
 <p>In a real situation, we would not see the signal and noise columns in the table or the red line on the graph. We would only see the time and amount, and points on the scatter plot. From these, we would need to estimate the location of the red line by fitting a least squares regression line to the data, as we’ve done before.</p>
 <p>The blue line represents the location of the least squares regression line fit to the time and amounts observed.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-12_9745d9d57560f8b8ee86a136a953a7c9">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Icecream1, <span class="fu">aes</span>(<span class="at">x=</span>time, <span class="at">y=</span>amount)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Icecream Dispensed"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Time Pressing dispenser"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Amount Dispensed"</span>) <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">geom_abline</span>(<span class="at">slope=</span><span class="dv">2</span>, <span class="at">intercept=</span><span class="dv">0</span>, <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span> </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">label=</span><span class="st">"y=2x"</span>, <span class="at">x=</span> <span class="fl">3.5</span>, <span class="at">y=</span><span class="fl">6.5</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">color=</span><span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -508,7 +508,7 @@ Y_i = 2x_i+\epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, 0.5)
 </div>
 <p>The blue line is close, but not identical to the red line, representing the true (usually unknown) signal.</p>
 <p>The slope and intercept of the blue line are given by:</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-13_c74e686c8ad66c86027c36551a61d87b">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>IC_Model <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Icecream1, <span class="fu">lm</span>(amount<span class="sc">~</span>time))</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>IC_Model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -526,13 +526,14 @@ Coefficients:
 <p><span class="math inline">\(Y_i = \beta_0 + \beta_1X_{i} + \epsilon_i\)</span>, where <span class="math inline">\(\epsilon_i\sim\mathcal{N}(0,\sigma)\)</span>,</p>
 <p>where <span class="math inline">\(Y_i\)</span> represents amount dispensed, and <span class="math inline">\(X_i\)</span> represents time. <span class="math inline">\(\beta_0, \beta_1,\)</span>, and <span class="math inline">\(\sigma\)</span> are the unknown model parameters associated with the ice cream machine’s process.</p>
 <p>Using the values of <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> obtained by fitting a model to our observed data as estimates of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>, our estimated regression equation is</p>
-<p>$$ Y_i = b_0 + b_1X_i + _i = -0.1299087 + 2.0312489X_i + _i</p>
-<p>$$</p>
+<p><span class="math display">\[
+Y_i = b_0 + b_1X_i + \epsilon\_i = -0.1299087 + 2.0312489X_i + \epsilon\_i
+\]</span></p>
 <p>where <span class="math inline">\(\epsilon_i\sim\mathcal{N}(0,\sigma)\)</span>.</p>
 <p>An estimate for <span class="math inline">\(\sigma\)</span> is given by</p>
 <p><span class="math inline">\(s =\sqrt{\frac{\text{SSR}}{n-(p+1)}} = \sqrt{\frac{\displaystyle\sum_{i=1}^n(y_i-\hat{y}_i)^2}{(n-(p+1))}}\)</span>.</p>
 <p>We calculate <span class="math inline">\(s\)</span> , using R.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-14_2b0eb4604ed2a9556175fb05e52f43d5">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">sum</span>(IC_Model<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span>(<span class="dv">15-2</span>))</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>s</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -578,7 +579,7 @@ Coefficients:
 <p>In the house price example, consider the following models:</p>
 <p><strong>Model 1:</strong></p>
 <p><span class="math inline">\(\text{Price}_i = \beta_0 + \beta_1\text{Sq.Ft.}_{i} + \epsilon_i\)</span>, where <span class="math inline">\(\epsilon_i\sim\mathcal{N}(0,\sigma)\)</span>.</p>
-<p>If we use this model, we’re saying that we believe the expected price of a house is a linear function of its size, and that for any given size, the distribution of actual prices are normally distributed around their expected value of <span class="math inline">\(\beta_0 + \beta_1\text{Sq.Ft.}_{i}\)</span>. Furthermore, we’re saying that the amount of variability in hourse prices is the same for houses of any size.</p>
+<p>If we use this model, we’re saying that we believe the expected price of a house is a linear function of its size, and that for any given size, the distribution of actual prices are normally distributed around their expected value of <span class="math inline">\(\beta_0 + \beta_1\text{Sq.Ft.}_{i}\)</span>. Furthermore, we’re saying that the amount of variability in house prices is the same for houses of any size.</p>
 <p><strong>Model 2:</strong></p>
 <p><span class="math inline">\(\text{Price}_i = \beta_0 + \beta_2\text{Waterfront}_{i}+ \epsilon_i\)</span>, where <span class="math inline">\(\epsilon_i\sim\mathcal{N}(0,\sigma)\)</span>.</p>
 <p>If we use this model, we’re saying that we believe the expected price of a house depends only on whether or not it is on the waterfront, and that prices of both waterfront and non-waterfront houses follow normal distributions. Though these distributions may have different means (<span class="math inline">\(\beta_0\)</span> for non-waterfront houses, and <span class="math inline">\(\beta_1\)</span> for waterfront houses), the amount of variability in prices should be the same for waterfront as non-waterfront houses.</p>
@@ -610,8 +611,8 @@ Coefficients:
 <p><strong>Theory-Based Standard Error Formulas</strong></p>
 <table class="table">
 <colgroup>
-<col style="width: 31%">
-<col style="width: 68%">
+<col style="width: 32%">
+<col style="width: 67%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -674,7 +675,7 @@ Coefficients:
 <li><p><strong>Independence</strong> - mercury levels of individual lakes are not affected by those of other lakes.</p></li>
 </ol>
 <p>The <code>lm</code> summary command in R returns information pertaining to the model.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-15_6f78c077bdac785864d7a1991f24d2c5">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>Lakes_M <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>FloridaLakes, Mercury <span class="sc">~</span> Location)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Lakes_M)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -706,7 +707,7 @@ F-statistic: 9.162 on 1 and 51 DF,  p-value: 0.003868</code></pre>
 <p>The <strong>Residual Standard Error</strong> in the output gives the value of <span class="math inline">\(s\)</span>, and estimate of <span class="math inline">\(\sigma\)</span>.</p>
 <p><span class="math inline">\(s =\sqrt{\frac{\text{SSR}}{n-(p+1)}} = \sqrt{\frac{\displaystyle\sum_{i=1}^n(y_i-\hat{y}_i)^2}{(n-(p+1))}}\)</span>.</p>
 <p>SSR is:</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-16_f7eb0e73f65a0e626385bbdaa795f680">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(Lakes_M<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5.126873</code></pre>
@@ -743,7 +744,7 @@ F-statistic: 9.162 on 1 and 51 DF,  p-value: 0.003868</code></pre>
 \]</span></p>
 <p>We are 95% confident that the average mercury level in Southern Lakes is between 0.09 ppm and 0.45 ppm higher than in Northern Florida.</p>
 <p>These intervals can be obtained directly in R using the <code>confint</code> command.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-17_2247f39ae93c18ec9bb7e723f37a9b29">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(Lakes_M, <span class="at">level=</span><span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                 2.5 %    97.5 %
@@ -754,7 +755,7 @@ LocationS   0.09157768 0.4523314</code></pre>
 <p><strong>Comparison to Bootstrap</strong></p>
 <p>We previously calculated <span class="math inline">\(\text{SE}(b_1)\)</span> and a 95% confidence interval for <span class="math inline">\(\beta_1\)</span>, which are shown below.</p>
 <p><strong>Bootstrap Standard Error</strong></p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-18_16adb14d661bf23bd550dd2e0c8305b7">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>SE_b1 <span class="ot">&lt;-</span> <span class="fu">sd</span>(NS_Lakes_Bootstrap_Results<span class="sc">$</span>Bootstrap_b1)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>SE_b1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -762,7 +763,7 @@ LocationS   0.09157768 0.4523314</code></pre>
 </div>
 </div>
 <p><strong>Bootstrap 95% Confidence Interval:</strong></p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-19_f0caa8a502df7ab23cafebfa089666f5">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>Sample_b1 <span class="ot">&lt;-</span> Lakes_M<span class="sc">$</span>coefficients[<span class="dv">2</span>]</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(Sample_b1 <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>SE_b1, Sample_b1 <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>SE_b1) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -770,7 +771,7 @@ LocationS   0.09157768 0.4523314</code></pre>
 0.08096967 0.46293942 </code></pre>
 </div>
 </div>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-20_9fd83ae3dd5ef4b98721b9ec38f70c1f">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>NS_Lakes_Bootstrap_Plot_b1 <span class="sc">+</span> </span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x=</span>Sample_b1 <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>SE_b1,<span class="at">xend=</span>Sample_b1 <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>SE_b1, <span class="at">y=</span><span class="dv">50</span>, <span class="at">yend=</span><span class="dv">50</span>), </span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">color=</span><span class="st">"gold"</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">alpha=</span><span class="fl">0.01</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -797,7 +798,7 @@ LocationS   0.09157768 0.4523314</code></pre>
 <p>We might have doubts about some of these assumptions. For example, if we believe there might be more variability in mercury levels among lakes with higher pH levels than lower ones (a violation of the constant variance assumption), or that lakes closer together are likely to have similar mercury levels (a violation of the independence assumption) then the results of the model might not be reliable.</p>
 <p>Later in this chapter, we’ll learn ways to check the appropriateness of these assumptions. For now, we’ll assume that the model is a reasonable enough approximation of reality and use it accordingly.</p>
 <p>The <code>lm</code> summary command in R returns information pertaining to the model.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-21_b1cf562487729cc046f3c1af31e85e52">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>M_pH <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>FloridaLakes, Mercury <span class="sc">~</span> pH)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_pH)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -830,7 +831,7 @@ F-statistic: 25.24 on 1 and 51 DF,  p-value: 0.000006573</code></pre>
 <p><span class="math inline">\(s =\sqrt{\frac{\text{SSR}}{n-(p+1)}} = \sqrt{\frac{\displaystyle\sum_{i=1}^n(y_i-\hat{y}_i)^2}{(n-(p+1))}}\)</span>.</p>
 <p>We calculate <span class="math inline">\(s\)</span> , using R.</p>
 <p>SSR is:</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-22_5cf4535bed81383f0b723cb2e76ede03">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(M_pH<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 4.045513</code></pre>
@@ -844,14 +845,14 @@ F-statistic: 25.24 on 1 and 51 DF,  p-value: 0.000006573</code></pre>
 <p><strong>Estimating</strong> <span class="math inline">\(\text{SE}(b_0)\)</span> and <span class="math inline">\(\text{SE}(b_1)\)</span></p>
 <p>Now, we’ll use the theory-based formulas to calculate standard error associated with the intercept and slope of the regression line relating mercury level and pH in Florida lakes.</p>
 <p>We calculate <span class="math inline">\(\bar{x}\)</span>, the mean pH, and <span class="math inline">\(\sum(x_i-\bar{x})^2\)</span>.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-23_1559613c4d256928442b85c261703df6">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>xbar <span class="ot">&lt;-</span> <span class="fu">mean</span>(FloridaLakes<span class="sc">$</span>pH)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>xbar</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6.590566</code></pre>
 </div>
 </div>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-24_bcdc38d65bdd0ed67015cfe02305f3a0">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>Sxx <span class="ot">&lt;-</span> <span class="fu">sum</span>((FloridaLakes<span class="sc">$</span>pH  <span class="sc">-</span> xbar)<span class="sc">^</span><span class="dv">2</span>)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>Sxx</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -873,7 +874,7 @@ F-statistic: 25.24 on 1 and 51 DF,  p-value: 0.000006573</code></pre>
 \]</span></p>
 <p>We are 95% confident that for each one unit increase in pH, mercury concentration is expected to decrease between 0.09 and 0.21 ppm, on average.</p>
 <p>We can also use the <code>confint()</code> command to obtain these intervals.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-25_77ab09cd0c5e611dd0cfa3a027c011df">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(M_pH, <span class="at">level=</span><span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                 2.5 %      97.5 %
@@ -884,7 +885,7 @@ pH          -0.2131573 -0.09144445</code></pre>
 <p><strong>Comparison to Bootstrap</strong></p>
 <p>We previously calculated <span class="math inline">\(\text{SE}(b_1)\)</span> and a 95% confidence interval for <span class="math inline">\(\beta_1\)</span>, which are shown below.</p>
 <p><strong>Bootstrap Standard Error for</strong> <span class="math inline">\(b_1\)</span>:</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-26_d0f7485effbbbdf1c35321f3b8347b96">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>Sample_b1 <span class="ot">&lt;-</span> M_pH<span class="sc">$</span>coefficients[<span class="dv">2</span>]</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>SE_b1 <span class="ot">&lt;-</span> <span class="fu">sd</span>(Lakes_Bootstrap_Slope_Results<span class="sc">$</span>Bootstrap_b1)</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>SE_b1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -893,7 +894,7 @@ pH          -0.2131573 -0.09144445</code></pre>
 </div>
 </div>
 <p><strong>Bootstrap 95% Confidence Interval for</strong> <span class="math inline">\(\beta_1\)</span>:</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-27_601b35d5749404dbed02e41049481cec">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(Sample_b1 <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>SE_b1, Sample_b1 <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>SE_b1) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         pH          pH 
@@ -918,7 +919,7 @@ pH          -0.2131573 -0.09144445</code></pre>
 <li><p><strong>Independence</strong> - mercury levels of individual lakes are not affected by those of other lakes.</p></li>
 </ol>
 <p>The <code>lm</code> summary command in R returns information pertaining to the model.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-28_377c1ad6495d5172ab2ad490a711aa1d">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>Lakes_M0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>FloridaLakes, Mercury <span class="sc">~</span> <span class="dv">1</span>)</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Lakes_M0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -945,7 +946,7 @@ Residual standard error: 0.341 on 52 degrees of freedom</code></pre>
 <p><span class="math inline">\(s =\sqrt{\frac{\text{SSR}}{n-(p+1)}} = \sqrt{\frac{\displaystyle\sum_{i=1}^n(y_i-\hat{y}_i)^2}{(n-(p+1))}}\)</span>.</p>
 <p>We calculate <span class="math inline">\(s\)</span> , using R.</p>
 <p>SSR is:</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-29_036b4ab0afc356699a642eac603dcd7a">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(Lakes_M0<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6.047875</code></pre>
@@ -972,7 +973,7 @@ Residual standard error: 0.341 on 52 degrees of freedom</code></pre>
 \]</span></p>
 <p>We are 95% confident that the average mercury level among all lakes in Florida is between 0.43 and 0.62 ppm.</p>
 <p>We can also obtain this interval using the <code>confint()</code> command.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-30_171277473e68f7d800884386e69944c1">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(Lakes_M0, <span class="at">level=</span><span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                2.5 %    97.5 %
@@ -982,7 +983,7 @@ Residual standard error: 0.341 on 52 degrees of freedom</code></pre>
 <p><strong>Comparison to Bootstrap</strong></p>
 <p>Here are the bootstrap standard error and confidence interval we calculated previously.</p>
 <p><strong>Bootstrap Standard Error</strong></p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-31_fb982db867de6af7ff4ee3c68b68b04e">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>SE_mean <span class="ot">&lt;-</span> <span class="fu">sd</span>(Lakes_Bootstrap_Results_Mean<span class="sc">$</span>Bootstrap_Mean)</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>SE_mean</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -990,13 +991,13 @@ Residual standard error: 0.341 on 52 degrees of freedom</code></pre>
 </div>
 </div>
 <p><strong>Bootstrap 95% Confidence Interval:</strong></p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-32_c46d8163100685cb99e3797f5cb27e23">
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(mean <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>SE_mean, mean <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>SE_mean) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.4352624 0.6190773</code></pre>
 </div>
 </div>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-33_f01f33a8a96b9cd2ffbdfd94fc9433f2">
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>Lakes_Bootstrap_Mean_Plot <span class="sc">+</span> </span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x=</span>mean <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>SE_mean,<span class="at">xend=</span>mean <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>SE_mean, <span class="at">y=</span><span class="dv">50</span>, <span class="at">yend=</span><span class="dv">50</span>), </span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">color=</span><span class="st">"gold"</span>, <span class="at">size=</span><span class="dv">10</span>, <span class="at">alpha=</span><span class="fl">0.01</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1056,7 +1057,7 @@ Residual standard error: 0.341 on 52 degrees of freedom</code></pre>
 <p>A t-distribution is a symmetric, bell-shaped curve. The t-distribution depends on a parameter called <strong>degrees of freedom</strong>, which determines the thickness of the distribution’s tails.</p>
 <p>When the sampling distribution for a statistic is symmetric and bell-shaped, it can be approximated by a t-distribution. As the sample size increases, so do the degrees of freedom in the t-distribution.</p>
 <p>As the degrees of freedom grow large, we see that the t-distributions get closer together, converging to a bell-shaped curve. This distribution is called a <strong>standard normal distribution.</strong></p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-36_bc6ad6d3bf2401ac5ff3991590c2b8ff">
 <div class="cell-output-display">
 <p><img src="Ch4_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid" width="768"></p>
 </div>
@@ -1084,7 +1085,7 @@ t= \frac{{\text{Statistic}}}{\text{SE}(\text{Statistic})}
 \widehat{\text{Mercury}} = b_0+b_1\times\text{South}
 \]</span></p>
 <p>We fit the model in R and display its summary output below.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-37_ad6439bfa0dc775369326fa653c7b22f">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>Lakes_M <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>FloridaLakes, Mercury<span class="sc">~</span>Location)</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Lakes_M)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1108,7 +1109,7 @@ Multiple R-squared:  0.1523,    Adjusted R-squared:  0.1357
 F-statistic: 9.162 on 1 and 51 DF,  p-value: 0.003868</code></pre>
 </div>
 </div>
-<p>Looking at the coefficients table, we’ve already seen where the first two columns, <code>Estimate</code> and <code>Std. Error</code> come from. <strong>The last two columns, labeled <code>t value</code> and “Pr(&gt;|t|)” represent the t-statistic and p-value for the t-test associated with the that the regression parameter on that line is zero. (i.e.</strong> <span class="math inline">\(\beta_j=0\)</span>).</p>
+<p>Looking at the coefficients table, we’ve already seen where the first two columns, <code>Estimate</code> and <code>Std. Error</code> come from. <strong>The last two columns, labeled <code>t value</code> and “Pr(&gt;|t|)” represent the t-statistic and p-value for the t-test associated with the null hypothesis that the regression parameter on that line is zero. (i.e.</strong> <span class="math inline">\(\beta_j=0\)</span>).</p>
 <p><strong>t-test for line <code>LocationS</code></strong></p>
 <p>To test whether there is evidence of a difference in mercury levels between Northern and Southern Florida, we’ll test the null hypothesis (<span class="math inline">\(\beta_1=0\)</span>). This corresponds to the <code>locationS</code> line of the R output.</p>
 <p><strong>Null Hypothesis:</strong> There is no difference in average mercury levels between Northern and Southern Florida (<span class="math inline">\(\beta_1=0\)</span>).</p>
@@ -1116,7 +1117,7 @@ F-statistic: 9.162 on 1 and 51 DF,  p-value: 0.003868</code></pre>
 <p>In the previous section, we calculated the standard error for <span class="math inline">\(b_1\)</span> to be 0.0898, respectively.</p>
 <p><strong>Test Statistic</strong>: <span class="math inline">\(t=\frac{{b_j}}{\text{SE}(b_j)} = \frac{0.27195}{0.0898} = 3.027\)</span></p>
 <p>To calculate the p-value, we plot the t-statistic of 3.027 that we observed in our data and observe where it lies on a t-distribution.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-38_7cbf224c0f73f9b3f20498a235401eee">
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>ts<span class="ot">=</span><span class="fl">3.027</span></span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_dist</span>(<span class="st">"t"</span>, <span class="at">df=</span><span class="dv">51</span>, <span class="at">geom =</span> <span class="st">"area"</span>, <span class="at">fill =</span> <span class="sc">~</span> (<span class="fu">abs</span>(x)<span class="sc">&lt;</span> <span class="fu">abs</span>(ts)), <span class="at">show.legend=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fu">c</span>(ts, <span class="sc">-</span>ts), <span class="at">color=</span><span class="st">"red"</span>)  <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"t"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -1125,7 +1126,7 @@ F-statistic: 9.162 on 1 and 51 DF,  p-value: 0.003868</code></pre>
 </div>
 <p>The <code>pt</code> function returns the probability of getting a t-statistic higher than 3.027. We multiply by 2 to also get the area in the left tail.</p>
 <p><strong>p-value:</strong></p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-39_97f0ec7c53802d5189025d9916c67a77">
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span><span class="fu">pt</span>(<span class="sc">-</span><span class="fu">abs</span>(ts), <span class="at">df=</span><span class="dv">51</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.003866374</code></pre>
@@ -1134,14 +1135,14 @@ F-statistic: 9.162 on 1 and 51 DF,  p-value: 0.003868</code></pre>
 <p>The low p-value gives us strong evidence of a difference in average mercury levels between lakes in Northern and Southern Florida.</p>
 <p><strong>Comparison to Permutation Test</strong></p>
 <p>Recall the permutation test we previously performed.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-40_497753801f53a9e55990f729e67646a0">
 <div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>NSLakes_SimulationResultsPlot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Ch4_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>p-value:</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-41_54469e9578a12e3b2b441f59b1d31b31">
 <div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>b1 <span class="ot">&lt;-</span> Lakes_M<span class="sc">$</span>coef[<span class="dv">2</span>] <span class="do">## record value of b1 from actual data</span></span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">abs</span>(NSLakes_SimulationResults<span class="sc">$</span>b1Sim) <span class="sc">&gt;</span> <span class="fu">abs</span>(b1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1151,7 +1152,7 @@ F-statistic: 9.162 on 1 and 51 DF,  p-value: 0.003868</code></pre>
 </div>
 <p>The p-value from the permutation test is similar to the one from the t-test. Both lead us to the same conclusion.</p>
 <p><strong>Hypothesis Test for line (intercept)</strong></p>
-<p>Notice that there is also a t-statistic and p-value on the line <code>(intercept)</code>. This is tesing the following hypotheses.</p>
+<p>Notice that there is also a t-statistic and p-value on the line <code>(intercept)</code>. This is testing the following hypotheses.</p>
 <p><strong>Null Hypothesis:</strong> The average mercury level among all lakes in North Florida is 0 (<span class="math inline">\(\beta_0=0\)</span>).</p>
 <p><strong>Alternative Hypothesis:</strong> The average mercury level among all lakes in Northern Florida is not 0 (<span class="math inline">\(\beta_0\neq 0\)</span>).</p>
 <p>We could carry out this test by dividing the estimate by its standard error and finding the p-value using a t-distribution, just like we did for <span class="math inline">\(\beta_1\)</span>. However, we already know that the average mercury level among all lakes in North Florida is certainly not 0, so this is a silly test, and we shouldn’t conclude much from it.</p>
@@ -1160,7 +1161,7 @@ F-statistic: 9.162 on 1 and 51 DF,  p-value: 0.003868</code></pre>
 <section id="example-2-regression-slope" class="level4" data-number="4.3.3.2">
 <h4 data-number="4.3.3.2" class="anchored" data-anchor-id="example-2-regression-slope"><span class="header-section-number">4.3.3.2</span> Example 2: Regression Slope</h4>
 <p>We revisit the model predicting a lake’s mercury level, using pH as the explanatory variable.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-42_d2f48a0b9f145c022cdea7488bdccf5e">
 <div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>M_pH <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>FloridaLakes, Mercury<span class="sc">~</span>pH)</span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_pH)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1193,7 +1194,7 @@ F-statistic: 25.24 on 1 and 51 DF,  p-value: 0.000006573</code></pre>
 <p><strong>Alternative Hypothesis:</strong> There is a relationship between mercury and pH level among all Florida lakes. (<span class="math inline">\(\beta_1 \neq 0\)</span>).</p>
 <p>In the last section, we calculated <span class="math inline">\(SE(b_1)\)</span> to be 0.0303.</p>
 <p><strong>Test Statistic</strong>: <span class="math inline">\(t=\frac{{b_j}}{\text{SE}(b_j)} = \frac{-0.15230}{0.03031} = -5.024\)</span></p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-43_967a8e37ae5f4cbcb656964c20a49b5c">
 <div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>ts<span class="ot">=</span><span class="fl">5.024</span></span>
 <span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_dist</span>(<span class="st">"t"</span>, <span class="at">df=</span><span class="dv">51</span>, <span class="at">geom =</span> <span class="st">"area"</span>, <span class="at">fill =</span> <span class="sc">~</span> (<span class="fu">abs</span>(x)<span class="sc">&lt;</span> <span class="fu">abs</span>(ts)), <span class="at">show.legend=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fu">c</span>(ts, <span class="sc">-</span>ts), <span class="at">color=</span><span class="st">"red"</span>)  <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"t"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -1201,7 +1202,7 @@ F-statistic: 25.24 on 1 and 51 DF,  p-value: 0.000006573</code></pre>
 </div>
 </div>
 <p><strong>p-value:</strong></p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-44_37d936e7ee8a3c2fa19b8d3d9d8f6eef">
 <div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span><span class="fu">pt</span>(<span class="sc">-</span><span class="fu">abs</span>(ts), <span class="at">df=</span><span class="dv">51</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.000006578117</code></pre>
@@ -1238,7 +1239,7 @@ F-statistic: 25.24 on 1 and 51 DF,  p-value: 0.000006573</code></pre>
 <section id="f-distribution" class="level3" data-number="4.4.1">
 <h3 data-number="4.4.1" class="anchored" data-anchor-id="f-distribution"><span class="header-section-number">4.4.1</span> F-Distribution</h3>
 <p>An <strong>F distribution</strong> is a right-skewed distribution. It is defined by two parameters, <span class="math inline">\(\nu_1, \nu_2\)</span>, called numerator and denominator degrees of freedom.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-45_2fa2f8ef2590da042b9b75d94454436a">
 <div class="cell-output-display">
 <p><img src="Ch4_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid" width="960"></p>
 </div>
@@ -1263,28 +1264,28 @@ F &amp;= \frac{\frac{\text{SSR}_{\text{Reduced}}-\text{SSR}_{\text{Full}}}{p-q}}
 &amp;=\frac{\frac{69,045,634-68,195,387}{2-0}}{\frac{68,195,387}{100-(2+1)}} \\
 \end{aligned}
 \]</span></p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-46_bf1ca5b74f29fb6db3a147d9c7c1ded4">
 <div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>((SST <span class="sc">-</span> SSR_cond)<span class="sc">/</span>(<span class="dv">2-0</span>))<span class="sc">/</span>(SSR_cond<span class="sc">/</span>(<span class="dv">100</span><span class="sc">-</span>(<span class="dv">2</span><span class="sc">+</span><span class="dv">1</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.6046888</code></pre>
 </div>
 </div>
 <p>The results of the simulation-based hypothesis test are shown below.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-47_5ab7fb51c9048df5ec43b7eaeb51072f">
 <div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>House_Cond_SimulationResults_Plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Ch4_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p><strong>simulation-based p-value:</strong></p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-48_53b4ad6c60517a878c647df4589909f2">
 <div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(FSim <span class="sc">&gt;</span> Fstat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.5548</code></pre>
 </div>
 </div>
 <p>Now, we calculate the p-value using the probability-based F-distribution.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-49_113c37199b032fa88f000d1d2fd34f6c">
 <div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>ts<span class="ot">=</span><span class="fl">0.605</span></span>
 <span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_dist</span>(<span class="st">"f"</span>, <span class="at">df1=</span><span class="dv">2</span>, <span class="at">df2=</span><span class="dv">97</span>, <span class="at">geom =</span> <span class="st">"area"</span>, <span class="at">fill =</span> <span class="sc">~</span> (<span class="fu">abs</span>(x)<span class="sc">&lt;</span> <span class="fu">abs</span>(ts)), <span class="at">show.legend=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fu">c</span>(ts), <span class="at">color=</span><span class="st">"red"</span>)  <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"F"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -1292,7 +1293,7 @@ F &amp;= \frac{\frac{\text{SSR}_{\text{Reduced}}-\text{SSR}_{\text{Full}}}{p-q}}
 </div>
 </div>
 <p><strong>p-value:</strong></p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-50_489508d333505cbe31c2b17232fe97b7">
 <div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">-</span><span class="fu">pf</span>(ts, <span class="at">df1=</span><span class="dv">2</span>, <span class="at">df2=</span><span class="dv">97</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.5481219</code></pre>
@@ -1300,7 +1301,7 @@ F &amp;= \frac{\frac{\text{SSR}_{\text{Reduced}}-\text{SSR}_{\text{Full}}}{p-q}}
 </div>
 <p>The p-value we obtained is very similar to the one we obtained using the simulation-based test.</p>
 <p>We can obtain this p-value directly using the <code>anova</code> command.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-51_989bb2f34eacf40a036a854d1908f458">
 <div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>M_cond <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Houses, price <span class="sc">~</span> condition)</span>
 <span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>M0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Houses, price <span class="sc">~</span> <span class="dv">1</span>)</span>
 <span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(M0, M_cond)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1327,13 +1328,13 @@ F &amp;= \frac{\frac{\text{SSR}_{\text{Reduced}}-\text{SSR}_{\text{Full}}}{p-q}}
 &amp;=\frac{\frac{16,521,296-10,139,974}{3-2}}{\frac{10,139,974}{100-(3+1)}} \\
 \end{aligned}
 \]</span></p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-52_f827cfc002ccc0503247af22e64e1546">
 <div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>((SSR_wf_sqft<span class="sc">-</span>SSR_int)<span class="sc">/</span>(<span class="dv">3-2</span>))<span class="sc">/</span>((SSR_int)<span class="sc">/</span>(<span class="dv">100</span><span class="sc">-</span>(<span class="dv">3</span><span class="sc">+</span><span class="dv">1</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 60.41505</code></pre>
 </div>
 </div>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-53_e9a8a41a1847cc0b5f4687cd5521ec0a">
 <div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>ts<span class="ot">=</span><span class="fl">60.41505</span></span>
 <span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_dist</span>(<span class="st">"f"</span>, <span class="at">df1=</span><span class="dv">1</span>, <span class="at">df2=</span><span class="dv">96</span>, <span class="at">geom =</span> <span class="st">"area"</span>, <span class="at">fill =</span> <span class="sc">~</span> (<span class="fu">abs</span>(x)<span class="sc">&gt;!</span> <span class="fu">abs</span>(ts)), <span class="at">show.legend=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fu">c</span>(ts), <span class="at">color=</span><span class="st">"red"</span>)  <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"F"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -1341,14 +1342,14 @@ F &amp;= \frac{\frac{\text{SSR}_{\text{Reduced}}-\text{SSR}_{\text{Full}}}{p-q}}
 </div>
 </div>
 <p><strong>p-value:</strong></p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-54_4785a88f6a1614d2aafa88cf155bf008">
 <div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">-</span><span class="fu">pf</span>(ts, <span class="at">df1=</span><span class="dv">1</span>, <span class="at">df2=</span><span class="dv">96</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.000000000008572476</code></pre>
 </div>
 </div>
 <p>The probability-based F-test is used in the <code>anova</code> command.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-55_0e0de2c1c358a9721acf878882c354d3">
 <div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>M_wf_SqFt <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Houses, price<span class="sc">~</span>sqft_living <span class="sc">+</span> waterfront)</span>
 <span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>M_House_Int <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Houses, price<span class="sc">~</span>sqft_living <span class="sc">*</span> waterfront)</span>
 <span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(M_wf_SqFt, M_House_Int)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1393,7 +1394,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>The equation of the model is:</p>
 <p><span class="math display">\[\text{Mercury} = \beta\_0+\beta_1\times\text{South} + \epsilon_i, \text{where } \epsilon_i\sim\mathcal{N}(0, \sigma)\]</span></p>
 <p>We fit the model in R and display its summary output below.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-56_a5fcd18d29026e41568110b1059abd96">
 <div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>Lakes_M <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>FloridaLakes, Mercury<span class="sc">~</span>Location)</span>
 <span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Lakes_M)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1422,7 +1423,7 @@ F-statistic: 9.162 on 1 and 51 DF,  p-value: 0.003868</code></pre>
 <ul>
 <li>SSR is:</li>
 </ul>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-57_d078b9c4b96e335097fbc7b61492b927">
 <div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(Lakes_M<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5.126873</code></pre>
@@ -1431,7 +1432,7 @@ F-statistic: 9.162 on 1 and 51 DF,  p-value: 0.003868</code></pre>
 <ul>
 <li>SST is:</li>
 </ul>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-58_fb1614f8df8a60f899010bda05e4d16c">
 <div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>((FloridaLakes<span class="sc">$</span>Mercury <span class="sc">-</span> <span class="fu">mean</span>(FloridaLakes<span class="sc">$</span>Mercury))<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6.047875</code></pre>
@@ -1475,14 +1476,14 @@ SE(b_1) = SE(\bar{x}*{South}-*\bar{x}{North})=s\sqrt{\frac{1}{n_{North}}+\frac{1
 <p><strong>Test Statistic</strong>: <span class="math inline">\(t=\frac{{b_j}}{\text{SE}(b_j)} = \frac{0.27195}{0.08985} = 3.027\)</span></p>
 <p><strong>Key Question:</strong> What is the probability of getting a t-statistic as extreme as 3.027 if <span class="math inline">\(\beta_1=0\)</span> (i.e.&nbsp;there is no difference in mercury levels between northern and southern lakes).</p>
 <p>We plot the t-statistic of 3.027 that we observed in our data and observe where it lies on a t-distribution.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-59_8d40fbaa68ed7d165b60dcd055048535">
 <div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>ts<span class="ot">=</span><span class="fl">3.027</span></span>
 <span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_dist</span>(<span class="st">"t"</span>, <span class="at">df=</span><span class="dv">51</span>, <span class="at">geom =</span> <span class="st">"area"</span>, <span class="at">fill =</span> <span class="sc">~</span> (<span class="fu">abs</span>(x)<span class="sc">&lt;</span> <span class="fu">abs</span>(ts)), <span class="at">show.legend=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fu">c</span>(ts, <span class="sc">-</span>ts), <span class="at">color=</span><span class="st">"red"</span>)  <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"t"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Ch4_files/figure-html/unnamed-chunk-59-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-60_08043db8f579429eaa207b8847c0e948">
 <div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span><span class="fu">pt</span>(<span class="sc">-</span><span class="fu">abs</span>(ts), <span class="at">df=</span><span class="dv">51</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.003866374</code></pre>
@@ -1493,14 +1494,14 @@ SE(b_1) = SE(\bar{x}*{South}-*\bar{x}{North})=s\sqrt{\frac{1}{n_{North}}+\frac{1
 <p>A t-statistic more extreme than <span class="math inline">\(\pm 2\)</span> will roughly correspond to a p-value less than 0.05.</p>
 <p><strong>Permutation Test</strong></p>
 <p>Let’s compare these results to those given by the permutation test.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-61_8c2c6dfda0a8cde6728389ad887802ae">
 <div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>NSLakes_SimulationResultsPlot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Ch4_files/figure-html/unnamed-chunk-61-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>p-value:</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-62_3188eda793c1c947cdf0edb9fa655fab">
 <div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>b1 <span class="ot">&lt;-</span> Lakes_M<span class="sc">$</span>coef[<span class="dv">2</span>] <span class="do">## record value of b1 from actual data</span></span>
 <span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">abs</span>(NSLakes_SimulationResults<span class="sc">$</span>b1Sim) <span class="sc">&gt;</span> <span class="fu">abs</span>(b1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1512,7 +1513,7 @@ SE(b_1) = SE(\bar{x}*{South}-*\bar{x}{North})=s\sqrt{\frac{1}{n_{North}}+\frac{1
 <section id="simple-linear-regression-example" class="level3" data-number="4.5.3">
 <h3 data-number="4.5.3" class="anchored" data-anchor-id="simple-linear-regression-example"><span class="header-section-number">4.5.3</span> Simple Linear Regression Example</h3>
 <p>We examine the model summary output for the model predicting a lake’s mercury level, using pH as the explanatory variable.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-63_0b337bb6c4f314a18589be5ff703c8bd">
 <div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>M_pH <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>FloridaLakes, Mercury<span class="sc">~</span>pH)</span>
 <span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_pH)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1541,7 +1542,7 @@ F-statistic: 25.24 on 1 and 51 DF,  p-value: 0.000006573</code></pre>
 <ul>
 <li>SSR is:</li>
 </ul>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-64_e8918d3c69a9b1364d771864330e0185">
 <div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(M_pH<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 4.045513</code></pre>
@@ -1550,7 +1551,7 @@ F-statistic: 25.24 on 1 and 51 DF,  p-value: 0.000006573</code></pre>
 <ul>
 <li>SST is:</li>
 </ul>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-65_4fce436ee88c1f639c03231f208aee08">
 <div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>((FloridaLakes<span class="sc">$</span>Mercury <span class="sc">-</span> <span class="fu">mean</span>(FloridaLakes<span class="sc">$</span>Mercury))<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6.047875</code></pre>
@@ -1572,13 +1573,13 @@ F-statistic: 25.24 on 1 and 51 DF,  p-value: 0.000006573</code></pre>
 <p>This F-statistic is associated with 1 and 51 degrees of freedom.</p>
 <p>Using formulas in Section 4.2, we obtain the standard error estimates for <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span>, given in the second column of the table.</p>
 <p>To do this, we need to calculate <span class="math inline">\(\bar{x}\)</span> and <span class="math inline">\(\sum(x_i-\bar{x})^2\)</span>, where <span class="math inline">\(x\)</span> represents the explanatory variable, <span class="math inline">\(pH\)</span>.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-66_bd347a03ab17991d2a4b4f36690444a3">
 <div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(FloridaLakes<span class="sc">$</span>pH)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6.590566</code></pre>
 </div>
 </div>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-67_16cad9b9c16e46a49959253a472b49b0">
 <div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>((FloridaLakes<span class="sc">$</span>pH<span class="sc">-</span><span class="fu">mean</span>(FloridaLakes<span class="sc">$</span>pH))<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 86.32528</code></pre>
@@ -1596,14 +1597,14 @@ F-statistic: 25.24 on 1 and 51 DF,  p-value: 0.000006573</code></pre>
 <p><strong>Null Hypothesis:</strong> There is no relationship between mercury and pH level among all Florida lakes. (<span class="math inline">\(\beta_1=0\)</span>).</p>
 <p><strong>Alternative Hypothesis:</strong> There is a relationship between mercury and pH level among all Florida lakes. (<span class="math inline">\(\beta_1 \neq 0\)</span>).</p>
 <p><strong>Test Statistic</strong>: <span class="math inline">\(t=\frac{{b_j}}{\text{SE}(b_j)} = \frac{-0.15230}{0.03031} = -5.024\)</span></p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-68_e4cc93c73709c91ddd99e748b2ad4de3">
 <div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a>ts<span class="ot">=</span><span class="fl">5.024</span></span>
 <span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_dist</span>(<span class="st">"t"</span>, <span class="at">df=</span><span class="dv">51</span>, <span class="at">geom =</span> <span class="st">"area"</span>, <span class="at">fill =</span> <span class="sc">~</span> (<span class="fu">abs</span>(x)<span class="sc">&lt;</span> <span class="fu">abs</span>(ts)), <span class="at">show.legend=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fu">c</span>(ts, <span class="sc">-</span>ts), <span class="at">color=</span><span class="st">"red"</span>)  <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"t"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Ch4_files/figure-html/unnamed-chunk-68-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-69_4fee51dccc4140f275f2d149cee83375">
 <div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span><span class="fu">pt</span>(<span class="sc">-</span><span class="fu">abs</span>(ts), <span class="at">df=</span><span class="dv">51</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.000006578117</code></pre>
@@ -1614,7 +1615,7 @@ F-statistic: 25.24 on 1 and 51 DF,  p-value: 0.000006573</code></pre>
 <section id="multiple-regression-example" class="level3" data-number="4.5.4">
 <h3 data-number="4.5.4" class="anchored" data-anchor-id="multiple-regression-example"><span class="header-section-number">4.5.4</span> Multiple Regression Example</h3>
 <p>We perform hypothesis tests on a model predicting house price using square feet and waterfront status as explanatory variables.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-70_909ec67919208c3fecdc5c96e60df46f">
 <div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>M_wf_sqft <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Houses, price<span class="sc">~</span>sqft_living<span class="sc">+</span>waterfront)</span>
 <span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_wf_sqft)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1653,7 +1654,7 @@ F-statistic: 154.2 on 2 and 97 DF,  p-value: &lt; 0.00000000000000022</code></pr
 </section>
 <section id="mr-with-interaction-example" class="level3" data-number="4.5.5">
 <h3 data-number="4.5.5" class="anchored" data-anchor-id="mr-with-interaction-example"><span class="header-section-number">4.5.5</span> MR with Interaction Example</h3>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-71_23a575a884a4febdfe286678152dbbc2">
 <div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>M_House_Int <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Houses, price <span class="sc">~</span> sqft_living <span class="sc">*</span> waterfront)</span>
 <span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_House_Int)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1726,7 +1727,7 @@ F-statistic: 185.9 on 3 and 96 DF,  p-value: &lt; 0.00000000000000022</code></pr
 </ol>
 <p>In an estimation problem, we only need to think about (1). When predicting the value of a single new observation, we need to think about both (1) and (2).</p>
 <p>Thus, intervals for predictions of individual observations carry more uncertainty and are wider than confidence intervals for <span class="math inline">\(E(Y|X)\)</span>.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-72_851320e1306ea9e6814455b6b329401b">
 <div class="cell-output-display">
 <p><img src="SLR_Model_Assumptions.png" class="img-fluid" style="width:50.0%"></p>
 </div>
@@ -1735,13 +1736,13 @@ F-statistic: 185.9 on 3 and 96 DF,  p-value: &lt; 0.00000000000000022</code></pr
 <h4 data-number="4.6.2.1" class="anchored" data-anchor-id="example-ice-cream-machine"><span class="header-section-number">4.6.2.1</span> Example: Ice Cream Machine</h4>
 <p>In the estimation setting, we are trying to determine the location of the regression line for the entire population. Uncertainty comes from the fact that we only have data from a sample.</p>
 <p>In the ice cream example, we can see that the blue line, fit to our data, is a good approximation of the “true” regression line that pertains to the mechanism from which the data were generated. It does, however, vary from the red line slightly due to sampling variability.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-73_c1bc56edd9e3ce877979f5432e2510b0">
 <div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Icecream1, <span class="fu">aes</span>(<span class="at">x=</span>time, <span class="at">y=</span>amount)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Icecream Dispensed"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Time Pressing dispenser"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Amount Dispensed"</span>) <span class="sc">+</span> <span class="fu">geom_abline</span>(<span class="at">slope=</span><span class="dv">2</span>, <span class="at">intercept=</span><span class="dv">0</span>, <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Ch4_files/figure-html/unnamed-chunk-73-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-74_22ab363e9bd687962aa127669695905f">
 <div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(IC_Model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -1764,7 +1765,7 @@ Multiple R-squared:  0.9256,    Adjusted R-squared:  0.9198
 F-statistic: 161.6 on 1 and 13 DF,  p-value: 0.00000001042</code></pre>
 </div>
 </div>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-75_70f6e0ff87bf90981a6b36e5a30815aa">
 <div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>b0 <span class="ot">&lt;-</span> IC_Model<span class="sc">$</span>coefficients[<span class="dv">1</span>]</span>
 <span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>b1 <span class="ot">&lt;-</span> IC_Model<span class="sc">$</span>coefficients[<span class="dv">2</span>]</span>
 <span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">sigma</span>(IC_Model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1794,7 +1795,7 @@ F-statistic: 161.6 on 1 and 13 DF,  p-value: 0.00000001042</code></pre>
 <section id="intervals-in-r" class="level3" data-number="4.6.3">
 <h3 data-number="4.6.3" class="anchored" data-anchor-id="intervals-in-r"><span class="header-section-number">4.6.3</span> Intervals in R</h3>
 <p>In R, we can obtain confidence intervals for an expected response and prediction intervals for an individual response using the <code>predict</code> command, with either <code>interval="confidence"</code> or <code>interval="prediction"</code>.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-76_422c14a50b2922e37f01db0d1f8d094a">
 <div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(IC_Model, <span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">time=</span><span class="fl">1.5</span>), <span class="at">interval =</span> <span class="st">"confidence"</span>, <span class="at">level=</span><span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       fit      lwr      upr
@@ -1802,7 +1803,7 @@ F-statistic: 161.6 on 1 and 13 DF,  p-value: 0.00000001042</code></pre>
 </div>
 </div>
 <p>We are 95% confident that the mean amount of ice cream dispensed when the dispenser is held for 1.5 seconds is between 2.52 and 3.31 oz.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-77_91fcf8c67d76803f76955bb72950c847">
 <div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(IC_Model, <span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">time=</span><span class="fl">1.5</span>), <span class="at">interval =</span> <span class="st">"prediction"</span>, <span class="at">level=</span><span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       fit      lwr      upr
@@ -1810,13 +1811,13 @@ F-statistic: 161.6 on 1 and 13 DF,  p-value: 0.00000001042</code></pre>
 </div>
 </div>
 <p>We are 95% confident that in individual who holds the dispenser for 1.5 seconds will get between 1.86 and 3.97 oz of ice cream.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-78_bd19b89bf85cc611c6d8a037c43aeb53">
 <div class="cell-output-display">
 <p><img src="Ch4_files/figure-html/unnamed-chunk-78-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>The prediction interval (in red) is wider than the confidence interval (in blue), since it must account for variability between individuals, in addition to sampling variability.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-79_baed37165399f6ad83e36e3037dd9e17">
 <div class="cell-output-display">
 <p><img src="C_P_Band.png" class="img-fluid" style="width:75.0%"></p>
 </div>
@@ -1827,7 +1828,7 @@ F-statistic: 161.6 on 1 and 13 DF,  p-value: 0.00000001042</code></pre>
 <p>In simple linear regression,</p>
 <p><span class="math display">\[
 \begin{aligned}
-SE(\hat{Y}|X=x^*) = \sqrt{\frac{1}{n}+ \frac{(x^*-\bar{x})^2}{\displaystyle\sum_{i=1}^n(x_i-\bar{x})^2}}
+SE(\hat{Y}|X=x^*) = s\sqrt{\frac{1}{n}+ \frac{(x^*-\bar{x})^2}{\displaystyle\sum_{i=1}^n(x_i-\bar{x})^2}}
 \end{aligned}
 \]</span></p>
 <p>Thus a confidence interval for <span class="math inline">\(E(Y | (X=x))\)</span> is:</p>
@@ -1839,7 +1840,7 @@ SE(\hat{Y}|X=x^*) = \sqrt{\frac{1}{n}+ \frac{(x^*-\bar{x})^2}{\displaystyle\sum_
 \]</span></p>
 <p>A prediction interval for <span class="math inline">\(E(Y | (X=x))\)</span> is:</p>
 <p><span class="math display">\[
-\beta_0 + \beta_1x^* \pm t^* s\sqrt{\left(\frac{1}{n}+ \frac{(x^*-\bar{x})^2}{\displaystyle\sum_{i=1}^n(x_i-\bar{x})^2}\right) + 1}
+b_0 + b_1x^* \pm t^* s\sqrt{\left(\frac{1}{n}+ \frac{(x^*-\bar{x})^2}{\displaystyle\sum_{i=1}^n(x_i-\bar{x})^2}\right) + 1}
 \]</span></p>
 <p><strong>Calculations in Ice cream example</strong></p>
 <p>For <span class="math inline">\(x=1.5\)</span>, a confidence interval is:</p>
@@ -1863,7 +1864,7 @@ SE(\hat{Y}|X=x^*) = \sqrt{\frac{1}{n}+ \frac{(x^*-\bar{x})^2}{\displaystyle\sum_
 <h3 data-number="4.6.5" class="anchored" data-anchor-id="car-price-and-acceleration-time"><span class="header-section-number">4.6.5</span> Car Price and Acceleration Time</h3>
 <p>We consider data from the Kelly Blue Book, pertaining to new cars, released in 2015. We’ll investigate the relationship between price, length, and time it takes to accelerate from 0 to 60 mph.</p>
 <p><code>Price</code> represents the price of a standard (non-luxury) model of a car. <code>Acc060</code> represents time it takes to accelerate from 0 to 60 mph.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-81_a14275a92f524c93783393976dacb3bf">
 <div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a>CarsA060 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Cars2015, <span class="fu">aes</span>(<span class="at">x=</span>Acc060, <span class="at">y=</span>Price)) <span class="sc">+</span> <span class="fu">geom_point</span>() </span>
 <span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>CarsA060 <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -1875,7 +1876,7 @@ SE(\hat{Y}|X=x^*) = \sqrt{\frac{1}{n}+ \frac{(x^*-\bar{x})^2}{\displaystyle\sum_
 <p>Parameter Interpretations:</p>
 <p><span class="math inline">\(\beta_0\)</span> represents intercept of regression line, i.e.&nbsp;expected price of a car that can accelerate from 0 to 60 mph in no time. This is not a meaningful interpretation in context.</p>
 <p><span class="math inline">\(\beta_1\)</span> represents slope of regression line, i.e.&nbsp;expected change in price for each additional second it takes to accelerate from 0 to 60 mph.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-82_ce6d8a6489cca114f913fce25f36c04a">
 <div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a>Cars_M_A060 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Cars2015, Price<span class="sc">~</span>Acc060)</span>
 <span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Cars_M_A060)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1912,7 +1913,7 @@ F-statistic: 133.1 on 1 and 108 DF,  p-value: &lt; 0.00000000000000022</code></p
 <li><p>If a car I am looking to buy can accelerate from 0 to 60 mph in 7 seconds, what price range should I expect?</p></li>
 </ol>
 <p>What is a reasonable range for the average price of all new 2015 cars that can accelerate from 0 to 60 mph in 7 seconds?</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-83_7dac8a365e6cc3ccb9c3572bf2bc06a8">
 <div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(Cars_M_A060, <span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">Acc060=</span><span class="dv">7</span>), <span class="at">interval=</span><span class="st">"confidence"</span>, <span class="at">level=</span><span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      fit      lwr      upr
@@ -1920,9 +1921,9 @@ F-statistic: 133.1 on 1 and 108 DF,  p-value: &lt; 0.00000000000000022</code></p
 </div>
 </div>
 <p>We are 95% confident that the average price of new 2015 cars that accelerate from 0 to 60 mph in 7 seconds is between 37.2 and 41.9 thousand dollars.</p>
-<p>Note: this is a confidence interval for <span class="math inline">\(\beta_0 -7\beta_1\)</span>.</p>
+<p>Note: this is a confidence interval for <span class="math inline">\(\beta_0 + 7\beta_1\)</span>.</p>
 <p>If a car I am looking to buy can accelerate from 0 to 60 mph in 7 seconds, what price range should I expect?</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-84_1c6ea572b53d828b7da5442041e9e186">
 <div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(Cars_M_A060, <span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">Acc060=</span><span class="dv">7</span>), <span class="at">interval=</span><span class="st">"prediction"</span>, <span class="at">level=</span><span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      fit      lwr      upr
@@ -1930,7 +1931,7 @@ F-statistic: 133.1 on 1 and 108 DF,  p-value: &lt; 0.00000000000000022</code></p
 </div>
 </div>
 <p>We are 95% confident that a single new 2015 car that accelerates from 0 to 60 mph in 7 seconds will cost between 18.2 and 60.9 thousand dollars.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-85_ec5f318e6775e8b1060e1c11e05c2cc1">
 <div class="cell-output-display">
 <p><img src="Ch4_files/figure-html/unnamed-chunk-85-1.png" class="img-fluid" width="768"></p>
 </div>
@@ -1940,9 +1941,9 @@ F-statistic: 133.1 on 1 and 108 DF,  p-value: &lt; 0.00000000000000022</code></p
 <h3 data-number="4.6.6" class="anchored" data-anchor-id="florida-lakes-est.-and-pred."><span class="header-section-number">4.6.6</span> Florida Lakes Est. and Pred.</h3>
 <ol type="1">
 <li><p>Calculate an interval that we are 95% confident contains the mean mercury concentration for all lakes in Northern Florida. Do the same for Southern Florida.</p></li>
-<li><p>Calculate an interval that we are 95% confident contains the mean mercury concentration for an individual lake in Northern Florida. Do the same for a lake in Southern Florida.</p></li>
+<li><p>Calculate an interval that we are 95% confident contains the mercury concentration for an individual lake in Northern Florida. Do the same for a lake in Southern Florida.</p></li>
 </ol>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-86_bae94599b6fe6e7f7bb1970f011d490c">
 <div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(Lakes_M, <span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">Location=</span><span class="fu">c</span>(<span class="st">"N"</span>, <span class="st">"S"</span>)), <span class="at">interval=</span><span class="st">"confidence"</span>, <span class="at">level=</span><span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        fit       lwr       upr
@@ -1953,7 +1954,7 @@ F-statistic: 133.1 on 1 and 108 DF,  p-value: &lt; 0.00000000000000022</code></p
 <p>We are 95% confident that the mean mercury level in North Florida is between 0.31 and 0.54 ppm.<br>
 We are 95% confident that the mean mercury level in South Florida is between 0.55 and 0.84 ppm.<br>
 Note: these are confidence intervals for <span class="math inline">\(\beta_0\)</span>, and <span class="math inline">\(\beta_0 + \beta_1\)</span>, respectively.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-87_4be2dee3795d77c7857b771d9cdc0f6c">
 <div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(Lakes_M, <span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">Location=</span><span class="fu">c</span>(<span class="st">"N"</span>, <span class="st">"S"</span>)), <span class="at">interval=</span><span class="st">"prediction"</span>, <span class="at">level=</span><span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        fit         lwr      upr
@@ -1962,7 +1963,7 @@ Note: these are confidence intervals for <span class="math inline">\(\beta_0\)</
 </div>
 </div>
 <p>We are 95% confident that an individual lake in North Florida will have mercury level between 0 and 1.07 ppm.</p>
-<p>We are 95% confident that the mean mercury level in South Florida is between 0.04 and 1.35 ppm.</p>
+<p>We are 95% confident that an individual lake in South Florida will have mercury level between 0.04 and 1.35 ppm.</p>
 <p>Note that the normality assumption, which allows for negative mercury levels leads to a somewhat nonsensical result.</p>
 <div style="page-break-after: always;"></div>
 </section>
@@ -1973,7 +1974,7 @@ Note: these are confidence intervals for <span class="math inline">\(\beta_0\)</
 <h3 data-number="4.7.1" class="anchored" data-anchor-id="the-regression-effect-1"><span class="header-section-number">4.7.1</span> The Regression Effect</h3>
 <p>You might be wondering how regression gets its name. It comes from a well known phenomenon, known as “regression to the mean”, or the “regression effect”. While the word “regression” is often construed with a negative context (i.e.&nbsp;getting worse), it could also refer to movement in the positive direction.</p>
 <p>Exam 1 vs Exam 2 scores for intro stat students at another college</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-88_97b5a0afe467b8ec1ada92c709cd5abd">
 <div class="cell-output-display">
 <p><img src="Ch4_files/figure-html/unnamed-chunk-88-1.png" class="img-fluid" width="768"></p>
 </div>
@@ -1983,7 +1984,7 @@ Note: these are confidence intervals for <span class="math inline">\(\beta_0\)</
 <section id="the-regression-effect-2" class="level3" data-number="4.7.2">
 <h3 data-number="4.7.2" class="anchored" data-anchor-id="the-regression-effect-2"><span class="header-section-number">4.7.2</span> The Regression Effect</h3>
 <p>Exam 1 vs Exam 2 scores for intro stat students at another college</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-89_adccc3faff7f29ff944260a5b58196c6">
 <div class="cell-output-display">
 <p><img src="Ch4_files/figure-html/unnamed-chunk-89-1.png" class="img-fluid" width="768"></p>
 </div>
@@ -2000,7 +2001,7 @@ Note: these are confidence intervals for <span class="math inline">\(\beta_0\)</
 </section>
 <section id="simulating-regression-effect" class="level3 smaller" data-number="4.7.4">
 <h3 class="smaller anchored" data-number="4.7.4" data-anchor-id="simulating-regression-effect"><span class="header-section-number">4.7.4</span> Simulating Regression Effect</h3>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-90_48e8908096c787fd8642f01c8f5faac0">
 <div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">110322018</span>)</span>
 <span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a>Understanding <span class="ot">&lt;-</span><span class="fu">rnorm</span>(<span class="dv">25</span>, <span class="dv">80</span>, <span class="dv">10</span>)</span>
 <span id="cb122-3"><a href="#cb122-3" aria-hidden="true" tabindex="-1"></a>Score1 <span class="ot">&lt;-</span> Understanding <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">25</span>, <span class="dv">0</span>, <span class="dv">5</span>)</span>
@@ -2017,7 +2018,7 @@ Note: these are confidence intervals for <span class="math inline">\(\beta_0\)</
 </section>
 <section id="test-scores-simulation---highest-scores" class="level3" data-number="4.7.5">
 <h3 data-number="4.7.5" class="anchored" data-anchor-id="test-scores-simulation---highest-scores"><span class="header-section-number">4.7.5</span> Test Scores Simulation - Highest Scores</h3>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-91_02dd87714604318b4ee8018ae5bc14f0">
 <div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(TestSim<span class="sc">%&gt;%</span><span class="fu">arrange</span>(<span class="fu">desc</span>(Score1))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
@@ -2067,7 +2068,7 @@ Note: these are confidence intervals for <span class="math inline">\(\beta_0\)</
 </section>
 <section id="test-scores-simulation---lowest-scores" class="level3" data-number="4.7.6">
 <h3 data-number="4.7.6" class="anchored" data-anchor-id="test-scores-simulation---lowest-scores"><span class="header-section-number">4.7.6</span> Test Scores Simulation - Lowest Scores</h3>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-92_dc05a70b9e310ab00fb6fce9aa013c00">
 <div class="sourceCode cell-code" id="cb124"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(TestSim<span class="sc">%&gt;%</span><span class="fu">arrange</span>(Score1)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
@@ -2118,7 +2119,7 @@ Note: these are confidence intervals for <span class="math inline">\(\beta_0\)</
 <section id="another-example" class="level3" data-number="4.7.7">
 <h3 data-number="4.7.7" class="anchored" data-anchor-id="another-example"><span class="header-section-number">4.7.7</span> Another Example</h3>
 <p>Wins by NFL teams in 2021 and 2022</p>
-<div class="cell" data-each="false">
+<div class="cell" data-each="false" data-hash="Ch4_cache/html/unnamed-chunk-93_ef1183e9cf894e64d024c2eac2ee9390">
 <div class="cell-output-display">
 <p><img src="Ch4_files/figure-html/unnamed-chunk-93-1.png" class="img-fluid" width="768"></p>
 </div>
@@ -2176,20 +2177,20 @@ Note: these are confidence intervals for <span class="math inline">\(\beta_0\)</
 </ul>
 <p>We have data on the times of flights from both airports to Chicago’s O’Hare airport from 2013 (more than 14,000 flights).</p>
 <p>Assuming these flights represent a random sample of all flights from these airports to Chicago, consider how the traveler might use this information to decide which airport to fly out of.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-94_92e5a9b069f7133dc5b4ed2b51600128">
 <div class="sourceCode cell-code" id="cb125"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nycflights13)</span>
 <span id="cb125-2"><a href="#cb125-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(flights)</span>
 <span id="cb125-3"><a href="#cb125-3" aria-hidden="true" tabindex="-1"></a>flights<span class="sc">$</span>origin <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(flights<span class="sc">$</span>origin)</span>
 <span id="cb125-4"><a href="#cb125-4" aria-hidden="true" tabindex="-1"></a>flights<span class="sc">$</span>dest <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(flights<span class="sc">$</span>dest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We’ll create a dataset containing only flights from Newark and Laguardia to O’Hare, and only the variables we’re interested in.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-95_5c3cb619813e21431d339038f4865cac">
 <div class="sourceCode cell-code" id="cb126"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a>Flights_NY_CHI <span class="ot">&lt;-</span> flights <span class="sc">%&gt;%</span> </span>
 <span id="cb126-2"><a href="#cb126-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(origin <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"EWR"</span>, <span class="st">"LGA"</span>) <span class="sc">&amp;</span> dest <span class="sc">==</span><span class="st">"ORD"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb126-3"><a href="#cb126-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(origin, dest, air_time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The plot and table compare the duration of flights from New York to Chicago from each airport.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-96_5b7baf8c83eb981157f498ae71e58b49">
 <div class="sourceCode cell-code" id="cb127"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Flights_NY_CHI, <span class="fu">aes</span>(<span class="at">x=</span>air_time, <span class="at">fill=</span>origin, <span class="at">color=</span>origin)) <span class="sc">+</span> <span class="fu">geom_density</span>(<span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Flight Time"</span>)</span>
 <span id="cb127-2"><a href="#cb127-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Flights_NY_CHI, <span class="fu">aes</span>(<span class="at">x=</span>air_time, <span class="at">y=</span>origin)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Flight Time"</span>)</span>
 <span id="cb127-3"><a href="#cb127-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(p1, p2, <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2197,7 +2198,7 @@ Note: these are confidence intervals for <span class="math inline">\(\beta_0\)</
 <p><img src="Ch4_files/figure-html/unnamed-chunk-96-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-97_4f09f5b58e2f19ab76e4387bd5963c3d">
 <div class="sourceCode cell-code" id="cb128"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb128-1"><a href="#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
 <span id="cb128-2"><a href="#cb128-2" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> Flights_NY_CHI <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(origin) <span class="sc">%&gt;%</span> </span>
 <span id="cb128-3"><a href="#cb128-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Mean_Airtime =</span> <span class="fu">mean</span>(air_time, <span class="at">na.rm=</span><span class="cn">TRUE</span>), </span>
@@ -2231,7 +2232,7 @@ Note: these are confidence intervals for <span class="math inline">\(\beta_0\)</
 </div>
 </div>
 <p>We fit a model to test whether there is evidence of a difference in average flight time.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-98_ccdb516269f1fcb11756f2349acc970b">
 <div class="sourceCode cell-code" id="cb129"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb129-1"><a href="#cb129-1" aria-hidden="true" tabindex="-1"></a>M_Flights <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Flights_NY_CHI, air_time<span class="sc">~</span>origin)</span>
 <span id="cb129-2"><a href="#cb129-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Flights)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -2257,7 +2258,7 @@ F-statistic: 226.9 on 1 and 14333 DF,  p-value: &lt; 0.00000000000000022</code><
 </div>
 </div>
 <p>Confidence Interval for Flights:</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-99_1937f26a15a9b5f39eb2b94087d6d451">
 <div class="sourceCode cell-code" id="cb131"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb131-1"><a href="#cb131-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(M_Flights)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                2.5 %     97.5 %
@@ -2276,7 +2277,7 @@ originLGA     2.20905   2.869984</code></pre>
 <h3 data-number="4.8.3" class="anchored" data-anchor-id="smoking-and-birthweight-example"><span class="header-section-number">4.8.3</span> Smoking and Birthweight Example</h3>
 <p>We consider data on the relationship between a pregnant mother’s smoking and the birth weight of the baby. Data come from a sample of 80 babies born in North Carolina in 2004. Thirty of the mothers were smokers, and fifty were nonsmokers.</p>
 <p>The plot and table show the distribution of birth weights among babies whose mothers smoked, compared to those who didn’t.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-101_3dc758f5e7520f2158bd711cc367a9e1">
 <div class="sourceCode cell-code" id="cb133"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb133-1"><a href="#cb133-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>NCBirths, <span class="fu">aes</span>(<span class="at">x=</span>weight, <span class="at">fill=</span>habit, <span class="at">color=</span>habit)) <span class="sc">+</span> <span class="fu">geom_density</span>(<span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Birthweight and Smoking"</span>)</span>
 <span id="cb133-2"><a href="#cb133-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>NCBirths, <span class="fu">aes</span>(<span class="at">x=</span>weight, <span class="at">y=</span>habit)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Birthweight and Smoking"</span>)</span>
 <span id="cb133-3"><a href="#cb133-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(p1, p2, <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2284,7 +2285,7 @@ originLGA     2.20905   2.869984</code></pre>
 <p><img src="Ch4_files/figure-html/unnamed-chunk-101-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-102_18b139d4fc2d4e97c4d82789852e7bca">
 <div class="sourceCode cell-code" id="cb134"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb134-1"><a href="#cb134-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
 <span id="cb134-2"><a href="#cb134-2" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> NCBirths <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(habit) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">Mean_Weight =</span> <span class="fu">mean</span>(weight), <span class="at">SD =</span> <span class="fu">sd</span>(weight), <span class="at">n=</span><span class="fu">n</span>())</span>
 <span id="cb134-3"><a href="#cb134-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2316,7 +2317,7 @@ originLGA     2.20905   2.869984</code></pre>
 </div>
 </div>
 <p>We fit a model and test for differences in average birth weight.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-103_394c3e34385b387159fbeabea3951cc9">
 <div class="sourceCode cell-code" id="cb135"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb135-1"><a href="#cb135-1" aria-hidden="true" tabindex="-1"></a>M_Birthwt <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>NCBirths, weight<span class="sc">~</span>habit)</span>
 <span id="cb135-2"><a href="#cb135-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Birthwt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -2340,7 +2341,7 @@ Multiple R-squared:  0.01842,   Adjusted R-squared:  0.005834
 F-statistic: 1.464 on 1 and 78 DF,  p-value: 0.23</code></pre>
 </div>
 </div>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-104_8052e5317ba33135fbf59880da250850">
 <div class="sourceCode cell-code" id="cb137"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb137-1"><a href="#cb137-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(M_Birthwt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                2.5 %    97.5 %
@@ -2358,7 +2359,7 @@ habitsmoker -1.118735 0.2730012</code></pre>
 <h4 data-number="4.8.3.1" class="anchored" data-anchor-id="larger-study"><span class="header-section-number">4.8.3.1</span> Larger Study</h4>
 <p>In fact, this sample of 80 babies is part of a larger dataset, consisting of 1,000 babies born in NC in 2004. When we consider the full dataset, notice that the difference between the groups is similar, but the p-value is much smaller, providing stronger evidence of a relationship between a mother’s smoking and lower birthweight.</p>
 <p>We’ll now fit a model to the larger dataset.</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-105_4168cdbef1e8f26ac70f747c124fa2de">
 <div class="sourceCode cell-code" id="cb139"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb139-1"><a href="#cb139-1" aria-hidden="true" tabindex="-1"></a>M_Birthwt_Full <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>ncbirths, weight<span class="sc">~</span>habit)</span>
 <span id="cb139-2"><a href="#cb139-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Birthwt_Full)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -2384,7 +2385,7 @@ F-statistic: 4.855 on 1 and 997 DF,  p-value: 0.02779</code></pre>
 </div>
 </div>
 <p>Confidence interval based on larger dataset:</p>
-<div class="cell">
+<div class="cell" data-hash="Ch4_cache/html/unnamed-chunk-106_d66ea6c9894cb56a5f7a86fff7837f90">
 <div class="sourceCode cell-code" id="cb141"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb141-1"><a href="#cb141-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(M_Birthwt_Full)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                 2.5 %      97.5 %

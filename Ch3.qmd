@@ -804,7 +804,7 @@ We've seen how to use bootstrapping to calculate confidence intervals for an unk
 For example, we could calculate confidence intervals any of the following parameters, using the corresponding sample statistic.
 
 | Context                       | Parameter                                          | Statistic                              |
-|-------------------|------------------------------|------------------------|
+|-------------------|-----------------------------|------------------------|
 | Proportion                    | $p$                                                | $\hat{p}$                              |
 | Mean                          | $\mu$                                              | $\bar{x}$                              |
 | Standard Deviation            | $\sigma$                                           | $s$                                    |
@@ -2306,7 +2306,6 @@ Difference in Means in Permuted Sample:
 
 `r LakesPermTable[1,2] - LakesPermTable[2,2]`
 
-
 **Fourth Permutation**
 
 ```{r}
@@ -2336,7 +2335,6 @@ Difference in Means in Permuted Sample:
 
 `r LakesPermTable[1,2] - LakesPermTable[2,2]`
 
-
 **Fifth Permutation**
 
 ```{r}
@@ -2365,7 +2363,6 @@ kable(LakesPermTable)
 Difference in Means in Permuted Sample:
 
 `r LakesPermTable[1,2] - LakesPermTable[2,2]`
-
 
 ### R Code for Permutation Test
 
@@ -2446,9 +2443,7 @@ knitr::include_graphics("pvals.png")
 
 The permutation test procedure can be used to test hypotheses involving lots of different test statistics, in addition to testing for a difference in means, as we saw seen in the previous section. For example we could test whether there is evidence of:
 
-
 1.  a difference in the amount of variability in mercury levels between lakes in Northern Florida, compared to southern Florida\
-
 
 2.  a difference in mean price between King County houses in very good, good, and average or below conditions
 

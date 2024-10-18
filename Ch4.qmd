@@ -202,9 +202,8 @@ where $Y_i$ represents amount dispensed, and $X_i$ represents time. $\beta_0, \b
 
 Using the values of $b_0$ and $b_1$ obtained by fitting a model to our observed data as estimates of $\beta_0$ and $\beta_1$, our estimated regression equation is
 
-$$
+$$ 
 Y_i = b_0 + b_1X_i + \epsilon\_i = `r IC_Model$coefficients[1]` + `r IC_Model$coefficients[2]`X_i + \epsilon\_i
-
 $$
 
 where $\epsilon_i\sim\mathcal{N}(0,\sigma)$.
@@ -276,7 +275,7 @@ In the house price example, consider the following models:
 
 $\text{Price}_i = \beta_0 + \beta_1\text{Sq.Ft.}_{i} + \epsilon_i$, where $\epsilon_i\sim\mathcal{N}(0,\sigma)$.
 
-If we use this model, we're saying that we believe the expected price of a house is a linear function of its size, and that for any given size, the distribution of actual prices are normally distributed around their expected value of $\beta_0 + \beta_1\text{Sq.Ft.}_{i}$. Furthermore, we're saying that the amount of variability in hourse prices is the same for houses of any size.
+If we use this model, we're saying that we believe the expected price of a house is a linear function of its size, and that for any given size, the distribution of actual prices are normally distributed around their expected value of $\beta_0 + \beta_1\text{Sq.Ft.}_{i}$. Furthermore, we're saying that the amount of variability in house prices is the same for houses of any size.
 
 **Model 2:**
 
@@ -325,7 +324,7 @@ So far, we've used simulation (permutation tests and bootstrap intervals) to det
 **Theory-Based Standard Error Formulas**
 
 | Statistic                             | Standard Error                                                                                                           |
-|-----------------------|-------------------------------------------------|
+|-----------------------|------------------------------------------------|
 | Single Mean                           | $SE(b_0)=\frac{s}{\sqrt{n}}$                                                                                             |
 | Difference in Means                   | $SE(b_j)=s\sqrt{\frac{1}{n_1}+\frac{1}{n_2}}$                                                                            |
 | Single Proportion                     | $SE(\hat{p}) = \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$                                                                      |
@@ -817,7 +816,7 @@ Lakes_M <- lm(data=FloridaLakes, Mercury~Location)
 summary(Lakes_M)
 ```
 
-Looking at the coefficients table, we've already seen where the first two columns, `Estimate` and `Std. Error` come from. **The last two columns, labeled `t value` and "Pr(\>\|t\|)" represent the t-statistic and p-value for the t-test associated with the that the regression parameter on that line is zero. (i.e.** $\beta_j=0$).
+Looking at the coefficients table, we've already seen where the first two columns, `Estimate` and `Std. Error` come from. **The last two columns, labeled `t value` and "Pr(\>\|t\|)" represent the t-statistic and p-value for the t-test associated with the null hypothesis that the regression parameter on that line is zero. (i.e.** $\beta_j=0$).
 
 **t-test for line `LocationS`**
 
@@ -868,7 +867,7 @@ The p-value from the permutation test is similar to the one from the t-test. Bot
 
 **Hypothesis Test for line (intercept)**
 
-Notice that there is also a t-statistic and p-value on the line `(intercept)`. This is tesing the following hypotheses.
+Notice that there is also a t-statistic and p-value on the line `(intercept)`. This is testing the following hypotheses.
 
 **Null Hypothesis:** The average mercury level among all lakes in North Florida is 0 ($\beta_0=0$).
 
@@ -1520,7 +1519,7 @@ In simple linear regression,
 
 $$
 \begin{aligned}
-SE(\hat{Y}|X=x^*) = \sqrt{\frac{1}{n}+ \frac{(x^*-\bar{x})^2}{\displaystyle\sum_{i=1}^n(x_i-\bar{x})^2}}
+SE(\hat{Y}|X=x^*) = s\sqrt{\frac{1}{n}+ \frac{(x^*-\bar{x})^2}{\displaystyle\sum_{i=1}^n(x_i-\bar{x})^2}}
 \end{aligned}
 $$
 
@@ -1536,7 +1535,7 @@ $$
 A prediction interval for $E(Y | (X=x))$ is:
 
 $$
-\beta_0 + \beta_1x^* \pm t^* s\sqrt{\left(\frac{1}{n}+ \frac{(x^*-\bar{x})^2}{\displaystyle\sum_{i=1}^n(x_i-\bar{x})^2}\right) + 1} 
+b_0 + b_1x^* \pm t^* s\sqrt{\left(\frac{1}{n}+ \frac{(x^*-\bar{x})^2}{\displaystyle\sum_{i=1}^n(x_i-\bar{x})^2}\right) + 1} 
 $$
 
 **Calculations in Ice cream example**
@@ -1616,7 +1615,7 @@ predict(Cars_M_A060, newdata=data.frame(Acc060=7), interval="confidence", level=
 
 We are 95% confident that the average price of new 2015 cars that accelerate from 0 to 60 mph in 7 seconds is between 37.2 and 41.9 thousand dollars.
 
-Note: this is a confidence interval for $\beta_0 -7\beta_1$.
+Note: this is a confidence interval for $\beta_0 + 7\beta_1$.
 
 If a car I am looking to buy can accelerate from 0 to 60 mph in 7 seconds, what price range should I expect?
 
@@ -1641,7 +1640,7 @@ gf_point(Price~Acc060, data=new_df) %>%
 
 1.  Calculate an interval that we are 95% confident contains the mean mercury concentration for all lakes in Northern Florida. Do the same for Southern Florida.
 
-2.  Calculate an interval that we are 95% confident contains the mean mercury concentration for an individual lake in Northern Florida. Do the same for a lake in Southern Florida.
+2.  Calculate an interval that we are 95% confident contains the mercury concentration for an individual lake in Northern Florida. Do the same for a lake in Southern Florida.
 
 ```{r}
 predict(Lakes_M, newdata=data.frame(Location=c("N", "S")), interval="confidence", level=0.95)
@@ -1657,7 +1656,7 @@ predict(Lakes_M, newdata=data.frame(Location=c("N", "S")), interval="prediction"
 
 We are 95% confident that an individual lake in North Florida will have mercury level between 0 and 1.07 ppm.
 
-We are 95% confident that the mean mercury level in South Florida is between 0.04 and 1.35 ppm.
+We are 95% confident that an individual lake in South Florida will have mercury level between 0.04 and 1.35 ppm.
 
 Note that the normality assumption, which allows for negative mercury levels leads to a somewhat nonsensical result.
 
