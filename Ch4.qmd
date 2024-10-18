@@ -1390,7 +1390,7 @@ Recall that in Chapter 4, we saw two different types of confidence intervals. On
 
 Under the assumptions of a normal error regression model, we an approximate 95% confidence interval for regression parameter $\beta_j$ is given by
 
-$$ b_j + \pm t^*\text{SE}(b_j), $$
+$$ b_j  \pm t^*\text{SE}(b_j), $$
 
 where $t^*\approx 2$.
 

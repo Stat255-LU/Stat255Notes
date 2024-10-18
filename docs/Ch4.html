@@ -1702,7 +1702,7 @@ F-statistic: 185.9 on 3 and 96 DF,  p-value: &lt; 0.00000000000000022</code></pr
 <h3 data-number="4.6.1" class="anchored" data-anchor-id="parameter-values-and-expected-responses"><span class="header-section-number">4.6.1</span> Parameter Values and Expected Responses</h3>
 <p>Recall that in Chapter 4, we saw two different types of confidence intervals. One type was for regression parameters, <span class="math inline">\(\beta_0, \beta_1, \ldots, \beta_p\)</span>, using estimate <span class="math inline">\(b_0, b_1, \ldots, b_p\)</span>. The other type was for expected responses, which involved estimating linear functions of these parameters, for example <span class="math inline">\(\beta_0 + 7\beta_1\)</span>.</p>
 <p>Under the assumptions of a normal error regression model, we an approximate 95% confidence interval for regression parameter <span class="math inline">\(\beta_j\)</span> is given by</p>
-<p><span class="math display">\[ b_j + \pm t^*\text{SE}(b_j), \]</span></p>
+<p><span class="math display">\[ b_j  \pm t^*\text{SE}(b_j), \]</span></p>
 <p>where <span class="math inline">\(t^*\approx 2\)</span>.</p>
 <p>We’ve seen that in R, confidence intervals for regression parameters can be obtained through the <code>confint()</code> command.</p>
 <p>A 95% confidence interval for an expected response <span class="math inline">\(E(Y_i|X_{i1}=x_{i1}, \ldots X_{ip}=x_{ip}) = \beta_0 + \beta_1x_{i1} + \ldots + \beta_px_{ip}\)</span> is estimated by</p>
