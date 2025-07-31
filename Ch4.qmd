@@ -221,7 +221,7 @@ s
 
 In statistics it is common to use Greek letters like $\beta_j$ and $\sigma$, to represent unknown model parameters, pertaining to a population or process (such as the ice cream dispenser), and English letters like $b_j$ and $s$ to represent statistics calculated from data.
 
-The estimates of $b_0 = `r IC_Model$coefficients[1]`$, $b_1=`r IC_Model$coefficients[2]`$, and $s = `r s`$ are reasonably close estimates to the values $\beta_0=0, \beta_1=2$, and $\sigma = 0.5$, that we used to generate the data.
+The estimates of $b_0 = `r IC_Model$coefficients\[1\]`$, $b_1=`r IC_Model$coefficients[2]`$, and $s = `r s`$ are reasonably close estimates to the values $\beta_0=0, \beta_1=2$, and $\sigma = 0.5$, that we used to generate the data.
 
 In a real situation, we'll have only statistics $b_0$, $b_1$, and $s$, and we'll need to use them to draw conclusions about parameters $\beta_0=0, \beta_1=2$, and $\sigma = 0.5$.
 
@@ -324,7 +324,7 @@ So far, we've used simulation (permutation tests and bootstrap intervals) to det
 **Theory-Based Standard Error Formulas**
 
 | Statistic                             | Standard Error                                                                                                           |
-|-----------------------|------------------------------------------------|
+|---------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
 | Single Mean                           | $SE(b_0)=\frac{s}{\sqrt{n}}$                                                                                             |
 | Difference in Means                   | $SE(b_j)=s\sqrt{\frac{1}{n_1}+\frac{1}{n_2}}$                                                                            |
 | Single Proportion                     | $SE(\hat{p}) = \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$                                                                      |

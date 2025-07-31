@@ -488,3 +488,172 @@ The scatterplot matrix is useful for helping us notice key trends in our data. H
 ```{r, echo=FALSE}
 #save.image(file = "Environment.RData")
 ```
+
+## Practice Questions
+
+**1.**\ The `Coasters` contains information on roller coasters around the world. More information about the variables are available [here](https://math.montana.edu/courses/s216/data/rollercoaster_descrip.html). Give examples of at least three categorical and three quantitative variables.   
+
+```{r, echo=FALSE}
+Coasters <- read.csv("Coasters.csv")
+Coasters <- Coasters |>  mutate_if(is.character,as.factor)
+Coasters <- Coasters[complete.cases(Coasters )==TRUE, ]
+Coasters <- Coasters |> select(Coaster, State, Type, Height, Speed, Inversions, Duration, Opened, AgeGroup) |> mutate(Height = round(Height, 0), Speed= round(Speed,0)) |> arrange(desc(Height))
+
+kable(head(Coasters))
+```
+
+
+**2.\** The graphic shows the distribution of US state populations in 2015. 
+
+```{r, echo=FALSE, fig.width=7, fig.height=3, fig.align='center', message=FALSE, warning=FALSE}
+data(USStates)
+USH <- gf_histogram(data=USStates , ~Population, boundary=0, binwidth=2, fill="blue", color="white")%>% 
+  gf_labs(title="US State Populations", y="Frequency", x="Population (in Millions)") + ylim(c(0,16))#+ annotate("text", x = 1, y=14.5, label = "A") + annotate("text", x = 39, y=1.2, label = "B")
+USH
+
+```
+
+a) A common mistake among introductory statistics students is to say that the largest state population is 14 million. Why might someone think this? Why is it incorrect?   
+
+b) Approximately what is the median state population?    
+
+c) How will the mean state population compare to the median?    
+
+d) How many states had populations under 10 million?    
+
+
+**3.\** The following histograms and boxplots provide information on the average monthly temperatures, in degrees Celsius, for the 24 months in 2015-16, in the cities of Moscow (Russia), Melbourne (Australia), and San Francisco (United States). Use the graphs to answer the following questions.
+
+```{r, echo=FALSE, fig.width=7, fig.height=4, fig.align='center', message=FALSE, warning=FALSE}
+data("CityTemps")
+Temps <- CityTemps %>% gather(key = City, value = Temperature, Moscow:San.Francisco )
+```
+
+```{r, echo=FALSE}
+BP <- gf_boxplot(City ~ Temperature, data=Temps ) %>% 
+  gf_labs(title="Temperatures", y="City") %>% 
+  gf_lims(x=c(-10, 25)) 
+
+BP
+```
+
+
+
+a) Approximately what was the median monthly temperature in each city?    
+
+
+b) Approximately what is the range of the middle 50% of monthly temperatures in San Francisco?  
+
+
+c) Approximately what percentage of monthly temperatures in Moscow were below freezing (0 deg. Celsius)?  
+ 
+
+d)  Which of these cities would you expect to have the largest standard deviation among temperatures? Which would you expect to have the smallest standard deviation? Explain your answer in a way that makes clear that you understand what standard deviation represents in this context.   
+
+
+e) How would the mean monthly temperature in Melbourne compare to the median temperature? Would it be substantially higher, substantially lower, or about the same? Explain your answer.   
+
+f) Shown below are histograms of temperatures in each of the three cities. State which histogram corresponds to each city.  
+
+```{r, fig.width=10, echo=FALSE, fig.height=3}
+Temps <- CityTemps %>% gather(key = City, value = Temperature, Moscow:San.Francisco )
+MelH <- gf_histogram(data=Temps %>% filter(City=="Melbourne"), ~Temperature, fill="blue", color="white")%>% 
+ + xlim(c(-10, 25)) + ylim(c(0,5)) 
+
+MosH <- gf_histogram(data=Temps %>% filter(City=="Moscow"), ~Temperature, fill="blue", color="white")%>% 
++ xlim(c(-10, 25)) + ylim(c(0,5)) 
+
+SFH <- gf_histogram(data=Temps %>% filter(City=="San.Francisco"), ~Temperature, fill="blue", color="white")%>% 
++ xlim(c(-10, 25)) + ylim(c(0,5)) 
+
+grid.arrange(MelH, MosH,  SFH,  ncol=3)
+```
+
+
+**4.\**  The American Cancer Society and National Cancer Institute distribute pamphlets to inform patients with cancer abut the nature of the disease and possible treatments. It is important that pamphlets be written at a reading level that patients will be able to understand. 
+
+The data represent reading levels of 63 adult cancer patients at the Philadelphia Veterans Affairs Medical Center, and the reading levels of 30 pamphlets available to them. (Source:https://ww2.amstat.org/publications/jse/v3n2/datasets.short.html) 
+
+```{r fig.width=8, fig.height=2,echo=FALSE}
+library(png)
+library(grid)
+img <- readPNG("Pamphlets1.png")
+ grid.raster(img)
+```
+
+The graph shows reading levels of patients and pamphlets along the horizontal axis and proportion of patients or pamphlets of that level on the vertical axis. 
+
+```{r fig.width=8, fig.height=4,echo=FALSE}
+library(png)
+library(grid)
+img <- readPNG("Pamphlets2.png")
+ grid.raster(img)
+```
+
+a) What is the median reading level among the cancer patients? What is the median reading level of the pamphlets?   
+
+b) How would the standard deviation in patients' reading levels compare to the standard deviation in the pamphlet levels?   
+
+c) Are pamphlets being written at the appropriate reading levels? Justify your answer. 
+
+
+**5.\** One person stands outside the Warch Center at noon on a Monday and records the ages of every fifth person who walks in. Another person does the same thing at the Appleton airport. Which location is likely to have the larger mean age? Which is likely to have a larger standard deviation in age?
+
+**6.\**  For each of the following, state whether the mean or median would likely be greater, or whether they would likely be about the same. Explain your reasoning.   
+
+a) distribution of house prices in Wisconsin     
+b) distribution of heights of women in United States     
+c) distribution of age at time of death in United States     
+
+
+**7.\** A dataset contains the following numbers:
+
+3, 35, 37, 38, 41, 45, 46, 49, 52    
+
+After inspecting the data, the recorder realizes there is a typo and the 3 is supposed to be a 33. How will the following statistics change when the typo is fixed (will they increase, decrease, or stay the same)?     
+
+a) Mean     
+b) Median     
+c) IQR     
+d) Standard Deviation      
+
+**8.\** The histograms show the distribution of quiz scores in three different statistics classes.  
+
+```{r, echo=F, fig.width=6, fig.height=2, fig.align='center', message=FALSE, warning=FALSE}
+library(gridExtra)
+library(ggformula)
+
+Score1 <- c(rep(1, 5), rep(2, 20), rep(3, 5))
+Score2 <- rep(1:5, each = 6)
+Score3 <- c(rep(3, 5), rep(4, 20), rep(5, 5))
+Score4 <- c(rep(1, 10), rep(2, 4), rep(3, 2), rep(4, 4), rep(5, 10))
+Class <- c(rep("Class A", 30), rep("Class B", 30), rep("Class C", 30), rep("Class D", 30))
+Score <- c(Score1, Score2, Score3, Score4)
+df=data.frame(Class,Score)
+fig1 <- gf_histogram(data=data.frame(df%>%filter(Class=="Class A")), ~Score, binwidth=1, boundary=0.5, col="black", fill="darkgray",  alpha = .2) %>% gf_labs(title="Class A", x="Score", y="Frequency") + scale_x_continuous(breaks=seq(1,5, by = 1))+theme(plot.title = element_text(hjust = 0.5)) +ylim(c(0,35))+xlim(c(0.5,5.5))+ theme_bw()
+
+fig2 <- gf_histogram(data=data.frame(df%>%filter(Class=="Class B")), ~Score, binwidth=1, boundary=0.5, col="black", fill="darkgray",  alpha = .2) %>% gf_labs(title="Class B", x="Score", y="Frequency") + scale_x_continuous(breaks=seq(1,5, by = 1))+theme(plot.title = element_text(hjust = 0.5)) +ylim(c(0,35))+xlim(c(0.5,5.5))+ theme_bw()
+
+fig3 <- gf_histogram(data=data.frame(df%>%filter(Class=="Class C")), ~Score, binwidth=1, boundary=0.5, col="black", fill="darkgray",  alpha = .2) %>% gf_labs(title="Class C", x="Score", y="Frequency") + scale_x_continuous(breaks=seq(1,5, by = 1))+theme(plot.title = element_text(hjust = 0.5)) +ylim(c(0,35))+xlim(c(0.5,5.5))+ theme_bw()
+
+fig4 <- gf_histogram(data=data.frame(df%>%filter(Class=="Class D")), ~Score, binwidth=1, boundary=0.5, col="black", fill="darkgray",  alpha = .2) %>% gf_labs(title="Class D", x="Score", y="Frequency") + scale_x_continuous(breaks=seq(1,5, by = 1))+theme(plot.title = element_text(hjust = 0.5)) +ylim(c(0,35))+xlim(c(0.5,5.5))+ theme_bw()
+
+grid.arrange(fig1, fig2, fig3, fig4, ncol=2)
+```
+
+The following questions can be answered based on information in the graphs, without actually calculating mean or standard deviation from the formulas. 
+
+a) Rank the classes from highest mean score to lowest. If any classes are tied, say this.     
+
+b) Would the median score differ from the mean for any of the classes? If so, which one(s)?    
+
+c) Rank the classes from highest standard deviation in scores to lowest. If any classes are tied, say this.    
+
+**9.\** Suppose that a city is interested in estimating average household size among its residents. The city considers two different approaches for conducting this study.   
+
+Approach 1: Select a random sample of 100 people and ask each person how many people live in their household.    
+
+Approach 2: Select a random sample of 100 households and ask one person from each household how many people live in the household?    
+
+How will mean household size estimates will compare for the two approaches? Will one approach yield a larger estimate of household size? Why or why not?
+
