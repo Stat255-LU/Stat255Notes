@@ -1,11 +1,19 @@
 # Visualizing and Summarizing Data
 
-**Learning Outcomes:**
+### Learning Outcomes {.unnumbered}
 
-1.  Distinguish between categorical and quantitative variables.\
-2.  Interpret data graphics (histogram, density plot, box plot, violin plot, scatterplot, bar graph).\
-3.  Interpret summary statistics (mean, median, standard deviation, and IQR).
-4.  Use R to create data graphics and calculate summary statistics.
+**Conceptual Learning Outcomes**\
+1. Distinguish between categorical and quantitative variables.\
+2. Interpret data graphics (histogram, density plot, box plot, violin plot, scatterplot, bar graph).\
+3. Interpret summary statistics (mean, median, standard deviation, and IQR).
+
+**Computational Learning Outcomes**\
+A. Calculate summary statistics R.\
+B. Create data visualizations in R.\
+C. Create reproducible reports in R.\*\
+D. Use GitHub for version control.\*
+
+-   Computational learing outcomes C and D will be emphasized throughout the course. Outcomes A and B especially pertain to Chapter 1, but will also be used throughout the course.
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=FALSE)
@@ -36,18 +44,19 @@ library(tidyverse)
 ```
 
 ```{r, echo=FALSE}
-library(KingCountyHouses)
-data(home_prices)
-Houses <- home_prices
-Houses <- Houses |> mutate(price = 10^price) # price is given in log10, convert to thousands
-Houses <- Houses |> mutate(waterfront= ifelse(waterfront==1, "Yes", "No") |> as.factor()) |> mutate(price=price/1000)
-Houses <- Houses |> select(date_sold, price, bedrooms, bathrooms, sqft_living, sqft_lot, condition, waterfront, yr_built)
-W <- Houses |> filter(waterfront=="Yes") 
-NW <- Houses |> filter(waterfront=="No") 
-Houses <- rbind(W[1:15,], NW[1:85,]) 
-Houses <- Houses |> arrange(date_sold) |> select(-c(date_sold))
-Houses$Id <- 1:nrow(Houses)
-Houses <- Houses |> select(Id, everything())
+data("home_prices")
+Houses <- home_prices |> mutate(price=10^price/1000 |> round(0),
+                                waterfront = ifelse(waterfront==1, "Yes", "No"),
+                                ID = row_number())|>
+                          rename(yr_renovated = year_renovated)|>
+                          select(ID, price, sqft_living, waterfront, condition, sqft_lot, bedrooms, bathrooms, yr_built)
+Houses$condition <- fct_collapse(Houses$condition, "average or below" = c("poor","fair", "average"))
+
+set.seed(08022025)
+Houses1 <- Houses |> filter(waterfront == "No") |> slice_sample(n=175)
+Houses2 <- Houses |> filter(waterfront == "Yes") |> slice_sample(n=25)
+
+Houses <- rbind(Houses1, Houses2) |> arrange(ID)
 ```
 
 ### Previewing the Data
@@ -78,7 +87,7 @@ The `glimpse()` command shows the number of observations (rows), and the number 
 glimpse(Houses)
 ```
 
-There are 100 houses in the dataset, and 9 variables on each house.
+There are 200 houses in the dataset, and 9 variables on each house.
 
 **`summary`**
 
@@ -90,28 +99,15 @@ summary(Houses)
 
 ### Modifying the Data
 
-Next we'll look at how to manipulate the data and create new variables.
-
-#### Adding a New Variable {.unnumbered}
-
-We can use the `mutate()` function to create a new variable based on variables already in the dataset.
-
-Let's add a variable giving the age of the house, as of 2015.
-
-```{r}
-Houses <- Houses |> mutate(age = 2015-yr_built)
-head(Houses)
-```
-
 #### Selecting Columns {.unnumbered}
 
 If the dataset contains a large number of variables, narrow down to the ones you are interested in working with. This can be done with the `select()` command. If there are not very many variables to begin with, or you are interested in all of them, then you may skip this step.
 
-Let's create a smaller version of the dataset, with only the columns price, sqft_living, and waterfront. We'll call this `Houses_3var.`
+Let's create a smaller version of the dataset, with only the columns ID, price, sqft_living, and waterfront. We'll call this `Houses_3var.`
 
 ```{r}
-Houses_3var <- Houses |> select(price, sqft_living, waterfront)
-head(Houses_3var)
+Houses_4var <- Houses |> select(ID, price, sqft_living, waterfront)
+head(Houses_4var)
 ```
 
 #### Filtering by Row {.unnumbered}
@@ -130,6 +126,19 @@ Now, we'll filter the data to include only houses on the waterfront.
 ```{r}
 New_Houses <- Houses |> filter(waterfront == "Yes")
 head(New_Houses)
+```
+
+Next we'll look at how to manipulate the data and create new variables.
+
+#### Adding a New Variable {.unnumbered}
+
+We can use the `mutate()` function to create a new variable based on variables already in the dataset.
+
+Let's add a variable giving the age of the house, as of 2015.
+
+```{r}
+Houses <- Houses |> mutate(age = 2015-yr_built)
+head(Houses) |> select(ID, price, sqft_living, waterfront, condition, yr_built, age)
 ```
 
 \newpage
@@ -204,7 +213,7 @@ Houses_Grouped_Summary <- Houses |> group_by(waterfront) |>
 kable(Houses_Grouped_Summary)
 ```
 
-Note: `arrange(desc(Mean_Gross))` arranges the table in descending order of Mean_Gross. To arrange in ascending order, use `arrange(Mean_Gross)`.
+We see that waterfront house tend to be more expensive, on average, and also have more variability (higher standard deviation) in price than non-waterfront houses.
 
 \newpage
 
@@ -291,9 +300,9 @@ ggplot(data=Houses, aes(x=waterfront, y=price)) + geom_boxplot() +
   xlab("Waterfront") + ylab("Price (in thousands)") + coord_flip()
 ```
 
-For houses not on the waterfront, the median price is about \$400,000, and the middle 50% of prices range from about \$300,000 to \$600,000.
+For houses not on the waterfront, the median price is about \$400,000, and the middle 50% of prices range from about \$300,000 to \$700,000.
 
-For waterfront houses, the median price is about \$1,500,000, and the middle 50% of prices range from about \$900,000 to \$2,700,000.
+For waterfront houses, the median price is about \$1,700,000, and the middle 50% of prices range from about \$900,000 to \$2,200,000.
 
 ### Violin Plot
 
@@ -345,7 +354,7 @@ ggplot(data=Houses, aes(x=sqft_living, y=price)) +
   xlab("Living Space in sq. ft. ")
 ```
 
-We see that there is an upward trend, indicating that houses with more living space tend to, on average, be higher priced than those with less living space. The relationship appears to be roughly linear, though there might be some curvature, as living space gets very large. There are some exceptions to this trend, most notably a house with more than 7,000 square feet, priced just over \$1,000,000.
+We see that there is an upward trend, indicating that houses with more living space tend to, on average, be higher priced than those with less living space. The relationship appears to be roughly linear, though there might be some curvature, as living space gets very large. There are some exceptions to this trend, most notably a house with more than 7,000 square feet, priced over \$1,500,000.
 
 We can also add color, size, and shape to the scatterplot to display information about other variables.
 
@@ -387,7 +396,7 @@ ggplot(data=Houses, aes(x=condition)) +
   theme(axis.text.x = element_text(angle = 90))
 ```
 
-We see that the majority of houses are in average condition. Some are in good or very good condition, while very few are in poor or very poor condition.
+We see that the majority of houses are in average or below condition. Some are in good or very good condition, while a few are in very good condition.
 
 ### Stacked and Side-by-Side Bar Graphs
 
@@ -416,7 +425,7 @@ ggplot(data = Houses, mapping = aes(x = waterfront, fill = condition)) +
   theme(axis.text.x = element_text(angle = 90)) 
 ```
 
-We see that a higher proportion of waterfront houses are in good or excellent condition than non-waterfront houses.
+We see that a slightly higher proportion of waterfront houses are in good or very condition than non-waterfront houses.
 
 **Side-by-side Bar Graph Template**
 
@@ -442,9 +451,7 @@ ggplot(data = Houses, mapping = aes(x = waterfront, fill = condition)) +
   theme(axis.text.x = element_text(angle = 90)) 
 ```
 
-In this case, since there are so few waterfront houses, the graph is hard to read and not very useful.
-
-The stacked bar graph is a better way to convey information in this instance, though you may find that for a different dataset, the side-by-side bar graph could be a better choice.
+The side by side bar graph conveys similar information to the stacked bar graph. It has the advantage of letting us see how many houses are in each category. We can tell that there are far more non-waterfront houses than waterfront ones. On the other hand, it is harder to compare the ratio of average, good, and very good houses with a side-by-side bar graph than it is with a stacked bar graph.
 
 ### Correlation Plot
 
@@ -464,7 +471,7 @@ Corr <- cor(select_if(Houses, is.numeric), use="complete.obs")
 corrplot(Corr)
 ```
 
-We see that price has a strong positive correlation with square feet of living space, and is also positively correlated with number of bedrooms and bathrooms. Living space, bedrooms, and bathrooms are all positively correlated, which makes sense, since we would expect bigger houses to have more bedrooms and bathrooms. Price does not show much correlation with the other variables. We notice that bathrooms is negatively correlated with age, which means older houses tend to have fewer bathrooms than newer ones. Not surprisingly, age is very strongly correlated with year built.
+We see that price has a strong positive correlation with square feet of living space, and is also positively correlated with number of bedrooms. Living space, bedrooms, and bathrooms are also positively correlated, which makes sense, since we would expect bigger houses to have more bedrooms and bathrooms. Price does not show much correlation with the other variables. We notice that square feet of living space is negatively correlated with age, which means older houses tend to be smaller than newer ones. Not surprisingly, age is very strongly correlated with year built.
 
 ### Scatterplot Matrix
 
@@ -485,13 +492,11 @@ ggpairs(Houses |> select(price, sqft_living, condition, age))
 
 The scatterplot matrix is useful for helping us notice key trends in our data. However, the plot can hard to read as it is quite dense, especially when there are a large number of variables. These can help us look for trends from a distance, but we should then focus in on more specific plots.
 
-```{r, echo=FALSE}
-#save.image(file = "Environment.RData")
-```
-
 ## Practice Questions
 
-**1.**\ The `Coasters` contains information on roller coasters around the world. More information about the variables are available [here](https://math.montana.edu/courses/s216/data/rollercoaster_descrip.html). Give examples of at least three categorical and three quantitative variables.   
+### 1) {.unnumbered}
+
+The `Coasters` contains information on roller coasters around the world. More information about the variables are available [here](https://math.montana.edu/courses/s216/data/rollercoaster_descrip.html).
 
 ```{r, echo=FALSE}
 Coasters <- read.csv("Coasters.csv")
@@ -502,8 +507,17 @@ Coasters <- Coasters |> select(Coaster, State, Type, Height, Speed, Inversions, 
 kable(head(Coasters))
 ```
 
+####  {.unnumbered}
 
-**2.\** The graphic shows the distribution of US state populations in 2015. 
+a)  What are the observations in the dataset? What are the variables?
+
+####  {.unnumbered}
+
+b)  State whether each variable is categorical or quantitative.
+
+### 2) {.unnumbered}
+
+The graphic shows the distribution of US state populations in 2015.
 
 ```{r, echo=FALSE, fig.width=7, fig.height=3, fig.align='center', message=FALSE, warning=FALSE}
 data(USStates)
@@ -513,16 +527,25 @@ USH
 
 ```
 
-a) A common mistake among introductory statistics students is to say that the largest state population is 14 million. Why might someone think this? Why is it incorrect?   
+#### a) {.unnumbered}
 
-b) Approximately what is the median state population?    
+A common mistake among introductory statistics students is to say that the largest state population is 14 million. Why might someone think this? Why is it incorrect?
 
-c) How will the mean state population compare to the median?    
+#### b) {.unnumbered}
 
-d) How many states had populations under 10 million?    
+Approximately what is the median state population?
 
+#### c) {.unnumbered}
 
-**3.\** The following histograms and boxplots provide information on the average monthly temperatures, in degrees Celsius, for the 24 months in 2015-16, in the cities of Moscow (Russia), Melbourne (Australia), and San Francisco (United States). Use the graphs to answer the following questions.
+How will the mean state population compare to the median?
+
+#### d) {.unnumbered}
+
+How many states had populations under 10 million?
+
+### 3) {.unnumbered}
+
+The following histograms and boxplots provide information on the average monthly temperatures, in degrees Celsius, for the 24 months in 2015-16, in the cities of Moscow (Russia), Melbourne (Australia), and San Francisco (United States). Use the graphs to answer the following questions.
 
 ```{r, echo=FALSE, fig.width=7, fig.height=4, fig.align='center', message=FALSE, warning=FALSE}
 data("CityTemps")
@@ -537,42 +560,49 @@ BP <- gf_boxplot(City ~ Temperature, data=Temps ) %>%
 BP
 ```
 
+#### a) {.unnumbered}
 
+Approximately what was the median monthly temperature in each city?
 
-a) Approximately what was the median monthly temperature in each city?    
+#### b) {.unnumbered}
 
+Approximately what is the range of the middle 50% of monthly temperatures in San Francisco?
 
-b) Approximately what is the range of the middle 50% of monthly temperatures in San Francisco?  
+#### c) {.unnumbered}
 
+Approximately what percentage of monthly temperatures in Moscow were below freezing (0 deg. Celsius)?
 
-c) Approximately what percentage of monthly temperatures in Moscow were below freezing (0 deg. Celsius)?  
- 
+#### d) {.unnumbered}
 
-d)  Which of these cities would you expect to have the largest standard deviation among temperatures? Which would you expect to have the smallest standard deviation? Explain your answer in a way that makes clear that you understand what standard deviation represents in this context.   
+Which of these cities would you expect to have the largest standard deviation among temperatures? Which would you expect to have the smallest standard deviation? Explain your answer in a way that makes clear that you understand what standard deviation represents in this context.
 
+#### e) {.unnumbered}
 
-e) How would the mean monthly temperature in Melbourne compare to the median temperature? Would it be substantially higher, substantially lower, or about the same? Explain your answer.   
+How would the mean monthly temperature in Melbourne compare to the median temperature? Would it be substantially higher, substantially lower, or about the same? Explain your answer.
 
-f) Shown below are histograms of temperatures in each of the three cities. State which histogram corresponds to each city.  
+#### f) {.unnumbered}
+
+Shown below are histograms of temperatures in each of the three cities. State which histogram corresponds to each city.
 
 ```{r, fig.width=10, echo=FALSE, fig.height=3}
 Temps <- CityTemps %>% gather(key = City, value = Temperature, Moscow:San.Francisco )
 MelH <- gf_histogram(data=Temps %>% filter(City=="Melbourne"), ~Temperature, fill="blue", color="white")%>% 
- + xlim(c(-10, 25)) + ylim(c(0,5)) 
+ + xlim(c(-10, 25)) + ylim(c(0,5))  + theme_bw() + ggtitle("(A)")
 
 MosH <- gf_histogram(data=Temps %>% filter(City=="Moscow"), ~Temperature, fill="blue", color="white")%>% 
-+ xlim(c(-10, 25)) + ylim(c(0,5)) 
++ xlim(c(-10, 25)) + ylim(c(0,5))  + theme_bw() + ggtitle("(B)")
 
 SFH <- gf_histogram(data=Temps %>% filter(City=="San.Francisco"), ~Temperature, fill="blue", color="white")%>% 
-+ xlim(c(-10, 25)) + ylim(c(0,5)) 
++ xlim(c(-10, 25)) + ylim(c(0,5))  + theme_bw() + ggtitle("(C)")
 
 grid.arrange(MelH, MosH,  SFH,  ncol=3)
 ```
 
+### 4) {.unnumbered}
 
-**4.\**  The American Cancer Society and National Cancer Institute distribute pamphlets to inform patients with cancer abut the nature of the disease and possible treatments. It is important that pamphlets be written at a reading level that patients will be able to understand. 
+The American Cancer Society and National Cancer Institute distribute pamphlets to inform patients with cancer abut the nature of the disease and possible treatments. It is important that pamphlets be written at a reading level that patients will be able to understand.
 
-The data represent reading levels of 63 adult cancer patients at the Philadelphia Veterans Affairs Medical Center, and the reading levels of 30 pamphlets available to them. (Source:https://ww2.amstat.org/publications/jse/v3n2/datasets.short.html) 
+The data represent reading levels of 63 adult cancer patients at the Philadelphia Veterans Affairs Medical Center, and the reading levels of 30 pamphlets available to them. (Source:https://ww2.amstat.org/publications/jse/v3n2/datasets.short.html)
 
 ```{r fig.width=8, fig.height=2,echo=FALSE}
 library(png)
@@ -581,7 +611,7 @@ img <- readPNG("Pamphlets1.png")
  grid.raster(img)
 ```
 
-The graph shows reading levels of patients and pamphlets along the horizontal axis and proportion of patients or pamphlets of that level on the vertical axis. 
+The graph shows reading levels of patients and pamphlets along the horizontal axis and proportion of patients or pamphlets of that level on the vertical axis.
 
 ```{r fig.width=8, fig.height=4,echo=FALSE}
 library(png)
@@ -590,36 +620,67 @@ img <- readPNG("Pamphlets2.png")
  grid.raster(img)
 ```
 
-a) What is the median reading level among the cancer patients? What is the median reading level of the pamphlets?   
+#### a) {.unnumbered}
 
-b) How would the standard deviation in patients' reading levels compare to the standard deviation in the pamphlet levels?   
+What is the median reading level among the cancer patients? What is the median reading level of the pamphlets?
 
-c) Are pamphlets being written at the appropriate reading levels? Justify your answer. 
+#### b) {.unnumbered}
 
+How would the standard deviation in patients' reading levels compare to the standard deviation in the pamphlet levels?
 
-**5.\** One person stands outside the Warch Center at noon on a Monday and records the ages of every fifth person who walks in. Another person does the same thing at the Appleton airport. Which location is likely to have the larger mean age? Which is likely to have a larger standard deviation in age?
+##### c) {.unnumbered}
 
-**6.\**  For each of the following, state whether the mean or median would likely be greater, or whether they would likely be about the same. Explain your reasoning.   
+Are pamphlets being written at the appropriate reading levels? Justify your answer.
 
-a) distribution of house prices in Wisconsin     
-b) distribution of heights of women in United States     
-c) distribution of age at time of death in United States     
+### 5) {.unnumbered}
 
+One person stands outside the Warch Center (Lawrence University's Student Center) at noon on a Monday and records the ages of every fifth person who walks in. Another person does the same thing at the Appleton airport. Which location is likely to have the larger mean age? Which is likely to have a larger standard deviation in age?
 
-**7.\** A dataset contains the following numbers:
+### 6) {.unnumbered}
 
-3, 35, 37, 38, 41, 45, 46, 49, 52    
+For each of the following, state whether the mean or median would likely be greater, or whether they would likely be about the same. Explain your reasoning.
 
-After inspecting the data, the recorder realizes there is a typo and the 3 is supposed to be a 33. How will the following statistics change when the typo is fixed (will they increase, decrease, or stay the same)?     
+#### a) {.unnumbered}
 
-a) Mean     
-b) Median     
-c) IQR     
-d) Standard Deviation      
+distribution of house prices in Wisconsin\
 
-**8.\** The histograms show the distribution of quiz scores in three different statistics classes.  
+#### b) {.unnumbered}
 
-```{r, echo=F, fig.width=6, fig.height=2, fig.align='center', message=FALSE, warning=FALSE}
+distribution of heights of women in United States\
+
+#### c) {.unnumbered}
+
+distribution of age at time of death in United States
+
+### 7) {.unnumbered}
+
+A dataset contains the following numbers:
+
+3, 35, 37, 38, 41, 45, 46, 49, 52
+
+After inspecting the data, the recorder realizes there is a typo and the 3 is supposed to be a 33. How will the following statistics change when the typo is fixed (will they increase, decrease, or stay the same)?
+
+#### a) {.unnumbered}
+
+Mean
+
+#### b) {.unnumbered}
+
+Median
+
+#### c) {.unnumbered}
+
+IQR
+
+#### d) {.unnumbered}
+
+Standard Deviation
+
+### 8) {.unnumbered}
+
+The histograms show the distribution of quiz scores in three different statistics classes.
+
+```{r, echo=F, fig.width=8, fig.height=8, fig.align='center', message=FALSE, warning=FALSE}
 library(gridExtra)
 library(ggformula)
 
@@ -630,30 +691,41 @@ Score4 <- c(rep(1, 10), rep(2, 4), rep(3, 2), rep(4, 4), rep(5, 10))
 Class <- c(rep("Class A", 30), rep("Class B", 30), rep("Class C", 30), rep("Class D", 30))
 Score <- c(Score1, Score2, Score3, Score4)
 df=data.frame(Class,Score)
-fig1 <- gf_histogram(data=data.frame(df%>%filter(Class=="Class A")), ~Score, binwidth=1, boundary=0.5, col="black", fill="darkgray",  alpha = .2) %>% gf_labs(title="Class A", x="Score", y="Frequency") + scale_x_continuous(breaks=seq(1,5, by = 1))+theme(plot.title = element_text(hjust = 0.5)) +ylim(c(0,35))+xlim(c(0.5,5.5))+ theme_bw()
+fig1 <- gf_histogram(data=data.frame(df%>%filter(Class=="Class A")), ~Score, binwidth=1, boundary=0.5, col="black", fill="darkgray",  alpha = .2) %>% gf_labs(title="Class A", x="Score", y="Frequency") + scale_x_continuous(breaks=seq(1,5, by = 1))+theme(plot.title = element_text(hjust = 0.5)) +ylim(c(0,25))+xlim(c(0.5,5.5))+ theme_bw()
 
-fig2 <- gf_histogram(data=data.frame(df%>%filter(Class=="Class B")), ~Score, binwidth=1, boundary=0.5, col="black", fill="darkgray",  alpha = .2) %>% gf_labs(title="Class B", x="Score", y="Frequency") + scale_x_continuous(breaks=seq(1,5, by = 1))+theme(plot.title = element_text(hjust = 0.5)) +ylim(c(0,35))+xlim(c(0.5,5.5))+ theme_bw()
+fig2 <- gf_histogram(data=data.frame(df%>%filter(Class=="Class B")), ~Score, binwidth=1, boundary=0.5, col="black", fill="darkgray",  alpha = .2) %>% gf_labs(title="Class B", x="Score", y="Frequency") + scale_x_continuous(breaks=seq(1,5, by = 1))+theme(plot.title = element_text(hjust = 0.5)) +ylim(c(0,25))+xlim(c(0.5,5.5))+ theme_bw()
 
-fig3 <- gf_histogram(data=data.frame(df%>%filter(Class=="Class C")), ~Score, binwidth=1, boundary=0.5, col="black", fill="darkgray",  alpha = .2) %>% gf_labs(title="Class C", x="Score", y="Frequency") + scale_x_continuous(breaks=seq(1,5, by = 1))+theme(plot.title = element_text(hjust = 0.5)) +ylim(c(0,35))+xlim(c(0.5,5.5))+ theme_bw()
+fig3 <- gf_histogram(data=data.frame(df%>%filter(Class=="Class C")), ~Score, binwidth=1, boundary=0.5, col="black", fill="darkgray",  alpha = .2) %>% gf_labs(title="Class C", x="Score", y="Frequency") + scale_x_continuous(breaks=seq(1,5, by = 1))+theme(plot.title = element_text(hjust = 0.5)) +ylim(c(0,25))+xlim(c(0.5,5.5))+ theme_bw()
 
-fig4 <- gf_histogram(data=data.frame(df%>%filter(Class=="Class D")), ~Score, binwidth=1, boundary=0.5, col="black", fill="darkgray",  alpha = .2) %>% gf_labs(title="Class D", x="Score", y="Frequency") + scale_x_continuous(breaks=seq(1,5, by = 1))+theme(plot.title = element_text(hjust = 0.5)) +ylim(c(0,35))+xlim(c(0.5,5.5))+ theme_bw()
+fig4 <- gf_histogram(data=data.frame(df%>%filter(Class=="Class D")), ~Score, binwidth=1, boundary=0.5, col="black", fill="darkgray",  alpha = .2) %>% gf_labs(title="Class D", x="Score", y="Frequency") + scale_x_continuous(breaks=seq(1,5, by = 1))+theme(plot.title = element_text(hjust = 0.5)) +ylim(c(0,25))+xlim(c(0.5,5.5))+ theme_bw()
 
 grid.arrange(fig1, fig2, fig3, fig4, ncol=2)
 ```
 
-The following questions can be answered based on information in the graphs, without actually calculating mean or standard deviation from the formulas. 
+The following questions can be answered based on information in the graphs, without actually calculating mean or standard deviation from the formulas.
 
-a) Rank the classes from highest mean score to lowest. If any classes are tied, say this.     
+#### a) {.unnumbered}
 
-b) Would the median score differ from the mean for any of the classes? If so, which one(s)?    
+Rank the classes from highest mean score to lowest. If any classes are tied, say this.
 
-c) Rank the classes from highest standard deviation in scores to lowest. If any classes are tied, say this.    
+#### b) {.unnumbered}
 
-**9.\** Suppose that a city is interested in estimating average household size among its residents. The city considers two different approaches for conducting this study.   
+Would the median score differ from the mean for any of the classes? If so, which one(s)?
 
-Approach 1: Select a random sample of 100 people and ask each person how many people live in their household.    
+#### c) {.unnumbered}
 
-Approach 2: Select a random sample of 100 households and ask one person from each household how many people live in the household?    
+Rank the classes from highest standard deviation in scores to lowest. If any classes are tied, say this.
+
+### 9) {.unnumbered}
+
+Suppose that a city is interested in estimating average household size among its residents. The city considers two different approaches for conducting this study.
+
+Approach 1: Select a random sample of 100 people and ask each person how many people live in their household.
+
+Approach 2: Select a random sample of 100 households and ask one person from each household how many people live in the household?
 
 How will mean household size estimates will compare for the two approaches? Will one approach yield a larger estimate of household size? Why or why not?
 
+```{r, echo=FALSE}
+save.image(file = "Environment.RData")
+```

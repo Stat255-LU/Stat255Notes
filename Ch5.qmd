@@ -2,12 +2,21 @@
 
 **Learning Outcomes:**
 
-31. Check the validity of model assumptions using plots and other information.\
-32. Interpret regression coefficients in models involving log transformations.\
-33. Calculate predicted values and confidence/prediction intervals for models involving log transformations.\
-34. Identify instances of confounding and Simpson's paradox and draw conclusions in these situations.\
-35. Explain how multicollinearity impacts predictions and confidence/prediction intervals.\
-36. Build and interpret multiple and polynomial regression models in R.
+**Conceptual Learning Outcomes**   
+25. State the assumptions of the normal error regression model and check their validity using residual plots, qq plots, and other information.\
+26. Interpret regression coefficients in models involving log transformations.\
+27. Calculate predicted values for models involving log transformations.\
+28. Interpret regression coefficient estimates on models with interaction terms.  
+29. Calculate predicted values for models with interaction terms.   
+30. Draw conclusions about models involving polynomial terms and interactions based on graphical representations of data. 
+31. Identify instances of confounding and Simpson's paradox and draw conclusions in these situations.\
+32. Explain how multicollinearity impacts predictions and confidence/prediction intervals.\
+33. Determine whether it is appropriate to add terms to a model using information such as $R^2$, F-statistic, residual plots, correlation, and other visual representations.        
+
+
+**Computational Learning Outcomes**    
+I. Build regression models involving nonlinear terms and interactions in R.  
+
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=TRUE)
@@ -22,6 +31,7 @@ library(knitr)
 library(caret)
 library(MASS)
 library(tidyverse)
+library(mosaic)
 options(scipen=999)
 set.seed(07302020)
 ```
@@ -141,12 +151,12 @@ All of these require more complicated models that account for correlation using 
 
 ### Summary of Checks for Model Assumptions
 
-| Model assumption  | How to detect violation                                                    |
-|------------------|------------------------------------------------------|
-| Linearity         | Curvature in residual plot                                                 |
-| Constant Variance | Funnel shape in residual plot                                              |
-| Normality         | Skewness in histogram of residuals or departure from diag. line in QQ plot |
-| Independence      | No graphical check, carefully examine data collection                      |
+| Model assumption | How to detect violation |
+|------------------------------------|------------------------------------|
+| Linearity | Curvature in residual plot |
+| Constant Variance | Funnel shape in residual plot |
+| Normality | Skewness in histogram of residuals or departure from diag. line in QQ plot |
+| Independence | No graphical check, carefully examine data collection |
 
 ### Example: N v S Lakes
 
@@ -173,9 +183,9 @@ We should only use the p-values and confidence intervals provided by R, which de
 A residual by predicted plot, histogram of residuals, and normal quantile-quantile plot are shown below.
 
 ```{r, fig.width=10}
-P1 <- ggplot(data=FloridaLakes, aes(y=Lakes_M$residuals, x=Lakes_M$fitted.values)) + geom_point() + ggtitle("Residual vs Predicted Plot") + xlab("Predicted Values") + ylab("Residuals")
-P2 <- ggplot(data=FloridaLakes, aes(x=Lakes_M$residuals)) + geom_histogram() + ggtitle("Histogram of Residuals") + xlab("Residual")
-P3 <- ggplot(data=FloridaLakes, aes(sample = scale(Lakes_M$residuals))) + stat_qq() + stat_qq_line() + xlab("Normal Quantiles") + ylab("Residual Quantiles") + ggtitle("Normal QQ Plot")
+P1 <- ggplot(data=FloridaLakes, aes(y=M_Lakes_merc_loc$residuals, x=M_Lakes_merc_loc$fitted.values)) + geom_point() + ggtitle("Residual vs Predicted Plot") + xlab("Predicted Values") + ylab("Residuals")
+P2 <- ggplot(data=FloridaLakes, aes(x=M_Lakes_merc_loc$residuals)) + geom_histogram() + ggtitle("Histogram of Residuals") + xlab("Residual")
+P3 <- ggplot(data=FloridaLakes, aes(sample = scale(M_Lakes_merc_loc$residuals))) + stat_qq() + stat_qq_line() + xlab("Normal Quantiles") + ylab("Residual Quantiles") + ggtitle("Normal QQ Plot")
 grid.arrange(P1, P2, P3, ncol=3)
 ```
 
@@ -269,12 +279,12 @@ In situations where some model assumptions appear to be violated, we might be ok
 
 The table below provides guidance on the potential impact of model assumption violation on predicted values, confidence intervals, and prediction intervals.
 
-| Model assumption Violated | Predicted Values  | Confidence Intervals                                                                                                             | Prediction Intervals                                       |
-|---------------|---------------|-----------------------------|---------------|
-| Linearity                 | Unreliable        | Unreliable                                                                                                                       | Unreliable                                                 |
-| Constant Variance         | Reliable          | Somewhat unreliable - Some too wide, others too narrow                                                                           | Very unreliable - Some too wide, others too narrow         |
-| Normality                 | Reliable          | Possibly unreliable - might be symmetric when they shouldn't be. Might be okay when skewness isn't bad and sample size is large. | Very unreliable - will be symmetric when they shouldn't be |
-| Independence              | might be reliable | unreliable - either too wide or too narrow                                                                                       | unreliable - either too wide or too narrow                 |
+| Model assumption Violated | Predicted Values | Confidence Intervals | Prediction Intervals |
+|------------------|------------------|------------------|------------------|
+| Linearity | Unreliable | Unreliable | Unreliable |
+| Constant Variance | Reliable | Somewhat unreliable - Some too wide, others too narrow | Very unreliable - Some too wide, others too narrow |
+| Normality | Reliable | Possibly unreliable - might be symmetric when they shouldn't be. Might be okay when skewness isn't bad and sample size is large. | Very unreliable - will be symmetric when they shouldn't be |
+| Independence | might be reliable | unreliable - either too wide or too narrow | unreliable - either too wide or too narrow |
 
 When model assumptions are a concern, consider a using a transformation of the data, a more advanced model, or a more flexible technique, such as a nonparametric approach or statistical machine learning algorithm.
 
@@ -332,6 +342,13 @@ ggplot(data=Cars2015, aes(x=Acc060, y=log(Price))) + geom_point() +
 4.  Independence: no two cars are any more alike than any others.
 
 We should only use the p-values and confidence intervals provided by R, which depend on the t-distribution approximation, if we believe these assumptions are reasonable.
+
+
+```{r}
+Cars_M_Log <- lm(data=Cars2015, log(Price)~Acc060)
+summary(Cars_M_Log)
+```
+
 
 **Assumption Check for Model on Log Price**
 
@@ -527,7 +544,219 @@ The log model suggests an nonlinear trend in price with respect to acceleration 
 
 \newpage
 
-## Building Models for Interpretation: Confounding, Multicollinearity, and Polynomial Regression
+
+
+## Polynomial Regression
+
+
+## Models with Interaction
+
+### Definition of Interaction
+
+We previously used a multiple regression model of the form
+
+$$
+\widehat{Price} = b_0 + b_1\times\text{SqFt} + b_2\times\text{Waterfront}
+$$
+
+Recall that this model assumes the slope relating price and square footage is the same ($b_1$) for houses on the waterfront as for houses not on the waterfront. An illustration of the model is shown below.
+
+```{r}
+Plot_House_price_sqft_wf
+```
+
+This assumption of the rate of change in price with respect to living space being the same for waterfront houses, as for non-waterfront houses might be unrealistic.
+
+Let's fit separate lines waterfront and non-waterfront houses, without requiring them to have the same slope.
+
+```{r}
+ggplot(data=Houses, aes(x=sqft_living, y=price, color=waterfront)) + geom_point()+stat_smooth(method="lm", se=FALSE) + ylim(c(0,1000)) + theme_bw()
+```
+
+It appears that the prices of the houses on the waterfront are increasing more rapidly, with respect to square feet of living space, than the non-waterfront houses. The effect of additional square feet on the price of the house appears to depend on whether or not the house is on the waterfront. This is an example of an **interaction** between square footage and waterfront status.
+
+An **interaction** between two explanatory variables occurs when the effect of one explanatory variable on the response depends on the other explanatory variable.
+
+### Interaction Term
+
+If we want to allow for different slopes between waterfront and non-waterfront houses, we'll need to change the mathematical equation of our model. To do that, we'll add a coefficient $b_3$, multiplied by the product of our two explanatory variables.
+
+The model equation is
+
+$$
+\widehat{Price} = b_0 + b_1\times\text{Sq. Ft.} + b_2\times\text{waterfront} + b_3\times\text{Sq.Ft}\times\text{Waterfront}
+$$
+
+The last term is called an **interaction term.**
+
+For a house on the waterfront ($\text{waterfront}=1$), the equation relating price to square feet is
+
+$$
+\begin{aligned}
+\widehat{Price} & = b_0 + b_1\times\text{Sq. Ft.} + b_2\times\text{1} + b_3\times\text{Sq.Ft}\times\text{1} \\
+& = (b_0+b_2) + (b_1+b_3)\times{\text{Sq. Ft.}}
+\end{aligned}
+$$ For a house not on the waterfront ($\text{waterfront}=0$), the equation relating price to square feet is
+
+$$
+\begin{aligned}
+\widehat{Price} & = b_0 + b_1\times\text{Sq. Ft.} + b_2\times\text{0} + b_3\times\text{Sq.Ft}\times\text{0} \\
+& = b_0 + b_1\times{\text{Sq. Ft}}
+\end{aligned}
+$$
+
+The intercept is $b_0$ for non-waterfront houses, and $b_0 + b_2$ for waterfront houses.
+
+The slope is $b_1$ for non-waterfront houses, and $b_1 + b_3$ for waterfront houses.
+
+Thus, the model allows both the slope and intercept to differ between waterfront and non-waterfront houses.
+
+### Interaction Models in R
+
+To fit an interaction model in R, use `*` instead of `+`
+
+```{r}
+M_House_Int <- lm(data=Houses, price~sqft_living*waterfront)
+M_House_Int
+```
+
+The regression equation is
+
+$$
+\widehat{Price} = 67.4 + 0.2184\times\text{Sq. Ft.}  -364.6\times\text{waterfront} + 0.4327\times\text{Sq.Ft}\times\text{Waterfront}
+$$
+
+For a house on the waterfront ($\text{waterfront}=1$), the equation is
+
+$$
+\begin{aligned}
+\widehat{Price} & = 67.4 + 0.2184\times\text{Sq. Ft.} -364.6 \times\text{1} + 0.4327\times\text{Sq.Ft}\times\text{1} \\
+& = (67.4 - 364.6) + (0.2184+0.4327)\times{\text{Sq. Ft.}} \\
+& = -297.2 + 0.6511\times{\text{Sq. Ft.}}
+\end{aligned}
+$$ For a house not on the waterfront ($\text{waterfront}=0$), the equation is
+
+$$
+\begin{aligned}
+\widehat{Price} & = 67.4 + 0.2184\times\text{Sq. Ft.} -364.6 \times\text{0} + 0.4327\times\text{Sq.Ft}\times\text{0} \\
+& = 67.4 0 + 0.2184\times{\text{Sq. Ft.}} 
+\end{aligned}
+$$ **Interpretation**
+
+When interpreting $b_0$ and $b_1$, we need to state that the interpretations apply only to the "baseline" category (in this case non-waterfront houses).
+
+In a model with interaction, it does not make sense to talk about holding one variable constant when interpreting the effect of the other, since the effect of one variable depends on the value or category of the other. Instead, we must state the value or category of one variable when interpreting the effect of the other.
+
+**Interpretations:**
+
+-   $b_0$ - On average, a house with 0 square feet that is not on the waterfront is expected to cost 67 thousand dollars. This is not a sensible interpretation since there are no houses with 0 square feet.
+
+-   $b_1$ - For each additional square foot in size, the price of a non-waterfront house is expected to increase by 0.2184 thousand dollars.
+
+-   $b_2$ - On average, the price of a waterfront house with 0 square feet is expected to be 364.6 thousand dollars less than the price of a non-waterfront house with 0 square feet. This is not a sensible interpretation in this case.
+
+-   $b_3$ - For each additional square foot in size, the price of a waterfront house is expected to increase by 0.4327 thousand dollars more than a non-waterfront house.
+
+Alternatively, we could interpret $b_0+b_2$ and $b_1+b_3$ together.
+
+-   $b_0 + b_2$ - On average, a house with 0 square feet that is on the waterfront is expected to cost -297.2 thousand dollars. This is not a sensible interpretation since there are no houses with 0 square feet.
+
+-   $b_1 + b_3$ - For each additional square foot in size, the price of a waterfront house is expected to increase by 0.6511 thousand dollars.
+
+**Prediction**
+
+We calculate predicted prices for the following houses:
+
+```{r}
+Houses[c(1,16), ] %>% select(ID, price, sqft_living, waterfront)
+```
+
+$$
+\widehat{Price}_1 = 67.4 + 0.2184\times5420  -364.6\times0 + 0.4327\times5420 \times 0 = 1191 \text{ thousand dollars}
+$$
+
+$$
+\widehat{Price}_{16} = 67.4 + 0.2184\times4450  -364.6\times1 + 0.4327\times4450 \times 1 = 2600 \text{ thousand dollars}
+$$
+
+### $R^2$ for Interaction Model
+
+We can calculate residuals, as well as SSR, SSM, SST, and $R^2$, in the same manner we've seen previously.
+
+We'll perform these calculations using R.
+
+```{r}
+SSR_int <- sum(M_House_Int$residuals^2)
+SSR_int
+```
+
+$$
+SSM = SST-SSR = 69,045,634 - 10,139,974 =58,905,660.
+$$
+
+$$
+R^2 = \frac{58,905,660}{69,045,634}=0.8531.
+$$
+
+Approximately 85.3% of the total variability in sale price is explained by the model using square feet and waterfront status, as well as an interaction between them as the explanatory variables.
+
+```{r, echo=FALSE, eval=FALSE}
+slices <- c( round(SSR_int,0), round(SST-SSR_int,0))
+lbls <- c("SSR", "SSM")
+lbls <- paste(lbls, slices) ## add percents to labels
+pie(slices,labels = lbls, col=rainbow(length(lbls)),
+   main="Total Variability in House Prices (SST)", radius=1)
+```
+
+We calculate $R^2$ directly in R.
+
+```{r}
+summary(M_House_Int)$r.squared
+```
+
+We see that adding an interaction term improved the proportion of variability in house price explained by the model from 0.76 to 0.85. This is a fairly notable increase.
+
+### Considerations for Using Interactions
+
+It might be tempting to think we should always add an interaction term to a model when using two or more explanatory variables. After all, an interaction term is just another term added to the model, meaning that $R^2$ will never go down.
+
+Adding an interaction term is not always a good idea, though. We saw that doing so makes interpretations more complicated. Increasing the complexity of a model also increases the risk of overfitting, potentially hurting predictive performance on new data.
+
+We should only add an interaction term if we have strong reason to believe that the rate of change in the response variable with respect to one explanatory variable really does depend on the other variable. This might come from background knowledge about the subject, or consultation with an expert in the area. It could also come from data visualization, and the increase in variability in the response variable explained when an interaction term is added to the model.
+
+In the house price dataset, we might expect that the price of waterfront houses might increase more rapidly as they get bigger than the price of non-waterfront houses. The fact that the lines shown in the scatterplot are not close to being parallel provides further evidence of a difference in rate of increase, providing justification for the use of an interaction term in the model. Furthermore, $R^2$ increases notably (from 0.76 to 0.85), when an interaction term is added. All of these reasons support using an interaction term in this context.
+
+When examining a scatterplot, we should note that even if there is truly no interaction among all houses, the lines probably won't be exactly parallel, due to random deviations among the sample of houses chosen. If the lines are reasonably close to parallel, then an interaction term is likely not needed.
+
+We'll look more at criteria for determining whether to add an interaction term to a model in the coming sections.
+
+### Interaction vs Correlation
+
+It is easy to confuse the concept of interaction with that of correlation. These are, in fact, very different concepts.
+
+A correlation between two variables means that as one increases, the other is more likely to increase or decrease. We only use the word correlation to describe two quantitative variables, but we could discuss the similar notion of a relationship between categorical variables.
+
+An interaction between two explanatory variables means that the effect of one on the response depends on the other.
+
+**Examples of Correlations (or relationships)**
+
+1.  Houses on the waterfront tend to be bigger than houses not on the waterfront, so there is a relationship between square feet and waterfront status.
+
+2.  Houses with large amounts of living space in square feet are likely to have more bedrooms, so there is a correlation between living space and bedrooms.
+
+3.  Suppose that some genres of movies (drama, comedy, action, etc.) tend to be longer than others. This is an example of a relationship between genre and length.
+
+The fact that there is a correlation between explanatory variables is NOT a reason to add an interaction term involving those variables in a model. Correlation is something entirely different than interaction!
+
+**Examples of Interactions**
+
+1.  As houses on the waterfront increase in size, their price increases more rapidly than for houses not on the waterfront. This means there is an interaction between size and waterfront location.
+
+2.  Suppose that the effect of additional bedrooms on price is different for houses with lots of living space than for houses with little living space. This would be an example of an interaction between living space and number of bedrooms.
+
+3.  Suppose that audiences become more favorable to dramas as they get longer, but less favorable to comedies as they get longer. In this scenario, the effect of movie length on audience rating depends on the genre of the movie, indicating an interaction between length and genre.
+
+## Building Models for Interpretation 
 
 So far, we've dealt with models with 2 or fewer variables. Some real questions require accounting for more than two variables. In these situations, we'll need to develop a model that is complex enough to capture the important aspects of the mechanism we're modeling, but also simple enough for us to be able to explain and interpret. We'll need to decide how many variables to include in the model, and whether to use transformations, or to include interaction terms.
 
@@ -1066,6 +1295,8 @@ exp(predict(Cars_M7, newdata=newcar, interval="prediction", level=0.95))
 
 We are 95% Confident that the price of an individual new 2015 car that weighs 2400 lbs, drives a quarter mile in 18 seconds on a fast track, and has all wheel drive will be between 11.6 thousand and 27.7 thousand dollars.
 
+
+
 #### Model Building Summary
 
 Consider the following when building a model for the purpose of interpreting parameters and understanding and drawing conclusions about a population or process.
@@ -1080,5 +1311,5 @@ Consider the following when building a model for the purpose of interpreting par
 -   Aim for model complex enough to capture nature of data, but simple enough to give clear interpretations\
 
 ```{r, echo=FALSE}
-#save.image(file = "Environment.RData")
+save.image(file = "Environment.RData")
 ```

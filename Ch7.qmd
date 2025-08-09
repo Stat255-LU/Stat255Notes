@@ -1,12 +1,20 @@
 # Predictive Modeling
 
-**Learning Outcomes:**
+### Learning Outcomes
 
-41. Explain how model complexity relates to training and test error, prediction variance and bias, and overfitting.\
-42. Explain how to use cross-validation in model selection.\
-43. Explain how complexity parameters associated with ridge regression, decision trees, and splines impact variance, bias, and likelihood of overfitting.\
-44. Make predictions from a decision tree.\
-45. Calculate classification accuracy, sensitivity, specificity, confusion matrix, and receiver operating characteristic curves. Identify ethical considerations associated with predictive models in context.
+**Conceptual Learning Outcomes**   
+38. Explain how model complexity relates to training and test error, prediction variance and bias, and overfitting.\
+39. Explain how to use cross-validation in model selection.\
+40. Explain how complexity parameters associated with ridge regression, decision trees, and splines impact variance, bias, and likelihood of overfitting.\
+41. Make predictions from a decision tree.\
+42. Calculate classification accuracy, sensitivity, specificity, confusion matrix, and receiver operating characteristic curves. 
+43. Evaluate ethical considerations associated with predictive models in context.  
+
+**Computational Learning Outcomes**     
+K. Perform cross-validation to build and assess predictive models in R.   
+L. Make predictions on new data using predictive models in R.   
+
+
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=FALSE)
@@ -21,6 +29,9 @@ library(knitr)
 library(caret)
 library(MASS)
 library(tidyverse)
+library(mosaic)
+library(ISLR)
+data(Default)
 options(scipen=999)
 set.seed(07302020)
 ```
@@ -266,7 +277,6 @@ lines(x=x, y=TestError, type="l", col="blue")
 text("RMSE on Training Data", x=3.5, y=1, col="red")
 text("RMSPE on Test Data", x=3.1, y=1.85, col="blue")
 ```
-
 
 \newpage
 
@@ -1350,7 +1360,7 @@ Information about 10 different credit card users, as well as the logistic regres
 
 ```{r}
 LR_Prob <- predict(LR_Default_M_Int, newdata=Default_Test, type="response") %>% round(2)
-Actual_Default <- factor(ifelse(Default_Test$default==1, "Yes", "No"))
+Actual_Default <- Default_Test$default #factor(ifelse(Default_Test$default==1, "Yes", "No"))
 student <- Default_Test$student
 balance <- Default_Test$balance
 LR_Res_df <- data.frame(student, balance, LR_Prob, Actual_Default)
@@ -1381,7 +1391,7 @@ tree <- rpart(data=Default_Train, default~balance + student)
 ```
 
 ```{r}
-Tree_Prob <- predict(tree, newdata = Default_Test) %>% round(2)
+Tree_Prob <- predict(tree, newdata = Default_Test)[,2] %>% round(2)
 ```
 
 We add the decision tree probabilities to the table seen previously.
@@ -1417,11 +1427,11 @@ Notice that although the probabilities differ, the logistic regression model and
 We'll check the classification accuracy for the model and the tree.
 
 ```{r}
-sum(LR_Pred == Actual_Default)/1000
+base::sum(LR_Pred == Actual_Default)/1000
 ```
 
 ```{r}
-sum(Tree_Pred == Actual_Default)/1000
+base::sum(Tree_Pred == Actual_Default)/1000
 ```
 
 We see that the two techniques are each right approximately 97% of the time.
@@ -1592,19 +1602,19 @@ A model that assigns probabilities at random is expected to have an AUC of 0.5.
 ```{r}
 library(pROC)
 library(verification)
-roc.plot(x=Default_Test$default, pred = LR_Prob)
+roc.plot(x=Default_Test$default=="Yes", pred = LR_Prob)
 ```
 
 ```{r}
-auc(response=Default_Test$default, predictor = LR_Prob)
+auc(response=Default_Test$default=="Yes", predictor = LR_Prob)
 ```
 
 ```{r}
-roc.plot(x=Default_Test$default, pred = Tree_Prob)
+roc.plot(x=Default_Test$default=="Yes", pred = Tree_Prob)
 ```
 
 ```{r}
-auc(response=Default_Test$default, predictor = Tree_Prob)
+auc(response=Default_Test$default=="Yes", predictor = Tree_Prob)
 ```
 
 ```{r}
@@ -1612,7 +1622,7 @@ RandProb <- runif(1000, 0, 1)
 ```
 
 ```{r}
-roc.plot(x=Default_Test$default, pred = RandProb)
+roc.plot(x=Default_Test$default=="Yes", pred = RandProb)
 ```
 
 ```{r}
@@ -1675,7 +1685,7 @@ Beware of statements like:
 
 "The numbers don't lie."
 
-Any data-driven analysis depends on assumptions, and sound judgment and awareness of context are required when assessing the validaty of conclusions drawn.
+Any data-driven analysis depends on assumptions, and sound judgment and awareness of context are required when assessing the validity of conclusions drawn.
 
 ### Modeling for Prediction
 
@@ -1688,5 +1698,5 @@ Any data-driven analysis depends on assumptions, and sound judgment and awarenes
 -   Reflective of biases inherent in the data on which it was trained
 
 ```{r, echo=FALSE}
-#save.image(file = "Environment.RData")
+save.image(file = "Environment.RData")
 ```

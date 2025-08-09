@@ -2,13 +2,18 @@
 
 **Learning Outcomes:**
 
-24. State the assumptions of the normal error regression model in context.\
-25. Calculate confidence intervals and t-statistics using standard error formulas.\
-26. State the hypotheses associated with each p-value in the lm summary table and explain what we should conclude from each test.\
-27. Show how to calculate standard errors, t-statistics, residual standard error, Multiple R\^2, and F-Statistic in the `lm` summary output in R.\
-28. Interpret confidence and prediction intervals for expected response, as well as intervals for parameter estimates, and identify the sources of variability affecting each.
-29. Explain the regression effect in context.\
-30. Make responsible decisions from data, considering issues such as representation and randomization, multiple testing, and the difference between statistical significance and practical importance.
+**Conceptual Learning Outcomes**   
+17. State the assumptions of the normal error regression model in context.\   
+18. State the hypotheses associated with each p-value in the `lm` summary table and explain what we should conclude from each test.\    
+19. Interpret quantities in the R `lm summary output` including standard errors, residual standard error, $R^$, and the F-statistic.    
+20. Use standard error formulas to calculate quantities in R model summary output (including estimates, standard errors, t-statistics, $R^2$, and F-statistics), as well as output for associated tests and confidence intervals.   
+21. Distinguish between confidence intervals for model parameters, confidence for expected response, and prediction intervals, and identify the sources of variability contributing to each.   
+22. Explain the regression effect in context.\  
+23. Identify situations where multiple testing error is a concern and explain how to correct for such errors. 
+24. Identify situations where a statistically discernible result might not be practically important, or when a large p-value might still be meaningful.  
+
+**Computational Learning Outcomes**       
+H. Perform hypothesis tests and calculate confidence and prediction intervals based on models using R.  
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=TRUE)
@@ -23,6 +28,7 @@ library(knitr)
 library(caret)
 library(MASS)
 library(tidyverse)
+library(mosaic)
 options(scipen=999)
 set.seed(07302020)
 ```
@@ -221,7 +227,7 @@ s
 
 In statistics it is common to use Greek letters like $\beta_j$ and $\sigma$, to represent unknown model parameters, pertaining to a population or process (such as the ice cream dispenser), and English letters like $b_j$ and $s$ to represent statistics calculated from data.
 
-The estimates of $b_0 = `r IC_Model$coefficients\[1\]`$, $b_1=`r IC_Model$coefficients[2]`$, and $s = `r s`$ are reasonably close estimates to the values $\beta_0=0, \beta_1=2$, and $\sigma = 0.5$, that we used to generate the data.
+The estimates of $b_0$ = `r IC_Model$coefficients[1]`, $b_1$=`r IC_Model$coefficients[2]`, and $s = `r s`$ are reasonably close estimates to the values $\beta_0=0, \beta_1=2$, and $\sigma = 0.5$, that we used to generate the data.
 
 In a real situation, we'll have only statistics $b_0$, $b_1$, and $s$, and we'll need to use them to draw conclusions about parameters $\beta_0=0, \beta_1=2$, and $\sigma = 0.5$.
 
@@ -323,14 +329,14 @@ So far, we've used simulation (permutation tests and bootstrap intervals) to det
 
 **Theory-Based Standard Error Formulas**
 
-| Statistic                             | Standard Error                                                                                                           |
-|---------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
-| Single Mean                           | $SE(b_0)=\frac{s}{\sqrt{n}}$                                                                                             |
-| Difference in Means                   | $SE(b_j)=s\sqrt{\frac{1}{n_1}+\frac{1}{n_2}}$                                                                            |
-| Single Proportion                     | $SE(\hat{p}) = \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$                                                                      |
-| Difference in Proportions             | $SE(\hat{p}) = \sqrt{\left(\frac{\hat{p_1}(1-\hat{p}_1)}{n_1}+\frac{\hat{p_2}(1-\hat{p_2})}{n_2}\right)}$                |
-| Intercept in Simple Linear Regression | $SE(b_0)=s\sqrt{\frac{1}{n}+\frac{\bar{x}^2}{\sum(x_i-\bar{x})^2}}$                                                      |
-| Slope in Simple Linear Regression     | $SE(b_1)=\sqrt{\frac{s^2}{\sum(x_i-\bar{x})^2}}=\sqrt{\frac{1}{n-2}\frac{{\sum(\hat{y}_i-y_i)^2}}{\sum(x_i-\bar{x})^2}}$ |
+| Statistic | Standard Error |
+|------------------------------------|------------------------------------|
+| Single Mean | $SE(b_0)=\frac{s}{\sqrt{n}}$ |
+| Difference in Means | $SE(b_j)=s\sqrt{\frac{1}{n_1}+\frac{1}{n_2}}$ |
+| Single Proportion | $SE(\hat{p}) = \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$ |
+| Difference in Proportions | $SE(\hat{p}) = \sqrt{\left(\frac{\hat{p_1}(1-\hat{p}_1)}{n_1}+\frac{\hat{p_2}(1-\hat{p_2})}{n_2}\right)}$ |
+| Intercept in Simple Linear Regression | $SE(b_0)=s\sqrt{\frac{1}{n}+\frac{\bar{x}^2}{\sum(x_i-\bar{x})^2}}$ |
+| Slope in Simple Linear Regression | $SE(b_1)=\sqrt{\frac{s^2}{\sum(x_i-\bar{x})^2}}=\sqrt{\frac{1}{n-2}\frac{{\sum(\hat{y}_i-y_i)^2}}{\sum(x_i-\bar{x})^2}}$ |
 
 -   $s=\sqrt{\frac{\displaystyle\sum_{i=1}^n(y_i-\hat{y}_i)^2}{(n-(p+1))}} = \sqrt{\frac{\text{SSR}}{(n-(p+1))}}$, (p is number of regression coefficients not including $b_0$). $s$ is an estimate of the variability in the response variable among cases where the explanatory variable(s) are the same. Note that in the one-sample case, this simplifies to the standard deviation formula we've seen previously.
 
@@ -373,8 +379,8 @@ This model assumes:
 The `lm` summary command in R returns information pertaining to the model.
 
 ```{r}
-Lakes_M <- lm(data=FloridaLakes, Mercury ~ Location)
-summary(Lakes_M)
+M_Lakes_merc_loc <- lm(data=FloridaLakes, Mercury ~ Location)
+summary(M_Lakes_merc_loc)
 ```
 
 The estimates column returns the estimates of $b_0$ and $b_1$. The estimated regression equation is
@@ -392,7 +398,7 @@ $s =\sqrt{\frac{\text{SSR}}{n-(p+1)}} = \sqrt{\frac{\displaystyle\sum_{i=1}^n(y_
 SSR is:
 
 ```{r}
-sum(Lakes_M$residuals^2)
+sum(M_Lakes_merc_loc$residuals^2)
 ```
 
 Since LocationSouth is our only explanatory variable, $p=1$, and since we have 53 lakes in the sample, $n=53$.
@@ -446,7 +452,7 @@ We are 95% confident that the average mercury level in Southern Lakes is between
 These intervals can be obtained directly in R using the `confint` command.
 
 ```{r}
-confint(Lakes_M, level=0.95)
+confint(M_Lakes_merc_loc, level=0.95)
 ```
 
 **Comparison to Bootstrap**
@@ -456,21 +462,22 @@ We previously calculated $\text{SE}(b_1)$ and a 95% confidence interval for $\be
 **Bootstrap Standard Error**
 
 ```{r}
-SE_b1 <- sd(NS_Lakes_Bootstrap_Results$Bootstrap_b1)
+SE_b1 <- sd(M_Lakes_merc_loc_Bootstrap$LocationS)
 SE_b1
 ```
 
 **Bootstrap 95% Confidence Interval:**
 
 ```{r}
-Sample_b1 <- Lakes_M$coefficients[2]
-c(Sample_b1 - 2*SE_b1, Sample_b1 + 2*SE_b1) 
+CI <- confint(M_Lakes_merc_loc_Bootstrap, parm = c("LocationS"),
+              level = 0.95, method = "se")
+CI
 ```
 
 ```{r}
-NS_Lakes_Bootstrap_Plot_b1 + 
-  geom_segment(aes(x=Sample_b1 - 2*SE_b1,xend=Sample_b1 + 2*SE_b1, y=50, yend=50), 
-               color="gold", size=10, alpha=0.01) 
+M_Lakes_merc_loc_Bootstrap_Plot_b1 + 
+                geom_segment(aes(x=CI$lower, xend=CI$upper , y=50, yend=50), 
+                color="gold", size=10, alpha=0.01)
 ```
 
 The formula-based standard error and confidence interval and those produced by bootstrapping are both approximations, so they are not expected to be identical, but should be close.
@@ -502,8 +509,8 @@ Later in this chapter, we'll learn ways to check the appropriateness of these as
 The `lm` summary command in R returns information pertaining to the model.
 
 ```{r}
-M_pH <- lm(data=FloridaLakes, Mercury ~ pH)
-summary(M_pH)
+M_Lakes_merc_pH <- lm(data=FloridaLakes, Mercury ~ pH)
+summary(M_Lakes_merc_pH)
 ```
 
 The estimated regression equation is
@@ -523,7 +530,7 @@ We calculate $s$ , using R.
 SSR is:
 
 ```{r}
-sum(M_pH$residuals^2)
+sum(M_Lakes_merc_pH$residuals^2)
 ```
 
 Since pH is our only explanatory variable, $p=1$, and since we have 53 lakes in the sample, $n=53$.
@@ -577,28 +584,29 @@ We are 95% confident that for each one unit increase in pH, mercury concentratio
 We can also use the `confint()` command to obtain these intervals.
 
 ```{r}
-confint(M_pH, level=0.95)
+confint(M_Lakes_merc_pH, level=0.95)
 ```
 
 **Comparison to Bootstrap**
 
-We previously calculated $\text{SE}(b_1)$ and a 95% confidence interval for $\beta_1$, which are shown below.
+We compare this standard error estimate and confidence interval to the ones we would obtain via bootstrapping.   
 
 **Bootstrap Standard Error for** $b_1$:
 
 ```{r}
-Sample_b1 <- M_pH$coefficients[2]
-SE_b1 <- sd(Lakes_Bootstrap_Slope_Results$Bootstrap_b1)
+M_Lakes_merc_pH_Bootstrap <- do(10000) * lm(Mercury ~ pH, data = resample(FloridaLakes))
+SE_b1 <- sd(M_Lakes_merc_pH_Bootstrap$pH)
 SE_b1
 ```
 
 **Bootstrap 95% Confidence Interval for** $\beta_1$:
 
 ```{r}
-c(Sample_b1 - 2*SE_b1, Sample_b1 + 2*SE_b1) 
+confint(M_Lakes_merc_pH_Bootstrap, parm = c("pH"),
+              level = 0.95, method = "se")
 ```
 
-The formula-based standard error and confidence interval and those produced by bootstrapping are both approximations, so they are not expected to be identical, but should be close.
+The standard error and confidence interval obtained via the theory-based formulas are again very close to those obtained via bootstrapping.  
 
 ### Example: Single Mean
 
@@ -625,8 +633,8 @@ This model assumes:
 The `lm` summary command in R returns information pertaining to the model.
 
 ```{r}
-Lakes_M0 <- lm(data=FloridaLakes, Mercury ~ 1)
-summary(Lakes_M0)
+M_Lakes_merc_0 <- lm(data=FloridaLakes, Mercury ~ 1)
+summary(M_Lakes_merc_0)
 ```
 
 The model estimates that the average mercury level is 0.527, which matches the sample mean, as we know it should.
@@ -642,7 +650,7 @@ We calculate $s$ , using R.
 SSR is:
 
 ```{r}
-sum(Lakes_M0$residuals^2)
+sum(M_Lakes_merc_0$residuals^2)
 ```
 
 Since there are no explanatory variables, $p=0$, and since we have 53 lakes in the sample, $n=53$.
@@ -682,7 +690,7 @@ We are 95% confident that the average mercury level among all lakes in Florida i
 We can also obtain this interval using the `confint()` command.
 
 ```{r}
-confint(Lakes_M0, level=0.95)
+confint(M_Lakes_merc_0, level=0.95)
 ```
 
 **Comparison to Bootstrap**
@@ -692,20 +700,21 @@ Here are the bootstrap standard error and confidence interval we calculated prev
 **Bootstrap Standard Error**
 
 ```{r}
-SE_mean <- sd(Lakes_Bootstrap_Results_Mean$Bootstrap_Mean)
+SE_mean <- sd(Lakes_Bootstrap_Mean$Intercept)
 SE_mean
 ```
 
 **Bootstrap 95% Confidence Interval:**
 
 ```{r}
-c(mean - 2*SE_mean, mean + 2*SE_mean) 
+CI <- confint(Lakes_Bootstrap_Mean, level = 0.95, parm= c("Intercept"), method = "stderr")
+CI
 ```
 
 ```{r}
 Lakes_Bootstrap_Mean_Plot + 
-  geom_segment(aes(x=mean - 2*SE_mean,xend=mean + 2*SE_mean, y=50, yend=50), 
-               color="gold", size=10, alpha=0.01) 
+  geom_segment(aes(x = CI$lower, xend = CI$upper, y=50, yend=50), 
+               color="gold", size=10, alpha=0.01)
 ```
 
 The standard error and interval are very close to those obtained using the approximation formulas.
@@ -812,8 +821,8 @@ $$
 We fit the model in R and display its summary output below.
 
 ```{r}
-Lakes_M <- lm(data=FloridaLakes, Mercury~Location)
-summary(Lakes_M)
+M_Lakes_merc_loc <- lm(data=FloridaLakes, Mercury~Location)
+summary(M_Lakes_merc_loc)
 ```
 
 Looking at the coefficients table, we've already seen where the first two columns, `Estimate` and `Std. Error` come from. **The last two columns, labeled `t value` and "Pr(\>\|t\|)" represent the t-statistic and p-value for the t-test associated with the null hypothesis that the regression parameter on that line is zero. (i.e.** $\beta_j=0$).
@@ -852,18 +861,16 @@ The low p-value gives us strong evidence of a difference in average mercury leve
 Recall the permutation test we previously performed.
 
 ```{r}
-NSLakes_SimulationResultsPlot
+Lakes_merc_loc_perm_test_plot
 ```
 
 p-value:
 
 ```{r}
-b1 <- Lakes_M$coef[2] ## record value of b1 from actual data
-
-mean(abs(NSLakes_SimulationResults$b1Sim) > abs(b1))
+prop(~ (abs(LocationS) > 0.272), data = Lakes_merc_loc_perm_test)
 ```
 
-The p-value from the permutation test is similar to the one from the t-test. Both lead us to the same conclusion.
+The p-value from the permutation test is similar to the one from the t-test. Both lead us to the conclusion that there is evidence of a difference in mean mercury level between lakes in Northern Florida and Southern Florida.   
 
 **Hypothesis Test for line (intercept)**
 
@@ -882,8 +889,8 @@ We could carry out this test by dividing the estimate by its standard error and 
 We revisit the model predicting a lake's mercury level, using pH as the explanatory variable.
 
 ```{r}
-M_pH <- lm(data=FloridaLakes, Mercury~pH)
-summary(M_pH)
+M_Lakes_merc_pH <- lm(data=FloridaLakes, Mercury~pH)
+summary(M_Lakes_merc_pH)
 ```
 
 The estimated regression equation is
@@ -921,13 +928,13 @@ The p-value is extremely small, providing strong evidence of a relationship betw
 
 **Alternative Hypothesis:** The average mercury level among all Florida lakes with pH = 0 not 0. ($\beta_0 \neq 0$).
 
-Since there are no lakes with pH level 0, this is not a meaningful test.
+Since there are no lakes with pH level 0, this is not a meaningful test. Although a p-value is provided in the R-output, it is not meaningful and we should not try to draw conclusions from it.   
 
 ### Limitations of Model-Based Inference
 
 We've seen that in situations where the sampling distribution for a regression coefficient $b_j$ is symmetric and bell-shaped, we can create confidence intervals and perform hypothesis tests using the t-distribution without performing permutation for hypothesis tests, or bootstrapping for confidence intervals.
 
-There are, however, limitations to this approach, which underscore the importance of the simulation-based approaches seen in Chapters 3 and 4.
+There are, however, limitations to this approach, which underscore the importance of the simulation-based approaches seen in Chapter 3.
 
 These include:
 
@@ -994,19 +1001,20 @@ F &= \frac{\frac{\text{SSR}_{\text{Reduced}}-\text{SSR}_{\text{Full}}}{p-q}}{\fr
 $$
 
 ```{r}
-((SST - SSR_cond)/(2-0))/(SSR_cond/(100-(2+1)))
+#((SST - SSR_cond)/(2-0))/(SSR_cond/(100-(2+1)))
 ```
 
 The results of the simulation-based hypothesis test are shown below.
 
 ```{r, fig.height=2, fig.width=8}
-House_Cond_SimulationResults_Plot
+# Replace with Lakes test
+#House_Cond_SimulationResults_Plot
 ```
 
 **simulation-based p-value:**
 
 ```{r}
-mean(FSim > Fstat)
+#mean(FSim > Fstat)
 ```
 
 Now, we calculate the p-value using the probability-based F-distribution.
@@ -1034,7 +1042,7 @@ anova(M0, M_cond)
 
 Since the p-value is large, we do not have enough evidence to say that average price differs between conditions of the houses.
 
-### Interaction Example
+### Interaction Example (Move to chapter 5)
 
 We can also use an F-test to compare a model predicting house prices with an interaction term to one without one.
 
@@ -1050,7 +1058,7 @@ F &= \frac{\frac{\text{SSR}_{\text{Reduced}}-\text{SSR}_{\text{Full}}}{p-q}}{\fr
 $$
 
 ```{r}
-((SSR_wf_sqft-SSR_int)/(3-2))/((SSR_int)/(100-(3+1)))
+#((SSR_wf_sqft-SSR_int)/(3-2))/((SSR_int)/(100-(3+1)))
 ```
 
 ```{r, fig.height=4, fig.width=8}
@@ -1119,8 +1127,8 @@ $$\text{Mercury} = \beta\_0+\beta_1\times\text{South} + \epsilon_i, \text{where 
 We fit the model in R and display its summary output below.
 
 ```{r}
-Lakes_M <- lm(data=FloridaLakes, Mercury~Location)
-summary(Lakes_M)
+M_Lakes_merc_loc <- lm(data=FloridaLakes, Mercury~Location)
+summary(M_Lakes_merc_loc)
 ```
 
 The estimated regression equation is
@@ -1130,7 +1138,7 @@ $$ \text{Mercury} = 0.42455+0.27195\times\text{South}, \text{where } \epsilon_i\
 -   SSR is:
 
 ```{r}
-sum(Lakes_M$residuals^2)
+sum(M_Lakes_merc_loc$residuals^2)
 ```
 
 -   SST is:
@@ -1217,15 +1225,13 @@ A t-statistic more extreme than $\pm 2$ will roughly correspond to a p-value les
 Let's compare these results to those given by the permutation test.
 
 ```{r}
-NSLakes_SimulationResultsPlot
+Lakes_merc_loc_perm_test_plot
 ```
 
-p-value:
+simulation-based p-value:
 
 ```{r}
-b1 <- Lakes_M$coef[2] ## record value of b1 from actual data
-
-mean(abs(NSLakes_SimulationResults$b1Sim) > abs(b1))
+prop(~ (abs(LocationS) > 0.272), data = Lakes_merc_loc_perm_test)
 ```
 
 ### Simple Linear Regression Example
@@ -1643,7 +1649,7 @@ gf_point(Price~Acc060, data=new_df) %>%
 2.  Calculate an interval that we are 95% confident contains the mercury concentration for an individual lake in Northern Florida. Do the same for a lake in Southern Florida.
 
 ```{r}
-predict(Lakes_M, newdata=data.frame(Location=c("N", "S")), interval="confidence", level=0.95)
+predict(M_Lakes_merc_loc, newdata=data.frame(Location=c("N", "S")), interval="confidence", level=0.95)
 ```
 
 We are 95% confident that the mean mercury level in North Florida is between 0.31 and 0.54 ppm.\
@@ -1651,7 +1657,7 @@ We are 95% confident that the mean mercury level in South Florida is between 0.5
 Note: these are confidence intervals for $\beta_0$, and $\beta_0 + \beta_1$, respectively.
 
 ```{r}
-predict(Lakes_M, newdata=data.frame(Location=c("N", "S")), interval="prediction", level=0.95)
+predict(M_Lakes_merc_loc, newdata=data.frame(Location=c("N", "S")), interval="prediction", level=0.95)
 ```
 
 We are 95% confident that an individual lake in North Florida will have mercury level between 0 and 1.07 ppm.
@@ -1950,5 +1956,5 @@ Notice that the estimated difference in birth weights is actually smaller in the
 -   Are there other variables to consider?
 
 ```{r, echo=FALSE}
-#save.image(file = "Environment.RData")
+save.image(file = "Environment.RData")
 ```

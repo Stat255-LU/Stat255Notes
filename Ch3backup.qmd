@@ -1,0 +1,2271 @@
+# Simulation-Based Inference
+
+**Learning Outcomes:**
+
+14. Define population, sample, and sampling distribution, and a parameter and statistic.\
+15. Interpret standard deviation and standard error in context.\
+16. Explain how to use bootstrapping to calculate confidence intervals.\
+17. Interpret confidence intervals in context.\
+18. Calculate confidence intervals in R.
+19. Write null and alternative hypotheses, identify test statistics, and state conclusions in context.\
+20. Interpret p-values in context.\
+21. Explain how to use simulation to perform hypothesis tests.
+22. Compare and contrast the conclusions we can draw from confidence intervals and hypothesis tests.\
+23. Perform hypothesis tests in R.
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=TRUE)
+library(ggformula)
+library(moderndive)
+library(gridExtra)
+library(skimr)
+library(Bolstad)
+library(GGally)
+library(Lock5Data)
+library(knitr)
+library(caret)
+library(MASS)
+library(tidyverse)
+library(nycflights13)
+library(mosaic)
+library(infer)
+library(NHANES)
+options(scipen=999)
+select <- dplyr::select
+set.seed(07302020)
+```
+
+```{r, echo=FALSE}
+load("Environment.Rdata")
+```
+
+## Sampling Distributions
+
+### Population and Sample
+
+In statistics, we often do not have the time, money, or means to collect data on all individuals or units on which we want to draw conclusions. Instead, we might collect data on only a subset of the individuals, and then make inferences about all individuals we are interested in, using the information we collected.
+
+**Vocabulary:**
+
+1.  A **population** is the entire set of individuals that we want to draw conclusions about.
+2.  A **sample** is a subset of a population.\
+3.  A **parameter** is a numerical quantity pertaining to an entire population or process.\
+4.  A **statistic** is a numerical quantity calculated from a sample.
+
+We'll work with a dataset containing information on all 20,591 flights from New York to Chicago in 2013. Our population of interest is all 20,591 flights. We're interested in the proportion of fights that arrive on time, and the average arrival delay (in minutes). Arrival delay represents how much earlier/later did the flight arrive than expected. Whether or not the flight arrived on time is a categorical variable, while arrival delay is a quantitative variable.
+
+In this situation, we have information on the entire population. In statistics, this is rare. It is more common to have information on only subset of flights contained in a sample. If the sample is collected in a way that is representative of the population, such as by sampling at random, then we can use the sample to draw conclusions about the population.
+
+We'll begin by studying the behavior of sample statistics when we know the population parameters, and then use what we learn to handle more real situations where we don't know about the entire population.
+
+The parameter of interest is the proportion of on-time arrivals out of all flights in the population of 20,591. When the parameter is proportion, we'll denote it with the letter $p$.
+
+The first 10 flights, all of which occurred on January 1 are shown below. We see that most of those flights were not on-time.
+
+```{r, echo=FALSE}
+data(NHANESraw)
+Population <- NHANESraw |> filter(Age >= 18, !is.na(HomeOwn) , !is.na(SleepHrsNight)) |> 
+  select(Gender, Age, Race1, Education, HHIncomeMid, HomeOwn, Height, Weight, SleepHrsNight)  
+```
+
+```{r}
+head(Population)
+```
+
+Note that a negative arrival delay denotes a flight that arrived before expected, thus on time.
+
+The bar graph shows the number of flights that arrived on time throughout the year.
+
+```{r}
+Own_Home_Plot_Pop <- ggplot(data=Population, aes(x=HomeOwn)) + 
+                  geom_bar(fill="blue") + 
+                  ggtitle("Home Ownership")
+Own_Home_Plot_Pop
+```
+
+We see that the majority of flights did arrive on time.
+
+We'll calculate the proportion of flights arriving on time, among all 20,591 flights in the population.
+
+```{r}
+#proportion of flights on time
+p <- prop(Population$HomeOwn=="Own")
+p
+```
+
+When the population parameter is a proportion, we'll denote it with the letter $p$. Here $p$=`r p`. Keep in mind that in a real situation, we typically won't know the value of the population parameter $p$, and will need to estimate it from a sample.
+
+The histogram shows the distribution of arrival delay times. Negative delays indicate the flight arriving ahead of schedule.
+
+```{r}
+Sleep_Plot_Pop <- ggplot(data=Population, aes(x=SleepHrsNight)) + 
+  geom_histogram(fill="blue", boundary=0, binwidth=1, color="white") + 
+  ggtitle("Distribution of Hours of Sleep")
+Sleep_Plot_Pop
+```
+
+We see that the distribution of arrival delays is heavily right-skewed. While most flights arrive around the scheduled time, a few were late by 3 or more hours.
+
+We'll calculate the mean arrival delay.
+
+```{r}
+#proportion of flights on time
+mu <- mean(Population$SleepHrsNight)
+mu
+```
+
+When the population parameter represents a mean, we'll denote it using $\mu$. Here $\mu=$ `r mu`.
+
+We also calculate the standard deviation of arrival delays.
+
+```{r}
+SD_Sleep <- sd(Population$SleepHrsNight)
+SD_Sleep
+```
+
+### Sampling Variability
+
+We typically won't have data on the full population and won't know the values of parameters like $p$ and $\mu$. Instead, we'll have data on just a sample taken from the population.
+
+To illustrate, we'll take a sample of 75 flights. The first 6 flights in the sample are shown below. The `ontime` variable tells whether or not the flight arrived on time.
+
+```{r}
+# take sample of 75 flights
+set.seed(08082023)
+S1 <- sample(Population, size = 75)
+head(S1)
+```
+
+We'll calculate the number, and proportion of flights that arrived on time.
+
+
+Proportion of on-time arrivals in the sample.
+
+```{r}
+p_hat <- S1 |> summarize(prop(HomeOwn=="Own"))
+p_hat
+```
+
+When the sample statistic is a proportion, it is commonly denoted $\hat{p}$.
+
+In our sample $\hat{p}$ = `r p_hat*100` percent of flights arrived on-time. The sample statistic $\hat{p}$ is an estimate of the population proportion $p$, the proportion of all flights arriving on time.
+
+We also calculate the mean arrival delay in minutes.
+
+```{r}
+y_bar <- S1 |> summarize(mean(SleepHrsNight))
+y_bar
+```
+
+We'll denote this sample mean $\bar{y}$. It is an estimate of the population mean, representing the arrival mean delay for all flights, which we'll denote $\mu$.
+
+Of course, this was just one sample of 75 flights. If we took different samples of 75 flights, we would expect the statistics $\hat{p}$ and $\bar{x}$ to vary from sample to sample.
+
+Here's a different sample of 75 flights.
+
+```{r}
+S2 <- sample(Population, size = 75)
+```
+
+Proportion arriving on time in second sample:
+
+```{r}
+# proportion arriving on time in second sample
+p_hat2 <- S2 |> summarize(prop(HomeOwn=="Own"))
+p_hat2
+```
+
+Mean arrival delay in second sample:
+
+```{r}
+# mean arrival delay in second sample
+y_bar2 <- S2 |> summarize(mean(SleepHrsNight))
+y_bar2
+```
+
+Sample statistics will vary from sample to sample, thus it is not realistic to expect them to exactly match their corresponding population parameters.
+
+Nevertheless we can use the sample to estimate the proportion of all flights in the population that arrive on time.
+
+Let's take 10,000 more random samples of 75 flights and record the proportion of on-time arrivals in each sample.
+
+```{r}
+Samples_HomeOwn_Prop <- do(10000)*prop( ~ HomeOwn == "Own", data = sample(Population, size=75))
+```
+
+The table shows the proportion of on-time arrivals in the first 20 samples of 75 flights.
+
+```{r}
+head(Samples_HomeOwn_Prop)
+```
+
+The histogram below shows the distribution of the proportion of on-time arrivals in the 10,000 different samples.
+
+```{r}
+Prop_Samp_Dist<- ggplot(data=Samples_HomeOwn_Prop, aes(x=prop_TRUE)) +
+  geom_histogram(color="blue", fill="blue", binwidth=0.001) + 
+  ggtitle("Sampling Distribution for Proportion Owning Home") + 
+  xlab("Prop. in sample")
+Prop_Samp_Dist
+```
+
+We notice that most of our 10,000 samples yielded proportions of on-time arrivals between 0.5 and 0.7, The distribution of proportion of on-time arrivals is roughly symmetric and bell-shaped.
+
+The distribution shown in this histogram is called the **sampling distribution for** $\hat{p}$. The sampling distribution for a statistic shows the distribution of the statistic over many samples.
+
+We'll calculate the mean of the sampling distribution for $\hat{p}$. How does it compare to the true population parameter $p$?
+
+```{r}
+Mean_p_hat <- mean(Samples_HomeOwn_Prop$prop_TRUE)
+Mean_p_hat
+```
+
+We can gauge how much the proportion of on-time arrivals varies between samples by calculating the standard deviation of this sampling distribution. The standard deviation of a sampling distribution for a statistic is also called the **standard error** of the statistic. In this case it represents the standard error $\hat{p}$ (the proportion of on-time arrivals), and is denoted $\text{SE}(\hat{p})$. This standard error is shown below.
+
+```{r}
+SE_p_hat <- sd(Samples_HomeOwn_Prop$prop_TRUE)
+SE_p_hat
+```
+
+Now, we'll examine the sampling distribution of the mean arrival time $\bar{y}$.
+
+```{r}
+Samples_Sleep_Mean <- do(10000)*mean( ~ SleepHrsNight, data = sample(Population, size=75))
+head(Samples_Sleep_Mean)
+```
+
+```{r}
+Mean_Samp_Dist<- ggplot(data=Samples_Sleep_Mean, aes(x=mean)) +
+  geom_histogram(color="blue", fill="blue", binwidth=0.001) + 
+  ggtitle("Sampling Distribution for Mean Sleep Hours") + 
+  xlab("Mean Hrs. in sample")
+Mean_Samp_Dist
+```
+
+
+How does the sampling distribution for mean arrival delays compare to the distribution of arrival delays for individual flights? Think about the shape and the variability of the distributions.
+
+```{r}
+Mean_y_bar <- mean(Samples_Sleep_Mean$mean)
+Mean_y_bar
+```
+
+The standard error of the mean, $SE(\bar{y})$ is shown calculated below.
+
+```{r}
+SE_y_bar <- sd(Samples_Sleep_Mean$mean)
+SE_y_bar
+```
+
+What does this standard error represent? How is it different than the the standard deviation of flight times, which we previously saw was 60.1 minutes?
+
+**Vocabulary:**
+
+-   The **sampling distribution** of a statistic is the distribution of values the statistic takes on across many different samples of a given size.\
+-   The **standard error** of a statistic is the standard deviation of that statistic's sampling distribution. It measures how much the statistic varies between different samples of a given size.
+
+### Sample Size and Standard Error
+
+**Question:**
+
+Suppose the sample consisted of 10, or 30, or 500 flights, instead of 75? Would you expect the standard deviation of individual flight times to increase, decrease or stay about the same? What about the standard error of the mean delay?
+
+The histogram shows the distribution of individual flight delays in random samples of each size.
+
+```{r, echo=FALSE}
+set.seed(08282024)
+Sample10 <- sample(Population, size = 10)
+Sample30 <- sample(Population, size = 30)
+Sample75 <- sample(Population, size = 75)
+Sample200 <- sample(Population, size = 200)
+```
+
+```{r, echo=FALSE, fig.width=12, fig.height=6}
+
+xrange <- c(0,12)
+
+Hist10 <- ggplot(data = Sample10, aes(x=SleepHrsNight)) + 
+  geom_dotplot(color="white", fill="lightblue") + 
+  ggtitle("n=10") + 
+  xlab("Delay") + ylab("Frequency") + xlim(xrange)
+
+Hist30 <- ggplot(data = Sample30, aes(x=SleepHrsNight)) + 
+  geom_dotplot(color="white", fill="lightblue") + 
+  ggtitle("n=30") + 
+  xlab("Delay") + ylab("Frequency") + xlim(xrange)
+
+
+Hist75 <- ggplot(data = Sample75, aes(x=SleepHrsNight)) + 
+  geom_dotplot(color="white", fill="lightblue") + 
+  ggtitle("n=75") + 
+  xlab("Delay") + ylab("Frequency") + xlim(xrange)
+
+Hist200 <- ggplot(data = Sample200, aes(x=SleepHrsNight)) + 
+  geom_dotplot(color="white", fill="lightblue") + 
+  ggtitle("n=200") + 
+  xlab("Delay") + ylab("Frequency") + xlim(xrange)
+
+grid.arrange(Hist10, Hist30, Hist75, Hist200, ncol=2)
+```
+
+For each sample, most of the flights have delays slightly below or above 0, though a small percentage of the flights in each sample have much larger delays. The variability in delays is about the same, regardless of sample size.
+
+The table shows the standard deviation in each of the samples.
+
+```{r, echo=FALSE}
+SD10 <- sd(Sample10$SleepHrsNight)
+SD30 <- sd(Sample30$SleepHrsNight)
+SD75 <- sd(Sample75$SleepHrsNight)
+SD200 <- sd(Sample200$SleepHrsNight)
+Sample_Size <- c(10,30, 75, 200)
+SD <- c(SD10, SD30, SD75, SD200)
+kable(data.frame(Sample_Size, SD))
+```
+
+Sample size does not impact the amount of variability between individual flights. Standard deviation in delay times does not systematically increase or decrease based one sample size (of course it varies a little based on the lakes randomly chosen in the sample).
+
+Now, we'll examine what happens to the standard error of the mean as the sample size changes.
+
+```{r, echo=FALSE}
+set.seed(09012024)
+
+Mean10 <- do(10000)*mean( ~ SleepHrsNight, data = sample(Population, size=10))
+Mean30 <- do(10000)*mean( ~ SleepHrsNight, data = sample(Population, size=30))
+Mean75 <- do(10000)*mean( ~ SleepHrsNight, data = sample(Population, size=75))
+Mean200 <- do(10000)*mean( ~ SleepHrsNight, data = sample(Population, size=200))
+```
+
+**Distributions of Mean Between Different Samples**
+
+```{r, echo=FALSE, fig.width=12, fig.height=6}
+Mean10_Plot <- ggplot(data=Mean10, aes(x=mean)) +  
+  geom_histogram(color="white", fill="lightblue", bins=60) +
+  xlab("Sample Mean") + ylab("Frequency") +
+  ggtitle("n=10") + xlim(c(5,9)) + 
+  theme(legend.position = "none")
+
+Mean30_Plot <- ggplot(data=Mean30, aes(x=mean)) +  
+  geom_histogram(color="white", fill="lightblue", bins=60) +
+  xlab("Sample Mean") + ylab("Frequency") +
+  ggtitle("n=30") + xlim(c(5,9)) +
+  theme(legend.position = "none") 
+
+Mean75_Plot <- ggplot(data=Mean75, aes(x=mean)) +  
+  geom_histogram(color="white", fill="lightblue", bins=100) +
+  xlab("Sample Mean") + ylab("Frequency") +
+  ggtitle("n=75") + xlim(c(5,9)) +
+  theme(legend.position = "none") 
+
+Mean200_Plot <- ggplot(data=Mean200, aes(x=mean)) +  
+  geom_histogram(color="white", fill="lightblue", bins=100) +
+  xlab("Sample Mean") + ylab("Frequency") +
+  ggtitle("n=200") + xlim(c(5,9)) +
+  theme(legend.position = "none") 
+
+grid.arrange(Mean10_Plot, Mean30_Plot, Mean75_Plot, Mean200_Plot, ncol=2)
+```
+
+Notice that as the sample size increases, the sampling distribution of the mean becomes more symmetric and bell-shaped, and also more concentrated around the population mean $\mu$.
+
+The table shows the standard error of the mean for samples of different size:
+
+```{r, echo=FALSE}
+SE10 <- sd(Mean10$mean)
+SE30 <- sd(Mean30$mean)
+SE75 <- sd(Mean75$mean)
+SE200 <- sd(Mean200$mean)
+Sample_Size <- c(10,30,75,200)
+SE <- c(SE10, SE30, SE75, SE200)
+kable(data.frame(Sample_Size, SE))
+```
+
+As sample size increases, variability between means of different samples decreases. Standard error of the mean decreases. This is also true of standard errors for other statistics (i.e. difference in means, regression slopes, etc.)
+
+\newpage
+
+## Confidence Intervals
+
+### Constructing Confidence Intervals
+
+We saw that while statistics calculated from individual samples deviate from population parameters, over many samples, they approximately average to the population parameter (assuming the samples are chosen randomly).
+
+Thus, when we have only a single sample, we can use the sample statistic as an estimate of the population parameter, provided we allow for a certain margin of error. The question is how much margin of error do we need?
+
+The sampling distribution for the proportion of on-time flights is shown again below. The true proportion of on-time flights ($p=0.607984$) is marked by the green dotted line. The gold bar at the bottom of the histogram represents the range of sample proportions that lie within $\pm 2$ standard errors of the true population proportion of flights that arrived on time:
+
+`r round(p,3)` - 2(`r round(SE_p_hat,3)`) = `r round(p -2*SE_p_hat,3)` to `r round(p,3)` + 2(`r round(SE_p_hat,3)`) = `r round(p +2*SE_p_hat,3)`
+
+```{r}
+Prop_Samp_Dist + geom_vline(xintercept=p, color="green", linetype="dotted", linewidth=2) + geom_segment(aes(x=p - 2*SE_p_hat,xend=p + 2*SE_p_hat, y=50, yend=50), color="gold", size=10, alpha=0.01) 
+```
+
+We calculate the proportion of samples whose proportion of on-time arrivals lies within $\pm 2$ standard errors of the true proportion.
+
+```{r}
+Lower <- p - 2*SE_p_hat
+Upper <- p + 2*SE_p_hat
+sum((Samples_HomeOwn_Prop$prop_TRUE >=Lower) & (Samples_HomeOwn_Prop$prop_TRUE <= Upper))
+```
+
+Approximately 95% 10,000 samples produced proportions within $\pm 2$ standard errors of the true population proportion of on-time flights.
+
+In a real situation, we won't have access to the entire population of flights, only the flights in a single sample. For example, recall our original sample of 75 flights, in which we observed a proportion of on-time arrivals of $\hat{p}=$ `r p_hat`.
+
+Since we now know that 95% of all samples produce proportions that lie within two standard errors of the population proportion, we can obtain an estimate of the population proportion $p$ by adding and subtracting $2\times \text{SE}(\hat{p})$ from our observed sample proportion $\hat{p}$.
+
+Using probability theory, it can be shown generally that if the sampling distribution of a statistic is symmetric and bell shaped, then approximately 95% of all samples will produce sample statistics that lie within two standard errors of the corresponding population parameter. Such an interval is called an approximate 95% **confidence interval** for the population parameter.
+
+**Approximate 95% confidence interval: If the sampling distribution of a statistic is symmetric and bell-shaped, a 95% confidence interval for the population parameter is:**
+
+$$
+\text{Statistic} \pm 2\times \text{Standard Error}, 
+$$
+
+More generally, if we want to use a level of confidence that is different than 95%, we can adjust the value we multiply the standard error by. In general, a standard error confidence interval has the form:
+
+$$
+\text{Statistic} \pm m\times \text{Standard Error}, 
+$$
+
+where the value of $m$ depends on the desired level of confidence.
+
+Confidence intervals that are calculated by adding and subtracting a certain number of standard errors from the sample statistic are called **standard error confidence intervals**. This approach works as long as the sampling distribution is symmetric and bell-shaped. Probability theory tells us that in a symmetric and bell-shaped distribution, approximately 95% of the area lies within two standard errors of the center of the distribution, given by the true parameter value. We will, however, see that this approach will not work in all cases. Not all statistics produce sampling distributions that are symmetric and bell-shaped, and we will need an alternative way to calculate confidence intervals in these situations.
+
+```{r, echo=FALSE, fig.cap="Image from https://openintro-ims.netlify.app/foundations-mathematical"}
+knitr::include_graphics("Emp_Rule.png")
+```
+
+#### Example: 95% Confidence Interval for $p$
+
+We'll calculate a 95% confidence interval for the proportion of on-time flights, using our original sample where $\hat{p}$ = `r p_hat`. The 95% confidence interval is:
+
+$$
+\begin{aligned}
+& \hat{p} \pm 2\times \text{SE}(\hat{p}) \\
+& = `r p_hat` \pm 2(`r SE_p_hat`)
+\end{aligned}
+$$
+
+The confidence interval is:
+
+```{r}
+c(p_hat - 2*SE_p_hat, p_hat + 2*SE_p_hat) |> as.numeric()
+```
+
+Based on our sample of 75 flights, we can be 95% confident that the true proportion of on-time arrivals among all 2013 flights from New York to Chicago is between `r round(p_hat - 2*SE_p_hat, 3)` and `r round(p_hat + 2*SE_p_hat, 3)`.
+
+#### Example: 95% Confidence Interval for $\mu$
+
+Likewise, we calculate a 95% confidence interval for average arrival delay using the formula:
+
+$$
+\begin{aligned}
+\bar{y} \pm 2\times \text{SE}(\bar{y}) \\
+& = `r y_bar` \pm 2(`r SE_y_bar`)
+\end{aligned}
+$$
+
+```{r}
+c(y_bar - 2*SE_y_bar, y_bar + 2*SE_y_bar) |> as.numeric()
+```
+
+Based on our sample of 75 flights, we can be 95% confident that the mean arrival delay among all 2013 flights from New York to Chicago is between `r round(y_bar - 2*SE_y_bar, 1)` and `r round(y_bar + 2*SE_y_bar, 1)` minutes.
+
+Note that this is a statement about what we think is true of the mean overall flight time, not the time of an individual flight. It would be incorrect to say that we are 95% confident that an individual flight would be expected to have a delay in this interval. You might think about whether the interval for the delay time of an individual flight should be wider or narrower than this. We'll talk about such an interval later in the term.
+
+### What does 95% Confidence Mean?
+
+Knowing what we do about the true value of the population parameters $p$ and $\mu$, we can see that our interval for $p$, which was (`r round(c(p_hat - 2*SE_p_hat, p_hat + 2*SE_p_hat),3)`) does indeed contain the true population value of $p=$ `r p`. However, the interval for $\mu$, which was (`r round(c(y_bar - 2*SE_y_bar, y_bar + 2*SE_y_bar),1)`) does not contain the true value of $\mu=$ `r mu`.
+
+Does this mean we did something wrong when we calculated the interval for $\mu$, the average flight delay among all flights in the population? The answer is "no". Notice we claimed to be only "95%" confident that our interval contains the true value of the population parameter $\mu$. This means that we should expect 5% of samples taken randomly to yield a sample mean $\bar{y}$ so different from the population mean $\mu$, that the resulting confidence interval would not contain the true value of $\mu$. This does not mean we did anything wrong, just that we obtained an unusual sample just by chance. Since our procedure, namely adding and subtracting two standard errors, is designed to work 95% of the time, we can expect such samples to be rare.
+
+In a real situation, we won't know the true value of the population parameter, so we won't know for sure whether or not our confidence interval contains this true parameter value.
+
+To further understand the meaning of "95% confidence", let's explore what happens when we calculate confidence intervals based on estimates $\bar{y}$ obtained from many different samples. For each of our 10,000 different samples taken from our population, we'll add and subtract two standard errors from the sample proportion $\hat{p}$ corresponding to that sample.
+
+The table below displays the value of $\hat{p}$, for the first 20 samples we took, along with the lower and upper bounds of the confidence interval, and whether or not the confidence interval contains the true parameter value $p$ (either 1=`TRUE` or 0=`FALSE`).
+
+```{r}
+Samples_df_p <- Samples_HomeOwn_Prop %>% mutate(
+                                                    Sample = row_number(),
+                                                    p_hat_val = prop_TRUE,
+                                                    Lower = p_hat_val - 2*SE_p_hat, 
+                                                    Upper = p_hat_val + 2*SE_p_hat,
+                                                    Containsp = p >= Lower & p <= Upper) |>
+                                                    dplyr::select(Sample, p_hat_val, Lower, Upper, Containsp)  
+kable(head(Samples_df_p |> round(2), 20))
+```
+
+The graphic below visualizes the confidence intervals produced using the estimates from the first 100 samples. The green dotted line indicates the true value of $p$. The black dots indicate the value of $\hat{p}$ for each sample. Intervals that do in fact contain the true value of $p$ are shown in blue, and intervals that do not contain the true value of $p$ are shown in green.
+
+```{r, fig.height=15, fig.width=10}
+ggplot(data=Samples_df_p[1:100,], aes(y=Sample, x=p_hat_val)) +    
+  geom_point() +
+  geom_errorbar(aes(xmin = Lower, xmax = Upper, color=Containsp))  + 
+  xlab("Confidence Interval") + 
+  ylab("Sample") + 
+  geom_vline(xintercept = p, color="green", linetype="dotted", size=2) + 
+  ggtitle("100 Different Confidence Intervals for p") + 
+  theme_bw() 
+```
+
+Out of these 100 samples, `r sum(Samples_df_p$Containsp[1:100]==TRUE)` contain the true value of the population parameter $p$. This is close to the desired 95% confidence level.
+
+The picture shows confidence intervals produced by the first 100 samples, but we actually took 10,000 different samples of 75 flights. Let's calculate how many of these samples produced confidence intervals that contain the true value of $p$.
+
+```{r}
+prop(Samples_df_p$Contains == TRUE)
+```
+
+Again, notice that close to 95% of the samples produced confidence intervals contain the true population parameter $p$. Note that for the red intervals that do not contain $p$ nothing was done incorrectly. The sample was taken at random, and the confidence interval was calculated using the correct formula. It just happened that by chance, we obtained a sample proportion $\hat{p}$ that was unusually high or low, leading to an interval that did not capture the true population parameter. This, of course, happens rarely, and approximately 95% of the samples do, in fact, result in intervals that contain the true value of $p$.
+
+```{r}
+Samples_df_mu <- Samples_Sleep_Mean %>% mutate(
+                                     Sample = row_number(),
+                                     y_bar_val = mean,
+                                     Lower = y_bar_val - 2*SE_y_bar, 
+                                     Upper = y_bar_val + 2*SE_y_bar,
+                                     Containsmu = mu >= Lower & mu <= Upper) |>
+                              select(Sample, y_bar_val, Lower, Upper, Containsmu)  
+kable(head(Samples_df_mu |> round(2), 20))
+```
+
+The graphic below visualizes the confidence intervals produced using the estimates from the first 100 samples. The green dotted line indicates the true value of $p$. The black dots indicate the value of $\hat{p}$ for each sample. Intervals that do in fact contain the true value of $p$ are shown in blue, and intervals that do not contain the true value of $p$ are shown in green.
+
+```{r, fig.height=15, fig.width=10}
+ggplot(data=Samples_df_mu[1:100,], aes(y=Sample, x=y_bar_val)) +    
+  geom_point() +
+  geom_errorbar(aes(xmin = Lower, xmax = Upper, color=Containsmu))  + 
+  xlab("Confidence Interval") + 
+  ylab("Sample") + 
+  geom_vline(xintercept = mu, color="green", linetype="dotted", size=2) + 
+  ggtitle(expression(paste("100 Different Confidence Intervals for ", mu))) + 
+  theme_bw() 
+```
+
+Out of these 100 samples, `r sum(Samples_df_mu$Containsmu[1:100]==TRUE)` contain the true value of the population parameter $\mu$.
+
+Out of all 10,000 samples, the proportion containing the true population value of $\mu$ is:
+
+```{r}
+sum(Samples_df_mu$Containsmu == TRUE)
+```
+
+This brings us back to the question "what does 95% confidence mean?". An approximate 95% confidence interval means that if we take a large number of samples and calculate confidence intervals from each of them, then approximately 95% of the samples will produce intervals containing the true population parameter. In reality, we'll only have on sample, and won't know whether or not our interval contains the true parameter value. Assuming we have taken the sample and calculated the interval correctly, we can rest assured in the knowledge that that 95% of all intervals taken would contain the true parameter value, and hope that ours is among that 95%.
+
+It might be tempting to say that "there is approximately a 95% chance" that the population parameter lies within the confidence interval, but this is incorrect. In the statistical framework used here (known as classical, or frequentist statistics), the population parameter is assumed to be a fixed, but (typically) unknown number. It either is within the interval, or it isn't. We just (typically) don't know which. There's nothing random about whether or not the parameter value is in our interval, so it doesn't make sense to speak of it in terms of chance or randomness. Randomness comes into play due to the fact that we selected a random sample, which will produce a statistic likely to differ from the population parameter due to sampling variability. A different statistical framework, known as *Bayesian statistics* approaches this differently, and would allow us to use randomness and chance to describe our beliefs about any uncertain quantity, including a population proportion. In this class, however, we'll stick to the classical frequentist interpretation.
+
+Of course, you might ask why we needed to calculate a confidence interval for the proportion of on-time flights in the first place, since we actually have data on all 20,591 flights in the population and already know the true proportion of on-time arrivals and mean arrival delay. The answer is that we don't. But, in most real situations, we will only have data from a single sample, not the entire population, and we won't know the true population parameter. We'll be able to build on the ideas of sampling distributions and standard error that we learned about in this section to calculate confidence intervals in those scenarios.
+
+\newpage
+
+## Bootstrapping
+
+### Mercury Concentration in Florida Lakes
+
+A 2004 study by Lange, T., Royals, H. and Connor, L. examined Mercury accumulation in large-mouth bass, taken from a sample of 53 Florida Lakes. If Mercury accumulation exceeds 0.5 ppm, then there are environmental concerns. In fact, the legal safety limit in Canada is 0.5 ppm, although it is 1 ppm in the United States.
+
+In our sample, we have data on 53 lakes, out of more than 30,000 lakes in the the state of Florida. We'll attempt to draw conclusions about the entire population, consisting of all lakes in Florida, using data from our sample of 53. It is not clear how the lakes in this sample of 53 were selected, or how representative they are of all lakes in the state of Florida. Let's assume for our purposes that the lakes in the sample can be reasonably thought of as being representative of all lakes in Florida.
+
+```{r Bass, echo=FALSE, out.width = '50%', fig.cap="https://www.maine.gov/ifw/fish-wildlife/fisheries/species-information/largemouth-bass.html"}
+knitr::include_graphics("Bass.png")
+```
+
+```{r}
+FloridaLakes <- read_csv("FloridaLakes.csv")
+FloridaLakes <- FloridaLakes |> rename(Mercury = AvgMercury) |> 
+                                select(ID, Lake, pH, Mercury, Chlorophyll, Location, DepthClass)
+```
+
+```{r}
+FloridaLakes <- FloridaLakes |> mutate(High_Mercury = Mercury > 1)
+head(FloridaLakes)
+```
+
+```{r}
+glimpse(FloridaLakes)
+```
+
+We'll divide the state along route 50, which runs East-West, passing through Northern Orlando.
+
+```{r, echo=FALSE, out.width = '30%', fig.cap="from Google Maps"}
+knitr::include_graphics("Florida.png")
+```
+
+We add a variable indicating whether each lake lies in the northern or southern part of the state.
+
+Our data come from a sample of 53 lakes, out of more then 30,000 in the entire state of Florida. The mercury levels of the 53 lakes in the sample are shown in the table below.
+
+```{r}
+print.data.frame(FloridaLakes, row.names = FALSE)
+```
+
+The histogram shows the distribution of mercury levels in the 53 lakes in the sample. Lakes exceeding the US standard of 1 ppm are shown in red.
+
+```{r}
+Lakes_Hist <- ggplot(data=FloridaLakes, aes(x=Mercury)) + 
+  geom_histogram(aes(fill=Mercury<=1), color="white", binwidth = 0.1) + 
+  ggtitle("Mercury Levels in Sample of 53 Florida Lakes") + 
+  xlab("Mercury Level") + ylab("Frequency") + theme_bw()
+Lakes_Hist
+```
+
+The table below gives the mean mercury level, and the proportion of lakes with mercury levels exceeding 1 ppm, among the 53 lakes in our sample.  
+
+```{r}
+FloridaLakes |> summarize(Mean_Hg = mean(Mercury), 
+                          PropOver1 = prop(High_Mercury), 
+                          N = n())
+
+```
+
+We see that in our sample of 53 lakes, the mean mercury level is 0.527 ppm., which is just above Canada's legal limit, though below the United States' limit. Approximately 11% have mercury levels exceeding the US standard of 1 ppm. 
+
+Suppose we want to estimate the mean mercury level among all Florida lakes, as well as the proportion of lakes whose mercury level exceeds this standard. As we saw in the previous section, we would not expect the population proportion to exactly match the sample, due to random variability between samples. We can, however, use the sample statistics as estimates and construct confidence intervals for the unknown population proportions.   
+
+In order to construct the confidence interval, we need to know how much each statistic could vary between different samples of size 53. That is, we need to know the standard error. In the previous section, we calculated the standard error by taking 10,000 different samples of the same size as ours from the population, calculating the proportion for each sample, and then calculating the standard deviation of the proportions obtained from these 10,000 different samples. This procedure will not work here, however, because unlike the previous example where we really did have data on the entire population of all flights from New York to Chicago, we do not have data on all 30,000+ lakes in Florida. We cannot take a lot of different samples of size 53 from the population of all lakes, and thus, cannot obtain the sampling distributions for our statistics or calculate their standard errors. Instead, we'll use a process that closely mimics what we did in Section 3.2, using only the information from the 53 lakes contained in our sample.     
+
+### Bootstrap Sampling
+
+All we have is a single sample of 53 lakes. We need to figure out how much the proportion of lakes with mercury levels exceeding 1 ppm would vary between different samples of size 53, using only the information contained in our one sample.
+
+To do this, we'll implement a popular simulation-based strategy, known as **bootstrapping**.
+
+Let's assume our sample is representative of all Florida lakes. Then, we'll duplicate the sample many times to create a large set that will look like the population of all Florida Lakes. We can then draw samples of 53 from that large population, and record the mean mercury level for each sample of 53.
+
+An illustration of the bootstrapping procedure is shown below, using a sample of 12 colored dots, instead of the 53 lakes.
+
+```{r, echo=FALSE, out.width = '100%'}
+knitr::include_graphics("Bootstrap_Idea.png")
+```
+
+In fact, duplicating the sample many times and selecting new samples of size $n$ has the same effect as drawing samples of size $n$ from the original sample, by putting the item drawn back in each time, a procedure called **sampling with replacement**. Thus, we can skip the step of copying/pasting the sample many times, and instead draw our samples with replacement.
+
+This means that in each new sample, some lakes will be drawn multiple times and others not at all. It also ensures that each sample is different, allowing us to estimate variability in the sample mean between the different samples of size 53.
+
+An illustration of the concept of bootstrapping, using sampling with replacement is shown below.
+
+```{r, echo=FALSE, out.width = '100%'}
+knitr::include_graphics("Bootstrap.png")
+```
+
+The variability in statistics (mean, median, standard deviation, proportion exceeding 1 ppm) in our newly drawn samples is used to approximate the variability we would see in these statistics that would occur between different samples of 53 lakes if we could draw different samples from the population of all Florida Lakes.
+
+The point of bootstrapping is to observe how much a statistic varies between bootstrap samples. This can act as an estimate of how much that statistic would vary between different samples of size $n$, drawn from the population.
+
+The steps of bootstrap sampling can be summarized in the following algorithm.
+
+**Bootstrap Algorithm**
+
+For an original sample of size $n$:
+
+1.  Take a sample size $n$ by randomly sampling from the original, with replacement. Thus, some observations will show up multiple times, and others not at all. This sample is called a **bootstrap sample**.
+
+2.  Calculate the statistic of interest in the bootstrap sample. 
+
+3.  Repeat steps 1 and 2 many (say 10,000) times, keeping track of the statistic of interest that is calculated in each bootstrap sample.
+
+4.  Look at the distribution of the statistic across bootstrap samples. The variability in this bootstrap distribution can be used to approximate the variability in the sampling distribution for the statistic of interest.
+
+### Bootstrap Samples of Lakes
+
+**Bootstrap Sample 1**
+
+The `resample()` function samples the specified number rows from a data frame, with replacement.
+
+The lakes in the first sample are shown below. Notice that some lakes occur multiple times, and others not at all.
+
+```{r}
+Bootstrap1 <- resample(FloridaLakes, replace = TRUE) |> arrange(ID)
+Bootstrap1
+```
+
+
+A histogram of the mercury levels in the bootstrap sample is shown below.  
+
+```{r}
+ggplot(data=Bootstrap1, aes(x=Mercury)) + 
+  geom_histogram(aes(fill=Mercury <= 1),  color="white", binwidth = 0.1) + 
+  ggtitle("Mercury Levels in Bootstrap Sample") + 
+  xlab("Mercury Level") + ylab("Frequency") + theme_bw()
+```
+
+The statistics of interest for the bootstrap sample are shown below. Notice that these differ from the original sample.   
+
+```{r}
+Bootstrap1 |> summarize(Mean_Hg = mean(Mercury), 
+                          PropOver1 = prop(High_Mercury), 
+                          N = n())
+
+```
+
+**Bootstrap Sample #2**
+
+Since bootstrap samples are taken with replacement, every sample will be different, allowing us to measure the amount of variability in our statistics between samples.  
+
+We take a second bootstrap sample and display the statistics below. Notice that the lakes chosen and omitted differ from the first sample.
+
+```{r}
+Bootstrap2 <- resample(FloridaLakes, replace = TRUE) |> arrange(ID)
+Bootstrap2
+```
+
+
+A histogram of the mercury levels in the bootstrap sample is shown below.  
+
+```{r}
+ggplot(data=Bootstrap2, aes(x=Mercury)) + 
+  geom_histogram(aes(fill=Mercury <= 1), color="white", binwidth = 0.1) + 
+  ggtitle("Mercury Levels in Bootstrap Sample") + 
+  xlab("Mercury Level") + ylab("Frequency") + theme_bw()
+```
+
+We again calculate the statistics of interest for the second bootstrap sample. Notice that these differ from the original sample and from the first bootstrap sample. 
+
+
+```{r}
+Bootstrap2 |> summarize(Mean_Hg = mean(Mercury), 
+                        PropOver1 = prop(High_Mercury),
+                        N = n())
+
+```
+
+
+
+### Bootstrap Distribution for Mean
+
+Now that we've seen how bootstrap sampling works, we'll take many different bootstrap samples and calculate our statistics for each of the samples. This will tell how how much our statistics can vary between sample. We'll take 10,000 different bootstrap samples.   
+
+The `do(10000)` command tells R to do the command following it (in this case, take the bootstrap sample and calculate the statistic of interest) 10,000 times. We'll store the results in a vector  called `Lakes_Bootstrap_Mean`.
+
+We'll do this for each of our statistics of interest, starting with the mean.   
+
+**Bootstrap Distribution for Mean**   
+
+```{r}
+Lakes_Bootstrap_Mean <- do(10000) * mean( ~ Mercury, data = resample(FloridaLakes, replace=TRUE))
+```
+
+The means of the first 5 bootstrap samples are:
+
+```{r}
+head(Lakes_Bootstrap_Mean)
+```
+
+The distribution of means observed in the 10,000 different bootstrap samples is shown below. This distribution is called the **bootstrap distribution.**
+
+```{r}
+Lakes_Bootstrap_Mean_Plot <- ggplot(data=Lakes_Bootstrap_Mean, aes(x=mean)) +  
+  geom_histogram(color="white", fill="lightblue", binwidth=0.02) +
+  xlab("Mean Mercury") + ylab("Frequency") +
+  ggtitle("Bootstrap Distribution for Mean") + 
+  theme(legend.position = "none") + theme_bw()
+Lakes_Bootstrap_Mean_Plot
+```
+
+The bootstrap distribution is meant to approximate the sampling distribution of the statistic of interest (in this case the mean mercury level). Because it is based on the sample, the bootstrap distribution will be centered at the sample statistic ($\bar{x} = 0.527$ in this case) while the sampling distribution would have been centered at the population parameter ($\mu$), the mean mercury level among all Florida lakes, which is unknown. The important things, however, is that the variability in the bootstrap distribution gives a good approximation of the amount of variability in the sampling distribution, so we can use the standard deviation of the bootstrap distribution (called **bootstrap standard error**) in our confidence interval calculation.
+
+
+**Bootstrap Standard Error**
+
+We calculate the standard deviation of this bootstrap distribution, which is an estimate of the standard error of the sample mean, $\bar{x}$. It measures how much the mean mercury level varies between samples of size 53.
+
+```{r}
+SE_mean <- sd(Lakes_Bootstrap_Mean$mean)
+SE_mean
+```
+
+Notice that the standard error of the mean is much less than the sample standard deviation of 0.341.
+
+**Interpretations of sample standard deviation and standard error of the mean**
+
+-   The sample standard deviation (0.341) measures the amount of variability in mercury levels between the 53 individual lakes in our sample.
+
+-   The standard error of the mean (`r SE_mean`) measures the amount of variability in sample mean mercury levels between different samples of size 53.
+
+There is more variability between mercury levels in individual lakes than there is between average mercury levels in different samples of size 53.
+
+
+95% Confidence Interval:
+
+
+```{r, echo=FALSE}
+CI <- confint(Lakes_Bootstrap_Mean, level = 0.95, method = "percentile")
+CI
+```
+
+
+
+We are 95% confident that the average mercury level among all Florida lakes is between `r round(CI$lower, 2)` and `r round(CI$upper, 2)` parts per million.   
+
+The 95% confidence interval is shown by the gold bar on the graph of the bootstrap distribution below.
+
+
+```{r}
+Lakes_Bootstrap_Mean_Plot + 
+  geom_segment(aes(x = CI$lower, xend = CI$upper, y=50, yend=50), 
+               color="gold", size=10, alpha=0.01) 
+```
+
+It is important to note that we are not saying that we are 95% confident that an individual lake lie in this range, or that 95% of all individual lakes lie in this range. We are only saying that we are confident that the *average* mercury level among all lakes lies in this range. A confidence interval is a statement about a population parameter (in this case the average mercury level), rather than about individual lakes in the population. Since there is more variability about individual lakes than overall averages, we'll need to make a wider interval when talking about the mercury level for an individual lake.
+
+**Standard Error Confidence Intervals**   
+
+Since the bootstrap distribution is roughly symmetric and bell-shaped, we can use the bootstrap standard error method to calculate an approximate 95% confidence interval for the mean mercury level among all Florida lakes.
+
+$$
+\text{Statistic} \pm 2\times\text{Standard Error}
+$$
+
+In this case, the statistic of interest is the sample mean $\bar{x}=0.527$. The approximate confidence interval is
+
+$$
+\begin{aligned}
+& \bar{x} \pm 2\times\text{SE}(\bar{x}) \\
+& = 0.527 \pm 2\times\text{`r SE_mean`}
+\end{aligned}
+$$
+
+
+We can calculate a standard error confidence interval in R using `type="se"`. We need to specify the point estimate, which in this case is the sample mean, `mean(FloridaLakes$Mercury).`
+
+```{r}
+CI_SE <- confint(Lakes_Bootstrap_Mean, level = 0.95, method = "se")
+CI_SE
+```
+
+Notice that the standard error confidence interval closely matches the percentile interval. This will be true when the bootstrap distribution is symmetric and bell-shaped. When the bootstrap distribution is not symmetric and bell-shaped, then the percentile interval will be more reliable than the standard error interval.
+
+
+
+### Bootstrap Distribution for Proportion 
+
+Next, we'll take 10,000 bootstrap samples and record the proportion of lakes with mercury level exceeding 1 ppm in each sample.   
+
+```{r}
+Lakes_Bootstrap_Prop <- do(10000) * prop( ~ Mercury > 1, data = resample(FloridaLakes, replace=TRUE))
+```
+
+The proportions exceeding 1 ppm in the first 5 bootstrap samples are:
+
+```{r}
+head(Lakes_Bootstrap_Prop)
+```
+
+
+```{r}
+Lakes_Bootstrap_Prop_Plot <- ggplot(data=Lakes_Bootstrap_Prop, aes(x=prop_TRUE)) +  
+  geom_histogram(color="white", fill="lightblue", binwidth=0.02) +
+  xlab("Proportion > 1 ppm") + ylab("Frequency") +
+  ggtitle("Bootstrap Distribution for Prop > 1 ppm") + 
+  theme(legend.position = "none") + theme_bw()
+
+Lakes_Bootstrap_Prop_Plot
+```
+
+
+
+```{r}
+CI <- confint(Lakes_Bootstrap_Prop, level = 0.95, method = "percentile")
+CI
+```
+
+
+We are 95% confident that the average mercury level among all Florida lakes is between `r round(CI$lower, 2)` and `r round(CI$upper, 2)` parts per million.   
+
+```{r}
+Lakes_Bootstrap_Prop_Plot + 
+  geom_segment(aes(x=CI$lower, xend=CI$upper, y=50, yend=50),
+               color="gold", size=10, alpha=0.01) 
+```
+
+
+### Bootstrap SE Confidence Interval
+
+We calculate the standard deviation of this bootstrap distribution, which is an estimate of the standard error of $\hat{p}$. It measures how much the proportion of lakes exceeding 1 ppm varies between samples of size 53.
+
+**Bootstrap Standard Error:**
+
+```{r}
+SE_p_hat <- sd(Lakes_Bootstrap_Prop$prop_TRUE)
+SE_p_hat
+```
+
+Since the bootstrap distribution is roughly symmetric and bell-shaped, we can calculate a 95% confidence interval for the proportion of all Florida lakes with mercury levels exceeding 1 ppm, using bootstrap standard error confidence interval method.
+
+$$
+\begin{aligned}
+& \hat{p} \pm 2\times\text{SE}(\hat{p}) \\
+& = 0.11 \pm 2\times\text{`r SE_phat`}
+\end{aligned}
+$$
+
+The `confint()` command in R calculates a 95% confidence interval for the proportion of lakes exceeding 1 ppm among all Florida lakes. 
+
+```{r}
+confint(Lakes_Bootstrap_Prop, level = 0.95, method = "stderr")
+```
+
+We are 95% confident that the proportion of all Florida lakes with mercury levels exceeding 1 ppm is between `r round(p_hat - 2*SE_p_hat, 2)` and `r round(p_hat + 2*SE_p_hat,2)`.
+
+Again, the bootstrap standard error interval closely matches the bootstrap percentile interval.   
+
+## Bootstrapping with Models  
+
+We've seen how to use boostrapping to obtain confidence intervals for means and proportions. We can use the same process to obtain confidence intervals for other statistics, such as coefficients $b_0$, $b_1$, etc. from the kinds of models we worked with in Chapter 2. 
+
+### CI for Difference in Means
+
+Suppose we want to compare mercury levels for lakes in Northern Florida to lakes in Southern Florida. 
+
+The boxplot shows and table below describe the distribution of mercury levels for lakes in Northern Florida, compared to Southern Florida.
+
+```{r}
+LakesBP <- ggplot(data=FloridaLakes, aes(x=Location, y=Mercury, fill=Location)) + 
+  geom_boxplot() +   geom_jitter() + ggtitle("Mercury Levels in Florida Lakes") + 
+  xlab("Location") + ylab("Mercury Level") + theme(axis.text.x = element_text(angle = 90)) + coord_flip()
+LakesBP
+```
+
+```{r}
+LakesTable <- FloridaLakes %>% group_by(Location) %>% summarize(MeanHg=mean(Mercury), 
+                                                  StDevHg=sd(Mercury), 
+                                                  N=n())
+LakesTable
+```
+
+In our sample of 33 Northern Lakes and 20 Southern Lakes, we saw a difference of 0.27 ppm. We'll calculate a confidence interval to estimate how big or small this difference could be among all Florida lakes.
+
+We'll use a statistical model to calculate the average mercury levels in Northern and Southern Florida.
+
+$$
+\widehat{\text{Mercury}} = b_0 +b_1\times{\text{South}}
+$$
+
+-   $b_0$ represents the mean mercury level for lakes in North Florida, and\
+-   $b_1$ represents the mean difference in mercury level for lakes in South Florida, compared to North Florida
+
+The estimates for corresponding to the original sample are shown below.
+
+
+
+```{r}
+M <- lm(data=FloridaLakes, Mercury~Location)
+M
+```
+
+
+A confidence interval for $b_0$ will tell us a range of plausible values for the mean mercury level among all lakes in Northern Florida. 
+
+A confidence interval for $b_1$ will tell us a range of plausible values for the mean mercury level among all lakes in Southern Florida.   
+
+We can obtain these confidence intervals by fitting a regression model to each of our bootstrap samples and recording the values of the statistics $b_0$ and $b_1$ in the bootstrap samples. 
+
+
+```{r}
+#First Bootstrap Sample 
+Bootstrap1 <- resample(FloridaLakes, replace = TRUE)
+Bootstrap1 |> arrange(ID)
+```
+
+**Bootstrap Sample 1**
+
+
+```{r}
+Bootstrap1_BP <- ggplot(data=Bootstrap1, aes(x=Location, y=Mercury, fill=Location)) + 
+  geom_boxplot() +   geom_jitter() + ggtitle("Mercury Levels in Florida Lakes") + 
+  xlab("Location") + ylab("Mercury Level") + theme(axis.text.x = element_text(angle = 90)) + coord_flip()
+Bootstrap1_BP
+```
+
+```{r}
+Bootstrap1_BP <- Bootstrap1 %>% group_by(Location) %>% summarize(MeanHg=mean(Mercury), 
+                                                  StDevHg=sd(Mercury), 
+                                                  N=n())
+Bootstrap1_BP
+```
+
+We fit a regression model to the bootstrap sample and calculate the regression coefficients. We're interested in the second coefficient, $b_1$, which represents the mean difference between lakes in Southern and Northern Florida.
+
+```{r}
+# Fit a linear model
+Mb1 <- lm(Mercury ~ Location, data = Bootstrap1)
+Mb1
+```
+
+The bootstrap estimates are $b_0$ = `r, Mb1$coef[1]` and $b_1$ = `r, Mb1$coef[2]`. 
+
+**Bootstrap Sample 2**
+
+```{r}
+# Second Bootstrap Sample
+
+Bootstrap2 <- resample(FloridaLakes, replace = TRUE)
+Bootstrap2 |> arrange(ID)
+```
+
+```{r}
+Bootstrap2_BP <- ggplot(data=Bootstrap2, aes(x=Location, y=Mercury, fill=Location)) + 
+  geom_boxplot() +   geom_jitter() + ggtitle("Mercury Levels in Florida Lakes") + 
+  xlab("Location") + ylab("Mercury Level") + theme(axis.text.x = element_text(angle = 90)) + coord_flip()
+Bootstrap2_BP
+```
+
+```{r}
+Bootstrap2_BP <- Bootstrap2 %>% group_by(Location) %>% summarize(MeanHg=mean(Mercury), 
+                                                  StDevHg=sd(Mercury), 
+                                                  N=n())
+Bootstrap2_BP
+```
+
+
+We fit a regression model to the bootstrap sample and calculate the regression coefficients. We're interested in the second coefficient, $b_1$, which represents the mean difference between lakes in Southern and Northern Florida.
+
+```{r}
+# Fit a linear model
+Mb2 <- lm(Mercury ~ Location, data = Bootstrap2)
+Mb2
+```
+
+The bootstrap estimates are  $b_1$ = `r, Mb2$coef[1]` and $b_1$ = `r, Mb2$coef[2]`. 
+
+We'll now take 10,000 different bootstrap samples and look at the bootstrap distribution for $b_1$, the difference in mean mercury levels between lakes in Southern and Northern Florida
+
+```{r}
+Lakes_Location_Model_Bootstrap <- do(10000) * lm(Mercury ~ Location, data = resample(FloridaLakes))
+```
+
+The bootstrap distribution for the difference in means, $b_0$, and $b_1$ are shown below. 
+
+
+```{r}
+# plot for b0
+Lakes_Location_Model_Bootstrap_Plot_b0 <- ggplot(data=Lakes_Location_Model_Bootstrap, aes(x=Intercept)) +  
+  geom_histogram(color="white", fill="lightblue", binwidth=0.02) +
+  xlab("b0: Mean mercury in Northern Fla.") + ylab("Frequency") +
+  ggtitle("Bootstrap Intercept b0") + 
+  theme(legend.position = "none") + theme_bw()
+
+# plot for b1
+Lakes_Location_Model_Bootstrap_Plot_b1 <- ggplot(data=Lakes_Location_Model_Bootstrap, aes(x=LocationS)) +  
+  geom_histogram(color="white", fill="lightblue", binwidth=0.02) +
+  xlab("b1: Mean difference between southern and northern Fla.") + ylab("Frequency") +
+  ggtitle("Bootstrap Intercept b1") + 
+  theme(legend.position = "none") + theme_bw()
+
+grid.arrange(Lakes_Location_Model_Bootstrap_Plot_b0, Lakes_Location_Model_Bootstrap_Plot_b1)
+```
+
+Since both distributions are symmetric and bell-shaped, we can calculate standard error confidence intervals. The `confint` command gives us standard errors and confidence intervals. 
+
+The standard error for $b_0$ is 
+
+```{r}
+SE_b0 <- sd(Lakes_Location_Model_Bootstrap$Intercept)
+SE_b0
+```
+
+This tells us how much the mean mercury level among lakes in Northern Florida would vary between different samples of 20 Northern lakes. 
+
+A 95% confidence interval for the mean mercury level among all lakes in Northern Florida is given by
+
+$$
+\begin{aligned}
+& b_0 \pm 2\times\text{SE}(b_0) \\
+& = 0.425 \pm 2\times{0.046}
+\end{aligned}
+$$
+
+The standard error for $b_1$ is 
+
+```{r}
+SE_b0 <- sd(Lakes_Location_Model_Bootstrap$Intercept)
+SE_b0
+```
+
+This tells us how much the difference in mean mercury level between lakes in Northern and Southern Florida would vary between different samples of 53 lakes.   
+
+
+```{r}
+SE_b1 <- sd(Lakes_Location_Model_Bootstrap$LocationS)
+SE_b1
+```
+
+
+
+$$
+\begin{aligned}
+& b_1 \pm 2\times\text{SE}(b_1) \\
+& = 0.271 \pm 2\times{0.097}
+\end{aligned}
+$$
+
+We can calculate these intervals automatically in R using the `confint` command. When calculating confidence intervals for a regression model we add `parm = c("Intercept", "LocationS")` to tell it to return intervals for the interval and the estimate associated with LocationS. If we leave out the `parm` argument, R will return additional confidence intervals that we aren't interested in here. 
+
+```{r}
+CI <- confint(Lakes_Location_Model_Bootstrap, parm = c("Intercept", "LocationS"),
+              level = 0.95, method = "se")
+CI
+```
+
+We add the confidence intervals to the plots of the bootstrap distributions below.   
+
+```{r}
+# CI plot for intercept b1
+CI_Plot_b0 <- Lakes_Location_Model_Bootstrap_Plot_b0 + 
+                geom_segment(aes(x=CI$lower[1], xend=CI$upper[1] , y=50, yend=50), 
+                color="gold", size=10, alpha=0.01) 
+
+# CI plot for b1
+CI_Plot_b1 <- Lakes_Location_Model_Bootstrap_Plot_b1 + 
+                geom_segment(aes(x=CI$lower[2], xend=CI$upper[2] , y=50, yend=50), 
+                color="gold", size=10, alpha=0.01)
+
+grid.arrange(CI_Plot_b0, CI_Plot_b1)
+
+```
+
+We are 95% confident that the mean mercury level among all lakes in Northern Florida is between `r round(CI$lower[1],2)` and `r round(CI$upper[1],2)` ppm.
+
+We are 95% confident that the mean mercury level among all lakes in Southern Florida is between `r round(CI$upper[2],2)` and `r round(CI$upper[2],2)` higher than the mean mercury level among all lakes in Northern Florida.
+
+
+### Adding pH to Model   
+
+Now, suppose we also want to investigate whether there is a relationship between a lake's mercury level and pH. We'll add pH to the model.  
+
+The model equation is:    
+
+$$
+\widehat{\text{Mercury}} = b_0 + b_1\times{\text{South}} + b_2\times{\text{pH}}
+$$
+
+In this model:  
+   - $b_0$ represents the mean mercury level among all lakes in Northern Florida with pH level 0. Since lakes will not have pH level 0 in reality, the intercept no longer has a meaningful interpretation.   
+    - $b_1$ represents the difference in mean mercury level among lakes in Southern and Northern Florida, assuming they have the same pH.      
+    - $b_2$ represents the expected change in mercury level for each 1-unit increase in pH, assuming location is the same.   
+
+The scatterplot displays the relationship between mercury level and pH, colored by location, with parallel regression lines fit to the data.      
+
+```{r}
+ggplot(data=FloridaLakes, aes(y=Mercury, x=pH, color=Location)) + 
+  geom_point() + 
+  geom_parallel_slopes(se=FALSE) 
+```
+
+We see that mercury tends to decrease as pH increases.  
+
+
+We fit the model in R and display the estimates $b_0$, $b_1$, and $b_2$.
+
+```{r}
+M <- lm(data=FloridaLakes, Mercury ~ Location + pH)
+M
+```
+
+-   On average, lakes with pH level 0 are expected to have a mercury level of 1.4 ppm. Since no lake has a pH of 0, this is not a meaningful interpretation. \  
+-   On average, lakes in Southern Florida are expected to have a mercury level 0.255 ppm higher than lakes in Northern Florida with the same pH.    
+-   For each one-unit increase in pH, mercury level is expected to decrease by 0.15 ppm, assuming location is the same.   
+
+As before, $b_0$, $b_1$, and $b_2$ are estimates calculated from a single sample of 53 lakes. We can use them as estimates of the coefficients we would see if we were able to fit a regression model to all Florida lakes.   
+
+We'll use bootstrapping to determine how much these estimates could vary between samples, and to obtain confidence intervals for the quantities of interest.   
+
+**Bootstrap Sample 1**
+
+We select a bootstrap sample and plot the relationship between Mercury, pH, and location. 
+
+```{r}
+#First Bootstrap Sample 
+Bootstrap1 <- resample(FloridaLakes, replace = TRUE)
+
+#Plot Bootstrap Sample
+ggplot(data=Bootstrap1, aes(y=Mercury, x=pH, color=Location)) + 
+  geom_point() + 
+  geom_parallel_slopes(se=FALSE) 
+```
+
+Model estimates for the bootstrap sample are shown below. 
+
+```{r}
+# Fit a linear model
+Mb1 <- lm(Mercury ~ Location + pH, data = Bootstrap1)
+Mb1
+```
+
+**Bootstrap Sample 2**
+
+We select a bootstrap sample and plot the relationship between Mercury, pH, and location. 
+
+```{r}
+#First Bootstrap Sample 
+Bootstrap2 <- resample(FloridaLakes, replace = TRUE)
+
+#Plot Bootstrap Sample
+ggplot(data=Bootstrap2, aes(y=Mercury, x=pH, color=Location)) + 
+  geom_point() + 
+  geom_parallel_slopes(se=FALSE) 
+```
+
+Model estimates for the bootstrap sample are shown below. 
+
+```{r}
+# Fit a linear model
+Mb2 <- lm(Mercury ~ Location + pH, data = Bootstrap2)
+Mb2
+```
+
+
+We'll now take 10,000 different bootstrap samples and look at the bootstrap distribution for $b_1$, the difference in mean mercury levels between lakes in Southern and Northern Florida
+
+```{r}
+Lakes_Location_Model_Bootstrap <- do(10000) * lm(Mercury ~ Location + pH, data = resample(FloridaLakes))
+```
+
+We'll focus on the bootstrap distribution for $b_2$, pertaining to the effect of pH.  
+
+```{r}
+# plot for b0
+Lakes_Location_Model_Bootstrap_Plot_b2 <- ggplot(data=Lakes_Location_Model_Bootstrap, aes(x=pH)) +  
+  geom_histogram(color="white", fill="lightblue", binwidth=0.01) +
+  xlab("b2: Effect of pH") + ylab("Frequency") +
+  ggtitle("Bootstrap Estimate b2") + 
+  theme(legend.position = "none") + theme_bw()
+
+Lakes_Location_Model_Bootstrap_Plot_b2
+```
+
+Again, notice that the bootstrap distribution is symmetric and bell-shaped, so we can calculate a confidence interval using the standard error method.  
+
+
+The standard error for $b_2$ is 
+
+```{r}
+SE_b2 <- sd(Lakes_Location_Model_Bootstrap$pH)
+SE_b2
+```
+
+This tells us how much the slope associated with pH would vary between different samples of 53 lakes. 
+
+A 95% confidence interval is
+
+$$
+\begin{aligned}
+& b_2 \pm 2\times\text{SE}(b_2) \\
+& = -0.15 \pm 2\times{0.024}
+\end{aligned}
+$$
+
+The `confint()` command displays this confidence interval, as well as those associated with $b_0$ and $b_1$. 
+
+```{r}
+CI <- confint(Lakes_Location_Model_Bootstrap, parm = c("Intercept", "LocationS", "pH"),
+              level = 0.95, method = "se")
+CI
+```
+
+The confidence interval associated with $b_2$, the effect of pH is shown below. 
+
+```{r}
+# CI plot for intercept b2
+CI_Plot_b2 <- Lakes_Location_Model_Bootstrap_Plot_b2 + 
+                geom_segment(aes(x=CI$lower[3], xend=CI$upper[3] , y=50, yend=50), 
+                color="gold", size=10, alpha=0.01) 
+CI_Plot_b2
+```
+
+
+We are 95% confident that for each one-unit increase in pH, mercury level is expected to decrease between about 0.1 and 0.19 ppm.  
+
+### CI for Regression Response
+
+In addition to calculating a confidence interval for the quantities associated with our estimates $b_0$, $b_1$, and $b_2$, we can also calculate a confidence interval for the average mercury level among all lakes with a given location and pH.
+
+We'll calculate a confidence interval for the average mercury level among all lakes in Southern Florida with a neutral pH level of 7. 
+
+The regression equation is
+
+$$
+\begin{aligned}
+\widehat{\text{Mercury}} & = b_0 + b_1\times\text{LocationS} + b_2\times\text{pH}\\
+\end{aligned}
+$$
+
+so the expected mercury level among all lakes in Southern Florida with $\text{pH} = 7$ is 
+
+$$
+b_0 + b_1 + 7b_2
+$$
+
+Plugging in the model estimates of $b_0$, $b_1$, and $b_2$, 
+
+$$
+\begin{aligned}
+\widehat{\text{Mercury}} & = 1.407 + 0.255(1) - 0.148(7) \\
+& \approx 0.626
+\begin{aligned}
+$$
+
+We can also calculate this using the `predict` function.
+
+```{r}
+predict(M, newdata = data.frame(Location = "S", pH=7))
+```
+
+We estimate that the average mercury level among lakes in Southern Florida with pH of 7 is 0.626 ppm.  
+
+This estimate is, however, a sample statistic like all the others we've seen. It was calculated from just our sample of 53 lakes, and if we had a different sample, we would have gotten a different estimate. Thus, we need to provide a confidence interval for mean mercury level among all lakes in South Florida with pH 7. We can do that using bootstrapping.  
+
+
+**Bootstrap Sample 1**
+
+We select a bootstrap sample and plot the relationship between Mercury, pH, and location. 
+
+```{r}
+#First Bootstrap Sample 
+Bootstrap1 <- resample(FloridaLakes, replace = TRUE)
+
+#Fit regression model to bootstrap sample
+Mb1 <- lm(Mercury ~ Location + pH, data=Bootstrap1)
+
+# predict mercury level
+predict(Mb1, newdata=data.frame(Location = "S", pH=7))
+```
+
+Based on this bootstrap sample, the mean mercury level among lakes in Southern Florida is estimated to be `r predict(Mb1, newdata=data.frame(Location = "S", pH=7))` ppm.   
+
+**Bootstrap Sample 2**
+
+We select a bootstrap sample and plot the relationship between Mercury, pH, and location. 
+
+```{r}
+#First Bootstrap Sample 
+Bootstrap2 <- resample(FloridaLakes, replace = TRUE)
+
+#Fit regression model to bootstrap sample
+Mb2 <- lm(Mercury ~ Location + pH, data=Bootstrap2)
+
+# predict mercury level
+predict(Mb2, newdata=data.frame(Location = "S", pH=7))
+```
+
+Based on the second bootstrap sample, the mean mercury level among lakes in Southern Florida is estimated to be `r predict(Mb2, newdata=data.frame(Location = "S", pH=7))` ppm.   
+
+
+We'll now take 10,000 different bootstrap samples and look at the bootstrap distribution for $b_0 + b_1 + 7b_2$, the estimated average mercury level among all lakes in Southern Florida with pH = 7. 
+
+```{r}
+Bootstrap_S_pH7 <- do(10000) * predict(lm(Mercury ~ Location + pH, data = resample(FloridaLakes)), newdata=data.frame(Location="S", pH=7))
+```
+
+The bootstrap distribution for average mercury level among all lakes in Southern Florida with pH = 7 is shown below.  
+
+```{r}
+# plot for b0 + b_1 + 7*b_2
+Bootstrap_S_pH7_Plot <- ggplot(data=Bootstrap_S_pH7, aes(x=X1)) +  
+  geom_histogram(color="white", fill="lightblue", binwidth=0.01) +
+  xlab("Estimated Mercury") + ylab("Frequency") +
+  ggtitle("Bootstrap Estimate b0 + b1 + 7*b2") + 
+  theme(legend.position = "none") + theme_bw()
+
+Bootstrap_S_pH7_Plot
+```
+
+Again, notice that the bootstrap distribution is symmetric and bell-shaped, so we can calculate a confidence interval using the standard error method.  
+
+
+The standard error for $b_0 + b_1 + 7b_2$ is 
+
+```{r}
+SE_Est <- sd(Bootstrap_S_pH7$X1)
+SE_Est
+```
+
+This tells us how much the estimated mercury level among lakes in Southern Florida with pH=7 would vary between different samples of 53 lakes. Note, this is **not** the same things as the variability between individual lakes with pH 7.   
+
+A 95% confidence interval for mean mercury level among lakes in Southern Florida with pH=7 is
+
+$$
+\begin{aligned}
+& b_0 + b_1 + 7b_2 \pm 2\times\text{SE}(b_0 + b_1 + 7b_2) \\
+& = 0.625 \pm 2\times{0.059}
+\end{aligned}
+$$
+
+
+We can also calculate the confidence interval using the `confint()` command below. 
+
+```{r}
+Bootstrap_S_pH7_CI <- do(10000) * predict(lm(Mercury ~ Location + pH, data = resample(FloridaLakes)), newdata=data.frame(Location="S", pH=7), interval = "confidence", level=0.95)
+
+CI <- confint(Bootstrap_S_pH7_CI, parm = "fit", method = "stderr")
+CI
+```
+
+```{r}
+Bootstrap_S_pH7_Plot  + 
+                geom_segment(aes(x=CI$lower, xend=CI$upper , y=50, yend=50), 
+                color="gold", size=10, alpha=0.01) 
+```
+
+We are 95% confident that the mean mercury level among lakes in Southern Florida with pH=7 is between 0.51 and 0.74 ppm. 
+
+It is important to note that we are **not** saying that we are 95% confident that the mercury level of an individual lake in South Florida with a pH of 7 will lie in this range. Confidence intervals are about population parameters like averages, rather than about individuals. An interval pertaining to mercury levels in individual lakes would need to be wider than this one. We'll talk about how to obtain these kinds of intervals later in the course.   
+
+### Bootstrapping Cautions
+
+While bootstrapping is a popular and robust procedure for calculating confidence intervals, it does have cautions and limitations. We should be sure to use the bootstrap procedure appropriate for our context. A standard-error bootstrap interval is appropriate when the sampling distribution for our statistic is roughly symmetric and bell-shaped. When this is not true, a percentile bootstrap interval can be used as long as there are no gaps or breaks in the bootstrap distribution. In situations where there are gaps and breaks in the bootstrap distribution, then the bootstrap distribution may not be a reasonable approximation of the sampling distribution we are interested in.
+
+
+
+
+\newpage
+
+## Hypothesis Testing
+
+### Mercury Levels in Florida Lakes
+
+Recall the 2004 study by Lange, T., Royals, H. and Connor, L., which examined Mercury accumulation in large-mouth bass, taken from a sample of 53 Florida Lakes. If Mercury accumulation exceeds 0.5 ppm, then there are environmental concerns. In fact, the legal safety limit in Canada is 0.5 ppm, although it is 1 ppm in the United States.
+
+In our sample, we have data on 53 lakes, out of more than 30,000 lakes in the the state of Florida.
+
+We are interested in whether mercury levels are higher or lower, on average, in Northern Florida compared to Southern Florida.
+
+We'll divide the state along route 50, which runs East-West, passing through Northern Orlando.
+
+```{r, echo=FALSE, out.width = '30%', fig.cap="from Google Maps"}
+knitr::include_graphics("Florida.png")
+```
+
+We add a variable indicating whether each lake lies in the northern or southern part of the state.
+
+We are interested in investigating whether average mercury levels are higher in either Northern Florida or Southern Florida than the other.
+
+The boxplot and table below show the distribution of mercury levels among the 33 northern and 20 southern lakes in the sample.
+
+```{r}
+LakesBP <- ggplot(data=FloridaLakes, aes(x=Location, y=Mercury, fill=Location)) + 
+  geom_boxplot() +   geom_jitter() + ggtitle("Mercury Levels in Florida Lakes") + 
+  xlab("Location") + ylab("Mercury Level") + theme(axis.text.x = element_text(angle = 90)) + ylim(c(0, 1.5)) + coord_flip() 
+LakesBP
+```
+
+```{r}
+LakesTable <- FloridaLakes %>% group_by(Location) %>% summarize(MeanHg=mean(Mercury), StDevHg=sd(Mercury),  N=n())
+kable(LakesTable)
+```
+
+We see that on average mercury levels were higher among the southern lakes than the northern ones, a difference of $0.697-0.445= 0.272$ ppm.
+
+### Model for Mercury Level
+
+We can use a statistical model to estimate a lake's mercury level, using its location (N or S) as our explanatory variable.
+
+The model equation is
+
+$\widehat{\text{Hg}} = b_0 +b_1\times\text{South}$
+
+-   $b_0$ represents the mean mercury level for lakes in North Florida, and\
+-   $b_1$ represents the mean difference in mercury level for lakes in South Florida, compared to North Florida
+
+Fitting the model in R, we obtain the estimates for $b_0$ and $b_1$.
+
+```{r}
+Lakes_M <- lm(data=FloridaLakes, Mercury ~ Location)
+Lakes_M
+```
+
+$$
+\widehat{\text{Hg}} = `r Lakes_M$coef[1]`+`r Lakes_M$coef[2]`\times\text{South}
+$$
+
+-   $b_1 = 0.272= 0.6965 - 0.4245$ is equal to the difference in mean mercury levels between Northern and Southern lakes. (We've already seen that for categorical variables, the least-squares estimate is the mean, so this makes sense.)
+
+-   We can use $b_1$ to assess the size of the difference in mean mercury concentration levels.
+
+### Hypotheses and Key Question
+
+Since the lakes we observed are only a sample of 53 lakes out of more than 30,000, we cannot assume the difference in mercury concentration for **all** Northern vs Southern Florida lakes is exactly 0.272. Instead, we need to determine whether a difference of this size in our sample is large enough to provide evidence of a difference in average mercury level between **all** Northern and Southern lakes in Florida.
+
+One possible explanation for us getting the results we did in our sample is that there really is no difference in average mercury levels between all lakes in Northern and Southern Florida, and we just happened, by chance, to select more lakes with higher mercury concentrations in Southern Florida than in Northern Florida. A different possible explanation is that there really is a difference in average mercury level between lakes in Northern and Southern Florida.
+
+In a statistical investigation, the **null hypothesis** is the one that says there is no difference between groups , or no relationship between variables in the larger population, and that any difference/relationship observed in our sample occurred merely by chance. The **alternative hypothesis** contradicts the null hypothesis, stating that there is a difference/relationship.
+
+Stated formally, the hypotheses are:
+
+**Null Hypothesis:** There is no difference in average mercury level between all lakes in Northern Florida and all lakes in Southern Florida.
+
+**Alternative Hypothesis:** There is a difference in average mercury level between all lakes in Northern Florida and all lakes in Southern Florida.
+
+A statistician's job is to determine whether the data provide strong enough evidence to rule out the null hypothesis.
+
+The question we need to investigate is:
+
+*"How likely is it that we would have observed a difference in means (i.e. a value of* $b_1$) as extreme as 0.6965-0.4245 = 0.272 ppm, merely by chance, if there is really no relationship between location and mercury level?"
+
+### Permutation Test for Difference in Means
+
+We can answer the key question using a procedure known as a **permutation test**. In a permutation test, we randomly permute (or shuffle) the values of our explanatory variable to simulate a situation where there is no relationship between our explanatory and response variable. We observe whether it is plausible to observe values of a statistic (in this case the difference in means) as extreme or more extreme than what we saw in the actual data.
+
+We'll simulate situations where there is no relationship between location and mercury level, and see how often we observe a difference in means ($b_1$) as extreme as 0.272.
+
+**Procedure:**
+
+1.  Randomly shuffle the locations of the lakes, so that any relationship between location and mercury level is due only to chance.
+
+2.  Calculate the difference in mean mercury levels (i.e. value of $b_1$) in "Northern" and "Southern" lakes, using the shuffled data. The statistic used to measure the size of the difference or relationship in the sample is called the **test statistic.**
+
+3.  Repeat steps 1 and 2 many (say 10,000) times, recording the test statistic (difference in means, $b_1$) each time.
+
+4.  Analyze the distribution of the test statistic (mean difference), simulated under the assumption that there is no relationship between location and mercury level. Look whether the value of the test statistic we observed in the sample (0.272) is consistent with values simulated under the assumption that the null hypothesis is true.
+
+This simulation can be performed using this [Rossman-Chance App](http://www.rossmanchance.com/applets/2021/anovashuffle/AnovaShuffle.htm?hideExtras=2).
+
+### Three Permutations in R
+
+We'll use R to perform permutation test.
+
+**First Permutation**
+
+Recall these groups were randomly assigned, so the only differences in averages are due to random chance.
+
+```{r}
+ShuffledLakes1 <- FloridaLakes |> mutate(ShuffledLocation = shuffle(Location))  
+head(ShuffledLakes1)                                        
+```
+
+Notice that the locations of the lakes have now been mixed up and assigned randomly. So, any relationship between location and mercury level will have occurred merely by chance.
+
+We create a boxplot and calculate the difference in mean mercury levels for the shuffled data.
+
+```{r}
+ShuffledLakes1_BP <- ggplot(data=ShuffledLakes1, aes(x=`ShuffledLocation`, 
+                                         y=Mercury, fill=`ShuffledLocation`)) + 
+  geom_boxplot() +   geom_jitter() + ggtitle("Mercury Levels in Florida Lakes") + 
+  xlab("Location") + ylab("Mercury Level") + theme(axis.text.x = element_text(angle = 90)) + 
+  ylim(c(0, 1.5)) + coord_flip()
+ShuffledLakes1_BP
+```
+
+```{r}
+ShuffledLakes1_Tab <- ShuffledLakes1 %>% group_by(`ShuffledLocation`) |>
+                      summarize(MeanHg=mean(Mercury), StDevHg=sd(Mercury),  N=n())
+kable(ShuffledLakes1_Tab)
+```
+
+We fit a model to the shuffled data and observe the coefficient $b_1$ representing the difference in means between the lakes randomly assigned to the Northern and Southern groups. 
+
+```{r}
+lm(data=ShuffledLakes1, Mercury ~ ShuffledLocation)
+```
+
+Notice that the sample means are not identical. We observe a difference of `r ShuffledLakes1_Tab[1,2] - ShuffledLakes1_Tab[2,2]` just by chance associated with the assignment of the lakes to their random location groups.
+
+This difference is considerably smaller than the difference of 0.272 that we saw in the actual data, suggesting that perhaps a difference as big as 0.272 would not be likely to occur by chance. Before we can be sure of this, however, we should repeat our simulation many times to get a better sense for how big of a difference we might reasonable expect to occur just by chance.
+
+**Second Permutation**
+
+We'll repeat the procedure, again randomly shuffling the locations of lakes. 
+
+```{r}
+ShuffledLakes2 <- FloridaLakes |> mutate(ShuffledLocation = shuffle(Location))  
+head(ShuffledLakes2)                                        
+```
+
+
+```{r}
+ShuffledLakes2_BP <- ggplot(data=ShuffledLakes2, aes(x=`ShuffledLocation`, 
+                                         y=Mercury, fill=`ShuffledLocation`)) + 
+  geom_boxplot() +   geom_jitter() + ggtitle("Mercury Levels in Florida Lakes") + 
+  xlab("Location") + ylab("Mercury Level") + theme(axis.text.x = element_text(angle = 90)) + 
+  ylim(c(0, 1.5)) + coord_flip()
+ShuffledLakes2_BP
+```
+
+```{r}
+ShuffledLakes2_Tab <- ShuffledLakes2 %>% group_by(`ShuffledLocation`) |>
+                      summarize(MeanHg=mean(Mercury), StDevHg=sd(Mercury),  N=n())
+kable(ShuffledLakes2_Tab)
+```
+
+```{r}
+lm(data=ShuffledLakes2, Mercury ~ ShuffledLocation)
+```
+
+Observed Difference in means: `r ShuffledLakes2_Tab[1,2] - ShuffledLakes2_Tab[2,2]`.
+
+**Third Permutation**
+
+
+We'll repeat the procedure one more time, randomly shuffling the locations of lakes. 
+
+```{r}
+ShuffledLakes3 <- FloridaLakes |> mutate(ShuffledLocation = shuffle(Location))  
+head(ShuffledLakes3)                                        
+```
+
+
+```{r}
+ShuffledLakes3_BP <- ggplot(data=ShuffledLakes3, aes(x=`ShuffledLocation`, 
+                                         y=Mercury, fill=`ShuffledLocation`)) + 
+  geom_boxplot() +   geom_jitter() + ggtitle("Mercury Levels in Florida Lakes") + 
+  xlab("Location") + ylab("Mercury Level") + theme(axis.text.x = element_text(angle = 90)) + 
+  ylim(c(0, 1.5)) + coord_flip()
+ShuffledLakes3_BP
+```
+
+```{r}
+ShuffledLakes3_Tab <- ShuffledLakes3 %>% group_by(`ShuffledLocation`) |>
+                      summarize(MeanHg=mean(Mercury), StDevHg=sd(Mercury),  N=n())
+kable(ShuffledLakes3_Tab)
+```
+
+```{r}
+lm(data=ShuffledLakes3, Mercury ~ ShuffledLocation)
+```
+
+Observed Difference in means: `r ShuffledLakes2_Tab[1,2] - ShuffledLakes2_Tab[2,2]`.
+
+
+So far, we haven't seen a difference anywhere near as big as the 0.272 we saw in the actual sample. But, to be sure, we'll repeat the shuffling 10,000 times and see how often we get a difference as extreme as the one we saw in the sample.  
+
+### R Code for Permutation Test
+
+Now, we'll perform 10,000 permutations and record the value of $b_1$ (the difference in sample means) for each simulation. 
+
+The values of $b_1$, the estimate pertaining to `LocationS` obtained for the first 10 permutations are shown below. 
+
+```{r}
+Lakes_Perm_Test <- do(10000) * lm(Mercury ~ shuffle(Location), data = FloridaLakes)
+```
+
+```{r}
+head(Lakes_Perm_Test$LocationS, 10)
+```
+
+We again see that none of these differences are as extreme as the 0.272 we saw in the actual data, suggesting that such a difference is unlikely to occur just by chance.  
+
+The histogram shows the distribution of differences in the group means observed in our simulation. The red lines indicate the difference we actually observed in the data (0.272), as well as an equally large difference in the opposite direction (-0.272).
+
+
+```{r}
+Estimate <- 0.272
+Extreme <- abs(Lakes_Perm_Test$LocationS) > 0.272
+  
+  
+Lakes_Perm_Test_Plot <- ggplot(data=Lakes_Perm_Test, aes(x=LocationS)) + 
+  geom_histogram(aes(fill = Extreme), color="white") + 
+  scale_fill_manual(values = c("FALSE" = "blue", "TRUE" = "red")) +
+  geom_vline(xintercept=c(Estimate, -1*Estimate), color="red") + 
+  xlab("Lakes: Simulated Value of b1") + ylab("Frequency") + 
+  ggtitle("Distribution of b1 under assumption of no relationship") +
+  theme(legend.position = "none")
+
+Lakes_Perm_Test_Plot
+```
+
+The red lines are quite extreme, relative to the simulated values shown in the histogram. Based on the simulation, it is rare to obtain a difference as extreme as the 0.272 value we saw in the actual data, by chance when there is actually no difference in average mercury levels between Northern and Southern Florida lakes.
+
+
+We calculate the precise number of simulations (out of 10,000) resulting in difference in means more extreme than 0.272.
+
+```{r}
+sum(~ (abs(LocationS) > 0.272), data = Lakes_Perm_Test)
+```
+
+The proportion of simulations resulting in difference in means more extreme than 0.272 is  
+
+```{r}
+prop(~ (abs(LocationS) > 0.272), data = Lakes_Perm_Test)
+```
+
+We only observed a difference between the groups as extreme or more extreme than the 0.272 difference we saw in the sample in a proportion of `r sum(~ (abs(LocationS) > 0.272), data = Lakes_Perm_Test)` of our simulations (less than 1%).
+
+The probability of getting a difference in means as extreme or more extreme than 0.272 ppm by chance, when there is no relationship between location and mercury level is about `r prop(~ (abs(LocationS) > 0.272), data = Lakes_Perm_Test)`. 
+
+It is very unlikely that we would have observed a result like we did by chance alone. Thus, we have strong evidence that there is a difference in average mercury level between lakes in Northern and Southern Florida. In this case, there is strong evidence that mercury level is higher in Southern Florida lakes than Northern Florida lakes.
+
+Recall that in the previous section, we found that we could be 95% confident that the mean mercury level among all lakes in Southern Florida is between 0.08 and 0.46 higher than the mean mercury level among all lakes in Northern Florida.
+
+### Test-statistic and p-value
+
+The statistic we use to measure the size of the difference or effect is called the **test statistic**. In this case, the test statistic is the difference in means.   
+
+The **p-value** represents the probability of getting a test statistic as extreme or more extreme than we did in our sample when the null hypothesis is true.    
+
+In this situation, the p-value represents the probability of observing a difference in sample means as extreme or more extreme than 0.272 if there is actually no difference in average mercury level among all lakes in Northern Florida, compared to Southern Florida.
+
+In our study, the p-value was `r sum(abs(b1Sim) > abs(b1))/10000`, which is very low. This provides strong evidence against the null hypothesis that there is no difference in average mercury levels between all Northern and Southern Florida lakes.
+
+A low p-value tells us that the difference in average Mercury levels that we saw in our sample is unlikely to have occurred by chance, providing evidence that there is indeed a difference in average Mercury levels between Northern and Southern lakes. When a p-value is small enough to suggest that the result was unlikely to have occurred by chance, the result is said to be **statistically discernible.** 
+
+Note that it is fairly common for people to use the phrase *statistically significant* instead of statistically discernible. We will avoid this phrase because the word *significant* can be easily confused with *important*. Not all statistically discernible results are actually important in a practical sense. The p-value does not tell us anything about the size of the difference! Sometimes, we might get a small p-value even when difference is so small that it is not practically meaningful. This is especially true when we have a large sample size. In addition to a p-value, we should consider whether a difference is big enough to be meaningful in a practical way, before making any policy decisions.
+
+For now, we can use the difference in sample means of 0.272 ppm as an estimate of the size of the difference. Based on our limited knowledge of mercury levels, this does seem big enough to merit further investigation, and possible action.
+
+At this point, a reasonable question is "how small must a p-value be in order to provide evidence against the null hypothesis?" While it is sometimes common to establish strict cutoffs for what counts as a small p-value (such as $<0.05$), the American Statistical Association does not recommend this. In reality, a p-value of 0.04 is practically no different than a p-value of 0.06. Rather than using strict cutoffs for what counts as small, it is better to interpreting p-values on a sliding scale, as illustrated in the diagram below. A p-value of 0.10 or less provides at least some evidence against a null hypothesis, and the smaller the p-value is, the stronger the evidence gets.
+
+
+
+
+
+```{r, out.width = '100%'}
+knitr::include_graphics("pvals.png")
+```
+
+\newpage
+
+### Chlorophyll in Lakes
+
+Chlorophyll, which comes from plants, is also present in water. Unlike mercury, higher levels of chlorophyll are not dangerous, but the amount of chlorophyll can be an indicator of plant life in the lake. We'll test whether we have evidence of a difference in mean amount of chlorophyll between lakes in Northern and Southern Florida.  
+
+The boxplot and table below show the distribution of chlorophyll levels among the 33 northern and 20 southern lakes in the sample.
+
+```{r}
+LakesBP <- ggplot(data=FloridaLakes, aes(x=Location, y=Chlorophyll, fill=Location)) + 
+  geom_boxplot(outliers=FALSE) +   geom_jitter() + ggtitle("Chlorophyll in Florida Lakes") + 
+  xlab("Location") + ylab("Chlorophyll Amount in mg/m^3 ") + theme(axis.text.x = element_text(angle = 90)) + coord_flip() 
+LakesBP
+```
+
+```{r}
+LakesTable <- FloridaLakes %>% group_by(Location) %>% summarize(MeanHg=mean(Chlorophyll), StDevHg=sd(Chlorophyll),  N=n())
+kable(LakesTable)
+```
+
+We see that on average mercury levels were higher among the lakes in northern Florida by about 4 mg/$m^3$. We'll use a permutation test to investigate whether such a difference could occur by random selection of lakes if there is really no relationship between chlorophyll and location.   
+
+The hypotheses are:   
+
+**Null Hypothesis:** There is no difference in average chlorophyll amount between all lakes in Northern Florida and all lakes in Southern Florida.
+
+**Alternative Hypothesis:** There is a difference in average chlorophyll amount between all lakes in Northern Florida and all lakes in Southern Florida.
+
+The model equation is
+
+$\widehat{\text{Chlorophyll}} = b_0 +b_1\times\text{South}$
+
+-   $b_0$ represents the mean chlorophyll amount for lakes in North Florida, and\
+-   $b_1$ represents the mean difference in chlorophyll amount for lakes in South Florida, compared to North Florida
+
+Fitting the model in R, we obtain the estimates for $b_0$ and $b_1$.
+
+```{r}
+Lakes_M_Chl <- lm(data=FloridaLakes, Chlorophyll ~ Location)
+Lakes_M_Chl
+```
+$b_1$ gives the mean difference in chlorophyll between the Northern and Southern lakes in our sample. The question we need to investigate is:
+
+*"How likely is it that we would have observed a difference in means (i.e. a value of* $b_1$) as extreme as -3.9 mg/$m^3$, merely by chance, if there is really no relationship between location and chlorophyll amount?"
+
+
+We'll perform 10,000 permutations and record the value of $b_1$ (the difference in sample means) for each simulation, just as we did for mercury levels. 
+
+The values of $b_1$, the estimate pertaining to `LocationS` obtained for the first 10 permutations are shown below. 
+
+```{r}
+Lakes_Perm_Test <- do(10000) * lm(Chlorophyll ~ shuffle(Location), data = FloridaLakes)
+```
+
+
+The histogram shows the distribution of differences in the group means observed in our simulation. The red lines indicate the difference we actually observed in the data (0.272), as well as an equally large difference in the opposite direction (-0.272).
+
+
+```{r}
+Estimate <- -3.922
+Extreme <- abs(Lakes_Perm_Test$LocationS) > 3.922
+  
+  
+Lakes_Perm_Test_Plot <- ggplot(data=Lakes_Perm_Test, aes(x=LocationS)) + 
+  geom_histogram(aes(fill = Extreme), color="white") + 
+  scale_fill_manual(values = c("FALSE" = "blue", "TRUE" = "red")) +
+  geom_vline(xintercept=c(Estimate, -1*Estimate), color="red") + 
+  xlab("Lakes: Simulated Value of b1") + ylab("Frequency") + 
+  ggtitle("Distribution of b1 under assumption of no relationship") +
+  theme(legend.position = "none")
+
+Lakes_Perm_Test_Plot
+```
+
+This time, the red lines are not very extreme. The difference of -3.9 mg/$m^3$ seen in our sample happens quite often, even in a situation where there is really no relationship between location and chlorophyll amount.  
+
+Our p-value, represemtomg the proportion of simulations resulting in difference in means more extreme than 3.9 is
+
+```{r}
+prop(~ (abs(LocationS) > 3.9), data = Lakes_Perm_Test)
+```
+
+This p-value represents the probability of observing a difference in means as extreme or more extreme than -3.9 $mg/m^3$ if there is really no relationship between location and chlorophyll amount. 
+
+Since the p-value is quite large (much bigger than common criteria like 0.05 or 0.10), we cannot rule out the null hypothesis. It would not be unusual to see data like we did in a situation where the null hypothesis is actually true. Thus, we do not have enough evidence to conclude that average chlorophyll amount differs between lakes in Northern and Southern Florida. 
+
+
+Just because we cannot rule out, or reject, the null hypothesis does not mean that we should believe it is true. Afterall, we did observe an average difference of about 4 $mg/m^3$. It's just that given the size of our sample and the amount of variability in the data, we cannot be sure that this difference didn't occur by chance associated with random selection of the lakes. Thus, while we do not reject the null hypothesis, we also shouldn't accept it, or believe it to be true. We shouldn't say that we believe that chlorophyll amount is the same in Northern and Southern Florida, only that we don't have enough evidence to conclude that it differs. "Accepting" the null hypothesis is a common fallacy committed in hypothesis testing that has sometimes had disastrous implications in scientific research. 
+
+
+### Effect of pH on Mercury
+
+Next, we'll investigate whether there is a relationship between a lake's mercury level and it's pH, a measure of the acidity of a lake. A pH of 7 is considered neutral, while a lower pH indicates that the water is more acidic and higher pH indicates that the water is more basic. 
+
+The plot below shows the relationship between a lake's mercury level and pH. 
+
+
+```{r}
+ggplot(data=FloridaLakes, aes(y=Mercury, x=pH)) + 
+  geom_point() + stat_smooth(method="lm", se=FALSE) + 
+  xlim(c(3, 10)) + ylim(c(0,1.5))
+```
+
+There seems to be a strong relationship between the two, but we should investigate whether such relationship could plausible occur in a sample of 53 lakes, in a situation where there is really no such relationship among all lakes. 
+
+The regression equation is
+
+$$
+\widehat{\text{Mercury}} = b_0 + b_1\times\text{pH}
+$$
+
+Regression estimates $b_0$ and $b_1$ are shown below.
+
+```{r}
+Lakes_M_pH <- lm(data=FloridaLakes, Mercury~pH)
+Lakes_M_pH
+```
+
+For quantitative explanatory variables, we can use the slope of the regression line $b_1$ to measure the strength relationship between Mercury and pH. Based on our sample, for each one-unit increase in pH, mercury level is expected to decrease by 0.15 ppm.
+
+If there was really no relationship, then the slope among all lakes would be 0. But, of course, we would not expect the slope in our sample to exactly match the slope for all lakes. Our question of interest is whether it is plausible that we could have randomly selected a sample resulting in a slope as extreme as 0.15 by chance, when there is actually no relationship between mercury and pH levels, among all lakes. In other words, could we plausible have drawn the sample of 53 lakes shown in blue from a population like the one in red, shown below?
+
+```{r, fig.height=4, fig.width=7, echo=FALSE}
+Rx <- runif(1000, 3, 10)
+Ry <- runif(1000, 0, 1.5)
+pH <- c(Rx, FloridaLakes$pH)
+Hg <- c(Ry, FloridaLakes$Mercury)
+InSample <- c(rep("No", 1000), rep("Yes", 53))
+df <- data.frame(pH, Hg, InSample)
+ggplot(data=df, aes(x=pH, y=Hg, color=InSample)) + geom_point() + ylab("Mercury") + 
+  xlim(c(3, 10)) + ylim(c(0,1.5))
+```
+
+**Key Question:**
+
+-   How likely is it that we would have observed a slope (i.e. a value of $b_1$) as extreme as 0.15 by chance, if there is really no relationship between mercury level and pH?
+
+**Null Hypothesis:** Among all Florida lakes, there is no relationship between mercury level and pH.
+
+**Alternative Hypothesis:** Among all Florida lakes, there is a relationship between mercury level and pH.
+
+**Procedure:**
+
+1.  Randomly shuffle the pH values, so that any relationship between acceleration mercury and pH is due only to chance.
+
+2.  Fit a regression line to the shuffled data and record the slope of the regression line.
+
+3.  Repeat steps 1 and 2 many (say 10,000) times, recording the slope (i.e. value of $b_1$) each time.
+
+4.  Analyze the distribution of slopes, simulated under the assumption that there is no relationship between mercury and pH. Look whether the actual slope we observed is consistent with the simulation results.
+
+We'll illustrate the first three permutations.
+
+**First Permutation**
+
+Recall these groups were randomly assigned, so the only differences in averages are due to random chance.
+
+```{r}
+ShuffledLakes1 <- FloridaLakes |> mutate(ShuffledpH = shuffle(pH))  
+head(ShuffledLakes1)                                 
+```
+
+Notice that the pH's of the lakes have now been mixed up and assigned randomly. So, any relationship between pH and mercury level will have occurred merely by chance.
+
+We create a scatterplot and fit a regression line to the shuffled data. 
+
+The red line indicates the slope of the regression line fit to the shuffled data. The blue line indicates the regression line for the actual lakes in the sample, which has a slope of -0.15.
+
+```{r}
+ggplot(data=ShuffledLakes1, aes(x=ShuffledpH, y=Mercury)) + 
+  geom_point() + stat_smooth(method="lm", se=FALSE, color="red") + 
+  xlim(c(3, 10)) + ylim(c(0,1.5)) + 
+  geom_abline(slope=-0.1523, intercept=1.5309, color="blue")
+```
+
+Slope of regression line from permuted data:
+
+```{r}
+M_Lakes_Shuffle <- lm(data=ShuffledLakes1, Mercury~ShuffledpH)
+summary(M_Lakes_Shuffle)$coef[2]
+```
+
+We observed a slight correlation just by chance, but nowhere near as large as the slope of -0.15 that we saw in the actual data. 
+
+**Second Permutation**
+
+We'll repeat the procedure, again randomly shuffling the pH's of lakes. 
+
+Recall these groups were randomly assigned, so the only differences in averages are due to random chance.
+
+```{r}
+ShuffledLakes2 <- FloridaLakes |> mutate(ShuffledpH = shuffle(pH))  
+head(ShuffledLakes2)                                 
+```
+
+
+```{r}
+ggplot(data=ShuffledLakes2, aes(x=ShuffledpH, y=Mercury)) + 
+  geom_point() + stat_smooth(method="lm", se=FALSE, color="red") + 
+  xlim(c(3, 10)) + ylim(c(0,1.5)) + 
+  geom_abline(slope=-0.1523, intercept=1.5309, color="blue")
+```
+
+Slope of regression line from permuted data:
+
+```{r}
+M_Lakes_Shuffle <- lm(data=ShuffledLakes2, Mercury~ShuffledpH)
+summary(M_Lakes_Shuffle)$coef[2]
+```
+
+The slope on the randomly shuffled data is again not nearly as large as the slope of -0.15 that we saw in the actual data. 
+
+**Third Permutation**
+
+
+We'll repeat the procedure one more time, randomly shuffling the pH's of lakes. 
+
+Recall these groups were randomly assigned, so the only differences in averages are due to random chance.
+
+```{r}
+ShuffledLakes2 <- FloridaLakes |> mutate(ShuffledpH = shuffle(pH))  
+head(ShuffledLakes2)                                 
+```
+
+
+```{r}
+ggplot(data=ShuffledLakes2, aes(x=ShuffledpH, y=Mercury)) + 
+  geom_point() + stat_smooth(method="lm", se=FALSE, color="red") + 
+  xlim(c(3, 10)) + ylim(c(0,1.5)) + 
+  geom_abline(slope=-0.1523, intercept=1.5309, color="blue")
+```
+
+Slope of regression line from permuted data:
+
+```{r}
+M_Lakes_Shuffle <- lm(data=ShuffledLakes2, Mercury~ShuffledpH)
+summary(M_Lakes_Shuffle)$coef[2]
+```
+
+
+None of our three simulations resulted in a slope near as extreme as the -0.15 that we saw in the actual data. This seems to suggest that it is unlikely that we would have observed a slope as extreme as -0.15 if there is actually no relationship between mercury and pH among all lakes.
+
+To be more sure, we should repeat the simulation many more times to see whether getting a slope as extreme as -0.15 is plausible in a situation where there is no relationship between mercury level and pH of a lake.
+
+```{r}
+Lakes_pH_Perm_Test <- do(10000) * lm(Mercury ~ shuffle(pH), data = FloridaLakes)
+```
+
+```{r}
+Estimate <- -0.1523
+Extreme <- abs(Lakes_pH_Perm_Test$pH) > 0.1523
+  
+  
+Lakes_Perm_Test_Plot <- ggplot(data=Lakes_pH_Perm_Test, aes(x=pH)) + 
+  geom_histogram(aes(fill = Extreme), color="white") + 
+  scale_fill_manual(values = c("FALSE" = "blue", "TRUE" = "red")) +
+  geom_vline(xintercept=c(Estimate, -1*Estimate), color="red") + 
+  xlab("Lakes pH: Simulated Value of b1") + ylab("Frequency") + 
+  ggtitle("Distribution of b1 under assumption of no relationship") +
+  theme(legend.position = "none")
+
+Lakes_Perm_Test_Plot
+```
+
+**p-value:** Proportion of simulations resulting in value of $b_1$ more extreme than -0.15
+
+```{r}
+prop(~ (abs(pH) > 0.1523), data = Lakes_pH_Perm_Test)
+```
+
+The p-value represents the probability of observing a slope as extreme or more extreme than -0.15 by chance when there is actually no relationship between mercury level and pH.
+
+It is extremely unlikely that we would observe a value of $b_1$ as extreme as -0.15 by chance, if there is really no relationship between mercury level and pH. In fact, this never happened in any of our 10,000 simulations!
+
+There is very strong evidence of a relationship mercury level and pH.
+
+A low p-value tells us only that there is evidence of a relationship, not that it is practically meaningful. We have seen that for each one-unit increase in pH, mercury level is expected to decrease by 0.15 ppm on average, which seems like a pretty meaningful decrease, especially considering that mercury levels typically stay between 0 and 1.
+
+We used the slope as our test statistic to measure the evidence of the relationship between the explanatory and response variables. In fact, we could have also used the correlation coefficient $r$ as our test statistic, and we would have gotten the same p-value. Either slope or correlation may be used for a hypothesis test involving two quantitative variables, but we will use slope in this class.
+
+### Three or More Groups
+
+Next, we'll investigate whether mercury levels tend to differ between lakes of different depths. The `DepthClass` variable classifies lakes as either shallow (less than 15 feet at deepest point), medium (15-30 feet deep), or deep (deeper than 30 feet).  
+
+Comparative boxplots and a table are shown below.
+
+```{r}
+ggplot(data=FloridaLakes, aes(x=DepthClass, y=Mercury, fill=DepthClass)) + 
+  geom_boxplot(outlier.shape = NA) + geom_jitter(alpha=0.5) +
+  stat_summary(fun.y="mean", geom="point", shape=20, color="red", fill="red")+ 
+  coord_flip() + ggtitle("Mercury by Depth")
+```
+
+```{r}
+Cond_Tab <- FloridaLakes %>% group_by(DepthClass) %>% summarize(Mean_Hg = mean(Mercury) |> round(3), 
+                                                                SD_Hg= sd (Mercury) |> round(3), 
+                                                                N= n())
+kable(Cond_Tab)
+```
+
+We see that mean mercury level is highest in the deepest lakes, and lowest in the shallowest lakes. We'll again want to investigate whether the differences we see could be evidence of a relationship between depth and mercury level, or whether differences like these could have plausibly occurred even if there was no relationship.  
+
+**Null Hypothesis:** There is no difference in average mercury levels between shallow, medium, and deep lakes. 
+
+**Alternative Hypothesis:** There is no difference in average mercury levels between shallow, medium, and deep lakes. 
+
+
+If we were only comparing two groups, we could use the difference in means as a test statistic, like we did when testing for differences in location. But with three groups, we would have three different differences in means to test (shallow-medium, shallow-deep, medium-deep). We need a single statistic that can measure the size of differences between all three groups. An F-statistic can do this, so we'll use the F-statistic as our test statistic here.
+
+
+```{r}
+M_Depth <-  do(1) * lm(data=FloridaLakes, Mercury ~ DepthClass)
+Perm_Test_Depth$F
+```
+
+Our question of interest is "How likely is it to observe an F-statistic as extreme or more extreme than 1.63 if there is actually no difference in average mercury level between the three depths?"
+
+We'll use a permutation-based hypothesis test to investigate this question.
+
+**Procedure:**
+
+1.  Randomly shuffle the depth categories of the lakes, so that any relationship between depth and mercury is due only to chance.
+
+2.  Using the shuffled data, calculate an F-statistic for a model predicting mercury, comparing a full model that uses depth as an explanatory variable, to a reduced model with no explanatory variables.
+
+3.  Repeat steps 1 and 2 many (say 10,000) times, recording the F-statistic each time.
+
+4.  Analyze the distribution of F-statistics, simulated under the assumption that there is no relationship between depth and mercury level. Look whether the actual F-statistic we observed is consistent with the simulation results.
+
+We'll illustrate the first three permutations.
+
+**First Permutation**
+
+Recall these groups were randomly assigned, so the only differences in averages are due to random chance.
+
+```{r}
+ShuffledLakes1 <- FloridaLakes |> mutate(ShuffledDepth = shuffle(DepthClass))  
+head(ShuffledLakes1)                                 
+```
+
+Notice that the depths of the lakes have now been mixed up and assigned randomly. So, any relationship between depth and mercury level will have occurred merely by chance.
+
+We create a boxplot and calculate the mean mercury levels for each depth class in the shuffled data.
+
+```{r}
+ggplot(data=ShuffledLakes1, aes(x=ShuffledDepth, y=Mercury, fill=ShuffledDepth)) + 
+  geom_boxplot(outlier.shape = NA) + geom_jitter(alpha=0.5) +
+  stat_summary(fun.y="mean", geom="point", shape=20, color="red", fill="red")+ 
+  coord_flip() + ggtitle("Boxplot for Shuffled Depth Classes")
+```
+
+```{r}
+Cond_Tab <- ShuffledLakes1 %>% group_by(ShuffledDepth) %>% summarize(Mean_Hg = mean(Mercury) |> round(3), 
+                                                                SD_Hg= sd (Mercury) |> round(3), 
+                                                                N= n())
+kable(Cond_Tab)
+```
+
+Notice that the differences between the groups appear as big or bigger than what we saw in the actual data, even though these groups were obtained by randomly assigning lakes to depth classes, meaning there is actually no relationship between depth and mercury level. The differences we see occur just by random assignment. 
+
+We fit a model to the shuffled data and record the F-statistic. 
+
+```{r}
+Perm_Test_Depth <- do(1) * lm(Mercury ~ ShuffledDepth , data = ShuffledLakes1)
+head(Perm_Test_Depth$F)
+```
+
+The F-statistic observed in the shuffled data is  `anova(M_Depth_Shuffle1)$`F value`[1]`, which is larger than what we saw in the actual data.  
+
+
+
+
+
+**Second Permutation**
+
+We'll repeat the procedure, again randomly shuffling the depths of lakes. 
+
+Recall these groups were randomly assigned, so the only differences in averages are due to random chance.
+
+```{r}
+ShuffledLakes2 <- FloridaLakes |> mutate(ShuffledDepth = shuffle(DepthClass))  
+head(ShuffledLakes2)                                 
+```
+
+
+```{r}
+ggplot(data=ShuffledLakes2, aes(x=ShuffledDepth, y=Mercury, fill=ShuffledDepth)) + 
+  geom_boxplot(outlier.shape = NA) + geom_jitter(alpha=0.5) +
+  stat_summary(fun.y="mean", geom="point", shape=20, color="red", fill="red")+ 
+  coord_flip() + ggtitle("Boxplot for Shuffled Depth Classes")
+```
+
+```{r}
+Cond_Tab <- ShuffledLakes2 %>% group_by(ShuffledDepth) %>% summarize(Mean_Hg = mean(Mercury) |> round(3), 
+                                                                SD_Hg= sd (Mercury) |> round(3), 
+                                                                N= n())
+kable(Cond_Tab)
+```
+
+
+```{r}
+Perm_Test_Depth <- do(1) * lm(Mercury ~ ShuffledDepth , data = ShuffledLakes2)
+head(Perm_Test_Depth$F)
+```
+
+The F-statistic observed in the shuffled data is  `anova(M_Depth_Shuffle2)$`F value`[1]`.
+
+**Third Permutation**
+
+We'll repeat the procedure, one more time, again randomly shuffling the depths of lakes. 
+
+```{r}
+ShuffledLakes3 <- FloridaLakes |> mutate(ShuffledDepth = shuffle(DepthClass))  
+head(ShuffledLakes3)                                 
+```
+
+
+```{r}
+ggplot(data=ShuffledLakes3, aes(x=ShuffledDepth, y=Mercury, fill=ShuffledDepth)) + 
+  geom_boxplot(outlier.shape = NA) + geom_jitter(alpha=0.5) +
+  stat_summary(fun.y="mean", geom="point", shape=20, color="red", fill="red")+ 
+  coord_flip() + ggtitle("Boxplot for Shuffled Depth Classes")
+```
+
+```{r}
+Cond_Tab <- ShuffledLakes3 %>% group_by(ShuffledDepth) %>% summarize(Mean_Hg = mean(Mercury) |> round(3), 
+                                                                SD_Hg= sd (Mercury) |> round(3), 
+                                                                N= n())
+kable(Cond_Tab)
+```
+
+
+```{r}
+Perm_Test_Depth3$F
+```
+
+The F-statistic observed in the shuffled data is  `anova(M_Depth_Shuffle3)$`F value`[1]`.
+
+
+
+
+We'll repeat the simulation many more times to see whether getting an F-statistic as extreme as 1.62 is plausible in a situation where there is no relationship between depth and average mercury level. The first 6 simulated F-statistics are shown below.  Recall that these are simulated under the assumption that there is no difference in average mercury between shallow, medium, and deep lakes, i.e. no relationship between mercury level and depth.
+
+
+```{r}
+Perm_Test_Depth <- do(1) * lm(Mercury ~ ShuffledDepth , data = ShuffledLakes3)
+head(Perm_Test_Depth$F)
+```
+
+The distribution of the F-statistics is shown below. As usual, the red line represents the F-statistic observed in our actual data. Since F-statistics cannot be negative, we don't need to worry about finding an F-statistic as extreme in the opposite direction.
+
+
+```{r}
+Fstat <- 1.628
+Extreme <- Perm_Test_Depth$F > 1.628
+  
+  
+Lakes_Perm_Test_Plot <- ggplot(data=Perm_Test_Depth, aes(x=F)) + 
+  geom_histogram(aes(fill = Extreme), color="white") + 
+  scale_fill_manual(values = c("FALSE" = "blue", "TRUE" = "red")) +
+  geom_vline(xintercept=c(Fstat), color="red") + 
+  xlab("Lakes Depth: Simulated F-statistic") + ylab("Frequency") + 
+  ggtitle("Distribution of F-stat under assumption of no relationship") +
+  theme(legend.position = "none")
+
+Lakes_Perm_Test_Plot
+```
+
+Notice that unlike the permutation distributions we've seen before, the distribution of the F-statistic is not symmetric. Recall that F-statistics can only take on positive values, which results in this right-skewed shape. Nevertheless, we can still look at where the F-statistic we observed in our data lies relative to those obtained in a simulation that assumed the null hypothesis of no relationship was true. 
+
+The result we observed seems pretty consistent with the simulated values in the histogram. The red line is not very extreme. 
+
+**p-value:** Proportion of simulations resulting in F-statistic more extreme than 1.628:
+
+```{r}
+prop(~ (F > 1.628), data = Perm_Test_Depth)
+```
+
+This p-value represents the probabilty of observing an F-statistic as extreme or more extreme than we 1.628 if there is really no relationship between a lake's depth and mercury level. 
+
+Since the p-value is large, it is plausible that we would see differences like we did in the actual data in a situation where the null hypothesis is true. 
+
+We cannot reject the null hypothesis. We do not have enough evidence to say that average mercury levels differ between shallow, medium, and deep lakes.  
+
+We are not saying that we think mercury levels are the same between the three different depths (i.e. we're not accepting the null hypothesis), just that we don't have enough evidence to say that they differ.  
+
+
+\newpage
+
+## Responsible Hypothesis Testing
+
+While hypothesis tests are a powerful tool in statistics, they are also one that has been widely misused, to the detriment of scientific research. The hard caused by these misuses caused the American Statistical Association to release a [2016 statement](https://www.amstat.org/asa/files/pdfs/p-valuestatement.pdf), intended to provide guidance and clarification to scientists who use hypothesis testing and p-values in their research.
+
+The statement provides the following six principles for responsible use of hypothesis tests and p-values.
+
+1.  P-values can indicate how incompatible the data are with a specified statistical model.
+
+2.  P-values do not measure the probability that the studied hypothesis is true, or the probability that the data were produced by random chance alone.
+
+3.  Scientific conclusions and business or policy decisions should not be based only on whether a p-value passes a specific threshold.
+
+4.  Proper inference requires full reporting and transparency.
+
+5.  A p-value, or statistical significance, does not measure the size of an effect or the importance of a result.
+
+6.  By itself, a p-value does not provide a good measure of evidence regarding a model or hypothesis.
+
+The statement provides important guidance for us to consider as we work with hypothesis testing in this class, as well as in future classes and potentially in our own research.
+
+-   A hypothesis test can only tell us the strength of evidence against the null hypothesis. The absence of evidence against the null hypothesis should not be interpreted as evidence for the null hypothesis.
+
+-   We should never say that the data support/prove/confirm the null hypothesis.
+
+-   We can only say that the data do not provide evidence against the null hypothesis.
+
+**What to conclude from p-values and what not to:**
+
+-   A low p-value provides evidence against the null hypothesis. It suggests the test statistic we observed is inconsistent with the null hypothesis.
+
+-   A low p-value does **not** tell us that the difference or relationship we observed is meaningful in a practical sense. Researchers should look at the size of the difference or strength of the relationship in the sample before deciding whether it merits being acted upon.
+
+-   A high p-value means that the data could have plausibly been obtained when the null hypothesis is true. The test statistic we observed is consistent with what we would have expected to see when the null hypothesis is true, and thus we cannot rule out the null hypothesis.
+
+-   A high p-value does **not** mean that the null hypothesis is true or probably true. A p-value can only tell us the strength of evidence against the null hypothesis, and should never be interpreted as support for the null hypothesis.
+
+Just because our result is consistent with the null hypothesis does not mean that we should believe that null hypothesis is true. Lack of evidence against a claim does not necessarily mean that the claim is true.
+
+In this scenario, we got a small p-value, but we should also be aware of what we should conclude if the p-value is large. Remember that the p-value only measures the strength of evidence *against* the null hypothesis. A large p-value means we lack evidence against the null hypothesis. This does not mean, however, that we have evidence *supporting* null hypothesis.
+
+A hypothesis test can be thought of as being analogous to a courtroom trial, where the null hypothesis is that the defendant did not commit the crime. Suppose that after each side presents evidence, the jury remains unsure whether the defendant committed the crime. Since the jury does not have enough evidence to be sure, they must, under the law of the United States find the defendant "not guilty." This does not mean that the jury thinks the defendant is innocent, only that they do not have enough evidence to be sure they are guilty. Similarly in a hypothesis test, a large p-value indicates a lack of evidence against the null hypothesis, rather than evidence supporting it. As such, we should avoid statements suggesting we "support", "accept", or "believe" the null hypothesis, and simply state that we lack evidence against it.
+
+**Things to say when the p-value is large:**
+
+-   The data are consistent with the null hypothesis.\
+-   We do not have enough evidence against the null hypothesis.\
+-   We cannot reject the null hypothesis.\
+-   The null hypothesis is plausible.
+
+**Things NOT to say when the p-value is large:**
+
+-   The data support the null hypothesis.\
+-   The data provide evidence for the null hypothesis.\
+-   We accept the null hypothesis.\
+-   We conclude that the null hypothesis is true.
+
+Thus, if we had obtained a large p-value in the comparison in mercury levels between Northern and Southern lakes, the appropriate conclusion would be
+
+"We do not have evidence that the average mercury level differs between lakes in Northern Florida, compared to Southern Florida."
+
+Even if we got a large p-value it would be incorrect to say "There is no difference in average mercury levels between lakes in Northern Florida and Southern Florida."
+
+We would just be saying that given the size of our sample and the amount of variability on the date, we cannot rule out the possibility of observing a difference like we did by chance, when there really is no difference.
+
+```{r, echo=FALSE}
+#save.image(file = "Environment.RData")
+```

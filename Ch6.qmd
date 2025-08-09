@@ -1,11 +1,16 @@
 # Logistic Regression
 
-**Learning Outcomes:**
+### Learning Outcomes
 
-37. Identify situations where it is appropriate to use a logistic regression model.\
-38. Calculate probabilities and odds using logistic regression.\
-39. Interpret logistic regression coefficients in context.\
-40. Implement logistic regression models in R.
+**Conceptual Learning Outcomes**   
+34. Identify situations where it is appropriate to use a logistic regression model.\
+35. Calculate probabilities and odds using logistic regression.\
+36. Interpret logistic regression coefficients in context.\
+37. Draw conclusions about logistic regression models based on graphical representations of data.   
+
+**Computational Learning Outcomes**      
+J. Perform logistic regression in R.   
+
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=TRUE)
@@ -20,6 +25,7 @@ library(knitr)
 library(caret)
 library(MASS)
 library(tidyverse)
+library(mosaic)
 options(scipen=999)
 set.seed(07302020)
 ```
@@ -161,7 +167,6 @@ predict(CCDefault_M, newdata=data.frame((balance=2000)), type="response")
 
 Recall that for a quantitative response variable, the values of $b_1, b_2, \ldots, b_p$ are chosen in a way that minimizes $\displaystyle\sum_{i=1}^n \left(y_i-(\beta_0+\beta_1x_{i1}+\ldots+\beta_px_{ip})^2\right)$. Least squares does not work well in this generalized setting. Instead, the b's are calculated using a more advanced technique, known as **maximum likelihood estimation**. We won't say anything more about that topic here, but it is a prominent technique, widely used in statistic modeling. It is explored in more detail in advanced statistics courses, such as STAT 445:Mathematical Statistics.
 
-
 \newpage
 
 ## Interpreting Coefficients in Logistic Regression
@@ -234,7 +239,6 @@ We are 95% confident that for each 1 dollar increase in credit card balance, the
 
 This is a profile-likelihood interval, which you can read more about [here](https://rpubs.com/FJRubio/PLCIN).
 
-
 \newpage
 
 ## Multiple Logistic Regression
@@ -281,16 +285,21 @@ CCDefault_M_Int <- glm(data=Default, default ~ balance * student, family = binom
 summary(CCDefault_M_Int)
 ```
 
+
 **Interpretations for Logistic Model with Interaction**
 
 -   The regression equation is:
 
-$$P(\text{Default}) = \hat{\pi}\_i = \frac{e^{-10.87+0.0058\times\text{balance}-0.35\times\text{I}_{\text{student}}-0.0002\times\text{balance}\times{\text{I}_{\text{student}}}}}{1+e^{-10.87+0.0058\times\text{balance}-0.35\times\text{I}_{\text{student}}-0.0002\times\text{balance}\times{\text{I}_{\text{student}}}}}
 $$
+P(\text{Default}) = \hat{\pi}\_i = \frac{e^{-10.87+0.0058\times\text{balance}-0.35\times\text{I}_{\text{student}}-0.0002\times\text{balance}\times{\text{I}_{\text{student}}}}}{1+e^{-10.87+0.0058\times\text{balance}-0.35\times\text{I}_{\text{student}}-0.0002\times\text{balance}\times{\text{I}_{\text{student}}}}}
+$$
+
+
 
 **Equation for Students**
 
-$$P(\text{Default}) = \hat{\pi}\_i = \frac{e^{-10.52+0.0056\times\text{balance}}}{1+e^{-10.52+0.0056\times\text{balance}}}
+$$
+P(\text{Default}) = \hat{\pi}\_i = \frac{e^{-10.52+0.0056\times\text{balance}}}{1+e^{-10.52+0.0056\times\text{balance}}}
 $$
 
 Assuming a person is a student, for every \$100 increase in balance, the odds of default are expected to multiply by a factor of $e^{0.0056\times 100}=1.75$, a 75% increase.
@@ -304,6 +313,8 @@ $$
 Assuming a person is a student, for every \$100 increase in balance, the odds of default are expected to multiply by a factor of $e^{0.0058\times 100}=1.786$, a 78.6% increase.
 
 -   Since estimate of the interaction effect is so small and the p-value on this estimate is large, it is plausible that there is no interaction at all. Thus, the simpler non-interaction model is preferable.
+
+
 
 ### Logistic Regression Key Points
 
@@ -322,5 +333,5 @@ Assuming a person is a student, for every \$100 increase in balance, the odds of
 -   For models with interaction, we can only interpret $\beta_j$ when the values of all other explanatory variables are given (since the effect of $x_j$ depends on the other variables.)
 
 ```{r, echo=FALSE}
-#save.image(file = "Environment.RData")
+save.image(file = "Environment.RData")
 ```
