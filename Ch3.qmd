@@ -2,19 +2,17 @@
 
 ### Learning Outcomes {.unnumbered}
 
-**Conceptual Learning Outcomes**   
-10. Interpret and distinguish between sample standard deviation and standard error of a sampling distribution for a statistic.   
+**Conceptual Learning Outcomes**\
+10. Interpret and distinguish between sample standard deviation and standard error of a sampling distribution for a statistic.\
 11. Explain how to use bootstrapping to calculate confidence intervals.\
 12. Interpret confidence intervals in context.\
-13. Calculate bootstrap confidence intervals using R.
-14. Describe the steps of a permutation-based hypothesis test in context (including writing hypotheses, identifying a test statistic, and explaining how to use permutation to obtain a p-value.)\   
-15. Interpret p-values in context.\   
-16. Compare and contrast the conclusions we can draw from confidence intervals and hypothesis tests.\
+13. Describe the steps of a permutation-based hypothesis test in context (including writing hypotheses, identifying a test statistic, and explaining how to use permutation to obtain a p-value.) \     
+14. Interpret p-values in context. \
+15. Compare and contrast the conclusions we can draw from confidence intervals and hypothesis tests.\
 
-**Computational Learning Outcomes**      
-F. Perform bootstrapping in R.  
-G. Perform permutation-based hypothesis tests in R.     
-
+**Computational Learning Outcomes**\
+F. Perform bootstrapping in R.\
+G. Perform permutation-based hypothesis tests in R.
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=TRUE)
@@ -1371,8 +1369,8 @@ We'll simulate situations where there is no relationship between location and me
 
 This simulation can be performed using this [Rossman-Chance App](http://www.rossmanchance.com/applets/2021/anovashuffle/AnovaShuffle.htm?hideExtras=2).
 
-#### Three Permutations in R  {.unnumbered}
- 
+#### Three Permutations in R {.unnumbered}
+
 We'll use R to perform permutation test.
 
 **First Permutation**
@@ -1481,7 +1479,7 @@ Observed Difference in means: `r Lakes_shuffle_loc3_Tab[1,2] - Lakes_shuffle_loc
 
 So far, we haven't seen a difference anywhere near as big as the 0.272 we saw in the actual sample. But, to be sure, we'll repeat the shuffling 10,000 times and see how often we get a difference as extreme as the one we saw in the sample.
 
-#### Many Permutations  {.unnumbered}
+#### Many Permutations {.unnumbered}
 
 Now, we'll perform 10,000 permutations and record the value of $b_1$ (the difference in sample means) for each simulation.
 
@@ -1537,7 +1535,7 @@ It is very unlikely that we would have observed a result like we did by chance a
 
 Recall that in the previous section, we found that we could be 95% confident that the mean mercury level among all lakes in Southern Florida is between 0.08 and 0.46 higher than the mean mercury level among all lakes in Northern Florida.
 
-#### Test-statistic and p-value  {.unnumbered}
+#### Test-statistic and p-value {.unnumbered}
 
 The statistic we use to measure the size of the difference or effect is called the **test statistic**. In this case, the test statistic is the difference in means.
 
@@ -1923,7 +1921,7 @@ Lakes_merc_depth_perm1 <- do(1) * lm(Mercury ~ ShuffledDepth , data = Lakes_shuf
 Lakes_merc_depth_perm1$F
 ```
 
-The F-statistic observed in the shuffled data is `Lakes_merc_depth_perm1$F`. 
+The F-statistic observed in the shuffled data is `Lakes_merc_depth_perm1$F`.
 
 **Second Permutation**
 
@@ -2077,21 +2075,19 @@ In this scenario, we got a small p-value, but we should also be aware of what we
 
 A hypothesis test can be thought of as being analogous to a courtroom trial, where the null hypothesis is that the defendant did not commit the crime. Suppose that after each side presents evidence, the jury remains unsure whether the defendant committed the crime. Since the jury does not have enough evidence to be sure, they must, under the law of the United States find the defendant "not guilty." This does not mean that the jury thinks the defendant is innocent, only that they do not have enough evidence to be sure they are guilty. Similarly in a hypothesis test, a large p-value indicates a lack of evidence against the null hypothesis, rather than evidence supporting it. As such, we should avoid statements suggesting we "support", "accept", or "believe" the null hypothesis, and simply state that we lack evidence against it.
 
-
 **Things to say when the p-value is small:**
 
 -   The data are not consistent with the null hypothesis.\
 -   We have evidence against the null hypothesis.\
--   We detect a difference or effect.   
--   The difference or effect is statistically discernible.   
+-   We detect a difference or effect.\
+-   The difference or effect is statistically discernible.
 
 **Things NOT to say based on a small p-value alone:**
 
 -   The difference is practically meaningful or significant.\
--   We should take action based on the result.    
+-   We should take action based on the result.
 
-In some cases, a small p-value might merit taking action, but it is important to also consider the size of the difference, the method of in which the data were collected, and how representative it is, as well as the costs and benefits of a potential decision, rather than acting on a p-value alone.  
-
+In some cases, a small p-value might merit taking action, but it is important to also consider the size of the difference, the method of in which the data were collected, and how representative it is, as well as the costs and benefits of a potential decision, rather than acting on a p-value alone.
 
 **Things to say when the p-value is large:**
 
@@ -2109,7 +2105,6 @@ In some cases, a small p-value might merit taking action, but it is important to
 
 ## Practice Questions
 
-
 ```{r, echo=FALSE}
 library(tidyverse)
 library(knitr)
@@ -2126,38 +2121,34 @@ set.seed(09292024)
 options(scipen = 999)
 ```
 
-
 ### 1) {.unnumbered}
 
-For each situation identify:            
+For each situation identify:
 
-i) a relevant population of interest   
-ii) the sample       
-iii) the population parameter      
-iv) the sample statistic      
+i)  a relevant population of interest\
+ii) the sample\
+iii) the population parameter\
+iv) the sample statistic
 
-If the size of the sample or population, or the numeric value of the sample/parameter are known, say what they are.    
-
+If the size of the sample or population, or the numeric value of the sample/parameter are known, say what they are.
 
 #### a) {.unnumbered}
 
-Data were collected from a cross-sectional study to investigate the relationship between personal characteristics and dietary factors, and plasma concentrations of retinol, beta-carotene and other carotenoids. 315 study subjects were patients who had an elective surgical procedure during a three-year period to biopsy or remove a lesion of the lung, colon, breast, skin, ovary or uterus that was found to be non-cancerous. Each person's daily cholesterol consumption (in mg/day) was recorded. Researchers are interested in estimating the average daily cholesterol consumption among all hospital patients with similar conditions.       
+Data were collected from a cross-sectional study to investigate the relationship between personal characteristics and dietary factors, and plasma concentrations of retinol, beta-carotene and other carotenoids. 315 study subjects were patients who had an elective surgical procedure during a three-year period to biopsy or remove a lesion of the lung, colon, breast, skin, ovary or uterus that was found to be non-cancerous. Each person's daily cholesterol consumption (in mg/day) was recorded. Researchers are interested in estimating the average daily cholesterol consumption among all hospital patients with similar conditions.
 
 #### b) {.unnumbered}
 
-Data are from samples of ten courses in each of four disciplines at a liberal arts college. The classes were classified as either Arts, Humanities, Natural Sciences, or Sciences. For each course the bookstore's website lists the required texts(s) and costs. We are interested in comparing average material costs between the four different areas of classes. For this question, assume we're comparing humanities and natural sciences. It is found that, among the books in the sample, books for natural science courses cost $50.50 more than for books for humanities courses, on average.        
+Data are from samples of ten courses in each of four disciplines at a liberal arts college. The classes were classified as either Arts, Humanities, Natural Sciences, or Sciences. For each course the bookstore's website lists the required texts(s) and costs. We are interested in comparing average material costs between the four different areas of classes. For this question, assume we're comparing humanities and natural sciences. It is found that, among the books in the sample, books for natural science courses cost \$50.50 more than for books for humanities courses, on average.
 
 #### c) {.unnumbered}
 
-A 2012 study in Great Britain examines the relationship between the number of friends an individual has on Facebook and grey matter density in the areas of the brain associated with social perception and associative memory. The study included 40 students at City University London. Researchers then used a linear regression model to study the relationship between number of Facebook friends and grey matter density in the brain. Using data from the 40 students in the sample, they calculated the slope of the regression line to be 82.45.      
-
+A 2012 study in Great Britain examines the relationship between the number of friends an individual has on Facebook and grey matter density in the areas of the brain associated with social perception and associative memory. The study included 40 students at City University London. Researchers then used a linear regression model to study the relationship between number of Facebook friends and grey matter density in the brain. Using data from the 40 students in the sample, they calculated the slope of the regression line to be 82.45.
 
 ### 2) {.unnumbered}
 
-Data were collected from a cross-sectional study to investigate the relationship between personal characteristics and dietary factors, and plasma concentrations of retinol, beta-carotene and other carotenoids. 315 study subjects were patients who had an elective surgical procedure during a three-year period to biopsy or remove a lesion of the lung, colon, breast, skin, ovary or uterus that was found to be non-cancerous. Each person's daily cholesterol consumption (in mg/day) was recorded. Researchers are interested in estimating the average daily cholesterol consumption among all hospital patients with similar conditions.       
+Data were collected from a cross-sectional study to investigate the relationship between personal characteristics and dietary factors, and plasma concentrations of retinol, beta-carotene and other carotenoids. 315 study subjects were patients who had an elective surgical procedure during a three-year period to biopsy or remove a lesion of the lung, colon, breast, skin, ovary or uterus that was found to be non-cancerous. Each person's daily cholesterol consumption (in mg/day) was recorded. Researchers are interested in estimating the average daily cholesterol consumption among all hospital patients with similar conditions.
 
-
-The distribution of amount of cholesterol consumed in a day for the 315 people in the nutrition study from 1(a) is shown below along with the sample mean and standard deviation. 
+The distribution of amount of cholesterol consumed in a day for the 315 people in the nutrition study from 1(a) is shown below along with the sample mean and standard deviation.
 
 ```{r}
 ggplot(data=NutritionStudy, aes(x=Cholesterol)) + 
@@ -2175,15 +2166,14 @@ $$
 \begin{aligned}
 \widehat{\text{Cholesterol}} & = b_0
 \end{aligned}
-$$
-R output for the model is shown below.  
+$$ R output for the model is shown below.
 
 ```{r}
 M_Nut_chol_0 <- lm(data=NutritionStudy, Cholesterol~1)
 M_Nut_chol_0
 ```
 
-The bootstrap distribution for $b_0$ is shown below along with its mean and standard deviation. 
+The bootstrap distribution for $b_0$ is shown below along with its mean and standard deviation.
 
 ```{r}
 Nutrition_Bootstrap_Mean <- do(10000) * lm( Cholesterol ~ 1, data = resample(NutritionStudy, replace=TRUE))
@@ -2205,26 +2195,23 @@ Nutrition_Bootstrap_Mean |> summarize(Mean_Chol = mean(Intercept) |> round(1),
 
 #### a) {.unnumbered}
 
-Explain the difference between the standard deviation of 132 and the standard error of the mean of 7.4. State clearly what each number is measuring the variability between.   
+Explain the difference between the standard deviation of 132 and the standard error of the mean of 7.4. State clearly what each number is measuring the variability between.
 
 #### b) {.unnumbered}
 
-Suppose the sample had included 500 patients instead of 315. Should we expect the standard deviation to be more, less, or about the same as 132? Should we expect the standard error of the mean to be more, less, or about the same as 7.4?   
-
-
+Suppose the sample had included 500 patients instead of 315. Should we expect the standard deviation to be more, less, or about the same as 132? Should we expect the standard error of the mean to be more, less, or about the same as 7.4?
 
 ### 3) {.unnumbered}
 
-For each of the scenarios (a-c) in Question 1, list the steps of the Bootstrap algorithm in Section 3.2.2 that we would need to perform to obtain approximate 95% bootstrap confidence intervals for the parameter of interest. In your steps, be sure to explicitly identify the size of the bootstrap samples and the statistic you would calculate.         
+For each of the scenarios (a-c) in Question 1, list the steps of the Bootstrap algorithm in Section 3.2.2 that we would need to perform to obtain approximate 95% bootstrap confidence intervals for the parameter of interest. In your steps, be sure to explicitly identify the size of the bootstrap samples and the statistic you would calculate.
 
+### 4) {.unnumbered}
 
-### 4)  {.unnumbered}
-
-Refer to the information in Question 2. Give an approximate 95% standard error confidence interval for the relevant population parameter. Write a sentence interpreting your confidence interval in context.   
+Refer to the information in Question 2. Give an approximate 95% standard error confidence interval for the relevant population parameter. Write a sentence interpreting your confidence interval in context.
 
 ### 5) {.unnumbered}
 
-Data are from samples of ten courses in each of four disciplines at a liberal arts college. The classes were classified as either Arts, Humanities, Natural Sciences, or Sciences. For each course the bookstore's website lists the required texts(s) and costs. We are interested in comparing average material costs between the four different areas of classes. For this question, assume we're comparing humanities and natural sciences.        
+Data are from samples of ten courses in each of four disciplines at a liberal arts college. The classes were classified as either Arts, Humanities, Natural Sciences, or Sciences. For each course the bookstore's website lists the required texts(s) and costs. We are interested in comparing average material costs between the four different areas of classes. For this question, assume we're comparing humanities and natural sciences.
 
 We fit a model of the form
 
@@ -2232,27 +2219,25 @@ $$
 \begin{aligned}
 \widehat{\text{Cost}} & = b_0 + b_1 \text{Humanities} + b_2 \text{NaturalScience} + b_3 \text{SocialScience},
 \end{aligned}
-$$
-where the Humanities, NaturalScience, and SocialScience variables all have value 1 if the course is in that field and 0 otherwise. 
+$$ where the Humanities, NaturalScience, and SocialScience variables all have value 1 if the course is in that field and 0 otherwise.
 
-Model estimates are shown below. 
+Model estimates are shown below.
 
 ```{r}
 M_Book_cost_Field <- lm(data=TextbookCosts, Cost~Field) 
 M_Book_cost_Field
 ```
 
-We use bootstrapping to produce confidence intervals for parameters associated with the model.  
+We use bootstrapping to produce confidence intervals for parameters associated with the model.
 
 ```{r}
 Books_Bootstrap <- do(10000) * lm( Cost ~ Field, 
                                    data = resample(TextbookCosts, replace=TRUE))
 ```
 
-
 ### a) {.unnumbered}
 
-The bootstrap distribution for $b_0$ is shown below, along with its mean and standard error. 
+The bootstrap distribution for $b_0$ is shown below, along with its mean and standard error.
 
 ```{r, echo=FALSE}
 Books_Bootstrap_plot <- ggplot(data=Books_Bootstrap, aes(x=Intercept)) +  
@@ -2268,12 +2253,11 @@ Books_Bootstrap |> summarize(Mean_b0 = mean(Intercept) |> round(1),
                                       SE_b0=sd(Intercept) |> round(1))
 ```
 
-Give an approximate 95% standard error confidence interval for the relevant population parameter. Write a sentence interpreting your confidence interval in context. 
+Give an approximate 95% standard error confidence interval for the relevant population parameter. Write a sentence interpreting your confidence interval in context.
 
+### b) {.unnumbered}
 
-### b)  {.unnumbered}
-
-The bootstrap distribution for $b_3$ is shown below, along with its mean and standard error. 
+The bootstrap distribution for $b_3$ is shown below, along with its mean and standard error.
 
 ```{r, echo=FALSE}
 Books_Bootstrap_plot <- ggplot(data=Books_Bootstrap, aes(x=FieldSocialScience)) +  
@@ -2289,14 +2273,11 @@ Books_Bootstrap |> summarize(Mean_b3 = mean(FieldSocialScience) |> round(1),
                                       SE_b3=sd(FieldSocialScience) |> round(1))
 ```
 
-Give an approximate 95% standard error confidence interval for the relevant population parameter. Write a sentence interpreting your confidence interval in context. 
-
-
+Give an approximate 95% standard error confidence interval for the relevant population parameter. Write a sentence interpreting your confidence interval in context.
 
 ### c) {.unnumbered}
 
-The bootstrap distribution for $b_0 + b_1$ is shown below, along with its mean and standard error. 
-
+The bootstrap distribution for $b_0 + b_1$ is shown below, along with its mean and standard error.
 
 ```{r, echo=FALSE}
 Books_b0_b1_Bootstrap <- do(10000) * predict(lm(Cost ~ Field, 
@@ -2318,14 +2299,11 @@ Books_b0_b1_Bootstrap |> summarize(Mean = mean(X1) |> round(1),
                                       SE=sd(X1) |> round(1))
 ```
 
-Give an approximate 95% standard error confidence interval for the relevant population parameter. Write a sentence interpreting your confidence interval in context. 
+Give an approximate 95% standard error confidence interval for the relevant population parameter. Write a sentence interpreting your confidence interval in context.
 
-
-
-### 6)   {.unnumbered}
+### 6) {.unnumbered}
 
 A 2012 study in Great Britain examines the relationship between the number of friends an individual has on Facebook and grey matter density in the areas of the brain associated with social perception and associative memory. The study included 40 students at City University London. Researchers then used a linear regression model to study the relationship between number of Facebook friends and grey matter density in the brain.
-
 
 We fit a model of the form
 
@@ -2333,27 +2311,25 @@ $$
 \begin{aligned}
 \widehat{\text{Cost}} & = b_0 + b_1 \text{GMdensity}
 \end{aligned}
-$$
-where the GMdensity is a measure of grey matter density in the brain. The GM density variable was standardized, so a person who has average grey matter density will have `GMdensity =0`, and the GMdensity variable can be interpreted as the number of standard deviations a person is above or below the average amount of grey matter density.  
+$$ where the GMdensity is a measure of grey matter density in the brain. The GM density variable was standardized, so a person who has average grey matter density will have `GMdensity =0`, and the GMdensity variable can be interpreted as the number of standard deviations a person is above or below the average amount of grey matter density.
 
-Model estimates are shown below. 
+Model estimates are shown below.
 
 ```{r}
 M_FB_friends_gm <- lm(data=FacebookFriends, FBfriends ~ GMdensity) 
 M_FB_friends_gm
 ```
 
-We use bootstrapping to produce confidence intervals for parameters associated with the model.  
+We use bootstrapping to produce confidence intervals for parameters associated with the model.
 
 ```{r}
 FB_Bootstrap <- do(10000) * lm( FBfriends ~ GMdensity, 
                                 data = resample(FacebookFriends, replace=TRUE))
 ```
 
+### a) {.unnumbered}
 
-### a)   {.unnumbered}
-
-The bootstrap distribution for $b_0$ is shown below, along with its mean and standard error. 
+The bootstrap distribution for $b_0$ is shown below, along with its mean and standard error.
 
 ```{r, echo=FALSE}
 FB_Bootstrap_plot_b0 <- ggplot(data=FB_Bootstrap, aes(x=Intercept)) +  
@@ -2369,12 +2345,11 @@ FB_Bootstrap |> summarize(Mean_b0 = mean(Intercept) |> round(1),
                                       SE_b0=sd(Intercept) |> round(1))
 ```
 
-Give an approximate 95% standard error confidence interval for the relevant population parameter. Write a sentence interpreting your confidence interval in context. 
+Give an approximate 95% standard error confidence interval for the relevant population parameter. Write a sentence interpreting your confidence interval in context.
 
+### b) {.unnumbered}
 
-### b)  {.unnumbered}
-
-The bootstrap distribution for $b_1$ is shown below, along with its mean and standard error. 
+The bootstrap distribution for $b_1$ is shown below, along with its mean and standard error.
 
 ```{r, echo=FALSE}
 Books_Bootstrap_plot_b1 <- ggplot(data=FB_Bootstrap, aes(x=GMdensity)) +  
@@ -2390,13 +2365,11 @@ FB_Bootstrap |> summarize(Mean_b1 = mean(GMdensity) |> round(1),
                                       SE_b1=sd(GMdensity) |> round(1))
 ```
 
-Give an approximate 95% standard error confidence interval for the relevant population parameter. Write a sentence interpreting your confidence interval in context. 
+Give an approximate 95% standard error confidence interval for the relevant population parameter. Write a sentence interpreting your confidence interval in context.
 
+### c) {.unnumbered}
 
-
-### c)  {.unnumbered}
-
-The bootstrap distribution for $b_0 + 0.5b_1$ is shown below, along with its mean and standard error. 
+The bootstrap distribution for $b_0 + 0.5b_1$ is shown below, along with its mean and standard error.
 
 ```{r, echo=FALSE}
 FB_b0_b1_Bootstrap <- do(10000) * predict(lm(FBfriends ~ GMdensity, 
@@ -2418,46 +2391,41 @@ Books_b0_b1_Bootstrap |> summarize(Mean = mean(X1) |> round(1),
                                       SE=sd(X1) |> round(1))
 ```
 
-Give an approximate 95% standard error confidence interval for the relevant population parameter. Write a sentence interpreting your confidence interval in context. 
-
-
-
+Give an approximate 95% standard error confidence interval for the relevant population parameter. Write a sentence interpreting your confidence interval in context.
 
 ### 7) {.unnumbered}
 
-State whether each of the following statements about bootstrapping are true or false. If the statement is false, explain why.    
+State whether each of the following statements about bootstrapping are true or false. If the statement is false, explain why.
 
-#### a)   {.unnumbered}
+#### a) {.unnumbered}
 
-Bootstrapping helps us measure the amount of variability we would see in a statistic between different samples taken from a population.   
+Bootstrapping helps us measure the amount of variability we would see in a statistic between different samples taken from a population.
 
-#### b)   {.unnumbered}
+#### b) {.unnumbered}
 
-Bootstrapping increases the size of the sample, giving us more accurate estimates of the mean and other regression coefficients.   
+Bootstrapping increases the size of the sample, giving us more accurate estimates of the mean and other regression coefficients.
 
-#### c)   {.unnumbered}
+#### c) {.unnumbered}
 
-Bootstrap samples must be the same size as the original sample.   
+Bootstrap samples must be the same size as the original sample.
 
-#### d)   {.unnumbered}
+#### d) {.unnumbered}
 
-If we took bootstrap samples without using replacement, then every sample would be the same, and we would not be able to measure variability in our statistic.    
+If we took bootstrap samples without using replacement, then every sample would be the same, and we would not be able to measure variability in our statistic.
 
-#### e)    {.unnumbered}
+#### e) {.unnumbered}
 
-When the bootstrap distribution is not symmetric and bell-shaped, it is better to use a standard error bootstrap confidence interval than a percentile bootstrap confidence interval.    
+When the bootstrap distribution is not symmetric and bell-shaped, it is better to use a standard error bootstrap confidence interval than a percentile bootstrap confidence interval.
 
-#### f)     {.unnumbered}
+#### f) {.unnumbered}
 
-The mean and standard deviation of the bootstrap distribution for the mean should both be the same as the mean and standard deviation of the sampling distribution for the mean.   
-
+The mean and standard deviation of the bootstrap distribution for the mean should both be the same as the mean and standard deviation of the sampling distribution for the mean.
 
 ### 8) {.unnumbered}
 
-For the cholesterol study in Questions 2 and 4, a person suggests that we could reduce the standard error, and thus obtain a more precise confidence interval, by taking bootstrap samples of 500 (instead of the sample size of 315 seen in the actual study). Is this a good idea? Why or why not?    
+For the cholesterol study in Questions 2 and 4, a person suggests that we could reduce the standard error, and thus obtain a more precise confidence interval, by taking bootstrap samples of 500 (instead of the sample size of 315 seen in the actual study). Is this a good idea? Why or why not?
 
-
-### 9)  {.unnumbered} 
+### 9) {.unnumbered}
 
 Each day, United Airlines has a flight from Boston to San Francisco, departing at 6 am (Eastern time). The flight is scheduled to arrive in San Francisco at 9:30 am (Pacific time). This results in an expected total flight duration of 6.5 hours (390 minutes). Due to weather conditions, however, the exact duration of the flight varies from day to day. A random sample of flights from 31 different days was selected. The times of the 28 flights are shown below, listed from smallest to largest.
 
@@ -2465,7 +2433,7 @@ Each day, United Airlines has a flight from Boston to San Francisco, departing a
 sort(Flight433$AirTime)
 ```
 
-The mean, standard deviation, and sample size in flight times are shown below. 
+The mean, standard deviation, and sample size in flight times are shown below.
 
 ```{r, echo=FALSE, fig.height=1, fig.width=6, message=FALSE, warning=FALSE}
 library(knitr)
@@ -2475,7 +2443,7 @@ T <- data.frame(Flight433)  %>% dplyr::summarize(Mean=mean(AirTime), StDev=sd(Ai
 kable(T)
 ```
 
-A 95% bootstrap standard error confidence interval for the mean flight time for a model including only an intercept $b_0$ is shown below. 
+A 95% bootstrap standard error confidence interval for the mean flight time for a model including only an intercept $b_0$ is shown below.
 
 ```{r}
 Flights_Bootstrap <- do(10000) * lm( AirTime ~ 1, 
@@ -2483,26 +2451,26 @@ Flights_Bootstrap <- do(10000) * lm( AirTime ~ 1,
 confint(Flights_Bootstrap, parm="Intercept", level=0.95, method="se")
 ```
 
-A manager sees the data and confidence interval and says: 
+A manager sees the data and confidence interval and says:
 
 *"This is supposed to be a 95% confidence interval, but only 11 of the 28 flight times were actually in this range (between 365 and 377). A 95% confidence interval should contain about 95% of the flight times, and 11/28 is much less than 95%. Someone must have made a mistake calculating this interval."*
 
-Is the manager's reasoning correct? If so, identify the mistake in the method used to obtain the confidence interval. If not, identify the mistake in the manager's reasoning. 
+Is the manager's reasoning correct? If so, identify the mistake in the method used to obtain the confidence interval. If not, identify the mistake in the manager's reasoning.
 
 ### Info for Questions (10-12) {.unnumbered}
 
-**For Questions 10-12, refer to the following data and questions.**    
+**For Questions 10-12, refer to the following data and questions.**
 
-We'll work with a dataset pertaining to a sample of 200 high school seniors. Data were collected from student responses to the High School and Beyond Survey. The data are available in the `openintro` R package. 
+We'll work with a dataset pertaining to a sample of 200 high school seniors. Data were collected from student responses to the High School and Beyond Survey. The data are available in the `openintro` R package.
 
-Variables of interest include:   
+Variables of interest include:
 
-`schtyp` - school type (public or private)     
-`prog` - type of program (general, academic, or vocational)     
-`write` - writing score on a standardized test     
-`science` - science score on a standardized test    
+`schtyp` - school type (public or private)\
+`prog` - type of program (general, academic, or vocational)\
+`write` - writing score on a standardized test\
+`science` - science score on a standardized test
 
-The first 6 rows of the data are shown below.    
+The first 6 rows of the data are shown below.
 
 ```{r}
 library(openintro)
@@ -2514,7 +2482,7 @@ HSSeniors <- hsb2
 head(hsb2) |> select(schtyp, prog, write, science)
 ```
 
-**Some graphics summarizing the data are shown below.**     
+**Some graphics summarizing the data are shown below.**
 
 ```{r, fig.cap="Science test scores in public and private schools", fig.height=5, fig.width=8}
 ggplot(data=HSSeniors, aes(y=science, x=schtyp)) + geom_boxplot() +
@@ -2528,14 +2496,12 @@ ggplot(data=HSSeniors, aes(y=science, x=prog)) +
   xlab("Type of Program") + ylab("Average Score")
 ```
 
-
 ```{r, fig.cap="Relationship between science and writing scores"}
 ggplot(data=HSSeniors, aes(y=science, x=write)) + geom_point() +
   ggtitle("Science and Writing Scores") + 
   xlab("Writing Score") + 
   ylab("Science Score")
 ```
-
 
 ```{r}
 T1 <- HSSeniors %>% group_by(schtyp) %>% summarize(Mean_Science=mean(science),
@@ -2553,12 +2519,9 @@ T2 <- HSSeniors %>% group_by(prog) %>% summarize(Mean_Science=mean(science),
 kable(T2, caption="Summary of science test scores by program type")
 ```
 
-
-
-
 ### 10) {.unnumbered}
 
-We want to know whether there is evidence of a difference in average science test scores between public and private schools.  
+We want to know whether there is evidence of a difference in average science test scores between public and private schools.
 
 We fit a model of the form
 
@@ -2566,20 +2529,20 @@ $$
 \begin{aligned}
 \widehat{\text{Score}} & = b_0 + b_1 \text{Public}
 \end{aligned}
-$$
-Model estimates are shown below. 
+$$ Model estimates are shown below.
 
 ```{r}
 M_Seniors_science_schtyp <- lm(data=HSSeniors, science ~ schtyp)
 M_Seniors_science_schtyp
 ```
-The following code performs a permutation-based hypothesis test. 
+
+The following code performs a permutation-based hypothesis test.
 
 ```{r}
 science_schtyp_perm_test <- do(10000) * lm(science ~ shuffle(schtyp), data = HSSeniors)
 ```
 
-The histogram shows the distribution of $b_1$ in our simulation. 
+The histogram shows the distribution of $b_1$ in our simulation.
 
 ```{r}
 Estimate <- M_Seniors_science_schtyp$coefficients[2]
@@ -2597,44 +2560,43 @@ science_schtyp_perm_test_plot <- ggplot(data=science_schtyp_perm_test, aes(x=sch
 science_schtyp_perm_test_plot
 ```
 
-p-value:  
+p-value:
 
 ```{r}
 prop(~ (abs(schtypprivate) > 1.741), data = science_schtyp_perm_test)
 ```
 
-
 #### a) {.unnumbered}
 
-Write null and alternative hypotheses.   
+Write null and alternative hypotheses.
 
 #### b) {.unnumbered}
 
-State the appropriate test statistic words and symbols. Give the numerical value of the test statistic.    
+State the appropriate test statistic words and symbols. Give the numerical value of the test statistic.
 
 #### c) {.unnumbered}
 
-Write out in words the steps in the procedure to perform a permutation-based hypothesis test. (See Section 3.4.1 for an example of how to write the steps.)  
+Write out in words the steps in the procedure to perform a permutation-based hypothesis test. (See Section 3.4.1 for an example of how to write the steps.)
 
 #### d) {.unnumbered}
 
-Interpret the p-value in context  by completing the sentence "The p-value represents the probability of _____, assuming _____."          
+Interpret the p-value in context by completing the sentence "The p-value represents the probability of \_\_\_\_\_, assuming \_\_\_\_\_."
 
 #### e) {.unnumbered}
 
-Explain, in context, what we should conclude from the p-value.   
+Explain, in context, what we should conclude from the p-value.
 
 #### f) {.unnumbered}
 
-State whether the difference or effect is statistically discernible. Also state whether you think it is practically meaningful and comment on how the result of the test is or isn't consistent with the information in the graphs and tables.    
+State whether the difference or effect is statistically discernible. Also state whether you think it is practically meaningful and comment on how the result of the test is or isn't consistent with the information in the graphs and tables.
 
 #### g) {.unnumbered}
 
-Say whether zero would be contained in a 95% confidence interval for the parameter of interest. Explain your answer. 
+Say whether zero would be contained in a 95% confidence interval for the parameter of interest. Explain your answer.
 
 ### 11) {.unnumbered}
 
-We want to know whether there is evidence of differences in average science test scores between two or more of the three  programs (general, academic, vocational).     
+We want to know whether there is evidence of differences in average science test scores between two or more of the three programs (general, academic, vocational).
 
 We fit a model of the form
 
@@ -2642,27 +2604,26 @@ $$
 \begin{aligned}
 \widehat{\text{Score}} & = b_0 + b_1 \text{general} + b_2 \text{vocational}
 \end{aligned}
-$$
-Model estimates are shown below. 
+$$ Model estimates are shown below.
 
 ```{r}
 M_Seniors_science_prog <- lm(data=HSSeniors, science ~ prog)
 M_Seniors_science_prog
 ```
+
 An F-statistic comparing this model to a model with only an intercept is shown below.
 
 ```{r}
 summary(M_Seniors_science_prog)$fstat[1]
 ```
 
-
-The following code performs a permutation-based hypothesis test. 
+The following code performs a permutation-based hypothesis test.
 
 ```{r}
 science_prog_perm_test <-  do(10000) * lm(data=HSSeniors, science ~ shuffle(prog))
 ```
 
-The histogram shows the distribution of $b_1$ in our simulation. 
+The histogram shows the distribution of $b_1$ in our simulation.
 
 ```{r}
 Estimate <- science_prog_perm_test$F
@@ -2680,42 +2641,39 @@ science_prog_perm_test_plot <- ggplot(data=science_prog_perm_test, aes(x=F)) +
 science_prog_perm_test_plot
 ```
 
-p-value:  
+p-value:
 
 ```{r}
 prop(~ (schtypprivate > 8.128), data = science_schtyp_perm_test)
 ```
 
-
-
 #### a) {.unnumbered}
 
-Write null and alternative hypotheses. Be sure to clearly identify the parameter of interest in your hypotheses.  
+Write null and alternative hypotheses. Be sure to clearly identify the parameter of interest in your hypotheses.
 
 #### b) {.unnumbered}
 
-State the appropriate test statistic words and symbols. Give the numerical value of the test statistic.    
+State the appropriate test statistic words and symbols. Give the numerical value of the test statistic.
 
 #### c) {.unnumbered}
 
-Write out in words the steps to perform a permutation-based hypothesis test. 
+Write out in words the steps to perform a permutation-based hypothesis test.
 
 #### d) {.unnumbered}
 
-Interpret p-value in context by completing the sentence "The p-value represents the probability of _____, assuming _____."          
+Interpret p-value in context by completing the sentence "The p-value represents the probability of \_\_\_\_\_, assuming \_\_\_\_\_."
 
 #### e) {.unnumbered}
 
-Explain, in context, what we should conclude from the p-value.   
+Explain, in context, what we should conclude from the p-value.
 
 #### f) {.unnumbered}
 
-State whether the difference or effect is statistically discernible. Also state whether you think it is practically meaningful and comment on how the result of the test is or isn't consistent with the information in the graphs and tables.   
-
+State whether the difference or effect is statistically discernible. Also state whether you think it is practically meaningful and comment on how the result of the test is or isn't consistent with the information in the graphs and tables.
 
 ### 12) {.unnumbered}
 
-We want to know whether there is evidence of a relationship between students' science scores and writing scores on standardized tests.     
+We want to know whether there is evidence of a relationship between students' science scores and writing scores on standardized tests.
 
 We fit a model of the form
 
@@ -2725,20 +2683,20 @@ $$
 \end{aligned}
 $$
 
-Model estimates are shown below. 
+Model estimates are shown below.
 
 ```{r}
 M_Seniors_science_write <- lm(data=HSSeniors, science ~ write)
 M_Seniors_science_write
 ```
 
-The following code performs a permutation-based hypothesis test. 
+The following code performs a permutation-based hypothesis test.
 
 ```{r}
 science_write_perm_test <- do(10000) * lm(science ~ shuffle(write), data = HSSeniors)
 ```
 
-The histogram shows the distribution of $b_1$ in our simulation. 
+The histogram shows the distribution of $b_1$ in our simulation.
 
 ```{r}
 Estimate <- M_Seniors_science_write$coefficients[2]
@@ -2756,48 +2714,43 @@ science_write_perm_test_plot <- ggplot(data=science_write_perm_test, aes(x=write
 science_write_perm_test_plot
 ```
 
-p-value:  
+p-value:
 
 ```{r}
 prop(~ (abs(write) > 0.5959), data = science_write_perm_test)
 ```
 
-
-
 #### a) {.unnumbered}
 
-Write null and alternative hypotheses. Be sure to clearly identify the parameter of interest in your hypotheses.    
+Write null and alternative hypotheses. Be sure to clearly identify the parameter of interest in your hypotheses.
 
 #### b) {.unnumbered}
 
-State the appropriate test statistic words and symbols. Give the numerical value of the test statistic.    
+State the appropriate test statistic words and symbols. Give the numerical value of the test statistic.
 
 #### c) {.unnumbered}
 
-Write out in words the steps to perform a permutation-based hypothesis test. 
+Write out in words the steps to perform a permutation-based hypothesis test.
 
 #### d) {.unnumbered}
 
-Interpret p-values in context  by completing the sentence "The p-value represents the probability of _____, assuming _____."          
+Interpret p-values in context by completing the sentence "The p-value represents the probability of \_\_\_\_\_, assuming \_\_\_\_\_."
 
 #### e) {.unnumbered}
 
-Explain, in context, what we should conclude from the p-value.   
+Explain, in context, what we should conclude from the p-value.
 
 #### f) {.unnumbered}
 
-State whether the difference or effect is statistically discernible. Also state whether you think it is practically meaningful and comment on how the result of the test is or isn't consistent with the information in the graphs and tables.      
+State whether the difference or effect is statistically discernible. Also state whether you think it is practically meaningful and comment on how the result of the test is or isn't consistent with the information in the graphs and tables.
 
 #### g) {.unnumbered}
 
 Say whether zero would be contained in a 95% confidence interval for the parameter of interest.
 
-
-
 #### 13) {.unnumbered}
 
-The Bootstrap distribution for the difference in average cost of books in natural science classes, compared with humanities classes, was given in Question 6(c). If we perform a permutation-based hypothesis test for the null hypothesis that there is no difference in average books costs among natural science courses, compared to humanities courses, how would the distribution of mean differences compare to the bootstrap distribution from 6(c)? What would be different about it? Would the p-value associated with the hypothesis test be more or less than 0.05? Explain your answer.      
-
+The Bootstrap distribution for the difference in average cost of books in natural science classes, compared with humanities classes, was given in Question 6(c). If we perform a permutation-based hypothesis test for the null hypothesis that there is no difference in average books costs among natural science courses, compared to humanities courses, how would the distribution of mean differences compare to the bootstrap distribution from 6(c)? What would be different about it? Would the p-value associated with the hypothesis test be more or less than 0.05? Explain your answer.
 
 ```{r, echo=FALSE}
 save.image(file = "Environment.RData")

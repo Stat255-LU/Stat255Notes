@@ -1,16 +1,15 @@
 # Logistic Regression
 
-### Learning Outcomes
+### Learning Outcomes {.unnumbered}
 
-**Conceptual Learning Outcomes**   
-34. Identify situations where it is appropriate to use a logistic regression model.\
-35. Calculate probabilities and odds using logistic regression.\
-36. Interpret logistic regression coefficients in context.\
-37. Draw conclusions about logistic regression models based on graphical representations of data.   
+**Conceptual Learning Outcomes**\
+32. Identify situations where it is appropriate to use a logistic regression model.\
+33. Calculate probabilities and odds using logistic regression.\
+34. Interpret logistic regression coefficients in context.\
+35. Draw conclusions about logistic regression models based on graphical representations of data.
 
-**Computational Learning Outcomes**      
-J. Perform logistic regression in R.   
-
+**Computational Learning Outcomes**\
+J. Perform logistic regression in R.
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=TRUE)
@@ -285,7 +284,6 @@ CCDefault_M_Int <- glm(data=Default, default ~ balance * student, family = binom
 summary(CCDefault_M_Int)
 ```
 
-
 **Interpretations for Logistic Model with Interaction**
 
 -   The regression equation is:
@@ -293,8 +291,6 @@ summary(CCDefault_M_Int)
 $$
 P(\text{Default}) = \hat{\pi}\_i = \frac{e^{-10.87+0.0058\times\text{balance}-0.35\times\text{I}_{\text{student}}-0.0002\times\text{balance}\times{\text{I}_{\text{student}}}}}{1+e^{-10.87+0.0058\times\text{balance}-0.35\times\text{I}_{\text{student}}-0.0002\times\text{balance}\times{\text{I}_{\text{student}}}}}
 $$
-
-
 
 **Equation for Students**
 
@@ -313,8 +309,6 @@ $$
 Assuming a person is a student, for every \$100 increase in balance, the odds of default are expected to multiply by a factor of $e^{0.0058\times 100}=1.786$, a 78.6% increase.
 
 -   Since estimate of the interaction effect is so small and the p-value on this estimate is large, it is plausible that there is no interaction at all. Thus, the simpler non-interaction model is preferable.
-
-
 
 ### Logistic Regression Key Points
 

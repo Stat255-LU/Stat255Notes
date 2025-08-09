@@ -2,17 +2,16 @@
 
 ### Learning Outcomes {.unnumbered}
 
-**Conceptual Learning Outcomes**   
-4.  Use regression models to calculate estimates and predictions.\
-5.  Interpret coefficient estimates in regression models in context.\
-6.  Calculate and interpret regression sums of squares SSR, SSM, and SST, and coefficient of determination,$R^2$.\
-7.  Calculate and interpret F-statistics for comparing models.  
-8.  Draw conclusions about model estimates, $R^2$, and F-statistics using graphical representations of data.    
-9. Explain the least squares estimation process.   
- 
-**Computational Learning Outcomes**    
-E. Fit statistical models in R and interpret results.   
- 
+**Conceptual Learning Outcomes**\
+4. Use regression models to calculate estimates and predictions.\
+5. Interpret coefficient estimates in regression models in context.\
+6. Calculate and interpret regression sums of squares SSR, SSM, and SST, and coefficient of determination,$R^2$.\
+7. Calculate and interpret F-statistics for comparing models.\
+8. Draw conclusions about model estimates, $R^2$, and F-statistics using graphical representations of data.\
+9. Explain the least squares estimation process.
+
+**Computational Learning Outcomes**\
+E. Fit statistical models in R and interpret results.
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=FALSE)
@@ -59,7 +58,7 @@ In this section, we'll attempt to predict the price of a house, using informatio
 
 We'll first predict the price of the house, using the number of square feet of living space as our explanatory variable.
 
-A model with a single quantitative explanatory variable is called a **simple linear regression (SLR)** model.  
+A model with a single quantitative explanatory variable is called a **simple linear regression (SLR)** model.
 
 We'll assume that price changes linearly with square feet, and fit a trend line to the data.
 
@@ -810,7 +809,7 @@ knitr::include_graphics("Rsq2.png")
 ### Model Comparison Summary
 
 | Model | Variables | Unexplained Variability | Variability Explained | $R^2$ |
-|----|----|----|----|----|
+|---------------|---------------|---------------|---------------|---------------|
 | 0 | None | `r round(SST_M_House_price,0)` | 0 | 0 |
 | 1 | Sq. Ft. | `r round(SSR_M_House_price_sqft,0)` | `r round(SST_M_House_price-SSR_M_House_price_sqft,0)` | `r round((SST_M_House_price-SSR_M_House_price_sqft)/SST_M_House_price,3)` |
 | 2 | Waterfront | `r round(SSR_M_House_price_wf,0)` | `r round(SST_M_House_price-SSR_M_House_price_wf,0)` | `r round((SST_M_House_price-SSR_M_House_price_wf)/SST_M_House_price,3)` |
@@ -837,12 +836,12 @@ knitr::include_graphics("Rsq2.png")
 
 ### Sub-Models
 
-In the preceding sections, we've seen 5 different models for predicting house price using some combination of square feet and waterfront status. 
+In the preceding sections, we've seen 5 different models for predicting house price using some combination of square feet and waterfront status.
 
-A model is defined to be a **submodel** of a larger model, if the larger model contains all of the model's variables plus more. 
+A model is defined to be a **submodel** of a larger model, if the larger model contains all of the model's variables plus more.
 
 | Model | Variables | Unexplained Variability | Variability Explained | $R^2$ |
-|----|----|----|----|----|
+|---------------|---------------|---------------|---------------|---------------|
 | 0 | None | `r round(SST_M_House_price,0)` | 0 | 0 |
 | 1 | Sq. Ft. | `r round(SSR_M_House_price_sqft,0)` | `r round(SST_M_House_price-SSR_M_House_price_sqft,0)` | `r round((SST_M_House_price-SSR_M_House_price_sqft)/SST_M_House_price,3)` |
 | 2 | Waterfront | `r round(SSR_M_House_price_wf,0)` | `r round(SST_M_House_price-SSR_M_House_price_wf,0)` | `r round((SST_M_House_price-SSR_M_House_price_wf)/SST_M_House_price,3)` |
@@ -886,7 +885,7 @@ $$
 
 **Example 1**
 
-Let's Calculate an ANOVA F-Statistic to compare Models 1 and 3. This will tell us whether adding information about whether or not a house is on the waterfront helps us predict the price, when compared to a model using only square feet of living space. 
+Let's Calculate an ANOVA F-Statistic to compare Models 1 and 3. This will tell us whether adding information about whether or not a house is on the waterfront helps us predict the price, when compared to a model using only square feet of living space.
 
 Reduced Model:
 
@@ -934,28 +933,25 @@ F &= \frac{\frac{\text{SSR}_{\text{Reduced}}-\text{SSR}_{\text{Full}}}{p-q}}{\fr
 \end{aligned}
 $$
 
-
-
 We can calculate the statistic directly in R, using the `anova` command.
 
 ```{r}
 anova(M_House_price_sqft_wf_age, M_House_price_sqft_wf)$F[2] |>round(2)
 ```
 
-Now, the F-statistic is much smaller than we've seen before, indicating that adding age to the model does not help very much in explaining variability in price. 
+Now, the F-statistic is much smaller than we've seen before, indicating that adding age to the model does not help very much in explaining variability in price.
 
-You might be wondering how large an F-statistic needs to be in order to merit using the larger model. This is a complicated question, which we'll explore more in future chapters, but as a general rule, F-statistics larger than 4 typically provide evidence in favor of choosing the larger (full) model over the reduced one.   
+You might be wondering how large an F-statistic needs to be in order to merit using the larger model. This is a complicated question, which we'll explore more in future chapters, but as a general rule, F-statistics larger than 4 typically provide evidence in favor of choosing the larger (full) model over the reduced one.
 
-### F-Statistic for Comparing Groups 
+### F-Statistic for Comparing Groups
 
-While F-statistics can be used for models with quantitative or categorical variables, they are often used to compare groups for a categorical explanatory variable. 
+While F-statistics can be used for models with quantitative or categorical variables, they are often used to compare groups for a categorical explanatory variable.
 
-An F-statistic compares the amount of variability between groups to the amount of variability within groups. Larger F-statistics indicate more variability between groups, rather than within groups, indicating stronger evidence of differences between groups. 
+An F-statistic compares the amount of variability between groups to the amount of variability within groups. Larger F-statistics indicate more variability between groups, rather than within groups, indicating stronger evidence of differences between groups.
 
 In scenario 1, we notice considerable differences between the groups, relative to the amount of variability within groups. In this scenario, knowing the group an observation is in will help us predict the response for that group, so we should include account for the groups in our model. We would obtain a large F-statistic when comparing a model that includes group to one that contains only an intercept term.
 
 In scenario 2, there is little difference between the overall averages in each group, and more variability between individual observations within each group. In a scenario like this, knowing the group an observation lies in does little to help us predict the response. In this scenario, predictions from a model that includes group as an explanatory variable would not be much better than those from a model that does not. Hence, we would obtain a small F-statistic.
-
 
 ```{r, echo=FALSE}
 y <- c( 4,5,6,7,8, 13, 14, 15, 16, 17, 8,9,8,10,11)     
@@ -985,9 +981,9 @@ M_df2_F  <- summary(lm(data=df2, y~Group))$fstatistic[1]
 | F Statistic | Large ($F=$`r M_df1_F`) | Small ($F=$`M_df2_F`) |
 | Result | Evidence of Group Differences | No evidence of differences |
 
-We'll use F-statistics to compare the prices of waterfront houses to non-waterfront houses, and also to compare the three different conditions of houses. 
+We'll use F-statistics to compare the prices of waterfront houses to non-waterfront houses, and also to compare the three different conditions of houses.
 
-**Example 1: Price by Waterfront Status**     
+**Example 1: Price by Waterfront Status**
 
 The boxplot shows the distribution of houses in each category, and the table below it provides a numerical summary.
 
@@ -1007,8 +1003,7 @@ Cond_Tab <- Houses %>% group_by(waterfront) %>% summarize(Mean_Price = mean(pric
 kable(Cond_Tab)
 ```
 
-
-When measuring differences between groups for a categorical variable, we compare a model with the categorical variable to one with only an intercept term. In this case, the models are:   
+When measuring differences between groups for a categorical variable, we compare a model with the categorical variable to one with only an intercept term. In this case, the models are:
 
 Reduced Model: $$\widehat{\text{Price}}= b_0$$
 
@@ -1016,20 +1011,19 @@ Full Model: $$\widehat{\text{Price}}= b_0+ b_1 \times\text{waterfront}$$
 
 We'll fit the model in R. The coefficient estimates for $b_0$, $b_1$ and $b_2$ are shown below.
 
-
 We previously calculated $SSR_full$ to be
 
 ```{r}
 SSR_M_House_price_wf |> round(1)
 ```
 
-For a model containing only an intercept term, like the reduced model, SSR is equal to SST. 
+For a model containing only an intercept term, like the reduced model, SSR is equal to SST.
 
 ```{r}
 SST_M_House_price
 ```
 
-The F-statistic is 
+The F-statistic is
 
 $$
 \begin{aligned}
@@ -1045,9 +1039,9 @@ Confirming the calculation in R, we obtain
 anova(M_House_price_wf, M_House_price_0)$F[2]
 ```
 
-The F-statistic is very large, indicating strong efidence that waterfront status is associated with the price of a house, which is consistent with what we've observed in our plots as well as $R^2$ calculation. 
+The F-statistic is very large, indicating strong efidence that waterfront status is associated with the price of a house, which is consistent with what we've observed in our plots as well as $R^2$ calculation.
 
-**Example 2: Price by Condition** 
+**Example 2: Price by Condition**
 
 One variable in the houses dataset, which we haven't looked at yet, is the condition of the house at the time of sale. The table shows the number of houses in either 1) very good, 2) good, or 3) average or below condition.
 
@@ -1069,7 +1063,7 @@ Cond_Tab <- Houses %>% group_by(condition) %>% summarize(Mean_Price = mean(price
 kable(Cond_Tab)
 ```
 
-Notice that while houses in very good condition are the most expensive, differences between the three conditions are not that large and there is a lot of variability within each condition group. 
+Notice that while houses in very good condition are the most expensive, differences between the three conditions are not that large and there is a lot of variability within each condition group.
 
 We'll calculate an F-statistic for a model that includes condition, compared to a model with only an intercept term.
 
@@ -1086,13 +1080,11 @@ M_House_price_cond <- lm(data=Houses, price~condition)
 M_House_price_cond
 ```
 
-
 **Interpretations**
 
 -   On average, houses in average or below condition cost `r M_House_price_cond$coefficients[1]|>round(2)` thousand dollars.\
 -   On average, houses in good condition cost `r M_House_price_cond$coefficients[2]|>round(2)` thousand dollars more than those in average or below condition.\
 -   On average, houses in very good condition cost `r M_House_price_cond$coefficients[3]|>round(2)` thousand dollars more than those in average or below condition.
-
 
 We calculate SSR for the full model.
 
@@ -1101,9 +1093,9 @@ SSR_M_House_price_cond <- sum(M_House_price_cond$residuals^2)
 SSR_M_House_price_cond  
 ```
 
-Note that in this case, $p=2$, since the full model includes terms for both good and very good conditions. For a categorical variable with $g$ groups, there will always be $g-1$ terms in the model equation, one for each category other than the baseline. 
+Note that in this case, $p=2$, since the full model includes terms for both good and very good conditions. For a categorical variable with $g$ groups, there will always be $g-1$ terms in the model equation, one for each category other than the baseline.
 
-The F-statistic is 
+The F-statistic is
 
 $$
 \begin{aligned}
@@ -1113,7 +1105,6 @@ F &= \frac{\frac{\text{SSR}_{\text{Reduced}}-\text{SSR}_{\text{Full}}}{p-q}}{\fr
 \end{aligned}
 $$
 
-
 We perform the calculation directly in R.
 
 ```{r}
@@ -1122,18 +1113,17 @@ anova(M_House_price_cond, M_House_price_0)$F[2]
 
 Notice that the F-statistic of `r anova(M_House_price_cond, M_House_price_0)$F[2]|> round(2)` is considerably smaller than the F-statistics we've seen previously.
 
-This indicates that adding condition to a model with no other explanatory variables doesn't seem to help improve the model's ability to account for variation in price. Put another way, there doesn't appear to be much evidence of difference in price between houses in the different conditions. This is again consistent with our conclusion based on the very small change in $R^2$ that we saw when adding condition to the model in the previous section.  
-
+This indicates that adding condition to a model with no other explanatory variables doesn't seem to help improve the model's ability to account for variation in price. Put another way, there doesn't appear to be much evidence of difference in price between houses in the different conditions. This is again consistent with our conclusion based on the very small change in $R^2$ that we saw when adding condition to the model in the previous section.
 
 ### Relationship Between F-statistic and $R^2$
 
-We've seen that both $R^2$ and the F-statistic give us ways of comparing models and determining whether explanatory variables help explain variability in the response. 
+We've seen that both $R^2$ and the F-statistic give us ways of comparing models and determining whether explanatory variables help explain variability in the response.
 
-You may be wondering why we need to calculate F-statistics when we already have $R^2$ to answer these questions. Here we'll look at an example to illustrate the relationship between the two, showing how they're alike, as well as how they differ. 
+You may be wondering why we need to calculate F-statistics when we already have $R^2$ to answer these questions. Here we'll look at an example to illustrate the relationship between the two, showing how they're alike, as well as how they differ.
 
-Shown below are are two different scatterplots displaying relationships between variables $x$ and $y$.  
+Shown below are are two different scatterplots displaying relationships between variables $x$ and $y$.
 
-Which plot do you think displays a stronger relationship between $x$ and $y$?   
+Which plot do you think displays a stronger relationship between $x$ and $y$?
 
 ```{r, echo=FALSE}
 set.seed(08062025)
@@ -1150,7 +1140,7 @@ P2 <- ggplot(data=dfB, aes(x=x, y=y)) + geom_point() + ylim(c(0,40)) + stat_smoo
 grid.arrange(P1, P2, ncol=2) 
 ```
 
-We calculate $R^2$ values for linear models fit to both sets of data. 
+We calculate $R^2$ values for linear models fit to both sets of data.
 
 ```{r}
 M_dfA <- lm(data=dfA, y1~x1)
@@ -1162,18 +1152,17 @@ M_dfB <- lm(data=dfB, y~x)
 summary(M_dfB)$r.squared
 ```
 
-We see that the $R^2$ values are approximately the same. 
+We see that the $R^2$ values are approximately the same.
 
-You might have thought, however, that Scenario B shows a stronger relationship, and this would seem reasonable. Scenario B has 91 observations, while Scenario A only has 4, hence Scenario B has more information justifying a relationship between the variables. 
+You might have thought, however, that Scenario B shows a stronger relationship, and this would seem reasonable. Scenario B has 91 observations, while Scenario A only has 4, hence Scenario B has more information justifying a relationship between the variables.
 
 The $R^2$ value captures only the strength of the relationship in the observed data, without accounting for the number of observations. In this section, we'll look at a different statistic that can be used to assess the strength of relationships between variables in a model that, unlike $R^2$, accounts for the sample size.
 
-For each  a model with explanatory variable $x$ to one with only an intercept term.  
+For each a model with explanatory variable $x$ to one with only an intercept term.
 
 Reduced Model: $$\widehat{y}= b_0$$
 
 Full Model: $$\widehat{y}= b_0+ b_1 x$$
-
 
 Since, since $p=1$ and $\text{SSR}_{\text{Reduced}}=\text{SST}$, the F-statistic becomes:
 
@@ -1184,21 +1173,17 @@ $$
 
 Thus, we see that the F-statistic is closely related to $R^2$, but it's calculation involves one thing that the $R^2$ calculation does not - the sample size!
 
-So, for dataset A in the illustration, 
+So, for dataset A in the illustration,
 
-$$F= \frac{`r summary(M_dfA)$r.squared|> round(4)`}{`1 - r summary(M_dfA)$r.squared|> round(4)`} \times (4-2)` = `r summary(M_dfA)$r.squared/(1-summary(M_dfA)$r.squared)*(4-2)|> round(2)`$$, 
+$$F= \frac{`r summary(M_dfA)$r.squared|> round(4)`}{`1 - r summary(M_dfA)$r.squared|> round(4)`} \times (4-2)` = `r summary(M_dfA)$r.squared/(1-summary(M_dfA)$r.squared)*(4-2)|> round(2)`$$,
 
-while for dataset B, 
+while for dataset B,
 
-$$F= \frac{`r summary(M_dfB)$r.squared|> round(4)`}{`1 - r summary(M_dfB)$r.squared|> round(4)`} \times (4-2)` = `r summary(M_dfB)$r.squared/(1-summary(M_dfB)$r.squared)*(91-2)|> round(2)`$$. 
+$$F= \frac{`r summary(M_dfB)$r.squared|> round(4)`}{`1 - r summary(M_dfB)$r.squared|> round(4)`} \times (4-2)` = `r summary(M_dfB)$r.squared/(1-summary(M_dfB)$r.squared)*(91-2)|> round(2)`$$.
 
-While the scenarios had similar $R^2$ values, Scenario B had a much greater F-statistic, due to the larger sample, size which provides more evidence of a relationship. 
+While the scenarios had similar $R^2$ values, Scenario B had a much greater F-statistic, due to the larger sample, size which provides more evidence of a relationship.
 
-Both the F-statistic and $R^2$ are useful measures of a model fit. Neither is necessarily better than the other. The F-statistic accounts for sample size, while $R^2$ simply tells us how strongly related the variables are in the data we have. It is good to consider both when building and assessing models.   
-
-
-
-
+Both the F-statistic and $R^2$ are useful measures of a model fit. Neither is necessarily better than the other. The F-statistic accounts for sample size, while $R^2$ simply tells us how strongly related the variables are in the data we have. It is good to consider both when building and assessing models.
 
 ### Comparing 3 or More Categories
 
@@ -1211,8 +1196,6 @@ summary(Houses$condition)
 ```
 
 We notice that there is only one house in poor condition and one house in fair condition. These sample sizes are too small to analyze. We'll combine these two houses with those in the "average" category, creating a new category called "average or below).
-
-
 
 ### Alternate F-Stat Formula
 
@@ -1236,8 +1219,7 @@ $$
 
 It can be shown that this statistic is equivalent to the one we saw previously.
 
-For models with only one categorical explanatory variable, "variability within vs variability between" interpretation of an F-statistic is frequently in the natural and social sciences. Such studies are often referred to as One-Way ANOVA's. In fact, these are just a special case of the "full vs reduced" model interpretation of the F-statistic, which can be applied to any two models, as long as one is a submodel of the other. In this class, we'll use the more general "full vs reduced" model formula, but you should be aware that this other formula is just a special case of the one we'll use in this class. 
-
+For models with only one categorical explanatory variable, "variability within vs variability between" interpretation of an F-statistic is frequently in the natural and social sciences. Such studies are often referred to as One-Way ANOVA's. In fact, these are just a special case of the "full vs reduced" model interpretation of the F-statistic, which can be applied to any two models, as long as one is a submodel of the other. In this class, we'll use the more general "full vs reduced" model formula, but you should be aware that this other formula is just a special case of the one we'll use in this class.
 
 ## Least Squares Estimation (LSE)
 
@@ -1347,11 +1329,9 @@ $$ \displaystyle\sum_{i=1}^n (y_i -\hat{y}_i)^2  = \displaystyle\sum_{i=1}^n (y_
 
 \newpage
 
-
-
 ## Practice Questions
 
-### 1)  {.unnumbered}
+### 1) {.unnumbered}
 
 We'll work with the data set on 146 roller coasters from around the world. We'll attempt to predict the speed of a coaster (in mph).
 
@@ -1368,7 +1348,7 @@ Summary information on the speeds of coasters is shown below.
 summary(Coasters$Speed)
 ```
 
-#### a)  {.unnumbered}
+#### a) {.unnumbered}
 
 Consider a model of the form:
 
@@ -1380,7 +1360,7 @@ $$
 
 What is the value of $b_0$?
 
-#### b)  {.unnumbered}
+#### b) {.unnumbered}
 
 Speeds are broken down by type of coaster (steel or wooden).
 
@@ -1402,19 +1382,17 @@ $$
 \widehat{\text{Speed}} = b_0 + b_1\times{\text{TypeWood}}
 $$
 
-What are the values of $b_0$ and $b_1$?  
-
-
+What are the values of $b_0$ and $b_1$?
 
 ### 2) {.unnumbered}
 
-We'll fit a model using both type and duration (in seconds) as explanatory variables.  
+We'll fit a model using both type and duration (in seconds) as explanatory variables.
 
 $$
 \widehat{\text{Speed}} = b_0  + b_1\times{\text{TypeWooden}} + b_2\times\text{Duration}
 $$
 
-A scatterplot corresponding to this model is shown again below. 
+A scatterplot corresponding to this model is shown again below.
 
 ```{r, fig.width=8, fig.height=5}
 ggplot(data=Coasters, aes(x=Duration, y=Speed, color=Type))+
@@ -1429,21 +1407,19 @@ ggplot(data=Coasters, aes(x=Duration, y=Speed, color=Type))+
 
 Approximately what are the values of $b_0$, $b_1$, and $b_2$? (Hint: you may need to extend the lines to answer one or more of these.)
 
-
-
 ### 3) {.unnumbered}
 
-Continuing with the roller coaster dataset, suppose we want to predict speed of the coaster (in mph), using either design or duration (in seconds) as explanatory variables. 
+Continuing with the roller coaster dataset, suppose we want to predict speed of the coaster (in mph), using either design or duration (in seconds) as explanatory variables.
 
-#### a)  {.unnumbered}
+#### a) {.unnumbered}
 
-Let's look at the number of coasters with each design type. 
+Let's look at the number of coasters with each design type.
 
 ```{r}
 summary(Coasters$Design)
 ```
 
-Why might using design in this form in a statistical model be problematic?  
+Why might using design in this form in a statistical model be problematic?
 
 #### b) {.unnumbered}
 
@@ -1458,10 +1434,9 @@ Coasters <- Coasters |>
 Coasters |> select(Coaster, Park, Design, Duration, Speed) |> head()
 ```
 
+Shown below are scatterplots displaying the relationship between duration and speed, colored by design type.
 
-Shown below are scatterplots displaying the relationship between duration and speed, colored by design type. 
-
-Notice that in Plot A, there are 2 coasters with very fast speeds, of 100 mph or more. These appear to be outliers. In plot B, the outliers are removed from the dataset. Parallel regression lines for each type of coaster are fit in each plot. 
+Notice that in Plot A, there are 2 coasters with very fast speeds, of 100 mph or more. These appear to be outliers. In plot B, the outliers are removed from the dataset. Parallel regression lines for each type of coaster are fit in each plot.
 
 ```{r}
 Coasters_filtered <- Coasters |> filter(Speed < 100)
@@ -1496,135 +1471,124 @@ PlotB <- ggplot(data=Coasters_filtered, aes(x=Duration, y=Speed, color=Design))+
 grid.arrange(PlotA, PlotB, ncol=2)
 ```
 
-How does removing the outliers affect the slope and intercepts of the regression lines relating speed and duration for each type of coaster? Which plot do you think more accurately captures the relationship between speed and duration? Explain your answer.   
+How does removing the outliers affect the slope and intercepts of the regression lines relating speed and duration for each type of coaster? Which plot do you think more accurately captures the relationship between speed and duration? Explain your answer.
 
-
-
-
-
-### 4)  {.unnumbered}
+### 4) {.unnumbered}
 
 We'll continue with the `coasters_filtered` dataset that excludes the two outliers, and continue to classify each coaster design as either "sit-down" or "other". In each part, you are asked to interpret model estimates. State the numerical value of each estimate specifically in your interpretation, as is done in Section 2.1 of the class notes.
 
-#### a)  {.unnumbered}
+#### a) {.unnumbered}
 
 Consider a model of the form
 
-**Model 0:** 
+**Model 0:**
 
 $$
 \widehat{\text{Speed}} = b_0
-$$
-The coefficient estimate $b_0$ for this model is shown below. 
+$$ The coefficient estimate $b_0$ for this model is shown below.
 
 ```{r}
 M_Coasters_speed_0 <- lm(data=Coasters_filtered, Speed ~ 1)
 M_Coasters_speed_0
 ```
-Write a sentence interpreting the estimate $b_0$ in context.   
 
-#### b)  {.unnumbered}
+Write a sentence interpreting the estimate $b_0$ in context.
+
+#### b) {.unnumbered}
 
 Now consider a model of the form
 
-**Model 1:** 
+**Model 1:**
 
 $$
 \widehat{\text{Speed}} = b_0 + b_1\times\text{Duration}
-$$
-Estimates of $b_0$ and $b_1$ are shown below. 
+$$ Estimates of $b_0$ and $b_1$ are shown below.
 
 ```{r}
 M_Coasters_speed_dur <- lm(data=Coasters_filtered, Speed ~ Duration)
 M_Coasters_speed_dur
 ```
 
-Write sentences interpreting the estimates $b_0$ and $b_1$ in context. 
-
+Write sentences interpreting the estimates $b_0$ and $b_1$ in context.
 
 #### c) {.unnumbered}
 
 Now consider a model of the form
 
-**Model 2:** 
+**Model 2:**
 
 $$
 \widehat{\text{Speed}} = b_0 + b_1\times\text{DesignSitDown}
 $$
 
-Estimates of $b_0$ and $b_1$ are shown below. 
+Estimates of $b_0$ and $b_1$ are shown below.
 
 ```{r}
 M_Coasters_speed_des <- lm(data=Coasters_filtered, Speed ~ Design)
 M_Coasters_speed_des
 ```
-Write sentences interpreting the estimates $b_0$ and $b_1$ in context. 
 
+Write sentences interpreting the estimates $b_0$ and $b_1$ in context.
 
-#### d)  {.unnumbered}
+#### d) {.unnumbered}
 
 Finally, consider a model of the form
 
-**Model 3:** 
+**Model 3:**
 
 $$
 \widehat{\text{Speed}} = b_0 + b_1\times\text{Duration} +  b_2\times\text{DesignSitDown} 
 $$
 
-Estimates of $b_0$, $b_1$, and $b_2$ are shown below. 
+Estimates of $b_0$, $b_1$, and $b_2$ are shown below.
 
 ```{r}
 M_Coasters_speed_dur_des <- lm(data=Coasters_filtered, Speed ~ Duration + Design)
 M_Coasters_speed_dur_des
 ```
-Write sentences interpreting the estimates $b_0$, $b_1$, and $b_2$ in context. 
 
+Write sentences interpreting the estimates $b_0$, $b_1$, and $b_2$ in context.
 
-
-
-### 5)  {.unnumbered}
+### 5) {.unnumbered}
 
 Continuing with the model in 4(d), we'll predict the speed of a roller coaster using duration and whether it has a sit down design as explanatory variables. The model is
 
 $$
 \widehat{\text{Speed}} = b_0 + b_1\times\text{Duration} +  b_2\times\text{DesignSitDown} 
-$$
-A scatterplot displaying the relationship is shown below. 
+$$ A scatterplot displaying the relationship is shown below.
 
 ```{r, fig.width=8, fig.height=5}
 PlotB + ggtitle("Speed by Duration and Design")
 ```
 
-
-Estimates of $b_0$, $b_1$, and $b_2$ are. 
+Estimates of $b_0$, $b_1$, and $b_2$ are.
 
 ```{r}
 M_Coasters_speed_dur_des <- lm(data=Coasters_filtered, Speed ~ Duration + Design)
 M_Coasters_speed_dur_des
 ```
 
-
-#### a)  {.unnumbered}
+#### a) {.unnumbered}
 
 Use the model to calculate the predicted speed of a sit down coaster with duration 150 seconds.
 
-#### b)  {.unnumbered}
+#### b) {.unnumbered}
 
-Explain how you could make the prediction in (a) from the scatterplot. Is your calculated speed consistent with the plot? 
+Explain how you could make the prediction in (a) from the scatterplot. Is your calculated speed consistent with the plot?
 
 #### c) {.unnumbered}
 
-Given that not all coasters of the same type and duration have the same speed, we cannot be sure that a sit down coaster with duration 150 seconds will have exactly the predicted speed. Using the scatterplot, give a range of speeds that you can be confident will contain the speed of an individual sit down coaster with duration 150 seconds.  
+Given that not all coasters of the same type and duration have the same speed, we cannot be sure that a sit down coaster with duration 150 seconds will have exactly the predicted speed. Using the scatterplot, give a range of speeds that you can be confident will contain the speed of an individual sit down coaster with duration 150 seconds.
 
-#### d)  {.unnumbered}
+#### d) {.unnumbered}
 
 Suppose that Coasters A and B are both sit down coasters and that Coaster A has a duration 10 seconds longer than B. Which coaster has the faster predicted speed, and by how much?
 
-#### e)  {.unnumbered}
+#### e) {.unnumbered}
 
 Suppose that Coasters C and D have the same duration, and that Coaster C is a sit down coaster, and D isn't. Which coaster has the faster predicted speed, and by how much?
 
-### 6)  {.unnumbered}
+### 6) {.unnumbered}
 
 Continuing with the model in Question 5, excluding outliers, the $R^2$ value is shown below.
 
@@ -1632,11 +1596,11 @@ Continuing with the model in Question 5, excluding outliers, the $R^2$ value is 
 summary(M_Coasters_speed_dur_des)$r.squared
 ```
 
-#### a)   {.unnumbered}
+#### a) {.unnumbered}
 
 Write a sentence interpreting this value in context.
 
-#### b)   {.unnumbered}
+#### b) {.unnumbered}
 
 We add year built (since 1900) as an explanatory variable. The $R^2$ value is shown below.
 
@@ -1648,7 +1612,7 @@ summary(M_Coasters_speed_dur_des_yr)$r.squared
 
 Does adding year built appear to help predict the speed of a coaster? Explain your answer.
 
-#### c)  {.unnumbered}
+#### c) {.unnumbered}
 
 We now drop design from the model and use only duration as an explanatory variable. The $R^2$ value is shown below.
 
@@ -1659,7 +1623,7 @@ summary(M_Coasters_speed_dur)$r.squared
 
 Does dropping design from the model hurt our ability to predict speed? Explain your answer.
 
-### 7)   {.unnumbered}
+### 7) {.unnumbered}
 
 The scatterplot shows the relationship between top speed of a coaster (in mph) and its maximum height and design type. We again exclude the two outlier coasters.
 
@@ -1690,19 +1654,15 @@ M_Coasters_speed_height_des
 
 Should we expect the model that predicts speed using height as an explanatory variable to have a higher or lower $R^2$ value than a model that uses duration as an explanatory variable (hint: compare this scatterplot to the one in Question 5)?
 
-
-
-### 8)  {.unnumbered}
+### 8) {.unnumbered}
 
 Continuing with the roller coasters data, now consider a model of the form
-
 
 $$
 \widehat{\text{Speed}} = b_0 + b_1\times\text{Duration}
 $$
 
-R commands and output related to this model are shown below. 
-
+R commands and output related to this model are shown below.
 
 ```{r}
 Mean_Speed <- mean(Coasters_filtered$Speed)
@@ -1720,8 +1680,7 @@ sum(M_Coasters_speed_dur$residuals^2)
 
 What are the values of SST, SSR, SSM, and $R^2$?
 
-
-### 9)   {.unnumbered}
+### 9) {.unnumbered}
 
 The scatterplot shows a response variable (y), plotted against a quantitative explanatory variable (x), with a categorical explanatory variable, (either A or B) indicated by color and shape.
 
@@ -1754,7 +1713,6 @@ $$
 
 Model 2:
 
-
 $$
 \hat{y} = b_0 + b_1\text{CategoryB} 
 $$
@@ -1765,8 +1723,7 @@ $$
 \hat{y} = b_0 + b_1\text{CategoryB} + b_2x 
 $$
 
-
-#### a)  {.unnumbered}
+#### a) {.unnumbered}
 
 Without calculating $R^2$, state approximately what $R^2$ would be for each of Models 1, 2, and 3. Choose from:
 
@@ -1777,16 +1734,13 @@ D)  Between 0.75 and 1
 
 Justify your answers.
 
-
-#### b)  {.unnumbered}
+#### b) {.unnumbered}
 
 Between Models 2 and 3, which will have a greater estimate of $b_1$? Justify your answer.
 
-
-#### c)  {.unnumbered}
+#### c) {.unnumbered}
 
 Between Models 1 and 3, in which model will the coefficient on the variable $x$ be more extreme? (In Model 1, the coefficient on $x$ is $b_1$ and in Model 3, it is $b_2$.) Justify your answer.
-
 
 ### 10) {.unnumbered}
 
@@ -1828,27 +1782,22 @@ grid.arrange(p1, p2, p3, ncol=3)
 
 Which scenario will have the largest F-statistic? Which will have the smallest? Explain your answer.
 
-
-
 ### 11) {.unnumbered}
 
-The four models for roller coaster speeds in Question 3 are shown again below. SSR's for each model are also show. There are 117 roller coasters in the dataset. 
+The four models for roller coaster speeds in Question 3 are shown again below. SSR's for each model are also show. There are 117 roller coasters in the dataset.
 
-
-**Model 0:** 
+**Model 0:**
 
 $$
 \widehat{\text{Speed}} = b_0
 $$
-
 
 ```{r}
 M_Coasters_speed_0 <- lm(data=Coasters_filtered, Speed ~ 1)
 sum(M_Coasters_speed_0$residuals^2)
 ```
 
-
-**Model 1:** 
+**Model 1:**
 
 $$
 \widehat{\text{Speed}} = b_0 + b_1\times\text{Duration}
@@ -1859,22 +1808,18 @@ M_Coasters_speed_dur <- lm(data=Coasters_filtered, Speed ~ Duration)
 sum(M_Coasters_speed_dur$residuals^2)
 ```
 
-
-
-**Model 2:** 
+**Model 2:**
 
 $$
 \widehat{\text{Speed}} = b_0 + b_1\times\text{DesignSitDown}
 $$
-
 
 ```{r}
 M_Coasters_speed_des <- lm(data=Coasters_filtered, Speed ~ Design)
 sum(M_Coasters_speed_des$residuals^2)
 ```
 
-
-**Model 3:** 
+**Model 3:**
 
 $$
 \widehat{\text{Speed}} = b_0 + b_1\times\text{Duration} +  b_2\times\text{DesignSitDown} 
@@ -1885,36 +1830,33 @@ M_Coasters_speed_dur_des <- lm(data=Coasters_filtered, Speed ~ Duration + Design
 sum(M_Coasters_speed_dur_des$residuals^2)
 ```
 
-Calculate F-statistics for comparing each of the following pairs of models, or explain why it would be inappropriate to do so. 
+Calculate F-statistics for comparing each of the following pairs of models, or explain why it would be inappropriate to do so.
 
-#### a)   {.unnumbered}
+#### a) {.unnumbered}
 
 Model 0 and Model 1
 
-#### b)  {.unnumbered}
+#### b) {.unnumbered}
 
-Model 0 and Model 2  
+Model 0 and Model 2
 
-#### c)  {.unnumbered}
+#### c) {.unnumbered}
 
-Model 1 and Model 2   
+Model 1 and Model 2
 
-#### d)  {.unnumbered}
+#### d) {.unnumbered}
 
-Model 1 and Model 3   
+Model 1 and Model 3
 
-#### e)  {.unnumbered}
+#### e) {.unnumbered}
 
-Model 2 and Model 3  
-
-
+Model 2 and Model 3
 
 ### 12) {.unnumbered}
 
-Continue with the models in Question 11. 
+Continue with the models in Question 11.
 
-
-#### a)  {.unnumbered}
+#### a) {.unnumbered}
 
 The F-statistic for comparing Model 2 to Model 3 is shown below. Based on the size of this F-statistic, what can we conclude about the variable(s) in these models?
 
@@ -1922,7 +1864,7 @@ The F-statistic for comparing Model 2 to Model 3 is shown below. Based on the si
 anova(M_Coasters_speed_dur, M_Coasters_speed_0)$F[2] |> round(1)
 ```
 
-#### b)   {.unnumbered}
+#### b) {.unnumbered}
 
 The F-statistic for comparing Model 2 to Model 3 is shown below. Based on the size of this F-statistic, what can we conclude about the variable(s) in these models?
 
@@ -1930,8 +1872,7 @@ The F-statistic for comparing Model 2 to Model 3 is shown below. Based on the si
 anova(M_Coasters_speed_dur_des, M_Coasters_speed_dur)$F[2] |> round(1)
 ```
 
-
-### 13)  {.unnumbered}
+### 13) {.unnumbered}
 
 The plots show three different lines fit to the same sets of points.
 
@@ -1953,29 +1894,25 @@ Which represents the least squares regression line? Show calculations to justify
 
 ### 14) {.unnumbered}
 
-We saw in Question 5 that for a model of the form 
+We saw in Question 5 that for a model of the form
 
 $$
 \widehat{\text{Speed}} = b_0 + b_1\times\text{Duration} +  b_2\times\text{DesignSitDown} 
 $$
 
-the estimates of $b_0$, $b_1$, and $b_2$ produced by R are 
+the estimates of $b_0$, $b_1$, and $b_2$ produced by R are
 
 ```{r}
 M_Coasters_speed_dur_des
 ```
 
-Suppose that instead of using these, we used the model used the model with the estimates of $b_0$, $b_1$, and $b_2$ given below.  
+Suppose that instead of using these, we used the model used the model with the estimates of $b_0$, $b_1$, and $b_2$ given below.
 
 $$
 \widehat{\text{Speed}} = 25 + 0.25\times\text{MaxHeight} + 3\times{\text{DesignSitDown}}
 $$
 
-Can we say how SST, SSR, and $R^2$ for this new model would compare to those in the model using the estimates produced by R? Would they increase, decrease, or stay the same? Why? 
-
-
-
-
+Can we say how SST, SSR, and $R^2$ for this new model would compare to those in the model using the estimates produced by R? Would they increase, decrease, or stay the same? Why?
 
 ### 15) {.unnumbered}
 
@@ -1988,27 +1925,25 @@ A small dataset with 6 observations is shown below. There is a categorical expla
 
 Consider a model of the form:
 
-$$\hat{y} = b_0 + b_1\text{GroupB}$$ 
+$$\hat{y} = b_0 + b_1\text{GroupB}$$
 
-#### a)  {.unnumbered}
+#### a) {.unnumbered}
 
-Give the values of the estimates $b_0$ and $b_1$ that would be produced by the `lm` command in R. 
+Give the values of the estimates $b_0$ and $b_1$ that would be produced by the `lm` command in R.
 
-#### b)  {.unnumbered}
+#### b) {.unnumbered}
 
-Using the estimates in (a), calculate SSR, SSM, SST, and $R^2$.   
+Using the estimates in (a), calculate SSR, SSM, SST, and $R^2$.
 
-#### c)  {.unnumbered}
+#### c) {.unnumbered}
 
-Suppose instead that we let $b_0 = 4$ and $b_1 = 2$ (so that the predicted value for each group corresponds to the median response value for that group). How would you expect SSR for this model to compare to the SSR you calculated in (b)?    
+Suppose instead that we let $b_0 = 4$ and $b_1 = 2$ (so that the predicted value for each group corresponds to the median response value for that group). How would you expect SSR for this model to compare to the SSR you calculated in (b)?
 
-#### d)  {.unnumbered}
+#### d) {.unnumbered}
 
-Calculate SSR for the values of $b_0$ and $b_1$ in (c). Does your answer match what you expected?   
+Calculate SSR for the values of $b_0$ and $b_1$ in (c). Does your answer match what you expected?
 
-
-
-### 16)  {.unnumbered}
+### 16) {.unnumbered}
 
 The table displays a set of fictional data, showing scores that seven students received on an exam. Also shown are whether or not the student attended a study session, and the number of hours the student spent studying on their own.
 
@@ -2020,7 +1955,7 @@ The table displays a set of fictional data, showing scores that seven students r
 
 We'll attempt to predict Score, using the other variables as explanatory variables.
 
-#### a)   {.unnumbered}
+#### a) {.unnumbered}
 
 We use the model:
 
@@ -2071,8 +2006,7 @@ v)  the sum of squares explained by the model (SSM)
 
 vi) the proportion of variation in exam score explained by the model using study session as the explanatory variable ($R^2$)
 
-
-#### b)  {.unnumbered}
+#### b) {.unnumbered}
 
 Now consider the model
 
@@ -2103,14 +2037,13 @@ iv) the sum of squares explained by the model (SSM)
 
 v)  the proportion of variation in exam score explained by the model using hours studying as the explanatory variable ($R^2$)
 
+### 17) {.unnumbered}
 
-### 17)  {.unnumbered}
-
-#### a)  {.unnumbered}
+#### a) {.unnumbered}
 
 For the fictional test score example in 14(b), write the expression that would need to be minimized to obtain the values of regression coefficients $b_0$ and $b_1$. Substitute values from the data into your expression. (Hint: The only variables in the expression should be $b_0$ and $b_1$).
 
-#### b)  {.unnumbered}
+#### b) {.unnumbered}
 
 There are three different ways to do this part of the question. You may complete any of the three ways. To get the most from the question, it is recommended that you complete the part that is consistent with the amount of mathematics you have taken previously.
 
@@ -2126,15 +2059,6 @@ Substitute $b_0 = 79$ into the expression from part C, so that $b_1$ is the only
 
 Substitute $b_0 = 79$ into the expression from part C, so that $b_1$ is the only variable in the expression. Use an online graphing calculator (such as https://www.desmos.com/calculator) to graph SSR as a function of $b_1$ (hint, make $b_1$ the x-variable). Show that SSR is minimized when $b_1=1.5$. Include a screen shot of your graph.
 
-
-
-
-
-
-
-
-
 ```{r, echo=FALSE}
 save.image(file = "Environment.RData")
 ```
-

@@ -227,7 +227,8 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#the-normal-error-regression-model" id="toc-the-normal-error-regression-model" class="nav-link active" data-scroll-target="#the-normal-error-regression-model"><span class="header-section-number">4.1</span> The Normal Error Regression Model</a>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link active" data-scroll-target="#learning-outcomes">Learning Outcomes</a></li>
+  <li><a href="#the-normal-error-regression-model" id="toc-the-normal-error-regression-model" class="nav-link" data-scroll-target="#the-normal-error-regression-model"><span class="header-section-number">4.1</span> The Normal Error Regression Model</a>
   <ul class="collapse">
   <li><a href="#example-ice-cream-dispenser" id="toc-example-ice-cream-dispenser" class="nav-link" data-scroll-target="#example-ice-cream-dispenser"><span class="header-section-number">4.1.1</span> Example: Ice Cream dispenser</a></li>
   <li><a href="#normal-distribution" id="toc-normal-distribution" class="nav-link" data-scroll-target="#normal-distribution"><span class="header-section-number">4.1.2</span> Normal Distribution</a></li>
@@ -317,16 +318,20 @@ window.Quarto = {
 </header>
 
 
-<p><strong>Learning Outcomes:</strong></p>
+<section id="learning-outcomes" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="learning-outcomes">Learning Outcomes</h3>
 <p><strong>Conceptual Learning Outcomes</strong><br>
-17. State the assumptions of the normal error regression model in context.&nbsp;<br>
-18. State the hypotheses associated with each p-value in the <code>lm</code> summary table and explain what we should conclude from each test.&nbsp;<br>
-19. Interpret quantities in the R <code>lm summary output</code> including standard errors, residual standard error, <span class="math inline">\(R^\)</span>, and the F-statistic.<br>
-20. Use standard error formulas to calculate quantities in R model summary output (including estimates, standard errors, t-statistics, <span class="math inline">\(R^2\)</span>, and F-statistics), as well as output for associated tests and confidence intervals.<br>
-21. Distinguish between confidence intervals for model parameters, confidence for expected response, and prediction intervals, and identify the sources of variability contributing to each.<br>
-22. Explain the regression effect in context.&nbsp; 23. Identify situations where multiple testing error is a concern and explain how to correct for such errors. 24. Identify situations where a statistically discernible result might not be practically important, or when a large p-value might still be meaningful.</p>
+16. State the assumptions of the normal error regression model in context.&nbsp;<br>
+17. State the hypotheses associated with each p-value in the <code>lm</code> summary table and explain what we should conclude from each test.&nbsp;<br>
+18. Interpret quantities in the R <code>lm summary output</code> including standard errors, residual standard error, <span class="math inline">\(R^2\)</span>, and the F-statistic.<br>
+19. Use standard error formulas to calculate quantities in R model summary output (including estimates, standard errors, t-statistics, <span class="math inline">\(R^2\)</span>, and F-statistics), as well as output for associated tests and confidence intervals.<br>
+20. Distinguish between confidence intervals for model parameters, confidence for expected response, and prediction intervals, and identify the sources of variability contributing to each.<br>
+21. Explain the regression effect in context.&nbsp;<br>
+22. Identify situations where multiple testing error is a concern and explain how to correct for such errors.<br>
+23. Identify situations where a statistically discernible result might not be practically important, or when a large p-value might still be meaningful.</p>
 <p><strong>Computational Learning Outcomes</strong><br>
 H. Perform hypothesis tests and calculate confidence and prediction intervals based on models using R.</p>
+</section>
 <section id="the-normal-error-regression-model" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="the-normal-error-regression-model"><span class="header-section-number">4.1</span> The Normal Error Regression Model</h2>
 <p>You’ve probably noticed that most of the sampling distributions of statistics we’ve seen were symmetric and bell-shaped in nature. When working with statistics that have symmetric and bell-shaped distributions and know standard error formulas, it is possible to use well-known probability facts to obtain confidence intervals and perform hypothesis tests without actually performing simulation.</p>

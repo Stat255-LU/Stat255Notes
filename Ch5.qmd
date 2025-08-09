@@ -1,22 +1,19 @@
 # Building and Assessing Models
 
-**Learning Outcomes:**
+### Learning Outcomes  {.unnumbered}
 
-**Conceptual Learning Outcomes**   
-25. State the assumptions of the normal error regression model and check their validity using residual plots, qq plots, and other information.\
-26. Interpret regression coefficients in models involving log transformations.\
-27. Calculate predicted values for models involving log transformations.\
-28. Interpret regression coefficient estimates on models with interaction terms.  
-29. Calculate predicted values for models with interaction terms.   
-30. Draw conclusions about models involving polynomial terms and interactions based on graphical representations of data. 
-31. Identify instances of confounding and Simpson's paradox and draw conclusions in these situations.\
-32. Explain how multicollinearity impacts predictions and confidence/prediction intervals.\
-33. Determine whether it is appropriate to add terms to a model using information such as $R^2$, F-statistic, residual plots, correlation, and other visual representations.        
+**Conceptual Learning Outcomes**\
+24. State the assumptions of the normal error regression model and check their validity using residual plots, qq plots, and other information.\
+25. Interpret regression coefficients in models involving log transformations.\
+26. Calculate predicted values for models involving log transformations.\
+27. Interpret regression coefficient estimates on models with interaction terms.\
+28. Calculate predicted values for models with interaction terms.\
+29. Draw conclusions about models involving polynomial terms and interactions based on graphical representations of data. 31. Identify instances of confounding and Simpson's paradox and draw conclusions in these situations.\
+30. Explain how multicollinearity impacts predictions and confidence/prediction intervals.\
+31. Determine whether it is appropriate to add terms to a model using information such as $R^2$, F-statistic, residual plots, correlation, and other visual representations.
 
-
-**Computational Learning Outcomes**    
-I. Build regression models involving nonlinear terms and interactions in R.  
-
+**Computational Learning Outcomes**\
+I. Build regression models involving nonlinear terms and interactions in R.
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=TRUE)
@@ -343,12 +340,10 @@ ggplot(data=Cars2015, aes(x=Acc060, y=log(Price))) + geom_point() +
 
 We should only use the p-values and confidence intervals provided by R, which depend on the t-distribution approximation, if we believe these assumptions are reasonable.
 
-
 ```{r}
 Cars_M_Log <- lm(data=Cars2015, log(Price)~Acc060)
 summary(Cars_M_Log)
 ```
-
 
 **Assumption Check for Model on Log Price**
 
@@ -544,10 +539,7 @@ The log model suggests an nonlinear trend in price with respect to acceleration 
 
 \newpage
 
-
-
 ## Polynomial Regression
-
 
 ## Models with Interaction
 
@@ -756,7 +748,7 @@ The fact that there is a correlation between explanatory variables is NOT a reas
 
 3.  Suppose that audiences become more favorable to dramas as they get longer, but less favorable to comedies as they get longer. In this scenario, the effect of movie length on audience rating depends on the genre of the movie, indicating an interaction between length and genre.
 
-## Building Models for Interpretation 
+## Building Models for Interpretation
 
 So far, we've dealt with models with 2 or fewer variables. Some real questions require accounting for more than two variables. In these situations, we'll need to develop a model that is complex enough to capture the important aspects of the mechanism we're modeling, but also simple enough for us to be able to explain and interpret. We'll need to decide how many variables to include in the model, and whether to use transformations, or to include interaction terms.
 
@@ -1294,8 +1286,6 @@ exp(predict(Cars_M7, newdata=newcar, interval="prediction", level=0.95))
 ```
 
 We are 95% Confident that the price of an individual new 2015 car that weighs 2400 lbs, drives a quarter mile in 18 seconds on a fast track, and has all wheel drive will be between 11.6 thousand and 27.7 thousand dollars.
-
-
 
 #### Model Building Summary
 
