@@ -2,19 +2,16 @@
 
 ### Learning Outcomes
 
-**Conceptual Learning Outcomes**   
+**Conceptual Learning Outcomes**\
 38. Explain how model complexity relates to training and test error, prediction variance and bias, and overfitting.\
 39. Explain how to use cross-validation in model selection.\
 40. Explain how complexity parameters associated with ridge regression, decision trees, and splines impact variance, bias, and likelihood of overfitting.\
 41. Make predictions from a decision tree.\
-42. Calculate classification accuracy, sensitivity, specificity, confusion matrix, and receiver operating characteristic curves. 
-43. Evaluate ethical considerations associated with predictive models in context.  
+42. Calculate classification accuracy, sensitivity, specificity, confusion matrix, and receiver operating characteristic curves. 43. Evaluate ethical considerations associated with predictive models in context.
 
-**Computational Learning Outcomes**     
-K. Perform cross-validation to build and assess predictive models in R.   
-L. Make predictions on new data using predictive models in R.   
-
-
+**Computational Learning Outcomes**\
+K. Perform cross-validation to build and assess predictive models in R.\
+L. Make predictions on new data using predictive models in R.
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=FALSE)
@@ -30,8 +27,7 @@ library(caret)
 library(MASS)
 library(tidyverse)
 library(mosaic)
-library(ISLR)
-data(Default)
+
 options(scipen=999)
 set.seed(07302020)
 ```
@@ -1342,6 +1338,8 @@ We'll divide the credit card dataset into a set of 9,000 observations, on which 
 
 ```{r}
 set.seed(08172022)
+library(ISLR)
+data(Default)
 samp <- sample(1:nrow(Default), 1000)
 Default_Test <- Default[samp, ]
 Default_Train <- Default[-samp, ]

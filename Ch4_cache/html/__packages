@@ -21,6 +21,9 @@ dplyr
 stringr
 forcats
 lubridate
+Matrix
+mosaicData
+mosaic
 nycflights13
 airports
 cherryblossom

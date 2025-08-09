@@ -21,4 +21,7 @@ dplyr
 stringr
 forcats
 lubridate
+Matrix
+mosaicData
+mosaic
 ISLR
