@@ -678,7 +678,7 @@ Standard Deviation
 
 ### 8) {.unnumbered}
 
-The histograms show the distribution of quiz scores in three different statistics classes.
+The histograms show the distribution of quiz scores in four different statistics classes.
 
 ```{r, echo=F, fig.width=8, fig.height=8, fig.align='center', message=FALSE, warning=FALSE}
 library(gridExtra)
