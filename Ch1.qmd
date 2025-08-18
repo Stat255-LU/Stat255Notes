@@ -30,6 +30,7 @@ library(MASS)
 library(tidyverse)
 library(KingCountyHouses)
 options(scipen=999)
+select <- dplyr::select
 set.seed(07302020)
 ```
 
@@ -49,7 +50,7 @@ Houses <- home_prices |> mutate(price=10^price/1000 |> round(0),
                                 waterfront = ifelse(waterfront==1, "Yes", "No"),
                                 ID = row_number())|>
                           rename(yr_renovated = year_renovated)|>
-                          select(ID, price, sqft_living, waterfront, condition, sqft_lot, bedrooms, bathrooms, yr_built)
+                          dplyr:: select(ID, price, sqft_living, waterfront, condition, sqft_lot, bedrooms, bathrooms, yr_built)
 Houses$condition <- fct_collapse(Houses$condition, "average or below" = c("poor","fair", "average"))
 
 set.seed(08022025)

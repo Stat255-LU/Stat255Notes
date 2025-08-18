@@ -1,4 +1,4 @@
-# Building and Assessing Models
+# Building Models for Inference
 
 ### Learning Outcomes  {.unnumbered}
 
@@ -215,9 +215,9 @@ We should only use the p-values and confidence intervals provided by R, which de
 The plots for checking these assumptions are shown below.
 
 ```{r, fig.width=10}
-P1 <- ggplot(data=FloridaLakes, aes(y=M_pH$residuals, x=M_pH$fitted.values)) + geom_point() + ggtitle("Residual vs Predicted Plot") + xlab("Predicted Values") + ylab("Residuals")
-P2 <- ggplot(data=FloridaLakes, aes(x=M_pH$residuals)) + geom_histogram() + ggtitle("Histogram of Residuals") + xlab("Residual")
-P3 <- ggplot(data=FloridaLakes, aes(sample = scale(M_pH$residuals))) + stat_qq() + stat_qq_line() + xlab("Normal Quantiles") + ylab("Residual Quantiles") + ggtitle("Normal QQ Plot")
+P1 <- ggplot(data=FloridaLakes, aes(y=M_Lakes_merc_pH$residuals, x=M_Lakes_merc_pH$fitted.values)) + geom_point() + ggtitle("Residual vs Predicted Plot") + xlab("Predicted Values") + ylab("Residuals")
+P2 <- ggplot(data=FloridaLakes, aes(x=M_Lakes_merc_pH$residuals)) + geom_histogram() + ggtitle("Histogram of Residuals") + xlab("Residual")
+P3 <- ggplot(data=FloridaLakes, aes(sample = scale(M_Lakes_merc_pH$residuals))) + stat_qq() + stat_qq_line() + xlab("Normal Quantiles") + ylab("Residual Quantiles") + ggtitle("Normal QQ Plot")
 grid.arrange(P1, P2, P3, ncol=3)
 ```
 

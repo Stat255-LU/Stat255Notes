@@ -251,23 +251,23 @@ xrange <- c(0,12)
 Hist10 <- ggplot(data = Sample10, aes(x=SleepHrsNight)) + 
   geom_histogram(color="white", fill="lightblue") + 
   ggtitle("n=10") + 
-  xlab("Sleep Hours") + ylab("Frequency") + xlim(xrange)
+  xlab("Sleep Hours") + ylab("Frequency") + xlim(xrange) + theme_bw()
 
 Hist30 <- ggplot(data = Sample30, aes(x=SleepHrsNight)) + 
   geom_histogram(color="white", fill="lightblue") + 
   ggtitle("n=30") + 
-  xlab("Sleep Hours") + ylab("Frequency") + xlim(xrange)
+  xlab("Sleep Hours") + ylab("Frequency") + xlim(xrange) + theme_bw()
 
 
 Hist75 <- ggplot(data = Sample75, aes(x=SleepHrsNight)) + 
   geom_histogram(color="white", fill="lightblue") + 
   ggtitle("n=75") + 
-  xlab("Sleep Hours") + ylab("Frequency") + xlim(xrange)
+  xlab("Sleep Hours") + ylab("Frequency") + xlim(xrange) + theme_bw()
 
 Hist200 <- ggplot(data = Sample200, aes(x=SleepHrsNight)) + 
   geom_histogram(color="white", fill="lightblue") + 
   ggtitle("n=200") + 
-  xlab("Sleep Hours") + ylab("Frequency") + xlim(xrange)
+  xlab("Sleep Hours") + ylab("Frequency") + xlim(xrange) + theme_bw()
 
 grid.arrange(Hist10, Hist30, Hist75, Hist200, ncol=2)
 ```
@@ -794,7 +794,7 @@ Notice that the standard error confidence interval closely matches the percentil
 
 ## Bootstrapping Model Coefficients
 
-We've seen how to use bootsrapping to obtain confidence intervals for the mean mercury level among all Florida lakes. We can use the same process to obtain confidence intervals for other statistics, such as coefficients $b_0$, $b_1$, representing differences in means, or slopes, like we saw in Chapter 2.
+We've seen how to use bootstrapping to obtain confidence intervals for the mean mercury level among all Florida lakes. We can use the same process to obtain confidence intervals for other statistics, such as coefficients $b_0$, $b_1$, representing differences in means, or slopes, like we saw in Chapter 2.
 
 ### CI for Difference in Means
 
@@ -805,7 +805,7 @@ The boxplot shows and table below describe the distribution of mercury levels fo
 ```{r}
 LakesBP <- ggplot(data=FloridaLakes, aes(x=Location, y=Mercury, fill=Location)) + 
   geom_boxplot() +   geom_jitter() + ggtitle("Mercury Levels in Florida Lakes") + 
-  xlab("Location") + ylab("Mercury Level") + theme(axis.text.x = element_text(angle = 90)) + coord_flip()
+  xlab("Location") + ylab("Mercury Level") + theme(axis.text.x = element_text(angle = 90)) + coord_flip() + theme_bw()
 LakesBP
 ```
 
@@ -913,19 +913,19 @@ M_Lakes_merc_loc_Bootstrap <- do(10000) * lm(Mercury ~ Location, data = resample
 
 The bootstrap distribution for the difference in means, $b_0$, and $b_1$ are shown below.
 
-```{r}
+```{r, fig.width=10, fig.height=4}
 # plot for b0
 M_Lakes_merc_loc_Bootstrap_Plot_b0 <- ggplot(data=M_Lakes_merc_loc_Bootstrap, aes(x=Intercept)) +  
   geom_histogram(color="white", fill="lightblue", binwidth=0.02) +
   xlab("b0: Mean mercury in Northern Fla.") + ylab("Frequency") +
-  ggtitle("Bootstrap Intercept b0") + 
+  ggtitle("Bootstrap b0") + 
   theme(legend.position = "none") + theme_bw()
 
 # plot for b1
 M_Lakes_merc_loc_Bootstrap_Plot_b1 <- ggplot(data=M_Lakes_merc_loc_Bootstrap, aes(x=LocationS)) +  
   geom_histogram(color="white", fill="lightblue", binwidth=0.02) +
   xlab("b1: Mean difference between southern and northern Fla.") + ylab("Frequency") +
-  ggtitle("Bootstrap Intercept b1") + 
+  ggtitle("Bootstrap b1") + 
   theme(legend.position = "none") + theme_bw()
 
 grid.arrange(M_Lakes_merc_loc_Bootstrap_Plot_b0, M_Lakes_merc_loc_Bootstrap_Plot_b1)
@@ -982,7 +982,7 @@ CI
 
 We add the confidence intervals to the plots of the bootstrap distributions below.
 
-```{r}
+```{r, fig.width=10, fig.height=4}
 # CI plot for intercept b1
 CI_Plot_b0 <- M_Lakes_merc_loc_Bootstrap_Plot_b0 + 
                 geom_segment(aes(x=CI$lower[1], xend=CI$upper[1] , y=50, yend=50), 
@@ -1280,7 +1280,14 @@ It is important to note that we are **not** saying that we are 95% confident tha
 
 ### Bootstrapping Cautions
 
-While bootstrapping is a popular and robust procedure for calculating confidence intervals, it does have cautions and limitations. We should be sure to use the bootstrap procedure appropriate for our context. A standard-error bootstrap interval is appropriate when the sampling distribution for our statistic is roughly symmetric and bell-shaped. When this is not true, a percentile bootstrap interval can be used as long as there are no gaps or breaks in the bootstrap distribution. In situations where there are gaps and breaks in the bootstrap distribution, then the bootstrap distribution may not be a reasonable approximation of the sampling distribution we are interested in.
+While bootstrapping is a popular and robust procedure for calculating confidence intervals, it does have cautions and limitations. We should be sure to use the bootstrap procedure appropriate for our context. 
+
+
+1. A standard-error bootstrap interval is appropriate when the sampling distribution for our statistic is roughly symmetric and bell-shaped. When this is not true, a percentile bootstrap interval can be used as long as there are no gaps or breaks in the bootstrap distribution. 
+
+2. In situations where there are gaps and breaks in the bootstrap distribution, then the bootstrap distribution may not be a reasonable approximation of the sampling distribution we are interested in.
+
+3. When working with a categorical variable, it is a good idea to resample in each group, with sizes matching those in the original samples. For example, in the Florida lakes study, rather than resampling 53 lakes, we would ideally resample 33 Northern lakes and 20 Southern lakes, matching the numbers from the original study.  The `mosaic` package, which we used to do bootstrapping does not allow this option, unfortunately. In this case, the sample sizes are similar enough that this issue will not have a big impact on our results. If sample sizes within groups were small or very different, we may want to write our own code to do this. 
 
 \newpage
 
@@ -1568,7 +1575,7 @@ The boxplot and table below show the distribution of chlorophyll levels among th
 ```{r}
 Lakes_chlor_loc_BP <- ggplot(data=FloridaLakes, aes(x=Location, y=Chlorophyll, fill=Location)) + 
   geom_boxplot(outliers=FALSE) +   geom_jitter() + ggtitle("Chlorophyll in Florida Lakes") + 
-  xlab("Location") + ylab("Chlorophyll Amount in mg/m^3 ") + theme(axis.text.x = element_text(angle = 90)) + coord_flip() 
+  xlab("Location") + ylab("Chlorophyll Amount in mg/m^3 ") + theme(axis.text.x = element_text(angle = 90)) + coord_flip()  + theme_bw()
 Lakes_chlor_loc_BP
 ```
 
@@ -1627,7 +1634,7 @@ Lakes_chlor_loc_perm_test_plot <- ggplot(data=Lakes_chlor_loc_perm_test, aes(x=L
   geom_vline(xintercept=c(Estimate, -1*Estimate), color="red") + 
   xlab("Lakes: Simulated Value of b1") + ylab("Frequency") + 
   ggtitle("Distribution of b1 under assumption of no relationship") +
-  theme(legend.position = "none")
+  theme(legend.position = "none") + theme_bw()
 
 Lakes_chlor_loc_perm_test_plot
 ```
@@ -1655,7 +1662,7 @@ The plot below shows the relationship between a lake's mercury level and pH.
 ```{r}
 ggplot(data=FloridaLakes, aes(y=Mercury, x=pH)) + 
   geom_point() + stat_smooth(method="lm", se=FALSE) + 
-  xlim(c(3, 10)) + ylim(c(0,1.5))
+  xlim(c(3, 10)) + ylim(c(0,1.5)) + theme_bw()
 ```
 
 There seems to be a strong relationship between the two, but we should investigate whether such relationship could plausible occur in a sample of 53 lakes, in a situation where there is really no such relationship among all lakes.
@@ -1685,7 +1692,7 @@ Hg <- c(Ry, FloridaLakes$Mercury)
 InSample <- c(rep("No", 1000), rep("Yes", 53))
 df <- data.frame(pH, Hg, InSample)
 ggplot(data=df, aes(x=pH, y=Hg, color=InSample)) + geom_point() + ylab("Mercury") + 
-  xlim(c(3, 10)) + ylim(c(0,1.5))
+  xlim(c(3, 10)) + ylim(c(0,1.5)) + theme_bw()
 ```
 
 **Key Question:**
@@ -1857,11 +1864,41 @@ kable(Lakes_merc_cond_Tab)
 
 We see that mean mercury level is highest in the deepest lakes, and lowest in the shallowest lakes. We'll again want to investigate whether the differences we see could be evidence of a relationship between depth and mercury level, or whether differences like these could have plausibly occurred even if there was no relationship.
 
+We fit a model to the data. The `deep` category is used as a baseline, and the other two are included as terms in the model. 
+
+The model equation is:
+
+$$
+\widehat{\text{Mercury}} = b_0 + b_1\times\text{DepthMedium} + b_2\times\text{DepthShallow}
+$$
+
+The coefficient estimates are:  
+
+```{r}
+M_Lakes_merc_depth <- lm(data=FloridaLakes, Mercury~Depth)
+M_Lakes_merc_depth
+```
+
+**Interpretations**
+
+$b_0$ - the average mercury content in deep lakes in Florida is 0.604 ppm.   
+
+$b_1$ - the average mercury content in medium lakes in Florida is 0.013 ppm less than in deep lakes.   
+
+$b_2$ - the average mercury content in shallow lakes in Florida is 0.18 ppm less than in deep lakes.  
+
+
+We want to test whether there is a relationship between depth and mercury level. If there is, then we would expect the average mercury level to differ between at least some shallow, medium, and deep lakes. 
+
+The hypotheses are
+
 **Null Hypothesis:** There is no difference in average mercury levels between shallow, medium, and deep lakes.
 
 **Alternative Hypothesis:** There is no difference in average mercury levels between shallow, medium, and deep lakes.
 
 If we were only comparing two groups, we could use the difference in means as a test statistic, like we did when testing for differences in location. But with three groups, we would have three different differences in means to test (shallow-medium, shallow-deep, medium-deep). We need a single statistic that can measure the size of differences between all three groups. An F-statistic can do this, so we'll use the F-statistic as our test statistic here.
+
+The F statistic for the actual data in our sample is
 
 ```{r}
 M_Lakes_merc_depth_test <-  do(1) * lm(data=FloridaLakes, Mercury ~ Depth)
@@ -2152,7 +2189,7 @@ The distribution of amount of cholesterol consumed in a day for the 315 people i
 
 ```{r}
 ggplot(data=NutritionStudy, aes(x=Cholesterol)) + 
-  geom_histogram(color="white", fill="lightblue") 
+  geom_histogram(color="white", fill="lightblue")   + theme_bw()
 ```
 
 ```{r}
@@ -2184,7 +2221,7 @@ Nutrition_Bootstrap_plot <- ggplot(data=Nutrition_Bootstrap_Mean, aes(x=Intercep
   geom_histogram(color="white", fill="lightblue") +
   xlab("Mean Cholesterol in Sample ") + ylab("") +
   ggtitle("Distribution for Mean Cholesterol") + 
-  theme(legend.position = "none")
+  theme(legend.position = "none")  + theme_bw()
 Nutrition_Bootstrap_plot
 ```
 
@@ -2244,7 +2281,7 @@ Books_Bootstrap_plot <- ggplot(data=Books_Bootstrap, aes(x=Intercept)) +
   geom_histogram(color="white", fill="lightblue") +
   xlab("Value of b0 in Bootstrap Sample") + ylab("") +
   ggtitle("Bootstrap Distribution for b0") + 
-  theme(legend.position = "none")
+  theme(legend.position = "none")  + theme_bw()
 Books_Bootstrap_plot
 ```
 
@@ -2264,7 +2301,7 @@ Books_Bootstrap_plot <- ggplot(data=Books_Bootstrap, aes(x=FieldSocialScience)) 
   geom_histogram(color="white", fill="lightblue") +
   xlab("Value of b3 in Bootstrap Sample") + ylab("") +
   ggtitle("Bootstrap Distribution for b3") + 
-  theme(legend.position = "none")
+  theme(legend.position = "none")  + theme_bw()
 Books_Bootstrap_plot
 ```
 
@@ -2290,7 +2327,7 @@ Books_Bootstrap_plot <- ggplot(data=Books_b0_b1_Bootstrap, aes(x=X1)) +
   geom_histogram(color="white", fill="lightblue") +
   xlab("Value of b0 + b1 in Bootstrap Sample") + ylab("") +
   ggtitle("Bootstrap Distribution for b0+b1") + 
-  theme(legend.position = "none")
+  theme(legend.position = "none")  + theme_bw()
 Books_Bootstrap_plot
 ```
 
@@ -2336,7 +2373,7 @@ FB_Bootstrap_plot_b0 <- ggplot(data=FB_Bootstrap, aes(x=Intercept)) +
   geom_histogram(color="white", fill="lightblue") +
   xlab("Value of b0 in Bootstrap Sample") + ylab("") +
   ggtitle("Bootstrap Distribution for b0") + 
-  theme(legend.position = "none")
+  theme(legend.position = "none")  + theme_bw()
 FB_Bootstrap_plot_b0
 ```
 
@@ -2356,7 +2393,7 @@ Books_Bootstrap_plot_b1 <- ggplot(data=FB_Bootstrap, aes(x=GMdensity)) +
   geom_histogram(color="white", fill="lightblue") +
   xlab("Value of b1 in Bootstrap Sample") + ylab("") +
   ggtitle("Bootstrap Distribution for b1") + 
-  theme(legend.position = "none")
+  theme(legend.position = "none")  + theme_bw()
 Books_Bootstrap_plot_b1
 ```
 
@@ -2382,7 +2419,7 @@ FB_b0_b1_Bootstrap_plot <- ggplot(data=FB_b0_b1_Bootstrap, aes(x=X1)) +
   geom_histogram(color="white", fill="lightblue") +
   xlab("Value of b0 + 0.5*b1 in Bootstrap Sample") + ylab("") +
   ggtitle("Bootstrap Distribution for b0 + 0.5*b1") + 
-  theme(legend.position = "none")
+  theme(legend.position = "none")  + theme_bw()
 FB_b0_b1_Bootstrap_plot
 ```
 
@@ -2487,27 +2524,27 @@ head(hsb2) |> select(schtyp, prog, write, science)
 ```{r, fig.cap="Science test scores in public and private schools", fig.height=5, fig.width=8}
 ggplot(data=HSSeniors, aes(y=science, x=schtyp)) + geom_boxplot() +
   ggtitle("Science Scores for Public and Private Schools") + 
-  xlab("Type of School") + ylab("Average Score")
+  xlab("Type of School") + ylab("Average Score")  + theme_bw()
 ```
 
 ```{r, fig.cap="Science test scores for each academic program"}
 ggplot(data=HSSeniors, aes(y=science, x=prog)) + 
   geom_boxplot() + ggtitle("Science Scores for Program Types") + 
-  xlab("Type of Program") + ylab("Average Score")
+  xlab("Type of Program") + ylab("Average Score")  + theme_bw()
 ```
 
 ```{r, fig.cap="Relationship between science and writing scores"}
 ggplot(data=HSSeniors, aes(y=science, x=write)) + geom_point() +
   ggtitle("Science and Writing Scores") + 
   xlab("Writing Score") + 
-  ylab("Science Score")
+  ylab("Science Score")  + theme_bw()
 ```
 
 ```{r}
 T1 <- HSSeniors %>% group_by(schtyp) %>% summarize(Mean_Science=mean(science),
                                                   Med_Science=median(science),
                                                   StDev_science=sd(science),
-                                                  n=n())
+                                                  n=n()) 
 kable(T1, caption="Summary of science test scores by school type")
 ```
 

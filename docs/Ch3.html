@@ -199,24 +199,6 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Inference from Models</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./Ch5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Building and Assessing Models</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./Ch6.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./Ch7.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Predictive Modeling</span></span></a>
-  </div>
-</li>
     </ul>
     </div>
 </nav>
@@ -1399,7 +1381,7 @@ Coefficients:
 </section>
 <section id="bootstrapping-model-coefficients" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="bootstrapping-model-coefficients"><span class="header-section-number">3.3</span> Bootstrapping Model Coefficients</h2>
-<p>We’ve seen how to use bootsrapping to obtain confidence intervals for the mean mercury level among all Florida lakes. We can use the same process to obtain confidence intervals for other statistics, such as coefficients <span class="math inline">\(b_0\)</span>, <span class="math inline">\(b_1\)</span>, representing differences in means, or slopes, like we saw in Chapter 2.</p>
+<p>We’ve seen how to use bootstrapping to obtain confidence intervals for the mean mercury level among all Florida lakes. We can use the same process to obtain confidence intervals for other statistics, such as coefficients <span class="math inline">\(b_0\)</span>, <span class="math inline">\(b_1\)</span>, representing differences in means, or slopes, like we saw in Chapter 2.</p>
 <section id="ci-for-difference-in-means" class="level3" data-number="3.3.1">
 <h3 data-number="3.3.1" class="anchored" data-anchor-id="ci-for-difference-in-means"><span class="header-section-number">3.3.1</span> CI for Difference in Means</h3>
 <p>Suppose we want to compare mercury levels for lakes in Northern Florida to lakes in Southern Florida.</p>
@@ -1407,7 +1389,7 @@ Coefficients:
 <div class="cell">
 <div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>LakesBP <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>FloridaLakes, <span class="fu">aes</span>(<span class="at">x=</span>Location, <span class="at">y=</span>Mercury, <span class="at">fill=</span>Location)) <span class="sc">+</span> </span>
 <span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span>   <span class="fu">geom_jitter</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Mercury Levels in Florida Lakes"</span>) <span class="sc">+</span> </span>
-<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Location"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Mercury Level"</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>)) <span class="sc">+</span> <span class="fu">coord_flip</span>()</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Location"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Mercury Level"</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>)) <span class="sc">+</span> <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>()</span>
 <span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>LakesBP</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
@@ -1596,21 +1578,21 @@ Coefficients:
 <span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>M_Lakes_merc_loc_Bootstrap_Plot_b0 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>M_Lakes_merc_loc_Bootstrap, <span class="fu">aes</span>(<span class="at">x=</span>Intercept)) <span class="sc">+</span>  </span>
 <span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">color=</span><span class="st">"white"</span>, <span class="at">fill=</span><span class="st">"lightblue"</span>, <span class="at">binwidth=</span><span class="fl">0.02</span>) <span class="sc">+</span></span>
 <span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"b0: Mean mercury in Northern Fla."</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Frequency"</span>) <span class="sc">+</span></span>
-<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Bootstrap Intercept b0"</span>) <span class="sc">+</span> </span>
+<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Bootstrap b0"</span>) <span class="sc">+</span> </span>
 <span id="cb93-6"><a href="#cb93-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span>
 <span id="cb93-7"><a href="#cb93-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb93-8"><a href="#cb93-8" aria-hidden="true" tabindex="-1"></a><span class="co"># plot for b1</span></span>
 <span id="cb93-9"><a href="#cb93-9" aria-hidden="true" tabindex="-1"></a>M_Lakes_merc_loc_Bootstrap_Plot_b1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>M_Lakes_merc_loc_Bootstrap, <span class="fu">aes</span>(<span class="at">x=</span>LocationS)) <span class="sc">+</span>  </span>
 <span id="cb93-10"><a href="#cb93-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">color=</span><span class="st">"white"</span>, <span class="at">fill=</span><span class="st">"lightblue"</span>, <span class="at">binwidth=</span><span class="fl">0.02</span>) <span class="sc">+</span></span>
 <span id="cb93-11"><a href="#cb93-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"b1: Mean difference between southern and northern Fla."</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Frequency"</span>) <span class="sc">+</span></span>
-<span id="cb93-12"><a href="#cb93-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Bootstrap Intercept b1"</span>) <span class="sc">+</span> </span>
+<span id="cb93-12"><a href="#cb93-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Bootstrap b1"</span>) <span class="sc">+</span> </span>
 <span id="cb93-13"><a href="#cb93-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span>
 <span id="cb93-14"><a href="#cb93-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb93-15"><a href="#cb93-15" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(M_Lakes_merc_loc_Bootstrap_Plot_b0, M_Lakes_merc_loc_Bootstrap_Plot_b1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-72-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Ch3_files/figure-html/unnamed-chunk-72-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1681,7 +1663,7 @@ Coefficients:
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-77-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Ch3_files/figure-html/unnamed-chunk-77-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
@@ -2005,7 +1987,12 @@ b_0 + b_1 + 7b_2
 </section>
 <section id="bootstrapping-cautions" class="level3" data-number="3.3.4">
 <h3 data-number="3.3.4" class="anchored" data-anchor-id="bootstrapping-cautions"><span class="header-section-number">3.3.4</span> Bootstrapping Cautions</h3>
-<p>While bootstrapping is a popular and robust procedure for calculating confidence intervals, it does have cautions and limitations. We should be sure to use the bootstrap procedure appropriate for our context. A standard-error bootstrap interval is appropriate when the sampling distribution for our statistic is roughly symmetric and bell-shaped. When this is not true, a percentile bootstrap interval can be used as long as there are no gaps or breaks in the bootstrap distribution. In situations where there are gaps and breaks in the bootstrap distribution, then the bootstrap distribution may not be a reasonable approximation of the sampling distribution we are interested in.</p>
+<p>While bootstrapping is a popular and robust procedure for calculating confidence intervals, it does have cautions and limitations. We should be sure to use the bootstrap procedure appropriate for our context.</p>
+<ol type="1">
+<li><p>A standard-error bootstrap interval is appropriate when the sampling distribution for our statistic is roughly symmetric and bell-shaped. When this is not true, a percentile bootstrap interval can be used as long as there are no gaps or breaks in the bootstrap distribution.</p></li>
+<li><p>In situations where there are gaps and breaks in the bootstrap distribution, then the bootstrap distribution may not be a reasonable approximation of the sampling distribution we are interested in.</p></li>
+<li><p>When working with a categorical variable, it is a good idea to resample in each group, with sizes matching those in the original samples. For example, in the Florida lakes study, rather than resampling 53 lakes, we would ideally resample 33 Northern lakes and 20 Southern lakes, matching the numbers from the original study. The <code>mosaic</code> package, which we used to do bootstrapping does not allow this option, unfortunately. In this case, the sample sizes are similar enough that this issue will not have a big impact on our results. If sample sizes within groups were small or very different, we may want to write our own code to do this.</p></li>
+</ol>
 <div style="page-break-after: always;"></div>
 </section>
 </section>
@@ -2448,7 +2435,7 @@ Coefficients:
 <div class="cell">
 <div class="sourceCode cell-code" id="cb163"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb163-1"><a href="#cb163-1" aria-hidden="true" tabindex="-1"></a>Lakes_chlor_loc_BP <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>FloridaLakes, <span class="fu">aes</span>(<span class="at">x=</span>Location, <span class="at">y=</span>Chlorophyll, <span class="at">fill=</span>Location)) <span class="sc">+</span> </span>
 <span id="cb163-2"><a href="#cb163-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outliers=</span><span class="cn">FALSE</span>) <span class="sc">+</span>   <span class="fu">geom_jitter</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Chlorophyll in Florida Lakes"</span>) <span class="sc">+</span> </span>
-<span id="cb163-3"><a href="#cb163-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Location"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Chlorophyll Amount in mg/m^3 "</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>)) <span class="sc">+</span> <span class="fu">coord_flip</span>() </span>
+<span id="cb163-3"><a href="#cb163-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Location"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Chlorophyll Amount in mg/m^3 "</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>)) <span class="sc">+</span> <span class="fu">coord_flip</span>()  <span class="sc">+</span> <span class="fu">theme_bw</span>()</span>
 <span id="cb163-4"><a href="#cb163-4" aria-hidden="true" tabindex="-1"></a>Lakes_chlor_loc_BP</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
@@ -2535,7 +2522,7 @@ Coefficients:
 <span id="cb168-8"><a href="#cb168-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fu">c</span>(Estimate, <span class="sc">-</span><span class="dv">1</span><span class="sc">*</span>Estimate), <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span> </span>
 <span id="cb168-9"><a href="#cb168-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Lakes: Simulated Value of b1"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Frequency"</span>) <span class="sc">+</span> </span>
 <span id="cb168-10"><a href="#cb168-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribution of b1 under assumption of no relationship"</span>) <span class="sc">+</span></span>
-<span id="cb168-11"><a href="#cb168-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
+<span id="cb168-11"><a href="#cb168-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span>
 <span id="cb168-12"><a href="#cb168-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb168-13"><a href="#cb168-13" aria-hidden="true" tabindex="-1"></a>Lakes_chlor_loc_perm_test_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -2566,7 +2553,7 @@ Coefficients:
 <div class="cell">
 <div class="sourceCode cell-code" id="cb171"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb171-1"><a href="#cb171-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>FloridaLakes, <span class="fu">aes</span>(<span class="at">y=</span>Mercury, <span class="at">x=</span>pH)) <span class="sc">+</span> </span>
 <span id="cb171-2"><a href="#cb171-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span> </span>
-<span id="cb171-3"><a href="#cb171-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">10</span>)) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">1.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb171-3"><a href="#cb171-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">10</span>)) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">1.5</span>)) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -2841,12 +2828,38 @@ Coefficients:
 </div>
 </div>
 <p>We see that mean mercury level is highest in the deepest lakes, and lowest in the shallowest lakes. We’ll again want to investigate whether the differences we see could be evidence of a relationship between depth and mercury level, or whether differences like these could have plausibly occurred even if there was no relationship.</p>
+<p>We fit a model to the data. The <code>deep</code> category is used as a baseline, and the other two are included as terms in the model.</p>
+<p>The model equation is:</p>
+<p><span class="math display">\[
+\widehat{\text{Mercury}} = b_0 + b_1\times\text{DepthMedium} + b_2\times\text{DepthShallow}
+\]</span></p>
+<p>The coefficient estimates are:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb195"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb195-1"><a href="#cb195-1" aria-hidden="true" tabindex="-1"></a>M_Lakes_merc_depth <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>FloridaLakes, Mercury<span class="sc">~</span>Depth)</span>
+<span id="cb195-2"><a href="#cb195-2" aria-hidden="true" tabindex="-1"></a>M_Lakes_merc_depth</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Mercury ~ Depth, data = FloridaLakes)
+
+Coefficients:
+ (Intercept)   DepthMedium  DepthShallow  
+     0.60400      -0.01275      -0.17582  </code></pre>
+</div>
+</div>
+<p><strong>Interpretations</strong></p>
+<p><span class="math inline">\(b_0\)</span> - the average mercury content in deep lakes in Florida is 0.604 ppm.</p>
+<p><span class="math inline">\(b_1\)</span> - the average mercury content in medium lakes in Florida is 0.013 ppm less than in deep lakes.</p>
+<p><span class="math inline">\(b_2\)</span> - the average mercury content in shallow lakes in Florida is 0.18 ppm less than in deep lakes.</p>
+<p>We want to test whether there is a relationship between depth and mercury level. If there is, then we would expect the average mercury level to differ between at least some shallow, medium, and deep lakes.</p>
+<p>The hypotheses are</p>
 <p><strong>Null Hypothesis:</strong> There is no difference in average mercury levels between shallow, medium, and deep lakes.</p>
 <p><strong>Alternative Hypothesis:</strong> There is no difference in average mercury levels between shallow, medium, and deep lakes.</p>
 <p>If we were only comparing two groups, we could use the difference in means as a test statistic, like we did when testing for differences in location. But with three groups, we would have three different differences in means to test (shallow-medium, shallow-deep, medium-deep). We need a single statistic that can measure the size of differences between all three groups. An F-statistic can do this, so we’ll use the F-statistic as our test statistic here.</p>
+<p>The F statistic for the actual data in our sample is</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb195"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb195-1"><a href="#cb195-1" aria-hidden="true" tabindex="-1"></a>M_Lakes_merc_depth_test <span class="ot">&lt;-</span>  <span class="fu">do</span>(<span class="dv">1</span>) <span class="sc">*</span> <span class="fu">lm</span>(<span class="at">data=</span>FloridaLakes, Mercury <span class="sc">~</span> Depth)</span>
-<span id="cb195-2"><a href="#cb195-2" aria-hidden="true" tabindex="-1"></a>M_Lakes_merc_depth_test<span class="sc">$</span>F</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb197"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb197-1"><a href="#cb197-1" aria-hidden="true" tabindex="-1"></a>M_Lakes_merc_depth_test <span class="ot">&lt;-</span>  <span class="fu">do</span>(<span class="dv">1</span>) <span class="sc">*</span> <span class="fu">lm</span>(<span class="at">data=</span>FloridaLakes, Mercury <span class="sc">~</span> Depth)</span>
+<span id="cb197-2"><a href="#cb197-2" aria-hidden="true" tabindex="-1"></a>M_Lakes_merc_depth_test<span class="sc">$</span>F</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.628254</code></pre>
 </div>
@@ -2864,8 +2877,8 @@ Coefficients:
 <p><strong>First Permutation</strong></p>
 <p>Recall these groups were randomly assigned, so the only differences in averages are due to random chance.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb197"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb197-1"><a href="#cb197-1" aria-hidden="true" tabindex="-1"></a>Lakes_shuffle_depth1 <span class="ot">&lt;-</span> FloridaLakes <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">ShuffledDepth =</span> <span class="fu">shuffle</span>(Depth))  </span>
-<span id="cb197-2"><a href="#cb197-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Lakes_shuffle_depth1)                                 </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb199"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb199-1"><a href="#cb199-1" aria-hidden="true" tabindex="-1"></a>Lakes_shuffle_depth1 <span class="ot">&lt;-</span> FloridaLakes <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">ShuffledDepth =</span> <span class="fu">shuffle</span>(Depth))  </span>
+<span id="cb199-2"><a href="#cb199-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Lakes_shuffle_depth1)                                 </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 8
      ID Lake            pH Mercury Chlorophyll Location Depth   ShuffledDepth
@@ -2881,24 +2894,24 @@ Coefficients:
 <p>Notice that the depths of the lakes have now been mixed up and assigned randomly. So, any relationship between depth and mercury level will have occurred merely by chance.</p>
 <p>We create a boxplot and calculate the mean mercury levels for each depth class in the shuffled data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb199"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb199-1"><a href="#cb199-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Lakes_shuffle_depth1, <span class="fu">aes</span>(<span class="at">x=</span>ShuffledDepth, <span class="at">y=</span>Mercury, <span class="at">fill=</span>ShuffledDepth)) <span class="sc">+</span> </span>
-<span id="cb199-2"><a href="#cb199-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span> <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb199-3"><a href="#cb199-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun.y=</span><span class="st">"mean"</span>, <span class="at">geom=</span><span class="st">"point"</span>, <span class="at">shape=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"red"</span>, <span class="at">fill=</span><span class="st">"red"</span>)<span class="sc">+</span> </span>
-<span id="cb199-4"><a href="#cb199-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Boxplot for Shuffled Depth Classes"</span>) <span class="sc">+</span> </span>
-<span id="cb199-5"><a href="#cb199-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb201"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb201-1"><a href="#cb201-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Lakes_shuffle_depth1, <span class="fu">aes</span>(<span class="at">x=</span>ShuffledDepth, <span class="at">y=</span>Mercury, <span class="at">fill=</span>ShuffledDepth)) <span class="sc">+</span> </span>
+<span id="cb201-2"><a href="#cb201-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span> <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb201-3"><a href="#cb201-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun.y=</span><span class="st">"mean"</span>, <span class="at">geom=</span><span class="st">"point"</span>, <span class="at">shape=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"red"</span>, <span class="at">fill=</span><span class="st">"red"</span>)<span class="sc">+</span> </span>
+<span id="cb201-4"><a href="#cb201-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Boxplot for Shuffled Depth Classes"</span>) <span class="sc">+</span> </span>
+<span id="cb201-5"><a href="#cb201-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-143-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Ch3_files/figure-html/unnamed-chunk-144-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb200"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb200-1"><a href="#cb200-1" aria-hidden="true" tabindex="-1"></a>Cond_Tab <span class="ot">&lt;-</span> Lakes_shuffle_depth1 <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(ShuffledDepth) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">Mean_Hg =</span> <span class="fu">mean</span>(Mercury) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">3</span>), </span>
-<span id="cb200-2"><a href="#cb200-2" aria-hidden="true" tabindex="-1"></a>                                                                <span class="at">SD_Hg=</span> <span class="fu">sd</span> (Mercury) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">3</span>), </span>
-<span id="cb200-3"><a href="#cb200-3" aria-hidden="true" tabindex="-1"></a>                                                                <span class="at">N=</span> <span class="fu">n</span>())</span>
-<span id="cb200-4"><a href="#cb200-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(Cond_Tab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb202"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb202-1"><a href="#cb202-1" aria-hidden="true" tabindex="-1"></a>Cond_Tab <span class="ot">&lt;-</span> Lakes_shuffle_depth1 <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(ShuffledDepth) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">Mean_Hg =</span> <span class="fu">mean</span>(Mercury) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">3</span>), </span>
+<span id="cb202-2"><a href="#cb202-2" aria-hidden="true" tabindex="-1"></a>                                                                <span class="at">SD_Hg=</span> <span class="fu">sd</span> (Mercury) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">3</span>), </span>
+<span id="cb202-3"><a href="#cb202-3" aria-hidden="true" tabindex="-1"></a>                                                                <span class="at">N=</span> <span class="fu">n</span>())</span>
+<span id="cb202-4"><a href="#cb202-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(Cond_Tab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <thead>
@@ -2935,8 +2948,8 @@ Coefficients:
 <p>Notice that the differences between the groups appear as big or bigger than what we saw in the actual data, even though these groups were obtained by randomly assigning lakes to depth classes, meaning there is actually no relationship between depth and mercury level. The differences we see occur just by random assignment.</p>
 <p>We fit a model to the shuffled data and record the F-statistic.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb201"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb201-1"><a href="#cb201-1" aria-hidden="true" tabindex="-1"></a>Lakes_merc_depth_perm1 <span class="ot">&lt;-</span> <span class="fu">do</span>(<span class="dv">1</span>) <span class="sc">*</span> <span class="fu">lm</span>(Mercury <span class="sc">~</span> ShuffledDepth , <span class="at">data =</span> Lakes_shuffle_depth1)</span>
-<span id="cb201-2"><a href="#cb201-2" aria-hidden="true" tabindex="-1"></a>Lakes_merc_depth_perm1<span class="sc">$</span>F</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb203"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb203-1"><a href="#cb203-1" aria-hidden="true" tabindex="-1"></a>Lakes_merc_depth_perm1 <span class="ot">&lt;-</span> <span class="fu">do</span>(<span class="dv">1</span>) <span class="sc">*</span> <span class="fu">lm</span>(Mercury <span class="sc">~</span> ShuffledDepth , <span class="at">data =</span> Lakes_shuffle_depth1)</span>
+<span id="cb203-2"><a href="#cb203-2" aria-hidden="true" tabindex="-1"></a>Lakes_merc_depth_perm1<span class="sc">$</span>F</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.05933947</code></pre>
 </div>
@@ -2946,8 +2959,8 @@ Coefficients:
 <p>We’ll repeat the procedure, again randomly shuffling the depths of lakes.</p>
 <p>Recall these groups were randomly assigned, so the only differences in averages are due to random chance.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb203"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb203-1"><a href="#cb203-1" aria-hidden="true" tabindex="-1"></a>Lakes_shuffle_depth2 <span class="ot">&lt;-</span> FloridaLakes <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">ShuffledDepth =</span> <span class="fu">shuffle</span>(Depth))  </span>
-<span id="cb203-2"><a href="#cb203-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Lakes_shuffle_depth2)                                 </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb205"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb205-1"><a href="#cb205-1" aria-hidden="true" tabindex="-1"></a>Lakes_shuffle_depth2 <span class="ot">&lt;-</span> FloridaLakes <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">ShuffledDepth =</span> <span class="fu">shuffle</span>(Depth))  </span>
+<span id="cb205-2"><a href="#cb205-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Lakes_shuffle_depth2)                                 </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 8
      ID Lake            pH Mercury Chlorophyll Location Depth   ShuffledDepth
@@ -2961,24 +2974,24 @@ Coefficients:
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb205"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb205-1"><a href="#cb205-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Lakes_shuffle_depth2, <span class="fu">aes</span>(<span class="at">x=</span>ShuffledDepth, <span class="at">y=</span>Mercury, <span class="at">fill=</span>ShuffledDepth)) <span class="sc">+</span> </span>
-<span id="cb205-2"><a href="#cb205-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span> <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb205-3"><a href="#cb205-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun.y=</span><span class="st">"mean"</span>, <span class="at">geom=</span><span class="st">"point"</span>, <span class="at">shape=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"red"</span>, <span class="at">fill=</span><span class="st">"red"</span>)<span class="sc">+</span> </span>
-<span id="cb205-4"><a href="#cb205-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Boxplot for Shuffled Depth Classes"</span>) <span class="sc">+</span> </span>
-<span id="cb205-5"><a href="#cb205-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb207"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb207-1"><a href="#cb207-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Lakes_shuffle_depth2, <span class="fu">aes</span>(<span class="at">x=</span>ShuffledDepth, <span class="at">y=</span>Mercury, <span class="at">fill=</span>ShuffledDepth)) <span class="sc">+</span> </span>
+<span id="cb207-2"><a href="#cb207-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span> <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb207-3"><a href="#cb207-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun.y=</span><span class="st">"mean"</span>, <span class="at">geom=</span><span class="st">"point"</span>, <span class="at">shape=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"red"</span>, <span class="at">fill=</span><span class="st">"red"</span>)<span class="sc">+</span> </span>
+<span id="cb207-4"><a href="#cb207-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Boxplot for Shuffled Depth Classes"</span>) <span class="sc">+</span> </span>
+<span id="cb207-5"><a href="#cb207-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-147-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Ch3_files/figure-html/unnamed-chunk-148-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb206"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb206-1"><a href="#cb206-1" aria-hidden="true" tabindex="-1"></a>Cond_Tab <span class="ot">&lt;-</span> Lakes_shuffle_depth2 <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(ShuffledDepth) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">Mean_Hg =</span> <span class="fu">mean</span>(Mercury) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">3</span>), </span>
-<span id="cb206-2"><a href="#cb206-2" aria-hidden="true" tabindex="-1"></a>                                                                <span class="at">SD_Hg=</span> <span class="fu">sd</span> (Mercury) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">3</span>), </span>
-<span id="cb206-3"><a href="#cb206-3" aria-hidden="true" tabindex="-1"></a>                                                                <span class="at">N=</span> <span class="fu">n</span>())</span>
-<span id="cb206-4"><a href="#cb206-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(Cond_Tab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb208"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb208-1"><a href="#cb208-1" aria-hidden="true" tabindex="-1"></a>Cond_Tab <span class="ot">&lt;-</span> Lakes_shuffle_depth2 <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(ShuffledDepth) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">Mean_Hg =</span> <span class="fu">mean</span>(Mercury) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">3</span>), </span>
+<span id="cb208-2"><a href="#cb208-2" aria-hidden="true" tabindex="-1"></a>                                                                <span class="at">SD_Hg=</span> <span class="fu">sd</span> (Mercury) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">3</span>), </span>
+<span id="cb208-3"><a href="#cb208-3" aria-hidden="true" tabindex="-1"></a>                                                                <span class="at">N=</span> <span class="fu">n</span>())</span>
+<span id="cb208-4"><a href="#cb208-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(Cond_Tab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <thead>
@@ -3013,8 +3026,8 @@ Coefficients:
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb207"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb207-1"><a href="#cb207-1" aria-hidden="true" tabindex="-1"></a>Lakes_merc_depth_perm2 <span class="ot">&lt;-</span> <span class="fu">do</span>(<span class="dv">1</span>) <span class="sc">*</span> <span class="fu">lm</span>(Mercury <span class="sc">~</span> ShuffledDepth , <span class="at">data =</span> Lakes_shuffle_depth2)</span>
-<span id="cb207-2"><a href="#cb207-2" aria-hidden="true" tabindex="-1"></a>Lakes_merc_depth_perm2<span class="sc">$</span>F</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb209"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb209-1"><a href="#cb209-1" aria-hidden="true" tabindex="-1"></a>Lakes_merc_depth_perm2 <span class="ot">&lt;-</span> <span class="fu">do</span>(<span class="dv">1</span>) <span class="sc">*</span> <span class="fu">lm</span>(Mercury <span class="sc">~</span> ShuffledDepth , <span class="at">data =</span> Lakes_shuffle_depth2)</span>
+<span id="cb209-2"><a href="#cb209-2" aria-hidden="true" tabindex="-1"></a>Lakes_merc_depth_perm2<span class="sc">$</span>F</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.040298</code></pre>
 </div>
@@ -3023,8 +3036,8 @@ Coefficients:
 <p><strong>Third Permutation</strong></p>
 <p>We’ll repeat the procedure, one more time, again randomly shuffling the depths of lakes.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb209"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb209-1"><a href="#cb209-1" aria-hidden="true" tabindex="-1"></a>Lakes_shuffle_depth3 <span class="ot">&lt;-</span> FloridaLakes <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">ShuffledDepth =</span> <span class="fu">shuffle</span>(Depth))  </span>
-<span id="cb209-2"><a href="#cb209-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Lakes_shuffle_depth3)                                 </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb211"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb211-1"><a href="#cb211-1" aria-hidden="true" tabindex="-1"></a>Lakes_shuffle_depth3 <span class="ot">&lt;-</span> FloridaLakes <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">ShuffledDepth =</span> <span class="fu">shuffle</span>(Depth))  </span>
+<span id="cb211-2"><a href="#cb211-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Lakes_shuffle_depth3)                                 </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 8
      ID Lake            pH Mercury Chlorophyll Location Depth   ShuffledDepth
@@ -3038,24 +3051,24 @@ Coefficients:
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb211"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb211-1"><a href="#cb211-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Lakes_shuffle_depth3, <span class="fu">aes</span>(<span class="at">x=</span>ShuffledDepth, <span class="at">y=</span>Mercury, <span class="at">fill=</span>ShuffledDepth)) <span class="sc">+</span> </span>
-<span id="cb211-2"><a href="#cb211-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span> <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb211-3"><a href="#cb211-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun.y=</span><span class="st">"mean"</span>, <span class="at">geom=</span><span class="st">"point"</span>, <span class="at">shape=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"red"</span>, <span class="at">fill=</span><span class="st">"red"</span>)<span class="sc">+</span> </span>
-<span id="cb211-4"><a href="#cb211-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Boxplot for Shuffled Depth Classes"</span>) <span class="sc">+</span> </span>
-<span id="cb211-5"><a href="#cb211-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb213"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb213-1"><a href="#cb213-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Lakes_shuffle_depth3, <span class="fu">aes</span>(<span class="at">x=</span>ShuffledDepth, <span class="at">y=</span>Mercury, <span class="at">fill=</span>ShuffledDepth)) <span class="sc">+</span> </span>
+<span id="cb213-2"><a href="#cb213-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span> <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb213-3"><a href="#cb213-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun.y=</span><span class="st">"mean"</span>, <span class="at">geom=</span><span class="st">"point"</span>, <span class="at">shape=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"red"</span>, <span class="at">fill=</span><span class="st">"red"</span>)<span class="sc">+</span> </span>
+<span id="cb213-4"><a href="#cb213-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Boxplot for Shuffled Depth Classes"</span>) <span class="sc">+</span> </span>
+<span id="cb213-5"><a href="#cb213-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-151-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Ch3_files/figure-html/unnamed-chunk-152-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb212"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb212-1"><a href="#cb212-1" aria-hidden="true" tabindex="-1"></a>Cond_Tab <span class="ot">&lt;-</span> Lakes_shuffle_depth3 <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(ShuffledDepth) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">Mean_Hg =</span> <span class="fu">mean</span>(Mercury) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">3</span>), </span>
-<span id="cb212-2"><a href="#cb212-2" aria-hidden="true" tabindex="-1"></a>                                                                <span class="at">SD_Hg=</span> <span class="fu">sd</span> (Mercury) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">3</span>), </span>
-<span id="cb212-3"><a href="#cb212-3" aria-hidden="true" tabindex="-1"></a>                                                                <span class="at">N=</span> <span class="fu">n</span>())</span>
-<span id="cb212-4"><a href="#cb212-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(Cond_Tab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb214"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb214-1"><a href="#cb214-1" aria-hidden="true" tabindex="-1"></a>Cond_Tab <span class="ot">&lt;-</span> Lakes_shuffle_depth3 <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(ShuffledDepth) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">Mean_Hg =</span> <span class="fu">mean</span>(Mercury) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">3</span>), </span>
+<span id="cb214-2"><a href="#cb214-2" aria-hidden="true" tabindex="-1"></a>                                                                <span class="at">SD_Hg=</span> <span class="fu">sd</span> (Mercury) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">3</span>), </span>
+<span id="cb214-3"><a href="#cb214-3" aria-hidden="true" tabindex="-1"></a>                                                                <span class="at">N=</span> <span class="fu">n</span>())</span>
+<span id="cb214-4"><a href="#cb214-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(Cond_Tab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <thead>
@@ -3090,8 +3103,8 @@ Coefficients:
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb213"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb213-1"><a href="#cb213-1" aria-hidden="true" tabindex="-1"></a>Lakes_merc_depth_perm3 <span class="ot">&lt;-</span> <span class="fu">do</span>(<span class="dv">1</span>) <span class="sc">*</span> <span class="fu">lm</span>(Mercury <span class="sc">~</span> ShuffledDepth , <span class="at">data =</span> Lakes_shuffle_depth3)</span>
-<span id="cb213-2"><a href="#cb213-2" aria-hidden="true" tabindex="-1"></a>Lakes_merc_depth_perm3<span class="sc">$</span>F</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb215"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb215-1"><a href="#cb215-1" aria-hidden="true" tabindex="-1"></a>Lakes_merc_depth_perm3 <span class="ot">&lt;-</span> <span class="fu">do</span>(<span class="dv">1</span>) <span class="sc">*</span> <span class="fu">lm</span>(Mercury <span class="sc">~</span> ShuffledDepth , <span class="at">data =</span> Lakes_shuffle_depth3)</span>
+<span id="cb215-2"><a href="#cb215-2" aria-hidden="true" tabindex="-1"></a>Lakes_merc_depth_perm3<span class="sc">$</span>F</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.617857</code></pre>
 </div>
@@ -3099,32 +3112,32 @@ Coefficients:
 <p>The F-statistic observed in the shuffled data is 1.6178574.</p>
 <p>We’ll repeat the simulation many more times to see whether getting an F-statistic as extreme as 1.62 is plausible in a situation where there is no relationship between depth and average mercury level. The first 6 simulated F-statistics are shown below. Recall that these are simulated under the assumption that there is no difference in average mercury between shallow, medium, and deep lakes, i.e.&nbsp;no relationship between mercury level and depth.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb215"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb215-1"><a href="#cb215-1" aria-hidden="true" tabindex="-1"></a>Lakes_merc_depth_perm_test <span class="ot">&lt;-</span> <span class="fu">do</span>(<span class="dv">10000</span>) <span class="sc">*</span> <span class="fu">lm</span>(Mercury <span class="sc">~</span> <span class="fu">shuffle</span>(Depth) , <span class="at">data =</span> FloridaLakes)</span>
-<span id="cb215-2"><a href="#cb215-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Lakes_merc_depth_perm_test<span class="sc">$</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb217"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb217-1"><a href="#cb217-1" aria-hidden="true" tabindex="-1"></a>Lakes_merc_depth_perm_test <span class="ot">&lt;-</span> <span class="fu">do</span>(<span class="dv">10000</span>) <span class="sc">*</span> <span class="fu">lm</span>(Mercury <span class="sc">~</span> <span class="fu">shuffle</span>(Depth) , <span class="at">data =</span> FloridaLakes)</span>
+<span id="cb217-2"><a href="#cb217-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Lakes_merc_depth_perm_test<span class="sc">$</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.265481460 0.242068358 0.007345152 1.450498889 1.238486261 0.093325750</code></pre>
 </div>
 </div>
 <p>The distribution of the F-statistics is shown below. As usual, the red line represents the F-statistic observed in our actual data. Since F-statistics cannot be negative, we don’t need to worry about finding an F-statistic as extreme in the opposite direction.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb217"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb217-1"><a href="#cb217-1" aria-hidden="true" tabindex="-1"></a>Fstat <span class="ot">&lt;-</span> <span class="fl">1.628</span></span>
-<span id="cb217-2"><a href="#cb217-2" aria-hidden="true" tabindex="-1"></a>Extreme <span class="ot">&lt;-</span> Lakes_merc_depth_perm_test<span class="sc">$</span>F <span class="sc">&gt;</span> <span class="fl">1.628</span></span>
-<span id="cb217-3"><a href="#cb217-3" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb217-4"><a href="#cb217-4" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb217-5"><a href="#cb217-5" aria-hidden="true" tabindex="-1"></a>Lakes_merc_depth_perm_test_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Lakes_merc_depth_perm_test, <span class="fu">aes</span>(<span class="at">x=</span>F)) <span class="sc">+</span> </span>
-<span id="cb217-6"><a href="#cb217-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">fill =</span> Extreme), <span class="at">color=</span><span class="st">"white"</span>) <span class="sc">+</span> </span>
-<span id="cb217-7"><a href="#cb217-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"FALSE"</span> <span class="ot">=</span> <span class="st">"blue"</span>, <span class="st">"TRUE"</span> <span class="ot">=</span> <span class="st">"red"</span>)) <span class="sc">+</span></span>
-<span id="cb217-8"><a href="#cb217-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fu">c</span>(Fstat), <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span> </span>
-<span id="cb217-9"><a href="#cb217-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Lakes Depth: Simulated F-statistic"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Frequency"</span>) <span class="sc">+</span> </span>
-<span id="cb217-10"><a href="#cb217-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribution of F-stat under assumption of no relationship"</span>) <span class="sc">+</span></span>
-<span id="cb217-11"><a href="#cb217-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span> </span>
-<span id="cb217-12"><a href="#cb217-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
-<span id="cb217-13"><a href="#cb217-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb217-14"><a href="#cb217-14" aria-hidden="true" tabindex="-1"></a>Lakes_merc_depth_perm_test_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb219"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb219-1"><a href="#cb219-1" aria-hidden="true" tabindex="-1"></a>Fstat <span class="ot">&lt;-</span> <span class="fl">1.628</span></span>
+<span id="cb219-2"><a href="#cb219-2" aria-hidden="true" tabindex="-1"></a>Extreme <span class="ot">&lt;-</span> Lakes_merc_depth_perm_test<span class="sc">$</span>F <span class="sc">&gt;</span> <span class="fl">1.628</span></span>
+<span id="cb219-3"><a href="#cb219-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb219-4"><a href="#cb219-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb219-5"><a href="#cb219-5" aria-hidden="true" tabindex="-1"></a>Lakes_merc_depth_perm_test_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Lakes_merc_depth_perm_test, <span class="fu">aes</span>(<span class="at">x=</span>F)) <span class="sc">+</span> </span>
+<span id="cb219-6"><a href="#cb219-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">fill =</span> Extreme), <span class="at">color=</span><span class="st">"white"</span>) <span class="sc">+</span> </span>
+<span id="cb219-7"><a href="#cb219-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"FALSE"</span> <span class="ot">=</span> <span class="st">"blue"</span>, <span class="st">"TRUE"</span> <span class="ot">=</span> <span class="st">"red"</span>)) <span class="sc">+</span></span>
+<span id="cb219-8"><a href="#cb219-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fu">c</span>(Fstat), <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span> </span>
+<span id="cb219-9"><a href="#cb219-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Lakes Depth: Simulated F-statistic"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Frequency"</span>) <span class="sc">+</span> </span>
+<span id="cb219-10"><a href="#cb219-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribution of F-stat under assumption of no relationship"</span>) <span class="sc">+</span></span>
+<span id="cb219-11"><a href="#cb219-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span> </span>
+<span id="cb219-12"><a href="#cb219-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb219-13"><a href="#cb219-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb219-14"><a href="#cb219-14" aria-hidden="true" tabindex="-1"></a>Lakes_merc_depth_perm_test_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-155-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Ch3_files/figure-html/unnamed-chunk-156-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -3133,7 +3146,7 @@ Coefficients:
 <p>The result we observed seems pretty consistent with the simulated values in the histogram. The red line is not very extreme.</p>
 <p><strong>p-value:</strong> Proportion of simulations resulting in F-statistic more extreme than 1.628:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb218"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb218-1"><a href="#cb218-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop</span>(<span class="sc">~</span> (F <span class="sc">&gt;</span> <span class="fl">1.628</span>), <span class="at">data =</span> Lakes_merc_depth_perm_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb220"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb220-1"><a href="#cb220-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop</span>(<span class="sc">~</span> (F <span class="sc">&gt;</span> <span class="fl">1.628</span>), <span class="at">data =</span> Lakes_merc_depth_perm_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>prop_TRUE 
    0.2089 </code></pre>
@@ -3245,19 +3258,19 @@ Coefficients:
 <p>Data were collected from a cross-sectional study to investigate the relationship between personal characteristics and dietary factors, and plasma concentrations of retinol, beta-carotene and other carotenoids. 315 study subjects were patients who had an elective surgical procedure during a three-year period to biopsy or remove a lesion of the lung, colon, breast, skin, ovary or uterus that was found to be non-cancerous. Each person’s daily cholesterol consumption (in mg/day) was recorded. Researchers are interested in estimating the average daily cholesterol consumption among all hospital patients with similar conditions.</p>
 <p>The distribution of amount of cholesterol consumed in a day for the 315 people in the nutrition study from 1(a) is shown below along with the sample mean and standard deviation.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb220"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb220-1"><a href="#cb220-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>NutritionStudy, <span class="fu">aes</span>(<span class="at">x=</span>Cholesterol)) <span class="sc">+</span> </span>
-<span id="cb220-2"><a href="#cb220-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">color=</span><span class="st">"white"</span>, <span class="at">fill=</span><span class="st">"lightblue"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb222"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb222-1"><a href="#cb222-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>NutritionStudy, <span class="fu">aes</span>(<span class="at">x=</span>Cholesterol)) <span class="sc">+</span> </span>
+<span id="cb222-2"><a href="#cb222-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">color=</span><span class="st">"white"</span>, <span class="at">fill=</span><span class="st">"lightblue"</span>)   <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-158-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Ch3_files/figure-html/unnamed-chunk-159-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb221"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb221-1"><a href="#cb221-1" aria-hidden="true" tabindex="-1"></a>NutritionStudy <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">Mean_Chol =</span> <span class="fu">mean</span>(Cholesterol), </span>
-<span id="cb221-2"><a href="#cb221-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">SD_Chol=</span><span class="fu">sd</span>(Cholesterol))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb223"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb223-1"><a href="#cb223-1" aria-hidden="true" tabindex="-1"></a>NutritionStudy <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">Mean_Chol =</span> <span class="fu">mean</span>(Cholesterol), </span>
+<span id="cb223-2"><a href="#cb223-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">SD_Chol=</span><span class="fu">sd</span>(Cholesterol))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Mean_Chol  SD_Chol
 1  242.4606 131.9916</code></pre>
@@ -3270,8 +3283,8 @@ Coefficients:
 \end{aligned}
 \]</span> R output for the model is shown below.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb223"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb223-1"><a href="#cb223-1" aria-hidden="true" tabindex="-1"></a>M_Nut_chol_0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>NutritionStudy, Cholesterol<span class="sc">~</span><span class="dv">1</span>)</span>
-<span id="cb223-2"><a href="#cb223-2" aria-hidden="true" tabindex="-1"></a>M_Nut_chol_0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb225"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb225-1"><a href="#cb225-1" aria-hidden="true" tabindex="-1"></a>M_Nut_chol_0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>NutritionStudy, Cholesterol<span class="sc">~</span><span class="dv">1</span>)</span>
+<span id="cb225-2"><a href="#cb225-2" aria-hidden="true" tabindex="-1"></a>M_Nut_chol_0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -3284,20 +3297,20 @@ Coefficients:
 </div>
 <p>The bootstrap distribution for <span class="math inline">\(b_0\)</span> is shown below along with its mean and standard deviation.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb225"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb225-1"><a href="#cb225-1" aria-hidden="true" tabindex="-1"></a>Nutrition_Bootstrap_Mean <span class="ot">&lt;-</span> <span class="fu">do</span>(<span class="dv">10000</span>) <span class="sc">*</span> <span class="fu">lm</span>( Cholesterol <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> <span class="fu">resample</span>(NutritionStudy, <span class="at">replace=</span><span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb227"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb227-1"><a href="#cb227-1" aria-hidden="true" tabindex="-1"></a>Nutrition_Bootstrap_Mean <span class="ot">&lt;-</span> <span class="fu">do</span>(<span class="dv">10000</span>) <span class="sc">*</span> <span class="fu">lm</span>( Cholesterol <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> <span class="fu">resample</span>(NutritionStudy, <span class="at">replace=</span><span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-162-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Ch3_files/figure-html/unnamed-chunk-163-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb226"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb226-1"><a href="#cb226-1" aria-hidden="true" tabindex="-1"></a>Nutrition_Bootstrap_Mean <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">Mean_Chol =</span> <span class="fu">mean</span>(Intercept) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>), </span>
-<span id="cb226-2"><a href="#cb226-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">SE_Mean=</span><span class="fu">sd</span>(Intercept) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb228"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb228-1"><a href="#cb228-1" aria-hidden="true" tabindex="-1"></a>Nutrition_Bootstrap_Mean <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">Mean_Chol =</span> <span class="fu">mean</span>(Intercept) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>), </span>
+<span id="cb228-2"><a href="#cb228-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">SE_Mean=</span><span class="fu">sd</span>(Intercept) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Mean_Chol SE_Mean
 1     242.6     7.4</code></pre>
@@ -3331,8 +3344,8 @@ Coefficients:
 \]</span> where the Humanities, NaturalScience, and SocialScience variables all have value 1 if the course is in that field and 0 otherwise.</p>
 <p>Model estimates are shown below.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb228"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb228-1"><a href="#cb228-1" aria-hidden="true" tabindex="-1"></a>M_Book_cost_Field <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>TextbookCosts, Cost<span class="sc">~</span>Field) </span>
-<span id="cb228-2"><a href="#cb228-2" aria-hidden="true" tabindex="-1"></a>M_Book_cost_Field</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb230"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb230-1"><a href="#cb230-1" aria-hidden="true" tabindex="-1"></a>M_Book_cost_Field <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>TextbookCosts, Cost<span class="sc">~</span>Field) </span>
+<span id="cb230-2"><a href="#cb230-2" aria-hidden="true" tabindex="-1"></a>M_Book_cost_Field</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -3347,8 +3360,8 @@ Coefficients:
 </div>
 <p>We use bootstrapping to produce confidence intervals for parameters associated with the model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb230"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb230-1"><a href="#cb230-1" aria-hidden="true" tabindex="-1"></a>Books_Bootstrap <span class="ot">&lt;-</span> <span class="fu">do</span>(<span class="dv">10000</span>) <span class="sc">*</span> <span class="fu">lm</span>( Cost <span class="sc">~</span> Field, </span>
-<span id="cb230-2"><a href="#cb230-2" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">data =</span> <span class="fu">resample</span>(TextbookCosts, <span class="at">replace=</span><span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb232"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb232-1"><a href="#cb232-1" aria-hidden="true" tabindex="-1"></a>Books_Bootstrap <span class="ot">&lt;-</span> <span class="fu">do</span>(<span class="dv">10000</span>) <span class="sc">*</span> <span class="fu">lm</span>( Cost <span class="sc">~</span> Field, </span>
+<span id="cb232-2"><a href="#cb232-2" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">data =</span> <span class="fu">resample</span>(TextbookCosts, <span class="at">replace=</span><span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="a-2" class="level3 unnumbered">
@@ -3358,14 +3371,14 @@ Coefficients:
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-166-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Ch3_files/figure-html/unnamed-chunk-167-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb231"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb231-1"><a href="#cb231-1" aria-hidden="true" tabindex="-1"></a>Books_Bootstrap <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">Mean_b0 =</span> <span class="fu">mean</span>(Intercept) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>), </span>
-<span id="cb231-2"><a href="#cb231-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">SE_b0=</span><span class="fu">sd</span>(Intercept) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb233"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb233-1"><a href="#cb233-1" aria-hidden="true" tabindex="-1"></a>Books_Bootstrap <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">Mean_b0 =</span> <span class="fu">mean</span>(Intercept) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>), </span>
+<span id="cb233-2"><a href="#cb233-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">SE_b0=</span><span class="fu">sd</span>(Intercept) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Mean_b0 SE_b0
 1    94.6    14</code></pre>
@@ -3380,14 +3393,14 @@ Coefficients:
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-168-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Ch3_files/figure-html/unnamed-chunk-169-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb233"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb233-1"><a href="#cb233-1" aria-hidden="true" tabindex="-1"></a>Books_Bootstrap <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">Mean_b3 =</span> <span class="fu">mean</span>(FieldSocialScience) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>), </span>
-<span id="cb233-2"><a href="#cb233-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">SE_b3=</span><span class="fu">sd</span>(FieldSocialScience) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb235"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb235-1"><a href="#cb235-1" aria-hidden="true" tabindex="-1"></a>Books_Bootstrap <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">Mean_b3 =</span> <span class="fu">mean</span>(FieldSocialScience) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>), </span>
+<span id="cb235-2"><a href="#cb235-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">SE_b3=</span><span class="fu">sd</span>(FieldSocialScience) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Mean_b3 SE_b3
 1    23.7  20.9</code></pre>
@@ -3402,14 +3415,14 @@ Coefficients:
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-171-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Ch3_files/figure-html/unnamed-chunk-172-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb235"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb235-1"><a href="#cb235-1" aria-hidden="true" tabindex="-1"></a>Books_b0_b1_Bootstrap <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">Mean =</span> <span class="fu">mean</span>(X1) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>), </span>
-<span id="cb235-2"><a href="#cb235-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">SE=</span><span class="fu">sd</span>(X1) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb237"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb237-1"><a href="#cb237-1" aria-hidden="true" tabindex="-1"></a>Books_b0_b1_Bootstrap <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">Mean =</span> <span class="fu">mean</span>(X1) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>), </span>
+<span id="cb237-2"><a href="#cb237-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">SE=</span><span class="fu">sd</span>(X1) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Mean   SE
 1 120.3 18.1</code></pre>
@@ -3428,8 +3441,8 @@ Coefficients:
 \]</span> where the GMdensity is a measure of grey matter density in the brain. The GM density variable was standardized, so a person who has average grey matter density will have <code>GMdensity =0</code>, and the GMdensity variable can be interpreted as the number of standard deviations a person is above or below the average amount of grey matter density.</p>
 <p>Model estimates are shown below.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb237"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb237-1"><a href="#cb237-1" aria-hidden="true" tabindex="-1"></a>M_FB_friends_gm <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>FacebookFriends, FBfriends <span class="sc">~</span> GMdensity) </span>
-<span id="cb237-2"><a href="#cb237-2" aria-hidden="true" tabindex="-1"></a>M_FB_friends_gm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb239"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb239-1"><a href="#cb239-1" aria-hidden="true" tabindex="-1"></a>M_FB_friends_gm <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>FacebookFriends, FBfriends <span class="sc">~</span> GMdensity) </span>
+<span id="cb239-2"><a href="#cb239-2" aria-hidden="true" tabindex="-1"></a>M_FB_friends_gm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -3442,8 +3455,8 @@ Coefficients:
 </div>
 <p>We use bootstrapping to produce confidence intervals for parameters associated with the model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb239"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb239-1"><a href="#cb239-1" aria-hidden="true" tabindex="-1"></a>FB_Bootstrap <span class="ot">&lt;-</span> <span class="fu">do</span>(<span class="dv">10000</span>) <span class="sc">*</span> <span class="fu">lm</span>( FBfriends <span class="sc">~</span> GMdensity, </span>
-<span id="cb239-2"><a href="#cb239-2" aria-hidden="true" tabindex="-1"></a>                                <span class="at">data =</span> <span class="fu">resample</span>(FacebookFriends, <span class="at">replace=</span><span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb241"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb241-1"><a href="#cb241-1" aria-hidden="true" tabindex="-1"></a>FB_Bootstrap <span class="ot">&lt;-</span> <span class="fu">do</span>(<span class="dv">10000</span>) <span class="sc">*</span> <span class="fu">lm</span>( FBfriends <span class="sc">~</span> GMdensity, </span>
+<span id="cb241-2"><a href="#cb241-2" aria-hidden="true" tabindex="-1"></a>                                <span class="at">data =</span> <span class="fu">resample</span>(FacebookFriends, <span class="at">replace=</span><span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="a-3" class="level3 unnumbered">
@@ -3453,14 +3466,14 @@ Coefficients:
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-175-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Ch3_files/figure-html/unnamed-chunk-176-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb240"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb240-1"><a href="#cb240-1" aria-hidden="true" tabindex="-1"></a>FB_Bootstrap <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">Mean_b0 =</span> <span class="fu">mean</span>(Intercept) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>), </span>
-<span id="cb240-2"><a href="#cb240-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">SE_b0=</span><span class="fu">sd</span>(Intercept) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb242"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb242-1"><a href="#cb242-1" aria-hidden="true" tabindex="-1"></a>FB_Bootstrap <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">Mean_b0 =</span> <span class="fu">mean</span>(Intercept) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>), </span>
+<span id="cb242-2"><a href="#cb242-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">SE_b0=</span><span class="fu">sd</span>(Intercept) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Mean_b0 SE_b0
 1   367.5  26.4</code></pre>
@@ -3475,14 +3488,14 @@ Coefficients:
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-177-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Ch3_files/figure-html/unnamed-chunk-178-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb242"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb242-1"><a href="#cb242-1" aria-hidden="true" tabindex="-1"></a>FB_Bootstrap <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">Mean_b1 =</span> <span class="fu">mean</span>(GMdensity) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>), </span>
-<span id="cb242-2"><a href="#cb242-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">SE_b1=</span><span class="fu">sd</span>(GMdensity) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb244"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb244-1"><a href="#cb244-1" aria-hidden="true" tabindex="-1"></a>FB_Bootstrap <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">Mean_b1 =</span> <span class="fu">mean</span>(GMdensity) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>), </span>
+<span id="cb244-2"><a href="#cb244-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">SE_b1=</span><span class="fu">sd</span>(GMdensity) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Mean_b1 SE_b1
 1    81.6  22.8</code></pre>
@@ -3497,14 +3510,14 @@ Coefficients:
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-180-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Ch3_files/figure-html/unnamed-chunk-181-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb244"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb244-1"><a href="#cb244-1" aria-hidden="true" tabindex="-1"></a>Books_b0_b1_Bootstrap <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">Mean =</span> <span class="fu">mean</span>(X1) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>), </span>
-<span id="cb244-2"><a href="#cb244-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">SE=</span><span class="fu">sd</span>(X1) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb246"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb246-1"><a href="#cb246-1" aria-hidden="true" tabindex="-1"></a>Books_b0_b1_Bootstrap <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">Mean =</span> <span class="fu">mean</span>(X1) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>), </span>
+<span id="cb246-2"><a href="#cb246-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">SE=</span><span class="fu">sd</span>(X1) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Mean   SE
 1 120.3 18.1</code></pre>
@@ -3576,9 +3589,9 @@ Coefficients:
 </div>
 <p>A 95% bootstrap standard error confidence interval for the mean flight time for a model including only an intercept <span class="math inline">\(b_0\)</span> is shown below.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb247"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb247-1"><a href="#cb247-1" aria-hidden="true" tabindex="-1"></a>Flights_Bootstrap <span class="ot">&lt;-</span> <span class="fu">do</span>(<span class="dv">10000</span>) <span class="sc">*</span> <span class="fu">lm</span>( AirTime <span class="sc">~</span> <span class="dv">1</span>, </span>
-<span id="cb247-2"><a href="#cb247-2" aria-hidden="true" tabindex="-1"></a>                                <span class="at">data =</span> <span class="fu">resample</span>(Flight433, <span class="at">replace=</span><span class="cn">TRUE</span>))</span>
-<span id="cb247-3"><a href="#cb247-3" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(Flights_Bootstrap, <span class="at">parm=</span><span class="st">"Intercept"</span>, <span class="at">level=</span><span class="fl">0.95</span>, <span class="at">method=</span><span class="st">"se"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb249"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb249-1"><a href="#cb249-1" aria-hidden="true" tabindex="-1"></a>Flights_Bootstrap <span class="ot">&lt;-</span> <span class="fu">do</span>(<span class="dv">10000</span>) <span class="sc">*</span> <span class="fu">lm</span>( AirTime <span class="sc">~</span> <span class="dv">1</span>, </span>
+<span id="cb249-2"><a href="#cb249-2" aria-hidden="true" tabindex="-1"></a>                                <span class="at">data =</span> <span class="fu">resample</span>(Flight433, <span class="at">replace=</span><span class="cn">TRUE</span>))</span>
+<span id="cb249-3"><a href="#cb249-3" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(Flights_Bootstrap, <span class="at">parm=</span><span class="st">"Intercept"</span>, <span class="at">level=</span><span class="fl">0.95</span>, <span class="at">method=</span><span class="st">"se"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       name    lower    upper level method estimate margin.of.error
 1 Intercept 365.0501 377.1973  0.95 stderr 371.1071        6.073613</code></pre>
@@ -3599,12 +3612,12 @@ Coefficients:
 <code>science</code> - science score on a standardized test</p>
 <p>The first 6 rows of the data are shown below.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb249"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb249-1"><a href="#cb249-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(openintro)</span>
-<span id="cb249-2"><a href="#cb249-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(hsb2)</span>
-<span id="cb249-3"><a href="#cb249-3" aria-hidden="true" tabindex="-1"></a>HSSeniors <span class="ot">&lt;-</span> hsb2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb251"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb251-1"><a href="#cb251-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(openintro)</span>
+<span id="cb251-2"><a href="#cb251-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(hsb2)</span>
+<span id="cb251-3"><a href="#cb251-3" aria-hidden="true" tabindex="-1"></a>HSSeniors <span class="ot">&lt;-</span> hsb2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb250"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb250-1"><a href="#cb250-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(hsb2) <span class="sc">|&gt;</span> <span class="fu">select</span>(schtyp, prog, write, science)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb252"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb252-1"><a href="#cb252-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(hsb2) <span class="sc">|&gt;</span> <span class="fu">select</span>(schtyp, prog, write, science)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 4
   schtyp prog       write science
@@ -3619,51 +3632,51 @@ Coefficients:
 </div>
 <p><strong>Some graphics summarizing the data are shown below.</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb252"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb252-1"><a href="#cb252-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>HSSeniors, <span class="fu">aes</span>(<span class="at">y=</span>science, <span class="at">x=</span>schtyp)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb252-2"><a href="#cb252-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Science Scores for Public and Private Schools"</span>) <span class="sc">+</span> </span>
-<span id="cb252-3"><a href="#cb252-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Type of School"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Average Score"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb254"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb254-1"><a href="#cb254-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>HSSeniors, <span class="fu">aes</span>(<span class="at">y=</span>science, <span class="at">x=</span>schtyp)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb254-2"><a href="#cb254-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Science Scores for Public and Private Schools"</span>) <span class="sc">+</span> </span>
+<span id="cb254-3"><a href="#cb254-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Type of School"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Average Score"</span>)  <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-187-1.png" class="img-fluid figure-img" width="768"></p>
+<p><img src="Ch3_files/figure-html/unnamed-chunk-188-1.png" class="img-fluid figure-img" width="768"></p>
 <figcaption>Science test scores in public and private schools</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb253"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb253-1"><a href="#cb253-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>HSSeniors, <span class="fu">aes</span>(<span class="at">y=</span>science, <span class="at">x=</span>prog)) <span class="sc">+</span> </span>
-<span id="cb253-2"><a href="#cb253-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Science Scores for Program Types"</span>) <span class="sc">+</span> </span>
-<span id="cb253-3"><a href="#cb253-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Type of Program"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Average Score"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb255"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb255-1"><a href="#cb255-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>HSSeniors, <span class="fu">aes</span>(<span class="at">y=</span>science, <span class="at">x=</span>prog)) <span class="sc">+</span> </span>
+<span id="cb255-2"><a href="#cb255-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Science Scores for Program Types"</span>) <span class="sc">+</span> </span>
+<span id="cb255-3"><a href="#cb255-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Type of Program"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Average Score"</span>)  <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-188-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Ch3_files/figure-html/unnamed-chunk-189-1.png" class="img-fluid figure-img" width="672"></p>
 <figcaption>Science test scores for each academic program</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb254"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb254-1"><a href="#cb254-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>HSSeniors, <span class="fu">aes</span>(<span class="at">y=</span>science, <span class="at">x=</span>write)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb254-2"><a href="#cb254-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Science and Writing Scores"</span>) <span class="sc">+</span> </span>
-<span id="cb254-3"><a href="#cb254-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Writing Score"</span>) <span class="sc">+</span> </span>
-<span id="cb254-4"><a href="#cb254-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Science Score"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb256"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb256-1"><a href="#cb256-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>HSSeniors, <span class="fu">aes</span>(<span class="at">y=</span>science, <span class="at">x=</span>write)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb256-2"><a href="#cb256-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Science and Writing Scores"</span>) <span class="sc">+</span> </span>
+<span id="cb256-3"><a href="#cb256-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Writing Score"</span>) <span class="sc">+</span> </span>
+<span id="cb256-4"><a href="#cb256-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Science Score"</span>)  <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-189-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Ch3_files/figure-html/unnamed-chunk-190-1.png" class="img-fluid figure-img" width="672"></p>
 <figcaption>Relationship between science and writing scores</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb255"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb255-1"><a href="#cb255-1" aria-hidden="true" tabindex="-1"></a>T1 <span class="ot">&lt;-</span> HSSeniors <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(schtyp) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">Mean_Science=</span><span class="fu">mean</span>(science),</span>
-<span id="cb255-2"><a href="#cb255-2" aria-hidden="true" tabindex="-1"></a>                                                  <span class="at">Med_Science=</span><span class="fu">median</span>(science),</span>
-<span id="cb255-3"><a href="#cb255-3" aria-hidden="true" tabindex="-1"></a>                                                  <span class="at">StDev_science=</span><span class="fu">sd</span>(science),</span>
-<span id="cb255-4"><a href="#cb255-4" aria-hidden="true" tabindex="-1"></a>                                                  <span class="at">n=</span><span class="fu">n</span>())</span>
-<span id="cb255-5"><a href="#cb255-5" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(T1, <span class="at">caption=</span><span class="st">"Summary of science test scores by school type"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb257"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb257-1"><a href="#cb257-1" aria-hidden="true" tabindex="-1"></a>T1 <span class="ot">&lt;-</span> HSSeniors <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(schtyp) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">Mean_Science=</span><span class="fu">mean</span>(science),</span>
+<span id="cb257-2"><a href="#cb257-2" aria-hidden="true" tabindex="-1"></a>                                                  <span class="at">Med_Science=</span><span class="fu">median</span>(science),</span>
+<span id="cb257-3"><a href="#cb257-3" aria-hidden="true" tabindex="-1"></a>                                                  <span class="at">StDev_science=</span><span class="fu">sd</span>(science),</span>
+<span id="cb257-4"><a href="#cb257-4" aria-hidden="true" tabindex="-1"></a>                                                  <span class="at">n=</span><span class="fu">n</span>()) </span>
+<span id="cb257-5"><a href="#cb257-5" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(T1, <span class="at">caption=</span><span class="st">"Summary of science test scores by school type"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Summary of science test scores by school type</caption>
@@ -3696,11 +3709,11 @@ Coefficients:
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb256"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb256-1"><a href="#cb256-1" aria-hidden="true" tabindex="-1"></a>T2 <span class="ot">&lt;-</span> HSSeniors <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(prog) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">Mean_Science=</span><span class="fu">mean</span>(science),</span>
-<span id="cb256-2"><a href="#cb256-2" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">Med_Science=</span><span class="fu">median</span>(science),</span>
-<span id="cb256-3"><a href="#cb256-3" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">StDev_science=</span><span class="fu">sd</span>(science),</span>
-<span id="cb256-4"><a href="#cb256-4" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">n=</span><span class="fu">n</span>())</span>
-<span id="cb256-5"><a href="#cb256-5" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(T2, <span class="at">caption=</span><span class="st">"Summary of science test scores by program type"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb258"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb258-1"><a href="#cb258-1" aria-hidden="true" tabindex="-1"></a>T2 <span class="ot">&lt;-</span> HSSeniors <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(prog) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">Mean_Science=</span><span class="fu">mean</span>(science),</span>
+<span id="cb258-2"><a href="#cb258-2" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">Med_Science=</span><span class="fu">median</span>(science),</span>
+<span id="cb258-3"><a href="#cb258-3" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">StDev_science=</span><span class="fu">sd</span>(science),</span>
+<span id="cb258-4"><a href="#cb258-4" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">n=</span><span class="fu">n</span>())</span>
+<span id="cb258-5"><a href="#cb258-5" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(T2, <span class="at">caption=</span><span class="st">"Summary of science test scores by program type"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Summary of science test scores by program type</caption>
@@ -3750,8 +3763,8 @@ Coefficients:
 \end{aligned}
 \]</span> Model estimates are shown below.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb257"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb257-1"><a href="#cb257-1" aria-hidden="true" tabindex="-1"></a>M_Seniors_science_schtyp <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>HSSeniors, science <span class="sc">~</span> schtyp)</span>
-<span id="cb257-2"><a href="#cb257-2" aria-hidden="true" tabindex="-1"></a>M_Seniors_science_schtyp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb259"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb259-1"><a href="#cb259-1" aria-hidden="true" tabindex="-1"></a>M_Seniors_science_schtyp <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>HSSeniors, science <span class="sc">~</span> schtyp)</span>
+<span id="cb259-2"><a href="#cb259-2" aria-hidden="true" tabindex="-1"></a>M_Seniors_science_schtyp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -3764,34 +3777,34 @@ Coefficients:
 </div>
 <p>The following code performs a permutation-based hypothesis test.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb259"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb259-1"><a href="#cb259-1" aria-hidden="true" tabindex="-1"></a>science_schtyp_perm_test <span class="ot">&lt;-</span> <span class="fu">do</span>(<span class="dv">10000</span>) <span class="sc">*</span> <span class="fu">lm</span>(science <span class="sc">~</span> <span class="fu">shuffle</span>(schtyp), <span class="at">data =</span> HSSeniors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb261"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb261-1"><a href="#cb261-1" aria-hidden="true" tabindex="-1"></a>science_schtyp_perm_test <span class="ot">&lt;-</span> <span class="fu">do</span>(<span class="dv">10000</span>) <span class="sc">*</span> <span class="fu">lm</span>(science <span class="sc">~</span> <span class="fu">shuffle</span>(schtyp), <span class="at">data =</span> HSSeniors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The histogram shows the distribution of <span class="math inline">\(b_1\)</span> in our simulation.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb260"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb260-1"><a href="#cb260-1" aria-hidden="true" tabindex="-1"></a>Estimate <span class="ot">&lt;-</span> M_Seniors_science_schtyp<span class="sc">$</span>coefficients[<span class="dv">2</span>]</span>
-<span id="cb260-2"><a href="#cb260-2" aria-hidden="true" tabindex="-1"></a>Extreme <span class="ot">&lt;-</span> <span class="fu">abs</span>(science_schtyp_perm_test<span class="sc">$</span>schtyp) <span class="sc">&gt;</span> <span class="fu">abs</span>(Estimate)</span>
-<span id="cb260-3"><a href="#cb260-3" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb260-4"><a href="#cb260-4" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb260-5"><a href="#cb260-5" aria-hidden="true" tabindex="-1"></a>science_schtyp_perm_test_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>science_schtyp_perm_test, <span class="fu">aes</span>(<span class="at">x=</span>schtypprivate)) <span class="sc">+</span> </span>
-<span id="cb260-6"><a href="#cb260-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">fill =</span> Extreme), <span class="at">color=</span><span class="st">"white"</span>) <span class="sc">+</span> </span>
-<span id="cb260-7"><a href="#cb260-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"FALSE"</span> <span class="ot">=</span> <span class="st">"blue"</span>, <span class="st">"TRUE"</span> <span class="ot">=</span> <span class="st">"red"</span>)) <span class="sc">+</span></span>
-<span id="cb260-8"><a href="#cb260-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fu">c</span>(Estimate, <span class="sc">-</span><span class="dv">1</span><span class="sc">*</span>Estimate), <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span> </span>
-<span id="cb260-9"><a href="#cb260-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Lakes: Simulated Value of b1"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Frequency"</span>) <span class="sc">+</span> </span>
-<span id="cb260-10"><a href="#cb260-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribution of b1 under assumption of no relationship"</span>) <span class="sc">+</span></span>
-<span id="cb260-11"><a href="#cb260-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span>
-<span id="cb260-12"><a href="#cb260-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb260-13"><a href="#cb260-13" aria-hidden="true" tabindex="-1"></a>science_schtyp_perm_test_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb262"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb262-1"><a href="#cb262-1" aria-hidden="true" tabindex="-1"></a>Estimate <span class="ot">&lt;-</span> M_Seniors_science_schtyp<span class="sc">$</span>coefficients[<span class="dv">2</span>]</span>
+<span id="cb262-2"><a href="#cb262-2" aria-hidden="true" tabindex="-1"></a>Extreme <span class="ot">&lt;-</span> <span class="fu">abs</span>(science_schtyp_perm_test<span class="sc">$</span>schtyp) <span class="sc">&gt;</span> <span class="fu">abs</span>(Estimate)</span>
+<span id="cb262-3"><a href="#cb262-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb262-4"><a href="#cb262-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb262-5"><a href="#cb262-5" aria-hidden="true" tabindex="-1"></a>science_schtyp_perm_test_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>science_schtyp_perm_test, <span class="fu">aes</span>(<span class="at">x=</span>schtypprivate)) <span class="sc">+</span> </span>
+<span id="cb262-6"><a href="#cb262-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">fill =</span> Extreme), <span class="at">color=</span><span class="st">"white"</span>) <span class="sc">+</span> </span>
+<span id="cb262-7"><a href="#cb262-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"FALSE"</span> <span class="ot">=</span> <span class="st">"blue"</span>, <span class="st">"TRUE"</span> <span class="ot">=</span> <span class="st">"red"</span>)) <span class="sc">+</span></span>
+<span id="cb262-8"><a href="#cb262-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fu">c</span>(Estimate, <span class="sc">-</span><span class="dv">1</span><span class="sc">*</span>Estimate), <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span> </span>
+<span id="cb262-9"><a href="#cb262-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Lakes: Simulated Value of b1"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Frequency"</span>) <span class="sc">+</span> </span>
+<span id="cb262-10"><a href="#cb262-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribution of b1 under assumption of no relationship"</span>) <span class="sc">+</span></span>
+<span id="cb262-11"><a href="#cb262-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span>
+<span id="cb262-12"><a href="#cb262-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb262-13"><a href="#cb262-13" aria-hidden="true" tabindex="-1"></a>science_schtyp_perm_test_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-194-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Ch3_files/figure-html/unnamed-chunk-195-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>p-value:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb261"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb261-1"><a href="#cb261-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop</span>(<span class="sc">~</span> (<span class="fu">abs</span>(schtypprivate) <span class="sc">&gt;</span> <span class="fl">1.741</span>), <span class="at">data =</span> science_schtyp_perm_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb263"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb263-1"><a href="#cb263-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop</span>(<span class="sc">~</span> (<span class="fu">abs</span>(schtypprivate) <span class="sc">&gt;</span> <span class="fl">1.741</span>), <span class="at">data =</span> science_schtyp_perm_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>prop_TRUE 
    0.3638 </code></pre>
@@ -3836,8 +3849,8 @@ Coefficients:
 \end{aligned}
 \]</span> Model estimates are shown below.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb263"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb263-1"><a href="#cb263-1" aria-hidden="true" tabindex="-1"></a>M_Seniors_science_prog <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>HSSeniors, science <span class="sc">~</span> prog)</span>
-<span id="cb263-2"><a href="#cb263-2" aria-hidden="true" tabindex="-1"></a>M_Seniors_science_prog</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb265"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb265-1"><a href="#cb265-1" aria-hidden="true" tabindex="-1"></a>M_Seniors_science_prog <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>HSSeniors, science <span class="sc">~</span> prog)</span>
+<span id="cb265-2"><a href="#cb265-2" aria-hidden="true" tabindex="-1"></a>M_Seniors_science_prog</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -3850,7 +3863,7 @@ Coefficients:
 </div>
 <p>An F-statistic comparing this model to a model with only an intercept is shown below.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb265"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb265-1"><a href="#cb265-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Seniors_science_prog)<span class="sc">$</span>fstat[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb267"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb267-1"><a href="#cb267-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Seniors_science_prog)<span class="sc">$</span>fstat[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  value 
 8.12799 </code></pre>
@@ -3858,34 +3871,34 @@ Coefficients:
 </div>
 <p>The following code performs a permutation-based hypothesis test.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb267"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb267-1"><a href="#cb267-1" aria-hidden="true" tabindex="-1"></a>science_prog_perm_test <span class="ot">&lt;-</span>  <span class="fu">do</span>(<span class="dv">10000</span>) <span class="sc">*</span> <span class="fu">lm</span>(<span class="at">data=</span>HSSeniors, science <span class="sc">~</span> <span class="fu">shuffle</span>(prog))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb269"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb269-1"><a href="#cb269-1" aria-hidden="true" tabindex="-1"></a>science_prog_perm_test <span class="ot">&lt;-</span>  <span class="fu">do</span>(<span class="dv">10000</span>) <span class="sc">*</span> <span class="fu">lm</span>(<span class="at">data=</span>HSSeniors, science <span class="sc">~</span> <span class="fu">shuffle</span>(prog))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The histogram shows the distribution of <span class="math inline">\(b_1\)</span> in our simulation.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb268"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb268-1"><a href="#cb268-1" aria-hidden="true" tabindex="-1"></a>Estimate <span class="ot">&lt;-</span> science_prog_perm_test<span class="sc">$</span>F</span>
-<span id="cb268-2"><a href="#cb268-2" aria-hidden="true" tabindex="-1"></a>Extreme <span class="ot">&lt;-</span> <span class="fu">abs</span>(science_prog_perm_test<span class="sc">$</span>F) <span class="sc">&gt;</span> Estimate</span>
-<span id="cb268-3"><a href="#cb268-3" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb268-4"><a href="#cb268-4" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb268-5"><a href="#cb268-5" aria-hidden="true" tabindex="-1"></a>science_prog_perm_test_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>science_prog_perm_test, <span class="fu">aes</span>(<span class="at">x=</span>F)) <span class="sc">+</span> </span>
-<span id="cb268-6"><a href="#cb268-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">fill =</span> Extreme), <span class="at">color=</span><span class="st">"white"</span>) <span class="sc">+</span> </span>
-<span id="cb268-7"><a href="#cb268-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"FALSE"</span> <span class="ot">=</span> <span class="st">"blue"</span>, <span class="st">"TRUE"</span> <span class="ot">=</span> <span class="st">"red"</span>)) <span class="sc">+</span></span>
-<span id="cb268-8"><a href="#cb268-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fl">8.128</span>, <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span> </span>
-<span id="cb268-9"><a href="#cb268-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Simulated Value of F"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Frequency"</span>) <span class="sc">+</span> </span>
-<span id="cb268-10"><a href="#cb268-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribution of F under assumption of no relationship"</span>) <span class="sc">+</span></span>
-<span id="cb268-11"><a href="#cb268-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span>
-<span id="cb268-12"><a href="#cb268-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb268-13"><a href="#cb268-13" aria-hidden="true" tabindex="-1"></a>science_prog_perm_test_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb270"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb270-1"><a href="#cb270-1" aria-hidden="true" tabindex="-1"></a>Estimate <span class="ot">&lt;-</span> science_prog_perm_test<span class="sc">$</span>F</span>
+<span id="cb270-2"><a href="#cb270-2" aria-hidden="true" tabindex="-1"></a>Extreme <span class="ot">&lt;-</span> <span class="fu">abs</span>(science_prog_perm_test<span class="sc">$</span>F) <span class="sc">&gt;</span> Estimate</span>
+<span id="cb270-3"><a href="#cb270-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb270-4"><a href="#cb270-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb270-5"><a href="#cb270-5" aria-hidden="true" tabindex="-1"></a>science_prog_perm_test_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>science_prog_perm_test, <span class="fu">aes</span>(<span class="at">x=</span>F)) <span class="sc">+</span> </span>
+<span id="cb270-6"><a href="#cb270-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">fill =</span> Extreme), <span class="at">color=</span><span class="st">"white"</span>) <span class="sc">+</span> </span>
+<span id="cb270-7"><a href="#cb270-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"FALSE"</span> <span class="ot">=</span> <span class="st">"blue"</span>, <span class="st">"TRUE"</span> <span class="ot">=</span> <span class="st">"red"</span>)) <span class="sc">+</span></span>
+<span id="cb270-8"><a href="#cb270-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fl">8.128</span>, <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span> </span>
+<span id="cb270-9"><a href="#cb270-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Simulated Value of F"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Frequency"</span>) <span class="sc">+</span> </span>
+<span id="cb270-10"><a href="#cb270-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribution of F under assumption of no relationship"</span>) <span class="sc">+</span></span>
+<span id="cb270-11"><a href="#cb270-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span>
+<span id="cb270-12"><a href="#cb270-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb270-13"><a href="#cb270-13" aria-hidden="true" tabindex="-1"></a>science_prog_perm_test_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-199-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Ch3_files/figure-html/unnamed-chunk-200-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>p-value:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb269"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb269-1"><a href="#cb269-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop</span>(<span class="sc">~</span> (schtypprivate <span class="sc">&gt;</span> <span class="fl">8.128</span>), <span class="at">data =</span> science_schtyp_perm_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb271"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb271-1"><a href="#cb271-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop</span>(<span class="sc">~</span> (schtypprivate <span class="sc">&gt;</span> <span class="fl">8.128</span>), <span class="at">data =</span> science_schtyp_perm_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>prop_TRUE 
         0 </code></pre>
@@ -3927,8 +3940,8 @@ Coefficients:
 \]</span></p>
 <p>Model estimates are shown below.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb271"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb271-1"><a href="#cb271-1" aria-hidden="true" tabindex="-1"></a>M_Seniors_science_write <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>HSSeniors, science <span class="sc">~</span> write)</span>
-<span id="cb271-2"><a href="#cb271-2" aria-hidden="true" tabindex="-1"></a>M_Seniors_science_write</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb273"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb273-1"><a href="#cb273-1" aria-hidden="true" tabindex="-1"></a>M_Seniors_science_write <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>HSSeniors, science <span class="sc">~</span> write)</span>
+<span id="cb273-2"><a href="#cb273-2" aria-hidden="true" tabindex="-1"></a>M_Seniors_science_write</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -3941,34 +3954,34 @@ Coefficients:
 </div>
 <p>The following code performs a permutation-based hypothesis test.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb273"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb273-1"><a href="#cb273-1" aria-hidden="true" tabindex="-1"></a>science_write_perm_test <span class="ot">&lt;-</span> <span class="fu">do</span>(<span class="dv">10000</span>) <span class="sc">*</span> <span class="fu">lm</span>(science <span class="sc">~</span> <span class="fu">shuffle</span>(write), <span class="at">data =</span> HSSeniors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb275"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb275-1"><a href="#cb275-1" aria-hidden="true" tabindex="-1"></a>science_write_perm_test <span class="ot">&lt;-</span> <span class="fu">do</span>(<span class="dv">10000</span>) <span class="sc">*</span> <span class="fu">lm</span>(science <span class="sc">~</span> <span class="fu">shuffle</span>(write), <span class="at">data =</span> HSSeniors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The histogram shows the distribution of <span class="math inline">\(b_1\)</span> in our simulation.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb274"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb274-1"><a href="#cb274-1" aria-hidden="true" tabindex="-1"></a>Estimate <span class="ot">&lt;-</span> M_Seniors_science_write<span class="sc">$</span>coefficients[<span class="dv">2</span>]</span>
-<span id="cb274-2"><a href="#cb274-2" aria-hidden="true" tabindex="-1"></a>Extreme <span class="ot">&lt;-</span> <span class="fu">abs</span>(science_write_perm_test<span class="sc">$</span>write) <span class="sc">&gt;</span> <span class="fu">abs</span>(Estimate)</span>
-<span id="cb274-3"><a href="#cb274-3" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb274-4"><a href="#cb274-4" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb274-5"><a href="#cb274-5" aria-hidden="true" tabindex="-1"></a>science_write_perm_test_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>science_write_perm_test, <span class="fu">aes</span>(<span class="at">x=</span>write)) <span class="sc">+</span> </span>
-<span id="cb274-6"><a href="#cb274-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">fill =</span> Extreme), <span class="at">color=</span><span class="st">"white"</span>) <span class="sc">+</span> </span>
-<span id="cb274-7"><a href="#cb274-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"FALSE"</span> <span class="ot">=</span> <span class="st">"blue"</span>, <span class="st">"TRUE"</span> <span class="ot">=</span> <span class="st">"red"</span>)) <span class="sc">+</span></span>
-<span id="cb274-8"><a href="#cb274-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fu">c</span>(Estimate, <span class="sc">-</span><span class="dv">1</span><span class="sc">*</span>Estimate), <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span> </span>
-<span id="cb274-9"><a href="#cb274-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Lakes: Simulated Value of b1"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Frequency"</span>) <span class="sc">+</span> </span>
-<span id="cb274-10"><a href="#cb274-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribution of b1 under assumption of no relationship"</span>) <span class="sc">+</span></span>
-<span id="cb274-11"><a href="#cb274-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span>
-<span id="cb274-12"><a href="#cb274-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb274-13"><a href="#cb274-13" aria-hidden="true" tabindex="-1"></a>science_write_perm_test_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb276"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb276-1"><a href="#cb276-1" aria-hidden="true" tabindex="-1"></a>Estimate <span class="ot">&lt;-</span> M_Seniors_science_write<span class="sc">$</span>coefficients[<span class="dv">2</span>]</span>
+<span id="cb276-2"><a href="#cb276-2" aria-hidden="true" tabindex="-1"></a>Extreme <span class="ot">&lt;-</span> <span class="fu">abs</span>(science_write_perm_test<span class="sc">$</span>write) <span class="sc">&gt;</span> <span class="fu">abs</span>(Estimate)</span>
+<span id="cb276-3"><a href="#cb276-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb276-4"><a href="#cb276-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb276-5"><a href="#cb276-5" aria-hidden="true" tabindex="-1"></a>science_write_perm_test_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>science_write_perm_test, <span class="fu">aes</span>(<span class="at">x=</span>write)) <span class="sc">+</span> </span>
+<span id="cb276-6"><a href="#cb276-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">fill =</span> Extreme), <span class="at">color=</span><span class="st">"white"</span>) <span class="sc">+</span> </span>
+<span id="cb276-7"><a href="#cb276-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"FALSE"</span> <span class="ot">=</span> <span class="st">"blue"</span>, <span class="st">"TRUE"</span> <span class="ot">=</span> <span class="st">"red"</span>)) <span class="sc">+</span></span>
+<span id="cb276-8"><a href="#cb276-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fu">c</span>(Estimate, <span class="sc">-</span><span class="dv">1</span><span class="sc">*</span>Estimate), <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span> </span>
+<span id="cb276-9"><a href="#cb276-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Lakes: Simulated Value of b1"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Frequency"</span>) <span class="sc">+</span> </span>
+<span id="cb276-10"><a href="#cb276-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribution of b1 under assumption of no relationship"</span>) <span class="sc">+</span></span>
+<span id="cb276-11"><a href="#cb276-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span>
+<span id="cb276-12"><a href="#cb276-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb276-13"><a href="#cb276-13" aria-hidden="true" tabindex="-1"></a>science_write_perm_test_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch3_files/figure-html/unnamed-chunk-203-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Ch3_files/figure-html/unnamed-chunk-204-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>p-value:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb275"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb275-1"><a href="#cb275-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop</span>(<span class="sc">~</span> (<span class="fu">abs</span>(write) <span class="sc">&gt;</span> <span class="fl">0.5959</span>), <span class="at">data =</span> science_write_perm_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb277"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb277-1"><a href="#cb277-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop</span>(<span class="sc">~</span> (<span class="fu">abs</span>(write) <span class="sc">&gt;</span> <span class="fl">0.5959</span>), <span class="at">data =</span> science_write_perm_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>prop_TRUE 
         0 </code></pre>

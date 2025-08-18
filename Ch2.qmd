@@ -1135,8 +1135,8 @@ x1 <- c(2, 4, 6, 8)
 y1 <- c(9, 15, 11, 23)
 dfA <- data.frame(x1, y1)
 
-P1 <- ggplot(data=dfA, aes(x=x1, y=y1)) + geom_point() + ylim(c(0,40)) + xlab("x") + ylab("y") + stat_smooth(method="lm", se=FALSE) + ggtitle("Scenario A")
-P2 <- ggplot(data=dfB, aes(x=x, y=y)) + geom_point() + ylim(c(0,40)) + stat_smooth(method="lm", se=FALSE) + ggtitle("Scenario B")
+P1 <- ggplot(data=dfA, aes(x=x1, y=y1)) + geom_point() + ylim(c(0,40)) + xlab("x") + ylab("y") + stat_smooth(method="lm", se=FALSE) + ggtitle("Scenario A") + theme_bw()
+P2 <- ggplot(data=dfB, aes(x=x, y=y)) + geom_point() + ylim(c(0,40)) + stat_smooth(method="lm", se=FALSE) + ggtitle("Scenario B") + theme_bw()
 grid.arrange(P1, P2, ncol=2) 
 ```
 
