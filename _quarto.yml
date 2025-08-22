@@ -6,13 +6,14 @@ project:
 book:
   title: "STAT 255 Notes"
   author: "Andrew J. Sage"
-  date: "August 8, 2025"
+  date: "August 21, 2025"
   chapters:
     - index.qmd
     - Ch1.qmd
     - Ch2.qmd
     - Ch3.qmd
     - Ch4.qmd
+    - Ch5.qmd
 
 
 #bibliography: references.bib

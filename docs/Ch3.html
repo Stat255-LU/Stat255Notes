@@ -199,6 +199,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Inference from Models</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Ch5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Building and Assessing Models</span></span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -389,12 +395,12 @@ Coefficients:
 <pre><code># A tibble: 6 × 10
   Gender   Age Race1   Education HHIncomeMid HomeOwn Height Weight SleepHrsNight
   &lt;fct&gt;  &lt;int&gt; &lt;fct&gt;   &lt;fct&gt;           &lt;int&gt; &lt;fct&gt;    &lt;dbl&gt;  &lt;dbl&gt;         &lt;int&gt;
-1 female    18 White   &lt;NA&gt;            17500 Own       173.  165               5
-2 male      24 White   9 - 11th…       12500 Rent      172.   60.4             6
-3 female    27 Mexican Some Col…       30000 Rent      159.   54.2             6
-4 male      80 White   8th Grade       22500 Own       168.   84.6             7
-5 male      18 White   &lt;NA&gt;             2500 Own       176.   67.5             8
-6 female    47 Black   High Sch…          NA Own       170.  103.              6
+1 male      73 Mexican 8th Grade       17500 Rent      170.   93               6
+2 male      37 Mexican 8th Grade       22500 Own       168.   87.8             8
+3 female    18 Black   &lt;NA&gt;            30000 Rent      176.  118.              8
+4 female    67 White   High Sch…       12500 Other     159.   91.2             8
+5 female    21 Other   Some Col…       50000 Rent      160.   76.1             7
+6 male      26 Black   Some Col…       22500 Rent      170.   68.5             4
 # ℹ 1 more variable: orig.id &lt;chr&gt;</code></pre>
 </div>
 </div>
@@ -422,7 +428,7 @@ Coefficients:
 <pre><code># A tibble: 1 × 3
   Mean_Sleep SD_Sleep     N
        &lt;dbl&gt;    &lt;dbl&gt; &lt;int&gt;
-1       6.71     1.59    75</code></pre>
+1       6.97     1.28    75</code></pre>
 </div>
 </div>
 <p>Notice that the mean hours of sleep differs from that of the population. This is not surprising, as we wouldn’t expect a statistic calculated from a sample of 75 to exactly match the parameter calculated from the entire population.</p>
@@ -437,10 +443,10 @@ lm(formula = SleepHrsNight ~ 1, data = Sample1)
 
 Coefficients:
 (Intercept)  
-      6.707  </code></pre>
+      6.973  </code></pre>
 </div>
 </div>
-<p>In this case, we’ll denote the intercept <span class="math inline">\(b_0\)</span>, since it is a statistic calculated from our sample. <span class="math inline">\(b_0\)</span> = 6.71 is an estimate of our population mean <span class="math inline">\(\beta_0\)</span>, which we happen to know is 6.86</p>
+<p>In this case, we’ll denote the intercept <span class="math inline">\(b_0\)</span>, since it is a statistic calculated from our sample. <span class="math inline">\(b_0\)</span> = 6.97 is an estimate of our population mean <span class="math inline">\(\beta_0\)</span>, which we happen to know is 6.86</p>
 <p>In a real situation, we would typically not know <span class="math inline">\(\beta_0\)</span>, and would need to estimate it using <span class="math inline">\(b_0\)</span>. Since <span class="math inline">\(b_0\)</span> shouldn’t be expected to match <span class="math inline">\(\beta_0\)</span> exactly, we cannot say that <span class="math inline">\(\beta_0\)</span> is exactly <span class="math inline">\(b_0\)</span>, but we can say that <span class="math inline">\(\beta_0\)</span> is likely to be “close: to <span class="math inline">\(b_0\)</span>. In order to know how”close”, we need to know how much the sample statistic <span class="math inline">\(b_0\)</span> could plausibly differ from the population parameter <span class="math inline">\(\beta_0\)</span>.</p>
 <p>To investigate that, let’s take some additional samples of size 75, fit a model to estimate the mean hours of sleep <span class="math inline">\(b_0\)</span> and see how much <span class="math inline">\(b_0\)</span> varies between samples.</p>
 <p><strong>Second Sample</strong></p>
@@ -455,7 +461,7 @@ lm(formula = SleepHrsNight ~ 1, data = Sample2)
 
 Coefficients:
 (Intercept)  
-       6.52  </code></pre>
+      6.813  </code></pre>
 </div>
 </div>
 <p><strong>Third Sample</strong></p>
@@ -470,7 +476,7 @@ lm(formula = SleepHrsNight ~ 1, data = Sample3)
 
 Coefficients:
 (Intercept)  
-      6.627  </code></pre>
+       6.68  </code></pre>
 </div>
 </div>
 <p><strong>Fourth Sample</strong></p>
@@ -485,7 +491,7 @@ lm(formula = SleepHrsNight ~ 1, data = Sample4)
 
 Coefficients:
 (Intercept)  
-      6.547  </code></pre>
+       6.64  </code></pre>
 </div>
 </div>
 <p><strong>Fifth Sample</strong></p>
@@ -500,7 +506,7 @@ lm(formula = SleepHrsNight ~ 1, data = Sample5)
 
 Coefficients:
 (Intercept)  
-      6.933  </code></pre>
+      6.973  </code></pre>
 </div>
 </div>
 <p>Let’s now take 10,000 more random samples of 75 adult residents and record <span class="math inline">\(b_0\)</span>, the estimated mean hours of sleep for each sample.</p>
@@ -530,8 +536,8 @@ Coefficients:
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>                              <span class="at">SE_b0 =</span> <span class="fu">sd</span>(Intercept), </span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">N=</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  Mean_b0     SE_b0     N
-1 6.85564 0.1664173 10000</code></pre>
+<pre><code>   Mean_b0     SE_b0     N
+1 6.854345 0.1654333 10000</code></pre>
 </div>
 </div>
 <p>Notice that the mean of the sampling distribution for <span class="math inline">\(b_0\)</span> is about the same as the population mean <span class="math inline">\(\beta_0\)</span> = 6.86</p>
@@ -661,11 +667,11 @@ Coefficients:
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>Upper <span class="ot">&lt;-</span> M_Pop_sleep_b0 <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>SE_b0 </span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>((Samples_sleep<span class="sc">$</span>Intercept <span class="sc">&gt;=</span>Lower) <span class="sc">&amp;</span> (Samples_sleep<span class="sc">$</span>Intercept <span class="sc">&lt;=</span> Upper))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 9536</code></pre>
+<pre><code>[1] 9549</code></pre>
 </div>
 </div>
 <p>Approximately 95% of the 10,000 samples produced proportions within <span class="math inline">\(\pm 2\)</span> standard errors of the true population mean.</p>
-<p>In a real situation, we won’t have access to the entire population, but only a single sample. For example, recall our original sample of 75 people, in which we observed a proportion of on-time arrivals of <span class="math inline">\(b_0=\)</span> 6.71.</p>
+<p>In a real situation, we won’t have access to the entire population, but only a single sample. For example, recall our original sample of 75 people, in which we observed a proportion of on-time arrivals of <span class="math inline">\(b_0=\)</span> 6.97.</p>
 <p>Since we now know that 95% of all samples produce proportions that lie within two standard errors of the population mean, we can obtain an estimate of the population mean <span class="math inline">\(\beta_0\)</span> by adding and subtracting <span class="math inline">\(2\times \text{SE}(b_0)\)</span> from our observed sample estimate <span class="math inline">\(b_0\)</span>.</p>
 <p>Using probability theory, it can be shown generally that if the sampling distribution of a statistic is symmetric and bell shaped, then approximately 95% of all samples will produce sample statistics that lie within two standard errors of the corresponding population parameter. Such an interval is called an approximate 95% <strong>confidence interval</strong> for the population parameter.</p>
 <p><strong>Approximate 95% confidence interval:</strong> If the sampling distribution of a statistic is symmetric and bell-shaped, a 95% confidence interval for the population parameter is:</p>
@@ -690,21 +696,21 @@ Coefficients:
 </div>
 <section id="example-95-confidence-interval-for-beta_0" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="example-95-confidence-interval-for-beta_0">Example: 95% Confidence Interval for <span class="math inline">\(\beta_0\)</span></h4>
-<p>We’ll calculate a 95% confidence interval for the mean hours of sleep in our fictional city, using our original sample where <span class="math inline">\(b_0\)</span> = 6.71. The 95% confidence interval is:</p>
+<p>We’ll calculate a 95% confidence interval for the mean hours of sleep in our fictional city, using our original sample where <span class="math inline">\(b_0\)</span> = 6.97. The 95% confidence interval is:</p>
 <p><span class="math display">\[
 \begin{aligned}
 &amp; b_0 \pm 2\times \text{SE}(b_0) \\
-&amp; = 6.71 \pm 2(0.17)
+&amp; = 6.97 \pm 2(0.17)
 \end{aligned}
 \]</span></p>
 <p>The confidence interval is:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(b0 <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>SE_b0, b0 <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>SE_b0) <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>() <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 6.37 7.04</code></pre>
+<pre><code>[1] 6.64 7.30</code></pre>
 </div>
 </div>
-<p>Based on our sample of 75 residents, we can be 95% confident that the mean number of hours of sleep among all residents in the city is between 6.37 and 7.04 hours.</p>
+<p>Based on our sample of 75 residents, we can be 95% confident that the mean number of hours of sleep among all residents in the city is between 6.64 and 7.3 hours.</p>
 <p>Knowing what we do about the true value of the population parameter <span class="math inline">\(\beta_0\)</span>, we can see that our interval does indeed contain the true population value of <span class="math inline">\(\beta_0=\)</span> 6.86.</p>
 </section>
 <section id="what-does-95-confidence-mean" class="level4 unnumbered">
@@ -745,24 +751,24 @@ Coefficients:
 <tbody>
 <tr class="odd">
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">7.03</td>
-<td style="text-align: right;">6.69</td>
-<td style="text-align: right;">7.36</td>
+<td style="text-align: right;">6.76</td>
+<td style="text-align: right;">6.43</td>
+<td style="text-align: right;">7.09</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">6.87</td>
-<td style="text-align: right;">6.53</td>
-<td style="text-align: right;">7.20</td>
+<td style="text-align: right;">6.93</td>
+<td style="text-align: right;">6.60</td>
+<td style="text-align: right;">7.26</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">3</td>
-<td style="text-align: right;">6.88</td>
-<td style="text-align: right;">6.55</td>
-<td style="text-align: right;">7.21</td>
-<td style="text-align: right;">1</td>
+<td style="text-align: right;">7.23</td>
+<td style="text-align: right;">6.90</td>
+<td style="text-align: right;">7.56</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">4</td>
@@ -773,114 +779,114 @@ Coefficients:
 </tr>
 <tr class="odd">
 <td style="text-align: right;">5</td>
-<td style="text-align: right;">7.04</td>
-<td style="text-align: right;">6.71</td>
-<td style="text-align: right;">7.37</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">6.84</td>
-<td style="text-align: right;">6.51</td>
-<td style="text-align: right;">7.17</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">6.96</td>
-<td style="text-align: right;">6.63</td>
-<td style="text-align: right;">7.29</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">7.07</td>
-<td style="text-align: right;">6.73</td>
-<td style="text-align: right;">7.40</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">9</td>
 <td style="text-align: right;">6.80</td>
 <td style="text-align: right;">6.47</td>
 <td style="text-align: right;">7.13</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">10</td>
+<td style="text-align: right;">6</td>
 <td style="text-align: right;">6.67</td>
-<td style="text-align: right;">6.33</td>
+<td style="text-align: right;">6.34</td>
 <td style="text-align: right;">7.00</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">6.89</td>
+<td style="text-align: right;">6.56</td>
+<td style="text-align: right;">7.22</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">6.77</td>
+<td style="text-align: right;">6.44</td>
+<td style="text-align: right;">7.10</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">7.05</td>
+<td style="text-align: right;">6.72</td>
+<td style="text-align: right;">7.38</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">6.69</td>
+<td style="text-align: right;">6.36</td>
+<td style="text-align: right;">7.02</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
 <td style="text-align: right;">11</td>
-<td style="text-align: right;">6.85</td>
-<td style="text-align: right;">6.52</td>
-<td style="text-align: right;">7.19</td>
+<td style="text-align: right;">6.65</td>
+<td style="text-align: right;">6.32</td>
+<td style="text-align: right;">6.98</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">12</td>
-<td style="text-align: right;">6.64</td>
-<td style="text-align: right;">6.31</td>
-<td style="text-align: right;">6.97</td>
+<td style="text-align: right;">6.91</td>
+<td style="text-align: right;">6.58</td>
+<td style="text-align: right;">7.24</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">13</td>
-<td style="text-align: right;">6.81</td>
-<td style="text-align: right;">6.48</td>
-<td style="text-align: right;">7.15</td>
+<td style="text-align: right;">6.95</td>
+<td style="text-align: right;">6.62</td>
+<td style="text-align: right;">7.28</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">14</td>
-<td style="text-align: right;">6.72</td>
-<td style="text-align: right;">6.39</td>
-<td style="text-align: right;">7.05</td>
+<td style="text-align: right;">6.69</td>
+<td style="text-align: right;">6.36</td>
+<td style="text-align: right;">7.02</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">15</td>
-<td style="text-align: right;">6.60</td>
-<td style="text-align: right;">6.27</td>
-<td style="text-align: right;">6.93</td>
+<td style="text-align: right;">6.87</td>
+<td style="text-align: right;">6.54</td>
+<td style="text-align: right;">7.20</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">16</td>
-<td style="text-align: right;">6.65</td>
-<td style="text-align: right;">6.32</td>
-<td style="text-align: right;">6.99</td>
+<td style="text-align: right;">6.71</td>
+<td style="text-align: right;">6.38</td>
+<td style="text-align: right;">7.04</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">17</td>
-<td style="text-align: right;">6.68</td>
-<td style="text-align: right;">6.35</td>
-<td style="text-align: right;">7.01</td>
+<td style="text-align: right;">6.97</td>
+<td style="text-align: right;">6.64</td>
+<td style="text-align: right;">7.30</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">18</td>
-<td style="text-align: right;">6.55</td>
-<td style="text-align: right;">6.21</td>
-<td style="text-align: right;">6.88</td>
+<td style="text-align: right;">6.71</td>
+<td style="text-align: right;">6.38</td>
+<td style="text-align: right;">7.04</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">19</td>
-<td style="text-align: right;">7.15</td>
-<td style="text-align: right;">6.81</td>
-<td style="text-align: right;">7.48</td>
+<td style="text-align: right;">7.04</td>
+<td style="text-align: right;">6.71</td>
+<td style="text-align: right;">7.37</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">20</td>
-<td style="text-align: right;">6.95</td>
-<td style="text-align: right;">6.61</td>
-<td style="text-align: right;">7.28</td>
+<td style="text-align: right;">6.81</td>
+<td style="text-align: right;">6.48</td>
+<td style="text-align: right;">7.14</td>
 <td style="text-align: right;">1</td>
 </tr>
 </tbody>
@@ -905,13 +911,13 @@ Coefficients:
 </div>
 </div>
 </div>
-<p>Out of these 100 samples, 91 contain the true value of the population parameter <span class="math inline">\(p\)</span>. This is close to the desired 95% confidence level.</p>
+<p>Out of these 100 samples, 96 contain the true value of the population parameter <span class="math inline">\(p\)</span>. This is close to the desired 95% confidence level.</p>
 <p>The picture shows confidence intervals produced by the first 100 samples, but we actually took 10,000 different samples of 75 residents. Let’s calculate how many of these samples produced confidence intervals that contain the true value of <span class="math inline">\(p\)</span>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop</span>(Samples_df_b0<span class="sc">$</span>Contains_beta0 <span class="sc">==</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>prop_TRUE 
-   0.9536 </code></pre>
+   0.9549 </code></pre>
 </div>
 </div>
 <p>Again, notice that close to 95% of the samples produced confidence intervals contain the true population parameter <span class="math inline">\(\beta_0\)</span>. Note that for the red intervals that do not contain <span class="math inline">\(p\)</span> nothing was done incorrectly. The sample was taken at random, and the confidence interval was calculated using the correct formula. It just happened that by chance, we obtained a sample mean <span class="math inline">\(b_0\)</span> that was unusually high or low, leading to an interval that did not capture the true population parameter. This, of course, happens rarely, and approximately 95% of the samples do, in fact, result in intervals that contain the true value of <span class="math inline">\(b_0\)</span>.</p>

@@ -728,5 +728,5 @@ Approach 2: Select a random sample of 100 households and ask one person from eac
 How will mean household size estimates will compare for the two approaches? Will one approach yield a larger estimate of household size? Why or why not?
 
 ```{r, echo=FALSE}
-save.image(file = "Environment.RData")
+#save.image(file = "Environment.RData")
 ```

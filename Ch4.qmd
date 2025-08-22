@@ -2060,5 +2060,5 @@ We saw that a difference that was not statistically discernible for the sample o
 
 
 ```{r, echo=FALSE}
-save.image(file = "Environment.RData")
+#save.image(file = "Environment.RData")
 ```

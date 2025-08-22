@@ -2060,5 +2060,5 @@ Substitute $b_0 = 79$ into the expression from part C, so that $b_1$ is the only
 Substitute $b_0 = 79$ into the expression from part C, so that $b_1$ is the only variable in the expression. Use an online graphing calculator (such as https://www.desmos.com/calculator) to graph SSR as a function of $b_1$ (hint, make $b_1$ the x-variable). Show that SSR is minimized when $b_1=1.5$. Include a screen shot of your graph.
 
 ```{r, echo=FALSE}
-save.image(file = "Environment.RData")
+#save.image(file = "Environment.RData")
 ```
