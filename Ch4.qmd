@@ -1782,7 +1782,7 @@ You might be wondering how regression gets its name. It comes from a well known 
 
 The scatterplot below shows student scores on two exams given in an introductory statistics class at another college. The data are part of the `Lock5Data` package. 
 
-```{r, fig.height=4, fig.width=8, echo=FALSE}
+```{r, fig.height=6, fig.width=6, echo=FALSE}
 data(StatGrades)
 ggplot(data=StatGrades, aes(y=Exam2, x=Exam1)) + geom_point() + 
   stat_smooth(method="lm", se=FALSE) + geom_abline(slope=1) + theme_bw()
@@ -1809,7 +1809,7 @@ We'll conduct a simulation of the test scores under the assumption that a studen
 The figure below shows each student's simulated scores. The number on the diagram represents their actual level of understanding.  For example, the top center student understood the material well enough to merit an 83 on both exams, but actually scored a 79 on the first exam and a 95 on the second exam, due to somewhat poor luck on the first, and very good luck on the second. 
 
 
-```{r, fig.height=4, fig.width=8}
+```{r, fig.height=6, fig.width=6}
 set.seed(110322018)
 Understanding <-rnorm(25, 80, 10)
 Score1 <- Understanding + rnorm(25, 0, 5)
@@ -1829,7 +1829,7 @@ The regression effect says that people who achieve very high performance in one 
 
 The graphic plots the number of games won by each team in the National Football League in 2021 and 2022. 
 
-```{r, each=FALSE, fig.height=4, fig.width=8, echo=FALSE}
+```{r, each=FALSE, fig.height=6, fig.width=6, echo=FALSE}
 #Wins2017 <- c(8,10,9,9,11,5,7,0,9,5,9,7,4,4,10,10,9,11,6,13,13,11,3,5,6,13,13,6,9,5,9,7)
 #Wins2018 <- c(3,7,10,6,7,12,6,7.5,10,6,6,6.5, 11,10,5,12,12,13,7,8.5,11,13,5,4,4,9,9.5,4,10,5,9,7 )
 Wins2021 <- c(11,7,8,11,5,6,10,8,12,7,3,13,4,9,3,12,10,9,12,9,8,10,9,4,4,9,9,10,7,13, 12, 7)

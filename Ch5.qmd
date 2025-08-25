@@ -624,9 +624,290 @@ When working with multiple regression models, it is still important to mention h
 
 \newpage
 
+
 ## Polynomial Regression 
 
+### Modeling Wages
 
+In this section, we'll work with a dataset containing information on a sample of 250 male employees living in the Mid-Atlantic region. These data are a subset of a larger dataset available in the `ISLR` R package.
+
+Data were collected in the years 2003 through 2009. We'll fit a model to predict the employee's salary using the employee's age and education level, the year the data was collected, and whether the job was industrial or informational in nature as explanatory variables. 
+
+```{r, echo=FALSE}
+set.seed(08232025)
+library(ISLR)
+data("Wage")
+WageSample <- sample_n(Wage, size=250) |> select(year, age, maritl, race, education, jobclass, wage)
+```
+
+The plots below show the relationship between wage and each of the four explanatory variables.  
+
+```{r, fig.height=8, fig.width=8}
+P1 <- ggplot(data=WageSample, aes(y = wage, x = year)) + geom_point() + theme_bw()
+P2 <- ggplot(data=WageSample, aes(y = wage, x = age)) + geom_point() + theme_bw()
+P3 <- ggplot(data=WageSample, aes(y = wage, x = education)) + geom_boxplot() + theme_bw()  +  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+P4 <- ggplot(data=WageSample, aes(y = wage, x = jobclass)) + geom_boxplot() + theme_bw()  +  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+grid.arrange(P1, P2, P3, P4, ncol=2)
+```
+
+The most obvious relationship appears to be that people with higher levels of education tend to make more money. We'll use a statistical model to investigate this and other relationships. 
+
+
+
+We first fit a model for price, using each of the explanatory variables shown above. 
+
+The model equation is
+
+$$
+\begin{aligned}
+ \text{Salary}_i & = \beta_0 + \beta_1\times\text{Year}_i + \beta_2\times\text{Age}_i   \\
+& + \beta_3\times\text{HSGrad}_i + \beta_4\times\text{SomeColl}_i + \beta_5\times\text{CollegeGrad}_i   \\
+& + \beta_6\times\text{AdvDeg}_i + \beta_7\times\text{JobInf}_i   \\
+& + \epsilon_i  \\
+\text{where} \epsilon_i\sim\mathcal{N}(0, \sigma)
+\end{aligned}
+$$
+
+We fit the model in R.
+
+```{r}
+M_Wage_price_yr_age_ed_job <- lm(data=WageSample, wage ~ year + age + education + jobclass)
+```
+
+Before we examine model output, let's check the model assumptions using residual plots. 
+
+```{r, fig.height=8, fig.width=8}
+resid_panel(M_Wage_price_yr_age_ed_job, smoother=TRUE)
+```
+
+We notice some right-skewness and large outliers in the qq-plot and histogram of residuals. 
+
+Let's model log(wage) to try to correct for the right skewness. 
+
+```{r}
+M_logWage_price_yr_age_ed_job <- lm(data=WageSample, log(wage) ~ year + age + 
+                                                          education + jobclass)
+```
+
+We check the residual plots on the model for log(wage). 
+
+```{r, fig.height=8, fig.width=8}
+resid_panel(M_logWage_price_yr_age_ed_job, smoother=TRUE)
+```
+
+Although not perfect, these look better. There are only a few points out of line at each end of the qq-plot, and the histogram of residuals looks pretty symmetric. 
+
+### Residual by Predictor Plots
+
+When working with multiple explanatory variables, we should not only plot residuals vs predicted values, but also vs all explanatory variables. This will help us see whether there are any explanatory variables whose relationship could be better explained in the model. 
+
+The `resid_xpanel()` function in the `ggResidplot` package creates these plots. 
+
+```{r, fig.height=8, fig.width=8}
+resid_xpanel(M_logWage_price_yr_age_ed_job, smoother=TRUE)
+```
+
+The plots for year, education, and jobclass don't raise any concerns, but we notice a quadratic trend in the residuals for age. 
+
+### Add Quadratic Term
+
+When only one or some variables show a violation, we can improve the model using a transformation on just that variable. Since we see a quadratic trend, we can fit a quadratic term for the age variable. To do this, we add `I(age^2)` to the model. We still leave the linear term for `age` in the model as well. 
+
+The model equation is
+
+$$
+\begin{aligned}
+\text{log(Salary)}_i & = \beta_0 + \beta_1\times\text{Year}_i + \beta_2\times\text{Age}_i  \beta_2\times\text{Age}^2_i + \\
+& + \beta_3\times\text{HSGrad}_i + \beta_4\times\text{SomeColl}_i + \beta_5\times\text{CollegeGrad}_i  \\
+& + \beta_6\times\text{AdvDeg}_i + \beta_7\times\text{JobInf}_i  \\
+& + \epsilon_i,  \\
+\text{where} \epsilon_i\sim\mathcal{N}(0, \sigma)
+\end{aligned}
+$$
+
+
+```{r}
+M_logWage_price_yr_age2_ed_job <- lm(data=WageSample, 
+                                     log(wage) ~ year + age + I(age^2) + 
+                                                education + jobclass)
+```
+
+We again check the residual plots. 
+
+```{r, fig.height=8, fig.width=8}
+resid_panel(M_logWage_price_yr_age2_ed_job, smoother=TRUE)
+```
+
+We also check residual by predictor plots. 
+
+```{r, fig.height=8, fig.width=8}
+resid_xpanel(M_logWage_price_yr_age_ed_job, smoother=TRUE)
+```
+
+Notice that the quadratic trend in residuals has gone away in the age plot, telling us that the model with `age^2` has properly accounted for the quadratic trend.  
+
+
+### Model Output
+
+Now that we've found a model that appears to reasonably satisfy model assumptions, let's look at the model summary output. 
+
+```{r}
+summary(M_logWage_price_yr_age_ed_job)
+```
+
+Since we modeled `log(wage)`, we'll exponentiate the model coefficients to make our interpretations. 
+
+```{r}
+exp(M_logWage_price_yr_age_ed_job$coefficients) |>round(3)
+```
+
+**Interpretations**
+
+Since the intercept would refer to things like year 0 and a person of age 0, it does not make sense to interpret. 
+The interpretation of the age coefficient gets tricky since it involves a quadratic term, so we'll interpret the other variables first. 
+
+* For each year since 1993, average salary is expected to multiply by `r exp(M_logWage_price_yr_age_ed_job$coefficients)[2] |>round(3)`, a `r ((exp(M_logWage_price_yr_age_ed_job$coefficients)[2] -1) |>round(3))*100` percent increase, assuming all other variables are held constant. Since the p-value on `year` is large, we cannot conclusively say that salaries are changing over time.  
+
+* Workers with a high school degree are estimated to make `r ((exp(M_logWage_price_yr_age_ed_job$coefficients)[5] -1) |>round(3))*100` percent more than workers with less than a high school degree, assuming all other variables are held constant.  
+
+* Workers with some college are estimated to make `r ((exp(M_logWage_price_yr_age_ed_job$coefficients)[6] -1) |>round(3))*100` percent more than workers with less than a high school degree, assuming all other variables are held constant.  
+
+* Workers with a college degree are estimated to make `r ((exp(M_logWage_price_yr_age_ed_job$coefficients)[7] -1) |>round(3))*100` percent more than workers with less than a high school degree, assuming all other variables are held constant.  
+
+* Workers with a college degree are estimated to make `r ((exp(M_logWage_price_yr_age_ed_job$coefficients)[8] -1) |>round(3))*100` percent more than workers with less than a high school degree, assuming all other variables are held constant.  
+
+The differences in education levels are all statistically discernible.  
+
+* Workers with an informational job are estimated to make `r ((exp(M_logWage_price_yr_age_ed_job$coefficients)[9] -1) |>round(3))*100` percent more than workers with an industrial one, assuming all other variables are held constant. This difference is not big enough to be statistically discernible.   
+
+### Interpreting the Quadratic Term
+
+First, notice that the p-value on the `I(age^2)` term is small. This tells us that there is evidence of a quadratic relationship between age and salary, so adding the `age^2` term was a good idea. 
+
+When we have a quadratic term in the model, we can't make interpretations on the `age` or `age^2` estimates individually, since we can't change one while holding the other constant. Instead, we'll look at the two estimates together. 
+
+Focusing on only the terms relating to age, we get the expression 
+
+$$
+`r summary(M_logWage_price_yr_age2_ed_job)$coefficients[4] |> round(5)` \times \text{Age}^2 + `r summary(M_logWage_price_yr_age2_ed_job)$coefficients[3] |> round(5)` \times \text{Age}
+$$ 
+
+We see that this expression has a negative quadratic coefficient, meaning it will have the shape of a downward facing parabola. A sketch of the equation $y=`r summary(M_logWage_price_yr_age_ed_job)$coefficients[4] |> round(5)` \times \text{Age}^2 + `r summary(M_logWage_price_yr_age_ed_job)$coefficients[3] |> round(5)` \times \text{Age}$ is shown below. 
+
+```{r}
+a <- summary(M_logWage_price_yr_age2_ed_job)$coefficients[4]
+b <- summary(M_logWage_price_yr_age2_ed_job)$coefficients[3] 
+
+ggplot(data.frame(x = seq(from=18, to=80, by=1)), aes(x)) +
+   geom_function(fun = function(x){a*x^2+b*x}, colour = "red") + theme_bw() + 
+  theme(axis.line=element_blank(),
+          axis.text.y=element_blank(),
+          axis.title.y=element_blank())
+```
+
+We see that the parabola appears to hit its max between 50 and 60 years, suggesting that on average workers wages increase until this age, and then start to decrease. This makes sense, as workers will often see pay raises with experience and promotions for most of their career, until some begin to retire or take less intensive jobs in their 50's and 60's.   
+
+Using a fact from high school algebra, a quadratic function $f(x) = ax^2 + bx + c$ attains it's max or min at $x=-b/(2a)$, so in this case, the model estimates that salaries are at their highest, on average, at the age of 
+
+$$
+- `r b |> round(5)` / (2\times `r a |> round(5)`) = `r (-1*b/(2*a)) |>round(1)`
+$$ 
+
+years.
+
+<!--
+
+```{r}
+summary(WageSample)
+```
+
+```{r}
+ggpairs(WageSample)
+```
+
+
+```{r}
+P1 <- ggplot(data=WageSample, aes(x=age, y=wage)) + geom_point() + theme_bw() 
+P2 <- ggplot(data=WageSample, aes(x=year, y=wage)) + geom_point() + theme_bw()
+grid.arrange(P1, P2, ncol=2)
+```
+
+```{r}
+M_wage_year_age <- lm(data=WageSample, wage ~ year+age)
+summary(M_wage_year_age)
+```
+
+```{r}
+resid_panel(M_wage_year_age, smoother = TRUE)
+```
+
+
+```{r}
+M_logwage_year_age <- lm(data=WageSample, log(wage) ~ year+age)
+summary(M_logwage_year_age)
+```
+
+```{r, fig.height=12, fig.width=10}
+P1 <- ggplot(data=WageSample, aes(x=maritl, y=wage))  + geom_boxplot()  + theme_bw()  +  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+P2 <- ggplot(data=WageSample, aes(x=race, y=wage)) + geom_boxplot()  + theme_bw() +  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+P3 <- ggplot(data=WageSample, aes(x=education, y=wage)) + geom_boxplot()  + theme_bw() +  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+P4 <- ggplot(data=WageSample, aes(x=jobclass, y=wage)) + geom_boxplot()  + theme_bw() +  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+
+grid.arrange(P1, P2, P3, P4, ncol=2)
+```
+
+
+```{r}
+M_logwage_year_age_edu <- lm(data=WageSample, log(wage) ~ year + age + education)
+anova(M_logwage_year_age, M_logwage_year_age_edu)
+```
+
+```{r}
+summary(M_logwage_year_age_edu)
+```
+
+```{r}
+M_logwage_year_age_edu_jobclass <- lm(data=WageSample, log(wage) ~ year + age + education + jobclass)
+summary(M_logwage_year_age_edu_jobclass)
+```
+
+```{r}
+M_logwage_year_age_edu_jobclass_race <- lm(data=WageSample, log(wage) ~ year + age + education + jobclass + race)
+anova(M_logwage_year_age_edu_jobclass, M_logwage_year_age_edu_jobclass_race)
+```
+
+```{r}
+M_logwage_year_age_edu_jobclass_maritl <- lm(data=WageSample, log(wage) ~ year + age + education + jobclass + maritl)
+anova(M_logwage_year_age_edu_jobclass, M_logwage_year_age_edu_jobclass_maritl)
+```
+
+```{r}
+resid_panel(M_logwage_year_age_edu_jobclass)
+```
+
+```{r}
+resid_xpanel(M_logwage_year_age_edu_jobclass, smoother=TRUE)
+```
+
+
+```{r}
+M_logwage_year_age2_edu_jobclass <- lm(data=WageSample, log(wage) ~ year + age + I(age^2) + education + jobclass)
+summary(M_logwage_year_age2_edu_jobclass)
+```
+
+```{r}
+resid_panel(M_logwage_year_age2_edu_jobclass, smoother = TRUE)
+```
+
+```{r}
+resid_xpanel(M_logwage_year_age2_edu_jobclass, smoother = TRUE)
+```
+```{r}
+summary(M_logwage_year_age2_edu_jobclass)
+```
+
+
+-->
 
 ## Models with Interaction
 
@@ -656,7 +937,7 @@ It appears that the prices of the houses on the waterfront are increasing more r
 
 An **interaction** between two explanatory variables occurs when the effect of one explanatory variable on the response depends on the other explanatory variable.
 
-### Interaction Term
+### Interaction Model Equations
 
 If we want to allow for different slopes between waterfront and non-waterfront houses, we'll need to change the mathematical equation of our model. To do that, we'll add a coefficient $b_3$, multiplied by the product of our two explanatory variables.
 
@@ -692,14 +973,19 @@ Thus, the model allows both the slope and intercept to differ between waterfront
 
 ### Interaction Models in R
 
-To fit an interaction model in R, use `*` instead of `+`
+To fit a model with variables `var1` and `var2` and their interaction, you can do either of the following. 
+
+1. `y ~ var1 + var2 + var1:var2`    OR
+2. `y ~ var1*var2`
+
+`var1:var2` means include the interaction term, and `var1*var2` means include both variables plus the interaction. (Note: we should never include an interaction term without also including the variables individually.)
 
 ```{r}
 M_House_price_sqft_wf_int <- lm(data=Houses, price~sqft_living*waterfront)
 summary(M_House_price_sqft_wf_int)
 ```
 
-```{r}
+```{r, echo=FALSE}
 House_Int_b0 <- M_House_price_sqft_wf_int$coef[1] |>round(2)
 House_Int_b1 <- M_House_price_sqft_wf_int$coef[2] |>round(2)
 House_Int_b2 <- M_House_price_sqft_wf_int$coef[3] |>round(2)
@@ -709,7 +995,7 @@ House_Int_b3 <- M_House_price_sqft_wf_int$coef[4] |>round(2)
 The regression equation is
 
 $$
-\widehat{Price} = `r House_Int_b0` + `r House_Int_b1`\times\text{Sq. Ft.}  + `r House_Int_b2`\times\text{waterfront} + `r House_Int_b3`\times\text{Sq.Ft}\times\text{Waterfront}
+\widehat{Price} = `r House_Int_b0` + `r House_Int_b1`\times\text{Sq. Ft.}  + `r House_Int_b2`\times\text{Waterfront} + `r House_Int_b3`\times\text{Sq.Ft}\times\text{Waterfront}
 $$
 
 For a house on the waterfront ($\text{waterfront}=1$), the equation is
@@ -717,8 +1003,8 @@ For a house on the waterfront ($\text{waterfront}=1$), the equation is
 $$
 \begin{aligned}
 \widehat{Price} & = `r House_Int_b0` + `r House_Int_b1`\times\text{Sq. Ft.} `r House_Int_b2` \times\text{1} + `r House_Int_b3`\times\text{Sq.Ft}\times\text{1} \\
-& = (`r House_Int_b0` - `r House_Int_b2`) + (`r House_Int_b1`+`r House_Int_b3`)\times{\text{Sq. Ft.}} \\
-& = `r House_Int_b0 + House_Int_b2` + `House_Int_b1 + House_Int_b3`\times{\text{Sq. Ft.}}
+& = (`r House_Int_b0` + `r House_Int_b2`) + (`r House_Int_b1`+`r House_Int_b3`)\times{\text{Sq. Ft.}} \\
+& = `r House_Int_b0 + House_Int_b2` + `r House_Int_b1 + House_Int_b3`\times{\text{Sq. Ft.}}
 \end{aligned}
 $$
 
@@ -760,62 +1046,141 @@ Houses[c(1,16), ] %>% select(ID, price, sqft_living, waterfront)
 ```
 
 $$
-\widehat{Price}_1 =  `r House_Int_b0` + `r House_Int_b1`\times `r Houses$sqft_living[1]`  + `r House_Int_b2`\times0 + `r House_Int_b3`\times `r Houses$sqft_living[1]` \times 0 = `r House_Int_b0 + House_Int_b2 > round(0)` \text{ thousand dollars}
+\widehat{Price}_1 =  `r House_Int_b0` + `r House_Int_b1`\times `r Houses$sqft_living[1]`  + `r House_Int_b2`\times0 + `r House_Int_b3`\times `r Houses$sqft_living[1]` \times 0 = `r (House_Int_b0 + House_Int_b2) |> round(0)` \text{ thousand dollars}
 $$
 
 $$
-\widehat{Price}_1 =  `r House_Int_b0` + `r House_Int_b1`\times `r Houses$sqft_living[1]`  + `r House_Int_b2`\times1 + `r House_Int_b3`\times `r Houses$sqft_living[1]` \times 1 = `r House_Int_b0 + House_Int_b2 + (House_Int_b1 + House_Int_b3)*Houses$sqft_living[1] |> round(0)` \text{ thousand dollars}
+\widehat{Price}_2 =  `r House_Int_b0` + `r House_Int_b1`\times `r Houses$sqft_living[1]`  + `r House_Int_b2`\times1 + `r House_Int_b3`\times `r Houses$sqft_living[1]` \times 1 = `r House_Int_b0 + House_Int_b2 + (House_Int_b1 + House_Int_b3)*Houses$sqft_living[1] |> round(0)` \text{ thousand dollars}
 $$
 
-### Variability Explained
 
-We'll calculate $R^2$ for the model with the interaction term
+We'll calculate $R^2$ for the model with and without the interaction term.
+
+**Model with Interaction**    
 
 ```{r}
 summary(M_House_price_sqft_wf_int)$r.squared
 ```
 
+**Model without Interaction**    
+
 ```{r}
 summary(M_House_price_sqft_wf)$r.squared
 ```
 
-We see that adding an interaction term improved the proportion of variability in house price explained by the model from `r summary(M_House_price_sqft_wf_int)$r.squared |> round(2)` to `r summary(M_House_price_sqft_wf)$r.squared`. This is a fairly notable increase.
+We see that adding an interaction term improved the proportion of variability in house price explained by the model from `r summary(M_House_price_sqft_wf_int)$r.squared |> round(2)` to `r summary(M_House_price_sqft_wf)$r.squared |> round(2)`. This is a fairly notable increase.
+
+We can also perform an ANOVA F-test to compare a full model that includes the interaction term to a reduced model that doesn't.   
 
 ```{r}
 anova(M_House_price_sqft_wf, M_House_price_sqft_wf_int)
 ```
+The large F-statistic and small p-value provides strong evidence that the model with interaction better explains variability in price than the model without interaction. There is strong reason for including the interaction term in the model. 
 
-### Considerations for Using Interactions
 
-It might be tempting to think we should always add an interaction term to a model when using two or more explanatory variables. After all, an interaction term is just another term added to the model, meaning that $R^2$ will never go down.
+### When to Include Interaction Terms
 
-Adding an interaction term is not always a good idea, though. We saw that doing so makes interpretations more complicated. Increasing the complexity of a model also increases the risk of overfitting, potentially hurting predictive performance on new data.
 
-We should only add an interaction term if we have strong reason to believe that the rate of change in the response variable with respect to one explanatory variable really does depend on the other variable. This might come from background knowledge about the subject, or consultation with an expert in the area. It could also come from data visualization, and the increase in variability in the response variable explained when an interaction term is added to the model.
+We should only include interaction terms in a model when we have good reason to believe that the effect of one explanatory variable on the response depends on another explanatory variable. We've seen that adding interaction terms to a model make it harder to interpret. Making a model more complex than necessary also increases the risk of overfitting.  We can use graphs, our background knowledge and domain are expertise, and model comparison tests to guide us. 
 
-In the house price dataset, we might expect that the price of waterfront houses might increase more rapidly as they get bigger than the price of non-waterfront houses. The fact that the lines shown in the scatterplot are not close to being parallel provides further evidence of a difference in rate of increase, providing justification for the use of an interaction term in the model. Furthermore, $R^2$ increases notably (from 0.76 to 0.85), when an interaction term is added. All of these reasons support using an interaction term in this context.
+Let's look at another example, involving the 2020 cars data. 
 
-When examining a scatterplot, we should note that even if there is truly no interaction among all houses, the lines probably won't be exactly parallel, due to random deviations among the sample of houses chosen. If the lines are reasonably close to parallel, then an interaction term is likely not needed.
+The plot below shows the relationship between log(price), acceleration time, and drive type for a sample of new cars release in 2020. 
 
-We'll look more at criteria for determining whether to add an interaction term to a model in the coming sections.
-
-### When to Include Interaction
 
 ```{r}
 ggplot(data=Cars2020, aes(x=Acc060, y=log(Price), color=Drive)) + geom_point()+stat_smooth(method="lm", se=FALSE) + theme_bw()
 ```
 
-```{r}
-summary(lm(data=Cars2020, log(Price) ~ Acc060 * Drive))
-```
+Let's consider three different models:
+
+**Model 1 (Acc060 only):**
+
+$$
+\widehat{LogPrice} = b_0 + b_1\times\text{Acc060} + b_3\times\text{DriveFWD} + b_2\times\text{DriveRWD} 
+$$
+Model 1 assumes that log(price) changes linearly with acceleration time and that drive type has no effect on price. 
+
+**Model 2 (Acc060 and Drive - No interaction):**
+
+$$
+\widehat{LogPrice} = b_0 + b_1\times\text{Acc060} + b_3\times\text{DriveFWD} + b_2\times\text{DriveRWD} 
+$$
+Model 2 assumes log(price) changes linearly with acceleration time. Some drive types might be more or less expensive than others, but the rate of change in price with respect to acceleration time (i.e. the slope) is the same for each drive type.  
+
+
+**Model 3 (Acc060 and Drive - with Interaction):**
+
+$$
+\begin{aligned}
+\widehat{LogPrice} &= b_0 + b_1\times\text{Acc060} + b_2\times\text{DriveFWD} + b_3\times\text{DriveRWD} \\ & + b_4\times\text{Acc060}\times\text{DriveFWD}  + b_5\times\text{Acc060}\times\text{DriveRWD}
+\end{aligned}
+$$
+
+Model 2 assumes log(price) changes linearly with acceleration time. It allows for the possibility that some drive types might be more expensive than others, and that price might change at different rates with respect to acceleration time for some drive types than others.   
+
+**Which Model to Use?**   
+
+We see in the plot that AWD cars tend to be more expensive than FWD and RWD. This suggests that drive type does have an effect on log(price), so Model 2 appears more appropriate than Model 1.   
+
+However, the slopes aren't that different. Price seems to decrease at roughly the same rate with respect to acceleration time for all three drive types. There doesn't seem to be a reason to add interaction terms to the model.  
+
+Model 2 seems most appropriate.   
+
+We can use ANOVA F-tests and $R^2$ to compare the models. First, let's compare Models 1 and 2.  
+
+**ANOVA F-Test for Model 1 vs Model 2**    
 
 ```{r}
-ggplot(data=Houses, aes(x=sqft_living, y=price, color=condition)) + geom_point()+stat_smooth(method="lm", se=FALSE) + theme_bw()
+M_Cars_logprice_acc060 <- lm(data=Cars2020, log(Price) ~ Acc060)
+M_Cars_logprice_acc060_drive <- lm(data=Cars2020, log(Price) ~ Acc060 + Drive)
+anova(M_Cars_logprice_acc060, M_Cars_logprice_acc060_drive)
 ```
 
+**$R^2$ for Model 1**
+
 ```{r}
-summary(lm(data=Houses, price ~ condition * sqft_living))
+summary(M_Cars_logprice_acc060)$r.squared
 ```
+
+**$R^2$ for Model 2**
+
+```{r}
+summary(M_Cars_logprice_acc060_drive)$r.squared
+```
+
+The large F-statistic and small p-value suggest that Model 2 better explains variability in price than Model 1. Furthermore, Model 2 explains more than 10% more of the variability in price. Model 2 is preferred over Model 1.  
+
+
+Now, we'll compare Model 2 to Model 3.   
+
+**ANOVA F-Test for Model 2 vs Model 3**    
+
+```{r}
+M_Cars_logprice_acc060_drive <- lm(data=Cars2020, log(Price) ~ Acc060 + Drive)
+M_Cars_logprice_acc060_drive_int <- lm(data=Cars2020, log(Price) ~ Acc060 + Drive + Acc060:Drive)
+anova(M_Cars_logprice_acc060_drive, M_Cars_logprice_acc060_drive_int)
+```
+
+**$R^2$ for Model 1**
+
+```{r}
+summary(M_Cars_logprice_acc060_drive)$r.squared
+```
+
+**$R^2$ for Model 2**
+
+```{r}
+summary(M_Cars_logprice_acc060_drive_int)$r.squared
+```
+
+The small F-statistic and large p-value provide no evidence that Model 3 is better than Model 2. Furthermore, $R^2$ only increases slightly when the interaction terms are added. There is not justification for choosing Model 3 over Model 2.  
+
+Model 2 appears to be the best model.   
+
+
+When using model comparison tests, it's important to remember that p-values are only part of the picture. We shouldn't make decisions based solely on the p-value. When sample size is large a model comparison test might yield a small p-value even if the difference between the models is not practically meaningful. It's important to also consider graphical intuition, real-life knowledge about the situation, and change in $R^2$ when deciding whether to add an interaction term to a model.   
+
 
 ### Interaction vs Correlation
 
@@ -842,6 +1207,16 @@ The fact that there is a correlation between explanatory variables is NOT a reas
 2.  Suppose that the effect of additional bedrooms on price is different for houses with lots of living space than for houses with little living space. This would be an example of an interaction between living space and number of bedrooms.
 
 3.  Suppose that audiences become more favorable to dramas as they get longer, but less favorable to comedies as they get longer. In this scenario, the effect of movie length on audience rating depends on the genre of the movie, indicating an interaction between length and genre.
+
+
+
+### Interaction More Generally
+
+In this section, we've seen examples of models with interaction involving a categorical and quantitative explanatory variable. These are easiest to picture graphically. It is possibly, however, to have interactions between two quantitative variables, or two categorical ones. 
+
+For example, suppose that for light weight cars those that can accelerate faster tended to be more expensive, but for heavier cars, there was no relationship between price and acceleration time. This would be an example of an interaction between weight and acceleration time, both quantitative variables.    
+
+Or, suppose that sedans with all wheel drive were more expensive than sedans with only front wheel drive, but that trucks with all wheel drive were the same price as trucks with only front wheel drive. This would be an example of an interaction between type of car and drive type. 
 
 ## Building a Model for Interpretation
 
@@ -1093,7 +1468,7 @@ We'll use residuals to check the model assumptions.
 
 **Residual by Predicted Plot, Histogram of Residuals, and Normal Quantile-Quantile Plot**
 
-```{r, fig.width=9}
+```{r, fig.width=9, fig.height=4}
 resid_panel(M_Cars6, smoother=TRUE)
 ```
 
@@ -1101,7 +1476,7 @@ There is slight concern about constant variance, but otherwise, the model assump
 
 **Residual by Predictor Plots**
 
-```{r, fig.width=9}
+```{r, fig.width=9, fig.height=4}
 resid_xpanel(M_Cars6, smoother=TRUE)
 ```
 

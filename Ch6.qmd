@@ -3,10 +3,10 @@
 ### Learning Outcomes {.unnumbered}
 
 **Conceptual Learning Outcomes**\
-32. Identify situations where it is appropriate to use a logistic regression model.\
-33. Calculate probabilities and odds using logistic regression.\
-34. Interpret logistic regression coefficients in context.\
-35. Draw conclusions about logistic regression models based on graphical representations of data.
+33. Identify situations where it is appropriate to use a logistic regression model.\
+34. Calculate probabilities and odds using logistic regression.\
+35. Interpret logistic regression coefficients in context.\
+36. Draw conclusions about logistic regression models based on graphical representations of data.
 
 **Computational Learning Outcomes**\
 J. Perform logistic regression in R.

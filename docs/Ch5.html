@@ -64,6 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./Ch6.html" rel="next">
 <link href="./Ch4.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -204,6 +205,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Building and Assessing Models</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Ch6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -233,16 +240,22 @@ window.Quarto = {
   <li><a href="#log-model-visualization" id="toc-log-model-visualization" class="nav-link" data-scroll-target="#log-model-visualization"><span class="header-section-number">5.2.6</span> Log Model Visualization</a></li>
   <li><a href="#comments-on-transformations" id="toc-comments-on-transformations" class="nav-link" data-scroll-target="#comments-on-transformations"><span class="header-section-number">5.2.7</span> Comments on Transformations</a></li>
   </ul></li>
-  <li><a href="#polynomial-regression" id="toc-polynomial-regression" class="nav-link" data-scroll-target="#polynomial-regression"><span class="header-section-number">5.3</span> Polynomial Regression</a></li>
+  <li><a href="#polynomial-regression" id="toc-polynomial-regression" class="nav-link" data-scroll-target="#polynomial-regression"><span class="header-section-number">5.3</span> Polynomial Regression</a>
+  <ul class="collapse">
+  <li><a href="#modeling-wages" id="toc-modeling-wages" class="nav-link" data-scroll-target="#modeling-wages"><span class="header-section-number">5.3.1</span> Modeling Wages</a></li>
+  <li><a href="#residual-by-predictor-plots" id="toc-residual-by-predictor-plots" class="nav-link" data-scroll-target="#residual-by-predictor-plots"><span class="header-section-number">5.3.2</span> Residual by Predictor Plots</a></li>
+  <li><a href="#add-quadratic-term" id="toc-add-quadratic-term" class="nav-link" data-scroll-target="#add-quadratic-term"><span class="header-section-number">5.3.3</span> Add Quadratic Term</a></li>
+  <li><a href="#model-output" id="toc-model-output" class="nav-link" data-scroll-target="#model-output"><span class="header-section-number">5.3.4</span> Model Output</a></li>
+  <li><a href="#interpreting-the-quadratic-term" id="toc-interpreting-the-quadratic-term" class="nav-link" data-scroll-target="#interpreting-the-quadratic-term"><span class="header-section-number">5.3.5</span> Interpreting the Quadratic Term</a></li>
+  </ul></li>
   <li><a href="#models-with-interaction" id="toc-models-with-interaction" class="nav-link" data-scroll-target="#models-with-interaction"><span class="header-section-number">5.4</span> Models with Interaction</a>
   <ul class="collapse">
   <li><a href="#definition-of-interaction" id="toc-definition-of-interaction" class="nav-link" data-scroll-target="#definition-of-interaction"><span class="header-section-number">5.4.1</span> Definition of Interaction</a></li>
-  <li><a href="#interaction-term" id="toc-interaction-term" class="nav-link" data-scroll-target="#interaction-term"><span class="header-section-number">5.4.2</span> Interaction Term</a></li>
+  <li><a href="#interaction-model-equations" id="toc-interaction-model-equations" class="nav-link" data-scroll-target="#interaction-model-equations"><span class="header-section-number">5.4.2</span> Interaction Model Equations</a></li>
   <li><a href="#interaction-models-in-r" id="toc-interaction-models-in-r" class="nav-link" data-scroll-target="#interaction-models-in-r"><span class="header-section-number">5.4.3</span> Interaction Models in R</a></li>
-  <li><a href="#variability-explained" id="toc-variability-explained" class="nav-link" data-scroll-target="#variability-explained"><span class="header-section-number">5.4.4</span> Variability Explained</a></li>
-  <li><a href="#considerations-for-using-interactions" id="toc-considerations-for-using-interactions" class="nav-link" data-scroll-target="#considerations-for-using-interactions"><span class="header-section-number">5.4.5</span> Considerations for Using Interactions</a></li>
-  <li><a href="#when-to-include-interaction" id="toc-when-to-include-interaction" class="nav-link" data-scroll-target="#when-to-include-interaction"><span class="header-section-number">5.4.6</span> When to Include Interaction</a></li>
-  <li><a href="#interaction-vs-correlation" id="toc-interaction-vs-correlation" class="nav-link" data-scroll-target="#interaction-vs-correlation"><span class="header-section-number">5.4.7</span> Interaction vs Correlation</a></li>
+  <li><a href="#when-to-include-interaction-terms" id="toc-when-to-include-interaction-terms" class="nav-link" data-scroll-target="#when-to-include-interaction-terms"><span class="header-section-number">5.4.4</span> When to Include Interaction Terms</a></li>
+  <li><a href="#interaction-vs-correlation" id="toc-interaction-vs-correlation" class="nav-link" data-scroll-target="#interaction-vs-correlation"><span class="header-section-number">5.4.5</span> Interaction vs Correlation</a></li>
+  <li><a href="#interaction-more-generally" id="toc-interaction-more-generally" class="nav-link" data-scroll-target="#interaction-more-generally"><span class="header-section-number">5.4.6</span> Interaction More Generally</a></li>
   </ul></li>
   <li><a href="#building-a-model-for-interpretation" id="toc-building-a-model-for-interpretation" class="nav-link" data-scroll-target="#building-a-model-for-interpretation"><span class="header-section-number">5.5</span> Building a Model for Interpretation</a>
   <ul class="collapse">
@@ -939,6 +952,658 @@ Acc060 0.7905858 0.8497679</code></pre>
 </section>
 <section id="polynomial-regression" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="polynomial-regression"><span class="header-section-number">5.3</span> Polynomial Regression</h2>
+<section id="modeling-wages" class="level3" data-number="5.3.1">
+<h3 data-number="5.3.1" class="anchored" data-anchor-id="modeling-wages"><span class="header-section-number">5.3.1</span> Modeling Wages</h3>
+<p>In this section, we’ll work with a dataset containing information on a sample of 250 male employees living in the Mid-Atlantic region. These data are a subset of a larger dataset available in the <code>ISLR</code> R package.</p>
+<p>Data were collected in the years 2003 through 2009. We’ll fit a model to predict the employee’s salary using the employee’s age and education level, the year the data was collected, and whether the job was industrial or informational in nature as explanatory variables.</p>
+<p>The plots below show the relationship between wage and each of the four explanatory variables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>P1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>WageSample, <span class="fu">aes</span>(<span class="at">y =</span> wage, <span class="at">x =</span> year)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>()</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>P2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>WageSample, <span class="fu">aes</span>(<span class="at">y =</span> wage, <span class="at">x =</span> age)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>()</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>P3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>WageSample, <span class="fu">aes</span>(<span class="at">y =</span> wage, <span class="at">x =</span> education)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>()  <span class="sc">+</span>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">hjust=</span><span class="dv">1</span>)) </span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>P4 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>WageSample, <span class="fu">aes</span>(<span class="at">y =</span> wage, <span class="at">x =</span> jobclass)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>()  <span class="sc">+</span>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">hjust=</span><span class="dv">1</span>)) </span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(P1, P2, P3, P4, <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch5_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The most obvious relationship appears to be that people with higher levels of education tend to make more money. We’ll use a statistical model to investigate this and other relationships.</p>
+<p>We first fit a model for price, using each of the explanatory variables shown above.</p>
+<p>The model equation is</p>
+<p><span class="math display">\[
+\begin{aligned}
+\text{Salary}_i &amp; = \beta_0 + \beta_1\times\text{Year}_i + \beta_2\times\text{Age}_i   \\
+&amp; + \beta_3\times\text{HSGrad}_i + \beta_4\times\text{SomeColl}_i + \beta_5\times\text{CollegeGrad}_i   \\
+&amp; + \beta_6\times\text{AdvDeg}_i + \beta_7\times\text{JobInf}_i   \\
+&amp; + \epsilon_i  \\
+\text{where} \epsilon_i\sim\mathcal{N}(0, \sigma)
+\end{aligned}
+\]</span></p>
+<p>We fit the model in R.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>M_Wage_price_yr_age_ed_job <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>WageSample, wage <span class="sc">~</span> year <span class="sc">+</span> age <span class="sc">+</span> education <span class="sc">+</span> jobclass)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Before we examine model output, let’s check the model assumptions using residual plots.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">resid_panel</span>(M_Wage_price_yr_age_ed_job, <span class="at">smoother=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch5_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We notice some right-skewness and large outliers in the qq-plot and histogram of residuals.</p>
+<p>Let’s model log(wage) to try to correct for the right skewness.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>M_logWage_price_yr_age_ed_job <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>WageSample, <span class="fu">log</span>(wage) <span class="sc">~</span> year <span class="sc">+</span> age <span class="sc">+</span> </span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>                                                          education <span class="sc">+</span> jobclass)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We check the residual plots on the model for log(wage).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">resid_panel</span>(M_logWage_price_yr_age_ed_job, <span class="at">smoother=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch5_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Although not perfect, these look better. There are only a few points out of line at each end of the qq-plot, and the histogram of residuals looks pretty symmetric.</p>
+</section>
+<section id="residual-by-predictor-plots" class="level3" data-number="5.3.2">
+<h3 data-number="5.3.2" class="anchored" data-anchor-id="residual-by-predictor-plots"><span class="header-section-number">5.3.2</span> Residual by Predictor Plots</h3>
+<p>When working with multiple explanatory variables, we should not only plot residuals vs predicted values, but also vs all explanatory variables. This will help us see whether there are any explanatory variables whose relationship could be better explained in the model.</p>
+<p>The <code>resid_xpanel()</code> function in the <code>ggResidplot</code> package creates these plots.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">resid_xpanel</span>(M_logWage_price_yr_age_ed_job, <span class="at">smoother=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch5_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The plots for year, education, and jobclass don’t raise any concerns, but we notice a quadratic trend in the residuals for age.</p>
+</section>
+<section id="add-quadratic-term" class="level3" data-number="5.3.3">
+<h3 data-number="5.3.3" class="anchored" data-anchor-id="add-quadratic-term"><span class="header-section-number">5.3.3</span> Add Quadratic Term</h3>
+<p>When only one or some variables show a violation, we can improve the model using a transformation on just that variable. Since we see a quadratic trend, we can fit a quadratic term for the age variable. To do this, we add <code>I(age^2)</code> to the model. We still leave the linear term for <code>age</code> in the model as well.</p>
+<p>The model equation is</p>
+<p><span class="math display">\[
+\begin{aligned}
+\text{log(Salary)}_i &amp; = \beta_0 + \beta_1\times\text{Year}_i + \beta_2\times\text{Age}_i  \beta_2\times\text{Age}^2_i + \\
+&amp; + \beta_3\times\text{HSGrad}_i + \beta_4\times\text{SomeColl}_i + \beta_5\times\text{CollegeGrad}_i  \\
+&amp; + \beta_6\times\text{AdvDeg}_i + \beta_7\times\text{JobInf}_i  \\
+&amp; + \epsilon_i,  \\
+\text{where} \epsilon_i\sim\mathcal{N}(0, \sigma)
+\end{aligned}
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>M_logWage_price_yr_age2_ed_job <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>WageSample, </span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>                                     <span class="fu">log</span>(wage) <span class="sc">~</span> year <span class="sc">+</span> age <span class="sc">+</span> <span class="fu">I</span>(age<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> </span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>                                                education <span class="sc">+</span> jobclass)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We again check the residual plots.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">resid_panel</span>(M_logWage_price_yr_age2_ed_job, <span class="at">smoother=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch5_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We also check residual by predictor plots.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">resid_xpanel</span>(M_logWage_price_yr_age_ed_job, <span class="at">smoother=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch5_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Notice that the quadratic trend in residuals has gone away in the age plot, telling us that the model with <code>age^2</code> has properly accounted for the quadratic trend.</p>
+</section>
+<section id="model-output" class="level3" data-number="5.3.4">
+<h3 data-number="5.3.4" class="anchored" data-anchor-id="model-output"><span class="header-section-number">5.3.4</span> Model Output</h3>
+<p>Now that we’ve found a model that appears to reasonably satisfy model assumptions, let’s look at the model summary output.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_logWage_price_yr_age_ed_job)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = log(wage) ~ year + age + education + jobclass, data = WageSample)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.29905 -0.14183  0.00267  0.16571  1.19099 
+
+Coefficients:
+                              Estimate Std. Error t value        Pr(&gt;|t|)    
+(Intercept)                 -23.203853  21.150224  -1.097        0.273689    
+year                          0.013615   0.010551   1.290        0.198117    
+age                           0.005593   0.001758   3.182        0.001655 ** 
+education2. HS Grad           0.186614   0.079941   2.334        0.020395 *  
+education3. Some College      0.296369   0.079602   3.723        0.000245 ***
+education4. College Grad      0.422839   0.083145   5.086 0.0000007346731 ***
+education5. Advanced Degree   0.603682   0.087811   6.875 0.0000000000524 ***
+jobclass2. Information        0.039636   0.043484   0.912        0.362937    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.3319 on 242 degrees of freedom
+Multiple R-squared:  0.2776,    Adjusted R-squared:  0.2567 
+F-statistic: 13.28 on 7 and 242 DF,  p-value: 0.00000000000001769</code></pre>
+</div>
+</div>
+<p>Since we modeled <code>log(wage)</code>, we’ll exponentiate the model coefficients to make our interpretations.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(M_logWage_price_yr_age_ed_job<span class="sc">$</span>coefficients) <span class="sc">|&gt;</span><span class="fu">round</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                (Intercept)                        year 
+                      0.000                       1.014 
+                        age         education2. HS Grad 
+                      1.006                       1.205 
+   education3. Some College    education4. College Grad 
+                      1.345                       1.526 
+education5. Advanced Degree      jobclass2. Information 
+                      1.829                       1.040 </code></pre>
+</div>
+</div>
+<p><strong>Interpretations</strong></p>
+<p>Since the intercept would refer to things like year 0 and a person of age 0, it does not make sense to interpret. The interpretation of the age coefficient gets tricky since it involves a quadratic term, so we’ll interpret the other variables first.</p>
+<ul>
+<li><p>For each year since 1993, average salary is expected to multiply by 1.014, a 1.4 percent increase, assuming all other variables are held constant. Since the p-value on <code>year</code> is large, we cannot conclusively say that salaries are changing over time.</p></li>
+<li><p>Workers with a high school degree are estimated to make 34.5 percent more than workers with less than a high school degree, assuming all other variables are held constant.</p></li>
+<li><p>Workers with some college are estimated to make 52.6 percent more than workers with less than a high school degree, assuming all other variables are held constant.</p></li>
+<li><p>Workers with a college degree are estimated to make 82.9 percent more than workers with less than a high school degree, assuming all other variables are held constant.</p></li>
+<li><p>Workers with a college degree are estimated to make 4 percent more than workers with less than a high school degree, assuming all other variables are held constant.</p></li>
+</ul>
+<p>The differences in education levels are all statistically discernible.</p>
+<ul>
+<li>Workers with an informational job are estimated to make NA percent more than workers with an industrial one, assuming all other variables are held constant. This difference is not big enough to be statistically discernible.</li>
+</ul>
+</section>
+<section id="interpreting-the-quadratic-term" class="level3" data-number="5.3.5">
+<h3 data-number="5.3.5" class="anchored" data-anchor-id="interpreting-the-quadratic-term"><span class="header-section-number">5.3.5</span> Interpreting the Quadratic Term</h3>
+<p>First, notice that the p-value on the <code>I(age^2)</code> term is small. This tells us that there is evidence of a quadratic relationship between age and salary, so adding the <code>age^2</code> term was a good idea.</p>
+<p>When we have a quadratic term in the model, we can’t make interpretations on the <code>age</code> or <code>age^2</code> estimates individually, since we can’t change one while holding the other constant. Instead, we’ll look at the two estimates together.</p>
+<p>Focusing on only the terms relating to age, we get the expression</p>
+<p><span class="math display">\[
+-0.00033 \times \text{Age}^2 + 0.03392 \times \text{Age}
+\]</span></p>
+<p>We see that this expression has a negative quadratic coefficient, meaning it will have the shape of a downward facing parabola. A sketch of the equation <span class="math inline">\(y=0.18661 \times \text{Age}^2 + 0.00559 \times \text{Age}\)</span> is shown below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">summary</span>(M_logWage_price_yr_age2_ed_job)<span class="sc">$</span>coefficients[<span class="dv">4</span>]</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">summary</span>(M_logWage_price_yr_age2_ed_job)<span class="sc">$</span>coefficients[<span class="dv">3</span>] </span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">18</span>, <span class="at">to=</span><span class="dv">80</span>, <span class="at">by=</span><span class="dv">1</span>)), <span class="fu">aes</span>(x)) <span class="sc">+</span></span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_function</span>(<span class="at">fun =</span> <span class="cf">function</span>(x){a<span class="sc">*</span>x<span class="sc">^</span><span class="dv">2</span><span class="sc">+</span>b<span class="sc">*</span>x}, <span class="at">colour =</span> <span class="st">"red"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.line=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">axis.text.y=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">axis.title.y=</span><span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch5_files/figure-html/unnamed-chunk-48-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We see that the parabola appears to hit its max between 50 and 60 years, suggesting that on average workers wages increase until this age, and then start to decrease. This makes sense, as workers will often see pay raises with experience and promotions for most of their career, until some begin to retire or take less intensive jobs in their 50’s and 60’s.</p>
+<p>Using a fact from high school algebra, a quadratic function <span class="math inline">\(f(x) = ax^2 + bx + c\)</span> attains it’s max or min at <span class="math inline">\(x=-b/(2a)\)</span>, so in this case, the model estimates that salaries are at their highest, on average, at the age of</p>
+<p><span class="math display">\[
+- 0.03392 / (2\times -0.00033) = 51.9
+\]</span></p>
+<p>years.</p>
+<!--
+
+
+
+
+::: {.cell}
+
+```{.r .cell-code}
+summary(WageSample)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+      year           age                     maritl          race    
+ Min.   :2003   Min.   :18.00   1. Never Married: 57   1. White:204  
+ 1st Qu.:2004   1st Qu.:33.00   2. Married      :174   2. Black: 30  
+ Median :2006   Median :43.50   3. Widowed      :  1   3. Asian: 15  
+ Mean   :2006   Mean   :42.72   4. Divorced     : 17   4. Other:  1  
+ 3rd Qu.:2007   3rd Qu.:52.00   5. Separated    :  1                 
+ Max.   :2009   Max.   :76.00                                        
+              education            jobclass        wage       
+ 1. < HS Grad      :24   1. Industrial :132   Min.   : 20.93  
+ 2. HS Grad        :67   2. Information:118   1st Qu.: 85.38  
+ 3. Some College   :69                        Median :105.93  
+ 4. College Grad   :50                        Mean   :115.37  
+ 5. Advanced Degree:40                        3rd Qu.:130.98  
+                                              Max.   :318.34  
+```
+
+
+:::
+:::
+
+::: {.cell}
+
+```{.r .cell-code}
+ggpairs(WageSample)
+```
+
+::: {.cell-output-display}
+![](Ch5_files/figure-html/unnamed-chunk-50-1.png){width=672}
+:::
+:::
+
+::: {.cell}
+
+```{.r .cell-code}
+P1 <- ggplot(data=WageSample, aes(x=age, y=wage)) + geom_point() + theme_bw() 
+P2 <- ggplot(data=WageSample, aes(x=year, y=wage)) + geom_point() + theme_bw()
+grid.arrange(P1, P2, ncol=2)
+```
+
+::: {.cell-output-display}
+![](Ch5_files/figure-html/unnamed-chunk-51-1.png){width=672}
+:::
+:::
+
+::: {.cell}
+
+```{.r .cell-code}
+M_wage_year_age <- lm(data=WageSample, wage ~ year+age)
+summary(M_wage_year_age)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+
+Call:
+lm(formula = wage ~ year + age, data = WageSample)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-94.843 -26.748  -4.885  14.850 185.435 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -4210.4220  2927.5787  -1.438 0.151645    
+year            2.1371     1.4597   1.464 0.144451    
+age             0.9280     0.2442   3.801 0.000182 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 46.75 on 247 degrees of freedom
+Multiple R-squared:  0.06305,   Adjusted R-squared:  0.05546 
+F-statistic:  8.31 on 2 and 247 DF,  p-value: 0.0003215
+```
+
+
+:::
+:::
+
+::: {.cell}
+
+```{.r .cell-code}
+resid_panel(M_wage_year_age, smoother = TRUE)
+```
+
+::: {.cell-output-display}
+![](Ch5_files/figure-html/unnamed-chunk-53-1.png){width=672}
+:::
+:::
+
+::: {.cell}
+
+```{.r .cell-code}
+M_logwage_year_age <- lm(data=WageSample, log(wage) ~ year+age)
+summary(M_logwage_year_age)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+
+Call:
+lm(formula = log(wage) ~ year + age, data = WageSample)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.52639 -0.20584  0.02365  0.19676  1.05725 
+
+Coefficients:
+              Estimate Std. Error t value  Pr(>|t|)    
+(Intercept) -33.433980  23.346094  -1.432     0.153    
+year          0.018835   0.011640   1.618     0.107    
+age           0.007743   0.001947   3.977 0.0000919 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.3728 on 247 degrees of freedom
+Multiple R-squared:  0.06957,   Adjusted R-squared:  0.06203 
+F-statistic: 9.234 on 2 and 247 DF,  p-value: 0.0001357
+```
+
+
+:::
+:::
+
+::: {.cell}
+
+```{.r .cell-code}
+P1 <- ggplot(data=WageSample, aes(x=maritl, y=wage))  + geom_boxplot()  + theme_bw()  +  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+P2 <- ggplot(data=WageSample, aes(x=race, y=wage)) + geom_boxplot()  + theme_bw() +  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+P3 <- ggplot(data=WageSample, aes(x=education, y=wage)) + geom_boxplot()  + theme_bw() +  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+P4 <- ggplot(data=WageSample, aes(x=jobclass, y=wage)) + geom_boxplot()  + theme_bw() +  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+
+grid.arrange(P1, P2, P3, P4, ncol=2)
+```
+
+::: {.cell-output-display}
+![](Ch5_files/figure-html/unnamed-chunk-55-1.png){width=960}
+:::
+:::
+
+::: {.cell}
+
+```{.r .cell-code}
+M_logwage_year_age_edu <- lm(data=WageSample, log(wage) ~ year + age + education)
+anova(M_logwage_year_age, M_logwage_year_age_edu)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+Analysis of Variance Table
+
+Model 1: log(wage) ~ year + age
+Model 2: log(wage) ~ year + age + education
+  Res.Df    RSS Df Sum of Sq      F            Pr(>F)    
+1    247 34.333                                          
+2    243 26.750  4    7.5834 17.222 0.000000000001883 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+
+:::
+:::
+
+::: {.cell}
+
+```{.r .cell-code}
+summary(M_logwage_year_age_edu)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+
+Call:
+lm(formula = log(wage) ~ year + age + education, data = WageSample)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.28040 -0.13547  0.00093  0.15677  1.17861 
+
+Coefficients:
+                              Estimate Std. Error t value        Pr(>|t|)    
+(Intercept)                 -24.903309  21.060551  -1.182        0.238178    
+year                          0.014471   0.010505   1.378        0.169602    
+age                           0.005580   0.001757   3.175        0.001690 ** 
+education2. HS Grad           0.182295   0.079773   2.285        0.023165 *  
+education3. Some College      0.297872   0.079557   3.744        0.000226 ***
+education4. College Grad      0.425721   0.083056   5.126 0.0000006048817 ***
+education5. Advanced Degree   0.614179   0.087022   7.058 0.0000000000176 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.3318 on 243 degrees of freedom
+Multiple R-squared:  0.2751,    Adjusted R-squared:  0.2572 
+F-statistic: 15.37 on 6 and 243 DF,  p-value: 0.000000000000006336
+```
+
+
+:::
+:::
+
+::: {.cell}
+
+```{.r .cell-code}
+M_logwage_year_age_edu_jobclass <- lm(data=WageSample, log(wage) ~ year + age + education + jobclass)
+summary(M_logwage_year_age_edu_jobclass)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+
+Call:
+lm(formula = log(wage) ~ year + age + education + jobclass, data = WageSample)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.29905 -0.14183  0.00267  0.16571  1.19099 
+
+Coefficients:
+                              Estimate Std. Error t value        Pr(>|t|)    
+(Intercept)                 -23.203853  21.150224  -1.097        0.273689    
+year                          0.013615   0.010551   1.290        0.198117    
+age                           0.005593   0.001758   3.182        0.001655 ** 
+education2. HS Grad           0.186614   0.079941   2.334        0.020395 *  
+education3. Some College      0.296369   0.079602   3.723        0.000245 ***
+education4. College Grad      0.422839   0.083145   5.086 0.0000007346731 ***
+education5. Advanced Degree   0.603682   0.087811   6.875 0.0000000000524 ***
+jobclass2. Information        0.039636   0.043484   0.912        0.362937    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.3319 on 242 degrees of freedom
+Multiple R-squared:  0.2776,    Adjusted R-squared:  0.2567 
+F-statistic: 13.28 on 7 and 242 DF,  p-value: 0.00000000000001769
+```
+
+
+:::
+:::
+
+::: {.cell}
+
+```{.r .cell-code}
+M_logwage_year_age_edu_jobclass_race <- lm(data=WageSample, log(wage) ~ year + age + education + jobclass + race)
+anova(M_logwage_year_age_edu_jobclass, M_logwage_year_age_edu_jobclass_race)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+Analysis of Variance Table
+
+Model 1: log(wage) ~ year + age + education + jobclass
+Model 2: log(wage) ~ year + age + education + jobclass + race
+  Res.Df    RSS Df Sum of Sq      F Pr(>F)
+1    242 26.658                           
+2    239 26.311  3   0.34715 1.0511 0.3706
+```
+
+
+:::
+:::
+
+::: {.cell}
+
+```{.r .cell-code}
+M_logwage_year_age_edu_jobclass_maritl <- lm(data=WageSample, log(wage) ~ year + age + education + jobclass + maritl)
+anova(M_logwage_year_age_edu_jobclass, M_logwage_year_age_edu_jobclass_maritl)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+Analysis of Variance Table
+
+Model 1: log(wage) ~ year + age + education + jobclass
+Model 2: log(wage) ~ year + age + education + jobclass + maritl
+  Res.Df    RSS Df Sum of Sq      F Pr(>F)
+1    242 26.658                           
+2    238 26.111  4   0.54734 1.2472 0.2916
+```
+
+
+:::
+:::
+
+::: {.cell}
+
+```{.r .cell-code}
+resid_panel(M_logwage_year_age_edu_jobclass)
+```
+
+::: {.cell-output-display}
+![](Ch5_files/figure-html/unnamed-chunk-61-1.png){width=672}
+:::
+:::
+
+::: {.cell}
+
+```{.r .cell-code}
+resid_xpanel(M_logwage_year_age_edu_jobclass, smoother=TRUE)
+```
+
+::: {.cell-output-display}
+![](Ch5_files/figure-html/unnamed-chunk-62-1.png){width=672}
+:::
+:::
+
+::: {.cell}
+
+```{.r .cell-code}
+M_logwage_year_age2_edu_jobclass <- lm(data=WageSample, log(wage) ~ year + age + I(age^2) + education + jobclass)
+summary(M_logwage_year_age2_edu_jobclass)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+
+Call:
+lm(formula = log(wage) ~ year + age + I(age^2) + education + 
+    jobclass, data = WageSample)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-1.3087 -0.1331  0.0056  0.1652  1.1420 
+
+Coefficients:
+                               Estimate  Std. Error t value       Pr(>|t|)    
+(Intercept)                 -26.5956726  20.9257600  -1.271        0.20497    
+year                          0.0150231   0.0104326   1.440        0.15116    
+age                           0.0339204   0.0107471   3.156        0.00180 ** 
+I(age^2)                     -0.0003270   0.0001224  -2.671        0.00808 ** 
+education2. HS Grad           0.1970428   0.0790437   2.493        0.01335 *  
+education3. Some College      0.2923319   0.0786263   3.718        0.00025 ***
+education4. College Grad      0.4056835   0.0823616   4.926 0.000001562608 ***
+education5. Advanced Degree   0.5831476   0.0870589   6.698 0.000000000147 ***
+jobclass2. Information        0.0556347   0.0433594   1.283        0.20069    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.3278 on 241 degrees of freedom
+Multiple R-squared:  0.2983,    Adjusted R-squared:  0.275 
+F-statistic: 12.81 on 8 and 241 DF,  p-value: 0.000000000000002483
+```
+
+
+:::
+:::
+
+::: {.cell}
+
+```{.r .cell-code}
+resid_panel(M_logwage_year_age2_edu_jobclass, smoother = TRUE)
+```
+
+::: {.cell-output-display}
+![](Ch5_files/figure-html/unnamed-chunk-64-1.png){width=672}
+:::
+:::
+
+::: {.cell}
+
+```{.r .cell-code}
+resid_xpanel(M_logwage_year_age2_edu_jobclass, smoother = TRUE)
+```
+
+::: {.cell-output-display}
+![](Ch5_files/figure-html/unnamed-chunk-65-1.png){width=672}
+:::
+:::
+
+::: {.cell}
+
+```{.r .cell-code}
+summary(M_logwage_year_age2_edu_jobclass)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+
+Call:
+lm(formula = log(wage) ~ year + age + I(age^2) + education + 
+    jobclass, data = WageSample)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-1.3087 -0.1331  0.0056  0.1652  1.1420 
+
+Coefficients:
+                               Estimate  Std. Error t value       Pr(>|t|)    
+(Intercept)                 -26.5956726  20.9257600  -1.271        0.20497    
+year                          0.0150231   0.0104326   1.440        0.15116    
+age                           0.0339204   0.0107471   3.156        0.00180 ** 
+I(age^2)                     -0.0003270   0.0001224  -2.671        0.00808 ** 
+education2. HS Grad           0.1970428   0.0790437   2.493        0.01335 *  
+education3. Some College      0.2923319   0.0786263   3.718        0.00025 ***
+education4. College Grad      0.4056835   0.0823616   4.926 0.000001562608 ***
+education5. Advanced Degree   0.5831476   0.0870589   6.698 0.000000000147 ***
+jobclass2. Information        0.0556347   0.0433594   1.283        0.20069    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.3278 on 241 degrees of freedom
+Multiple R-squared:  0.2983,    Adjusted R-squared:  0.275 
+F-statistic: 12.81 on 8 and 241 DF,  p-value: 0.000000000000002483
+```
+
+
+:::
+:::
+
+
+
+
+
+-->
+</section>
 </section>
 <section id="models-with-interaction" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="models-with-interaction"><span class="header-section-number">5.4</span> Models with Interaction</h2>
@@ -950,11 +1615,11 @@ Acc060 0.7905858 0.8497679</code></pre>
 \]</span></p>
 <p>Recall that this model assumes the slope relating price and square footage is the same (<span class="math inline">\(b_1\)</span>) for houses on the waterfront as for houses not on the waterfront. An illustration of the model is shown below.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>Plot_House_price_sqft_wf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>Plot_House_price_sqft_wf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch5_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Ch5_files/figure-html/unnamed-chunk-67-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -962,11 +1627,11 @@ Acc060 0.7905858 0.8497679</code></pre>
 <p>This assumption of the rate of change in price with respect to living space being the same for waterfront houses, as for non-waterfront houses might be unrealistic.</p>
 <p>Let’s fit separate lines for waterfront and non-waterfront houses, without requiring them to have the same slope.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Houses, <span class="fu">aes</span>(<span class="at">x=</span>sqft_living, <span class="at">y=</span>price, <span class="at">color=</span>waterfront)) <span class="sc">+</span> <span class="fu">geom_point</span>()<span class="sc">+</span><span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Houses, <span class="fu">aes</span>(<span class="at">x=</span>sqft_living, <span class="at">y=</span>price, <span class="at">color=</span>waterfront)) <span class="sc">+</span> <span class="fu">geom_point</span>()<span class="sc">+</span><span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch5_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Ch5_files/figure-html/unnamed-chunk-68-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -974,8 +1639,8 @@ Acc060 0.7905858 0.8497679</code></pre>
 <p>It appears that the prices of the houses on the waterfront are increasing more rapidly, with respect to square feet of living space, than the non-waterfront houses. The effect of additional square feet on the price of the house appears to depend on whether or not the house is on the waterfront. This is an example of an <strong>interaction</strong> between square footage and waterfront status.</p>
 <p>An <strong>interaction</strong> between two explanatory variables occurs when the effect of one explanatory variable on the response depends on the other explanatory variable.</p>
 </section>
-<section id="interaction-term" class="level3" data-number="5.4.2">
-<h3 data-number="5.4.2" class="anchored" data-anchor-id="interaction-term"><span class="header-section-number">5.4.2</span> Interaction Term</h3>
+<section id="interaction-model-equations" class="level3" data-number="5.4.2">
+<h3 data-number="5.4.2" class="anchored" data-anchor-id="interaction-model-equations"><span class="header-section-number">5.4.2</span> Interaction Model Equations</h3>
 <p>If we want to allow for different slopes between waterfront and non-waterfront houses, we’ll need to change the mathematical equation of our model. To do that, we’ll add a coefficient <span class="math inline">\(b_3\)</span>, multiplied by the product of our two explanatory variables.</p>
 <p>The model equation is</p>
 <p><span class="math display">\[
@@ -1001,10 +1666,15 @@ Acc060 0.7905858 0.8497679</code></pre>
 </section>
 <section id="interaction-models-in-r" class="level3" data-number="5.4.3">
 <h3 data-number="5.4.3" class="anchored" data-anchor-id="interaction-models-in-r"><span class="header-section-number">5.4.3</span> Interaction Models in R</h3>
-<p>To fit an interaction model in R, use <code>*</code> instead of <code>+</code></p>
+<p>To fit a model with variables <code>var1</code> and <code>var2</code> and their interaction, you can do either of the following.</p>
+<ol type="1">
+<li><code>y ~ var1 + var2 + var1:var2</code> OR</li>
+<li><code>y ~ var1*var2</code></li>
+</ol>
+<p><code>var1:var2</code> means include the interaction term, and <code>var1*var2</code> means include both variables plus the interaction. (Note: we should never include an interaction term without also including the variables individually.)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>M_House_price_sqft_wf_int <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Houses, price<span class="sc">~</span>sqft_living<span class="sc">*</span>waterfront)</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_House_price_sqft_wf_int)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>M_House_price_sqft_wf_int <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Houses, price<span class="sc">~</span>sqft_living<span class="sc">*</span>waterfront)</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_House_price_sqft_wf_int)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1033,22 +1703,16 @@ Multiple R-squared:  0.7771,    Adjusted R-squared:  0.7737
 F-statistic: 227.7 on 3 and 196 DF,  p-value: &lt; 0.00000000000000022</code></pre>
 </div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>House_Int_b0 <span class="ot">&lt;-</span> M_House_price_sqft_wf_int<span class="sc">$</span>coef[<span class="dv">1</span>] <span class="sc">|&gt;</span><span class="fu">round</span>(<span class="dv">2</span>)</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>House_Int_b1 <span class="ot">&lt;-</span> M_House_price_sqft_wf_int<span class="sc">$</span>coef[<span class="dv">2</span>] <span class="sc">|&gt;</span><span class="fu">round</span>(<span class="dv">2</span>)</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>House_Int_b2 <span class="ot">&lt;-</span> M_House_price_sqft_wf_int<span class="sc">$</span>coef[<span class="dv">3</span>] <span class="sc">|&gt;</span><span class="fu">round</span>(<span class="dv">2</span>)</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>House_Int_b3 <span class="ot">&lt;-</span> M_House_price_sqft_wf_int<span class="sc">$</span>coef[<span class="dv">4</span>] <span class="sc">|&gt;</span><span class="fu">round</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <p>The regression equation is</p>
 <p><span class="math display">\[
-\widehat{Price} = -114.37 + 0.31\times\text{Sq. Ft.}  + -90.12\times\text{waterfront} + 0.27\times\text{Sq.Ft}\times\text{Waterfront}
+\widehat{Price} = -114.37 + 0.31\times\text{Sq. Ft.}  + -90.12\times\text{Waterfront} + 0.27\times\text{Sq.Ft}\times\text{Waterfront}
 \]</span></p>
 <p>For a house on the waterfront (<span class="math inline">\(\text{waterfront}=1\)</span>), the equation is</p>
 <p><span class="math display">\[
 \begin{aligned}
 \widehat{Price} &amp; = -114.37 + 0.31\times\text{Sq. Ft.} -90.12 \times\text{1} + 0.27\times\text{Sq.Ft}\times\text{1} \\
-&amp; = (-114.37 - -90.12) + (0.31+0.27)\times{\text{Sq. Ft.}} \\
-&amp; = -204.49 + `House_Int_b1 + House_Int_b3`\times{\text{Sq. Ft.}}
+&amp; = (-114.37 + -90.12) + (0.31+0.27)\times{\text{Sq. Ft.}} \\
+&amp; = -204.49 + 0.58\times{\text{Sq. Ft.}}
 \end{aligned}
 \]</span></p>
 <p>For a house not on the waterfront (<span class="math inline">\(\text{waterfront}=0\)</span>), the equation is</p>
@@ -1075,7 +1739,7 @@ F-statistic: 227.7 on 3 and 196 DF,  p-value: &lt; 0.00000000000000022</code></p
 <p><strong>Prediction</strong></p>
 <p>We calculate predicted prices for the following houses:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>Houses[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">16</span>), ] <span class="sc">%&gt;%</span> <span class="fu">select</span>(ID, price, sqft_living, waterfront)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>Houses[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">16</span>), ] <span class="sc">%&gt;%</span> <span class="fu">select</span>(ID, price, sqft_living, waterfront)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 4
      ID price sqft_living waterfront
@@ -1085,30 +1749,30 @@ F-statistic: 227.7 on 3 and 196 DF,  p-value: &lt; 0.00000000000000022</code></p
 </div>
 </div>
 <p><span class="math display">\[
-\widehat{Price}_1 =  -114.37 + 0.31\times 1030  + -90.12\times0 + 0.27\times 1030 \times 0 = FALSE \text{ thousand dollars}
+\widehat{Price}_1 =  -114.37 + 0.31\times 1030  + -90.12\times0 + 0.27\times 1030 \times 0 = -204 \text{ thousand dollars}
 \]</span></p>
 <p><span class="math display">\[
-\widehat{Price}_1 =  -114.37 + 0.31\times 1030  + -90.12\times1 + 0.27\times 1030 \times 1 = 392.91 \text{ thousand dollars}
+\widehat{Price}_2 =  -114.37 + 0.31\times 1030  + -90.12\times1 + 0.27\times 1030 \times 1 = 392.91 \text{ thousand dollars}
 \]</span></p>
-</section>
-<section id="variability-explained" class="level3" data-number="5.4.4">
-<h3 data-number="5.4.4" class="anchored" data-anchor-id="variability-explained"><span class="header-section-number">5.4.4</span> Variability Explained</h3>
-<p>We’ll calculate <span class="math inline">\(R^2\)</span> for the model with the interaction term</p>
+<p>We’ll calculate <span class="math inline">\(R^2\)</span> for the model with and without the interaction term.</p>
+<p><strong>Model with Interaction</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_House_price_sqft_wf_int)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_House_price_sqft_wf_int)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.7770731</code></pre>
 </div>
 </div>
+<p><strong>Model without Interaction</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_House_price_sqft_wf)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_House_price_sqft_wf)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.7411526</code></pre>
 </div>
 </div>
-<p>We see that adding an interaction term improved the proportion of variability in house price explained by the model from 0.78 to 0.7411526. This is a fairly notable increase.</p>
+<p>We see that adding an interaction term improved the proportion of variability in house price explained by the model from 0.78 to 0.74. This is a fairly notable increase.</p>
+<p>We can also perform an ANOVA F-test to compare a full model that includes the interaction term to a reduced model that doesn’t.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(M_House_price_sqft_wf, M_House_price_sqft_wf_int)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(M_House_price_sqft_wf, M_House_price_sqft_wf_int)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -1121,102 +1785,112 @@ Model 2: price ~ sqft_living * waterfront
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
+<p>The large F-statistic and small p-value provides strong evidence that the model with interaction better explains variability in price than the model without interaction. There is strong reason for including the interaction term in the model.</p>
 </section>
-<section id="considerations-for-using-interactions" class="level3" data-number="5.4.5">
-<h3 data-number="5.4.5" class="anchored" data-anchor-id="considerations-for-using-interactions"><span class="header-section-number">5.4.5</span> Considerations for Using Interactions</h3>
-<p>It might be tempting to think we should always add an interaction term to a model when using two or more explanatory variables. After all, an interaction term is just another term added to the model, meaning that <span class="math inline">\(R^2\)</span> will never go down.</p>
-<p>Adding an interaction term is not always a good idea, though. We saw that doing so makes interpretations more complicated. Increasing the complexity of a model also increases the risk of overfitting, potentially hurting predictive performance on new data.</p>
-<p>We should only add an interaction term if we have strong reason to believe that the rate of change in the response variable with respect to one explanatory variable really does depend on the other variable. This might come from background knowledge about the subject, or consultation with an expert in the area. It could also come from data visualization, and the increase in variability in the response variable explained when an interaction term is added to the model.</p>
-<p>In the house price dataset, we might expect that the price of waterfront houses might increase more rapidly as they get bigger than the price of non-waterfront houses. The fact that the lines shown in the scatterplot are not close to being parallel provides further evidence of a difference in rate of increase, providing justification for the use of an interaction term in the model. Furthermore, <span class="math inline">\(R^2\)</span> increases notably (from 0.76 to 0.85), when an interaction term is added. All of these reasons support using an interaction term in this context.</p>
-<p>When examining a scatterplot, we should note that even if there is truly no interaction among all houses, the lines probably won’t be exactly parallel, due to random deviations among the sample of houses chosen. If the lines are reasonably close to parallel, then an interaction term is likely not needed.</p>
-<p>We’ll look more at criteria for determining whether to add an interaction term to a model in the coming sections.</p>
-</section>
-<section id="when-to-include-interaction" class="level3" data-number="5.4.6">
-<h3 data-number="5.4.6" class="anchored" data-anchor-id="when-to-include-interaction"><span class="header-section-number">5.4.6</span> When to Include Interaction</h3>
+<section id="when-to-include-interaction-terms" class="level3" data-number="5.4.4">
+<h3 data-number="5.4.4" class="anchored" data-anchor-id="when-to-include-interaction-terms"><span class="header-section-number">5.4.4</span> When to Include Interaction Terms</h3>
+<p>We should only include interaction terms in a model when we have good reason to believe that the effect of one explanatory variable on the response depends on another explanatory variable. We’ve seen that adding interaction terms to a model make it harder to interpret. Making a model more complex than necessary also increases the risk of overfitting. We can use graphs, our background knowledge and domain are expertise, and model comparison tests to guide us.</p>
+<p>Let’s look at another example, involving the 2020 cars data.</p>
+<p>The plot below shows the relationship between log(price), acceleration time, and drive type for a sample of new cars release in 2020.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Cars2020, <span class="fu">aes</span>(<span class="at">x=</span>Acc060, <span class="at">y=</span><span class="fu">log</span>(Price), <span class="at">color=</span>Drive)) <span class="sc">+</span> <span class="fu">geom_point</span>()<span class="sc">+</span><span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Cars2020, <span class="fu">aes</span>(<span class="at">x=</span>Acc060, <span class="at">y=</span><span class="fu">log</span>(Price), <span class="at">color=</span>Drive)) <span class="sc">+</span> <span class="fu">geom_point</span>()<span class="sc">+</span><span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch5_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Ch5_files/figure-html/unnamed-chunk-75-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
+<p>Let’s consider three different models:</p>
+<p><strong>Model 1 (Acc060 only):</strong></p>
+<p><span class="math display">\[
+\widehat{LogPrice} = b_0 + b_1\times\text{Acc060} + b_3\times\text{DriveFWD} + b_2\times\text{DriveRWD}
+\]</span> Model 1 assumes that log(price) changes linearly with acceleration time and that drive type has no effect on price.</p>
+<p><strong>Model 2 (Acc060 and Drive - No interaction):</strong></p>
+<p><span class="math display">\[
+\widehat{LogPrice} = b_0 + b_1\times\text{Acc060} + b_3\times\text{DriveFWD} + b_2\times\text{DriveRWD}
+\]</span> Model 2 assumes log(price) changes linearly with acceleration time. Some drive types might be more or less expensive than others, but the rate of change in price with respect to acceleration time (i.e.&nbsp;the slope) is the same for each drive type.</p>
+<p><strong>Model 3 (Acc060 and Drive - with Interaction):</strong></p>
+<p><span class="math display">\[
+\begin{aligned}
+\widehat{LogPrice} &amp;= b_0 + b_1\times\text{Acc060} + b_2\times\text{DriveFWD} + b_3\times\text{DriveRWD} \\ &amp; + b_4\times\text{Acc060}\times\text{DriveFWD}  + b_5\times\text{Acc060}\times\text{DriveRWD}
+\end{aligned}
+\]</span></p>
+<p>Model 2 assumes log(price) changes linearly with acceleration time. It allows for the possibility that some drive types might be more expensive than others, and that price might change at different rates with respect to acceleration time for some drive types than others.</p>
+<p><strong>Which Model to Use?</strong></p>
+<p>We see in the plot that AWD cars tend to be more expensive than FWD and RWD. This suggests that drive type does have an effect on log(price), so Model 2 appears more appropriate than Model 1.</p>
+<p>However, the slopes aren’t that different. Price seems to decrease at roughly the same rate with respect to acceleration time for all three drive types. There doesn’t seem to be a reason to add interaction terms to the model.</p>
+<p>Model 2 seems most appropriate.</p>
+<p>We can use ANOVA F-tests and <span class="math inline">\(R^2\)</span> to compare the models. First, let’s compare Models 1 and 2.</p>
+<p><strong>ANOVA F-Test for Model 1 vs Model 2</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(<span class="at">data=</span>Cars2020, <span class="fu">log</span>(Price) <span class="sc">~</span> Acc060 <span class="sc">*</span> Drive))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>M_Cars_logprice_acc060 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Cars2020, <span class="fu">log</span>(Price) <span class="sc">~</span> Acc060)</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>M_Cars_logprice_acc060_drive <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Cars2020, <span class="fu">log</span>(Price) <span class="sc">~</span> Acc060 <span class="sc">+</span> Drive)</span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(M_Cars_logprice_acc060, M_Cars_logprice_acc060_drive)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = log(Price) ~ Acc060 * Drive, data = Cars2020)
+<pre><code>Analysis of Variance Table
 
-Residuals:
-     Min       1Q   Median       3Q      Max 
--0.67884 -0.17380  0.00747  0.17140  0.54195 
-
-Coefficients:
-                Estimate Std. Error t value             Pr(&gt;|t|)    
-(Intercept)      5.15099    0.16986  30.325 &lt; 0.0000000000000002 ***
-Acc060          -0.20730    0.02197  -9.436  0.00000000000000122 ***
-DriveFWD        -0.72581    0.38438  -1.888               0.0618 .  
-DriveRWD        -1.37366    0.67884  -2.024               0.0456 *  
-Acc060:DriveFWD  0.05225    0.04362   1.198               0.2337    
-Acc060:DriveRWD  0.16158    0.12444   1.298               0.1970    
+Model 1: log(Price) ~ Acc060
+Model 2: log(Price) ~ Acc060 + Drive
+  Res.Df    RSS Df Sum of Sq      F       Pr(&gt;F)    
+1    108 9.5921                                     
+2    106 7.3242  2    2.2679 16.411 0.0000006179 ***
 ---
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 0.2618 on 104 degrees of freedom
-Multiple R-squared:  0.6469,    Adjusted R-squared:  0.6299 
-F-statistic: 38.11 on 5 and 104 DF,  p-value: &lt; 0.00000000000000022</code></pre>
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
+<p><strong><span class="math inline">\(R^2\)</span> for Model 1</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Houses, <span class="fu">aes</span>(<span class="at">x=</span>sqft_living, <span class="at">y=</span>price, <span class="at">color=</span>condition)) <span class="sc">+</span> <span class="fu">geom_point</span>()<span class="sc">+</span><span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch5_files/figure-html/unnamed-chunk-46-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(<span class="at">data=</span>Houses, price <span class="sc">~</span> condition <span class="sc">*</span> sqft_living))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Cars_logprice_acc060)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = price ~ condition * sqft_living, data = Houses)
-
-Residuals:
-     Min       1Q   Median       3Q      Max 
--1408.93  -217.83   -32.08   163.77  1858.38 
-
-Coefficients:
-                                 Estimate Std. Error t value
-(Intercept)                    -389.16787   77.15235  -5.044
-conditiongood                    -5.07017  163.36630  -0.031
-conditionvery_good              202.14373  292.59452   0.691
-sqft_living                       0.45644    0.02913  15.671
-conditiongood:sqft_living         0.05326    0.06607   0.806
-conditionvery_good:sqft_living    0.03863    0.12017   0.321
-                                           Pr(&gt;|t|)    
-(Intercept)                              0.00000104 ***
-conditiongood                                 0.975    
-conditionvery_good                            0.490    
-sqft_living                    &lt; 0.0000000000000002 ***
-conditiongood:sqft_living                     0.421    
-conditionvery_good:sqft_living                0.748    
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 414.3 on 194 degrees of freedom
-Multiple R-squared:  0.6367,    Adjusted R-squared:  0.6273 
-F-statistic: 67.99 on 5 and 194 DF,  p-value: &lt; 0.00000000000000022</code></pre>
+<pre><code>[1] 0.5248405</code></pre>
 </div>
 </div>
+<p><strong><span class="math inline">\(R^2\)</span> for Model 2</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Cars_logprice_acc060_drive)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6371841</code></pre>
+</div>
+</div>
+<p>The large F-statistic and small p-value suggest that Model 2 better explains variability in price than Model 1. Furthermore, Model 2 explains more than 10% more of the variability in price. Model 2 is preferred over Model 1.</p>
+<p>Now, we’ll compare Model 2 to Model 3.</p>
+<p><strong>ANOVA F-Test for Model 2 vs Model 3</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>M_Cars_logprice_acc060_drive <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Cars2020, <span class="fu">log</span>(Price) <span class="sc">~</span> Acc060 <span class="sc">+</span> Drive)</span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>M_Cars_logprice_acc060_drive_int <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Cars2020, <span class="fu">log</span>(Price) <span class="sc">~</span> Acc060 <span class="sc">+</span> Drive <span class="sc">+</span> Acc060<span class="sc">:</span>Drive)</span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(M_Cars_logprice_acc060_drive, M_Cars_logprice_acc060_drive_int)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Model 1: log(Price) ~ Acc060 + Drive
+Model 2: log(Price) ~ Acc060 + Drive + Acc060:Drive
+  Res.Df    RSS Df Sum of Sq      F Pr(&gt;F)
+1    106 7.3242                           
+2    104 7.1277  2   0.19649 1.4335 0.2431</code></pre>
+</div>
+</div>
+<p><strong><span class="math inline">\(R^2\)</span> for Model 1</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Cars_logprice_acc060_drive)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6371841</code></pre>
+</div>
+</div>
+<p><strong><span class="math inline">\(R^2\)</span> for Model 2</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Cars_logprice_acc060_drive_int)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6469176</code></pre>
+</div>
+</div>
+<p>The small F-statistic and large p-value provide no evidence that Model 3 is better than Model 2. Furthermore, <span class="math inline">\(R^2\)</span> only increases slightly when the interaction terms are added. There is not justification for choosing Model 3 over Model 2.</p>
+<p>Model 2 appears to be the best model.</p>
+<p>When using model comparison tests, it’s important to remember that p-values are only part of the picture. We shouldn’t make decisions based solely on the p-value. When sample size is large a model comparison test might yield a small p-value even if the difference between the models is not practically meaningful. It’s important to also consider graphical intuition, real-life knowledge about the situation, and change in <span class="math inline">\(R^2\)</span> when deciding whether to add an interaction term to a model.</p>
 </section>
-<section id="interaction-vs-correlation" class="level3" data-number="5.4.7">
-<h3 data-number="5.4.7" class="anchored" data-anchor-id="interaction-vs-correlation"><span class="header-section-number">5.4.7</span> Interaction vs Correlation</h3>
+<section id="interaction-vs-correlation" class="level3" data-number="5.4.5">
+<h3 data-number="5.4.5" class="anchored" data-anchor-id="interaction-vs-correlation"><span class="header-section-number">5.4.5</span> Interaction vs Correlation</h3>
 <p>It is easy to confuse the concept of interaction with that of correlation. These are, in fact, very different concepts.</p>
 <p>A correlation between two variables means that as one increases, the other is more likely to increase or decrease. We only use the word correlation to describe two quantitative variables, but we could discuss the similar notion of a relationship between categorical variables.</p>
 <p>An interaction between two explanatory variables means that the effect of one on the response depends on the other.</p>
@@ -1233,6 +1907,12 @@ F-statistic: 67.99 on 5 and 194 DF,  p-value: &lt; 0.00000000000000022</code></p
 <li><p>Suppose that the effect of additional bedrooms on price is different for houses with lots of living space than for houses with little living space. This would be an example of an interaction between living space and number of bedrooms.</p></li>
 <li><p>Suppose that audiences become more favorable to dramas as they get longer, but less favorable to comedies as they get longer. In this scenario, the effect of movie length on audience rating depends on the genre of the movie, indicating an interaction between length and genre.</p></li>
 </ol>
+</section>
+<section id="interaction-more-generally" class="level3" data-number="5.4.6">
+<h3 data-number="5.4.6" class="anchored" data-anchor-id="interaction-more-generally"><span class="header-section-number">5.4.6</span> Interaction More Generally</h3>
+<p>In this section, we’ve seen examples of models with interaction involving a categorical and quantitative explanatory variable. These are easiest to picture graphically. It is possibly, however, to have interactions between two quantitative variables, or two categorical ones.</p>
+<p>For example, suppose that for light weight cars those that can accelerate faster tended to be more expensive, but for heavier cars, there was no relationship between price and acceleration time. This would be an example of an interaction between weight and acceleration time, both quantitative variables.</p>
+<p>Or, suppose that sedans with all wheel drive were more expensive than sedans with only front wheel drive, but that trucks with all wheel drive were the same price as trucks with only front wheel drive. This would be an example of an interaction between type of car and drive type.</p>
 </section>
 </section>
 <section id="building-a-model-for-interpretation" class="level2" data-number="5.5">
@@ -1299,8 +1979,8 @@ F-statistic: 67.99 on 5 and 194 DF,  p-value: &lt; 0.00000000000000022</code></p
 <p>We’ll start by creating some graphs and tables to explore the data.</p>
 <p>We’ll look at a summary of the categorical variables in the dataset.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>Cars_Cat <span class="ot">&lt;-</span> <span class="fu">select_if</span>(Cars2020, is.factor)</span>
-<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Cars_Cat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>Cars_Cat <span class="ot">&lt;-</span> <span class="fu">select_if</span>(Cars2020, is.factor)</span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Cars_Cat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        Make         Model            Type    Drive          Size   
  Chevrolet: 8   3       :  1   Hatchback: 4   AWD:80   Large   :21  
@@ -1314,9 +1994,9 @@ F-statistic: 67.99 on 5 and 194 DF,  p-value: &lt; 0.00000000000000022</code></p
 </div>
 <p>We examine the correlation matrix and plot of quantitative variables.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>Cars_Num <span class="ot">&lt;-</span> <span class="fu">select_if</span>(Cars2020, is.numeric)</span>
-<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>C <span class="ot">&lt;-</span> <span class="fu">cor</span>(Cars_Num, <span class="at">use =</span> <span class="st">"pairwise.complete.obs"</span>)</span>
-<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(C,<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>Cars_Num <span class="ot">&lt;-</span> <span class="fu">select_if</span>(Cars2020, is.numeric)</span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>C <span class="ot">&lt;-</span> <span class="fu">cor</span>(Cars_Num, <span class="at">use =</span> <span class="st">"pairwise.complete.obs"</span>)</span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(C,<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          Price Acc060 CityMPG HwyMPG Seating Acc030 QtrMile Braking FuelCap
 Price      1.00  -0.66   -0.48  -0.47    0.16  -0.66   -0.67   -0.02    0.57
@@ -1355,12 +2035,12 @@ LogPrice    0.54  0.64   0.21      0.53  0.62   0.69     1.00</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
-<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>C <span class="ot">&lt;-</span> <span class="fu">corrplot</span>(C)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>C <span class="ot">&lt;-</span> <span class="fu">corrplot</span>(C)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch5_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid figure-img" width="1152"></p>
+<p><img src="Ch5_files/figure-html/unnamed-chunk-84-1.png" class="img-fluid figure-img" width="1152"></p>
 </figure>
 </div>
 </div>
@@ -1368,8 +2048,8 @@ LogPrice    0.54  0.64   0.21      0.53  0.62   0.69     1.00</code></pre>
 <p>We see there is strong correlation between many of the variables. We’ll want to include variables that are highly correlated with price in the model. At the same time, we’ll see that including too many explanatory variables, especially when they are highly correlated, makes the model hard to interpret. We’ll need to carefully select explanatory variables that help us answer the questions we’re most interested in.</p>
 <p>So far, we’ve explored the relationship between price and acceleration time. We found that modeling log(Price) as a function of acceleration time was more consistent with regression model assumptions than modeling price itself, so we’ll start there.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>M_Cars1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Cars2020, <span class="fu">log</span>(Price) <span class="sc">~</span> Acc060)</span>
-<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Cars1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>M_Cars1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Cars2020, <span class="fu">log</span>(Price) <span class="sc">~</span> Acc060)</span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Cars1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1398,17 +2078,17 @@ F-statistic: 119.3 on 1 and 108 DF,  p-value: &lt; 0.00000000000000022</code></p
 <h3 data-number="5.5.2" class="anchored" data-anchor-id="simpsons-paradox"><span class="header-section-number">5.5.2</span> Simpson’s Paradox</h3>
 <p>Let’s next investigate the effect of a car’s gas mileage on price. There are two gas mileage variables in the dataset, CityMPG and HwyMPG. We’ll use HwyMPG, which is the number of miles the car can go on one mile of gas when driving on the highway. We’ll also account for the weight of the car in lbs. The plot below shows the relationships between each of these variables with log(Price), as well as the relationship between Weight and Hwy MPG.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>P1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Cars2020, <span class="fu">aes</span>(<span class="at">x=</span>HwyMPG, <span class="at">y=</span><span class="fu">log</span>(Price))) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>() </span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>P2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Cars2020, <span class="fu">aes</span>(<span class="at">x=</span>HwyMPG, <span class="at">y=</span><span class="fu">log</span>(Price))) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>() </span>
-<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>P3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Cars2020, <span class="fu">aes</span>(<span class="at">x=</span>Weight, <span class="at">y=</span>HwyMPG)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>() </span>
-<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(P1, P2, P3, <span class="at">ncol=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>P1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Cars2020, <span class="fu">aes</span>(<span class="at">x=</span>HwyMPG, <span class="at">y=</span><span class="fu">log</span>(Price))) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>() </span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>P2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Cars2020, <span class="fu">aes</span>(<span class="at">x=</span>HwyMPG, <span class="at">y=</span><span class="fu">log</span>(Price))) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>() </span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a>P3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Cars2020, <span class="fu">aes</span>(<span class="at">x=</span>Weight, <span class="at">y=</span>HwyMPG)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>() </span>
+<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-7"><a href="#cb88-7" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(P1, P2, P3, <span class="at">ncol=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch5_files/figure-html/unnamed-chunk-52-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Ch5_files/figure-html/unnamed-chunk-86-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1416,8 +2096,8 @@ F-statistic: 119.3 on 1 and 108 DF,  p-value: &lt; 0.00000000000000022</code></p
 <p>We see that both highway MPG and weight are negatively associated with price, and that there is also a negative relationship between weight and highway MPG.</p>
 <p>Let’s add highway gas mileage to our model, along with acceleration time.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>M_Cars2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Cars2020, <span class="fu">log</span>(Price) <span class="sc">~</span> Acc060 <span class="sc">+</span> HwyMPG)</span>
-<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Cars2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>M_Cars2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Cars2020, <span class="fu">log</span>(Price) <span class="sc">~</span> Acc060 <span class="sc">+</span> HwyMPG)</span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Cars2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1448,16 +2128,16 @@ F-statistic: 81.59 on 2 and 107 DF,  p-value: &lt; 0.00000000000000022</code></p
 Medium = between 3,500 and 4,500 lbs.<br>
 Heavy = heavier than 4,500 lbs.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>Cars2020 <span class="ot">&lt;-</span> <span class="fu">mutate</span>(Cars2020, <span class="at">Weight_Group =</span> <span class="fu">cut</span>(Weight, </span>
-<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">3500</span>, <span class="dv">4500</span>, <span class="dv">6500</span>), </span>
-<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"Light Weight"</span>, <span class="st">"Medium Weight"</span>, <span class="st">"Heavy Weight"</span>)))</span>
-<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Cars2020, <span class="fu">aes</span>( <span class="at">y=</span>Price, <span class="at">x=</span>HwyMPG )) <span class="sc">+</span><span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="at">facets =</span> <span class="sc">~</span>Weight_Group) <span class="sc">+</span></span>
-<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a><span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Highway MPG"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>Cars2020 <span class="ot">&lt;-</span> <span class="fu">mutate</span>(Cars2020, <span class="at">Weight_Group =</span> <span class="fu">cut</span>(Weight, </span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">3500</span>, <span class="dv">4500</span>, <span class="dv">6500</span>), </span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"Light Weight"</span>, <span class="st">"Medium Weight"</span>, <span class="st">"Heavy Weight"</span>)))</span>
+<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-5"><a href="#cb91-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Cars2020, <span class="fu">aes</span>( <span class="at">y=</span>Price, <span class="at">x=</span>HwyMPG )) <span class="sc">+</span><span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="at">facets =</span> <span class="sc">~</span>Weight_Group) <span class="sc">+</span></span>
+<span id="cb91-6"><a href="#cb91-6" aria-hidden="true" tabindex="-1"></a><span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Highway MPG"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch5_files/figure-html/unnamed-chunk-54-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Ch5_files/figure-html/unnamed-chunk-88-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1465,8 +2145,8 @@ Heavy = heavier than 4,500 lbs.</p>
 <p>Once we compare cars of similar weights, we see that there is little to no relationship between highway MPG and price. The negative trend for low weight cars is due primarily to one outlier, while the other two weights show slightly positive to no trend. This is different than the strong negative relationship we saw in the previous graph.</p>
 <p>Let’s add weight to the model and see what happens to to estimate associated with highway MPG.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>M_Cars3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Cars2020, <span class="fu">log</span>(Price) <span class="sc">~</span> Acc060 <span class="sc">+</span> HwyMPG <span class="sc">+</span> Weight)</span>
-<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Cars3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a>M_Cars3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Cars2020, <span class="fu">log</span>(Price) <span class="sc">~</span> Acc060 <span class="sc">+</span> HwyMPG <span class="sc">+</span> Weight)</span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Cars3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1496,8 +2176,8 @@ F-statistic: 78.89 on 3 and 106 DF,  p-value: &lt; 0.00000000000000022</code></p
 <p>Our model with weight and highway gas mileage, in addition to acceleration time, now explains about 69.0673511 percent of the variability in log(Price), up from 52.4840462 for the model with only acceleration time.</p>
 <p>We saw in the preceding graph, that the direction of the relationship between price and gas mileage was negative for light weight cars and positive for medium weight ones, suggesting a possible interaction between weight and gas mileage. So, we might consider adding an interaction term to the model. The <code>:</code> command adds just the interaction term.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>M_Cars4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Cars2020, <span class="fu">log</span>(Price) <span class="sc">~</span> Acc060 <span class="sc">+</span> HwyMPG <span class="sc">+</span> Weight <span class="sc">+</span> HwyMPG<span class="sc">:</span>Weight)</span>
-<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Cars4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>M_Cars4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Cars2020, <span class="fu">log</span>(Price) <span class="sc">~</span> Acc060 <span class="sc">+</span> HwyMPG <span class="sc">+</span> Weight <span class="sc">+</span> HwyMPG<span class="sc">:</span>Weight)</span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Cars4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1529,8 +2209,8 @@ F-statistic: 60.46 on 4 and 105 DF,  p-value: &lt; 0.00000000000000022</code></p
 <h3 data-number="5.5.3" class="anchored" data-anchor-id="multicollinearity"><span class="header-section-number">5.5.3</span> Multicollinearity</h3>
 <p>Let’s continue to add variables to our model that might help us learn about factors affecting the price of a car. Another variable in the dataset was the amount of time it takes a car to drive a quarter mile. We’ll add that variable to the model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>M_Cars5 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Cars2020, <span class="fu">log</span>(Price) <span class="sc">~</span> Acc060 <span class="sc">+</span> HwyMPG <span class="sc">+</span> Weight <span class="sc">+</span> QtrMile)</span>
-<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Cars5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a>M_Cars5 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Cars2020, <span class="fu">log</span>(Price) <span class="sc">~</span> Acc060 <span class="sc">+</span> HwyMPG <span class="sc">+</span> Weight <span class="sc">+</span> QtrMile)</span>
+<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Cars5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1559,7 +2239,7 @@ F-statistic: 62.07 on 4 and 105 DF,  p-value: &lt; 0.00000000000000022</code></p
 <p>The coefficient estimate for QtrMile time is negative , which is not surprising. We would expect cars that take longer to drive a quarter mile to be less expensive. But, look at what happened to the Acc060 variable. The estimate now is very slightly negative (a change from Model M_Cars4), but the most striking change is in the standard error column. The standard error associated with the Acc060 variable increased from 0.017 to 0.072, (more than 4 times larger). This has a big impact on the t-statistic, p-value, and confidence intervals associated with Acc060. Since standard errors are used to calculate confidence intervals, it will impact these as well.</p>
 <p><strong>Confidence Interval for Acceleration Time - Model without Quarter Mile Time</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">confint</span>(M_Cars3, <span class="at">level=</span><span class="fl">0.95</span>, <span class="at">parm=</span><span class="st">"Acc060"</span>)) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">confint</span>(M_Cars3, <span class="at">level=</span><span class="fl">0.95</span>, <span class="at">parm=</span><span class="st">"Acc060"</span>)) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       2.5 % 97.5 %
 Acc060  0.84   0.89</code></pre>
@@ -1568,7 +2248,7 @@ Acc060  0.84   0.89</code></pre>
 <p>We are 95% confident that a 1-second increase in acceleration time is associated with an average price decrease between 11 and 16 percent, assuming weight and highway gas mileage are held constant.</p>
 <p><strong>Confidence Interval for Acceleration Time - Model with Quarter Mile Time</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">confint</span>(M_Cars5, <span class="at">level=</span><span class="fl">0.95</span>, <span class="at">parm=</span><span class="st">"Acc060"</span>)) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">confint</span>(M_Cars5, <span class="at">level=</span><span class="fl">0.95</span>, <span class="at">parm=</span><span class="st">"Acc060"</span>)) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       2.5 % 97.5 %
 Acc060  0.87   1.15</code></pre>
@@ -1582,10 +2262,10 @@ Acc060  0.87   1.15</code></pre>
 <p>Suppose we want to predict the price of a car that can accelerate from 0 to 60 mph in 9.5 seconds, weighs 4000 lbs, gets 25 mpg on the highway, and completes a quarter mile in 17.5 seconds.</p>
 <p><strong>Prediction interval based on Model without Quarter Mile Time:</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">predict</span>(M_Cars3, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">Acc060=</span><span class="fl">9.5</span>, </span>
-<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">Weight =</span> <span class="dv">4000</span>, <span class="at">HwyMPG =</span> <span class="dv">25</span>, </span>
-<span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">QtrMile=</span><span class="fl">17.3</span>), <span class="at">level=</span><span class="fl">0.95</span>, </span>
-<span id="cb82-4"><a href="#cb82-4" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">interval=</span><span class="st">"prediction"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">predict</span>(M_Cars3, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">Acc060=</span><span class="fl">9.5</span>, </span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">Weight =</span> <span class="dv">4000</span>, <span class="at">HwyMPG =</span> <span class="dv">25</span>, </span>
+<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">QtrMile=</span><span class="fl">17.3</span>), <span class="at">level=</span><span class="fl">0.95</span>, </span>
+<span id="cb102-4"><a href="#cb102-4" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">interval=</span><span class="st">"prediction"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       fit      lwr      upr
 1 24.33366 14.79947 40.01001</code></pre>
@@ -1593,11 +2273,11 @@ Acc060  0.87   1.15</code></pre>
 </div>
 <p><strong>Prediction interval based on Model with Quarter Mile Time:</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">predict</span>(M_Cars5, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">Acc060=</span><span class="fl">9.5</span>, </span>
-<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">Weight =</span> <span class="dv">4000</span>, </span>
-<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">HwyMPG =</span> <span class="dv">25</span>, </span>
-<span id="cb84-4"><a href="#cb84-4" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">QtrMile=</span><span class="fl">17.3</span>), </span>
-<span id="cb84-5"><a href="#cb84-5" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">level=</span><span class="fl">0.95</span>, <span class="at">interval=</span><span class="st">"prediction"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">predict</span>(M_Cars5, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">Acc060=</span><span class="fl">9.5</span>, </span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">Weight =</span> <span class="dv">4000</span>, </span>
+<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">HwyMPG =</span> <span class="dv">25</span>, </span>
+<span id="cb104-4"><a href="#cb104-4" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">QtrMile=</span><span class="fl">17.3</span>), </span>
+<span id="cb104-5"><a href="#cb104-5" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">level=</span><span class="fl">0.95</span>, <span class="at">interval=</span><span class="st">"prediction"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       fit      lwr      upr
 1 24.47924 14.99922 39.95096</code></pre>
@@ -1609,21 +2289,21 @@ Acc060  0.87   1.15</code></pre>
 <h3 data-number="5.5.4" class="anchored" data-anchor-id="model-comparison-tests"><span class="header-section-number">5.5.4</span> Model Comparison Tests</h3>
 <p>Next, we’ll consider adding categorical explanatory variables Size, and Drive. The plot shows the relationship between each of these variables and price.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>P1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Cars2020, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">log</span>(Price), <span class="at">y=</span>Size)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Price by Size"</span>)</span>
-<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>P2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Cars2020, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">log</span>(Price), <span class="at">y=</span>Drive)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Price by Drive"</span>)</span>
-<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(P1, P2, <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>P1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Cars2020, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">log</span>(Price), <span class="at">y=</span>Size)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Price by Size"</span>)</span>
+<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>P2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Cars2020, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">log</span>(Price), <span class="at">y=</span>Drive)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Price by Drive"</span>)</span>
+<span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(P1, P2, <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch5_files/figure-html/unnamed-chunk-62-1.png" class="img-fluid figure-img" width="960"></p>
+<p><img src="Ch5_files/figure-html/unnamed-chunk-96-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>We’ve already included information about size, through the weight variable, so we won’t <code>Size</code> it too. Let’s add drive type to the model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>M_Cars6 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Cars2020, <span class="fu">log</span>(Price) <span class="sc">~</span> Acc060 <span class="sc">+</span> HwyMPG <span class="sc">+</span> Weight <span class="sc">+</span> Drive)</span>
-<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Cars6)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a>M_Cars6 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Cars2020, <span class="fu">log</span>(Price) <span class="sc">~</span> Acc060 <span class="sc">+</span> HwyMPG <span class="sc">+</span> Weight <span class="sc">+</span> Drive)</span>
+<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Cars6)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1652,7 +2332,7 @@ F-statistic: 53.89 on 5 and 104 DF,  p-value: &lt; 0.00000000000000022</code></p
 <p>The baseline category for drive is AWD (all wheel drive). We see that FWD (front wheel) and RWD (rear wheel) both have negative estimates, indicating cars of these drive types tend to be less expensive than all wheel drive cars. Because the sample size for RWD cars is very small (only 5 cars), the difference between rear and all wheel drive cars is not statistically discernible, but the difference between FWD and AWD (which is roughly the same size), is statistically discernible.</p>
 <p>We can use an ANOVA F-test to see if there is evidence of a relationship between price and drive type overall. We’ll compare the model that includes acceleration time, weight, and gas mileage, but not drive type (M_Cars3) to a model that includes these variables plus drive type (M_Cars6) .</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(M_Cars3, M_Cars6)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(M_Cars3, M_Cars6)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -1674,11 +2354,11 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>We’ll use residuals to check the model assumptions.</p>
 <p><strong>Residual by Predicted Plot, Histogram of Residuals, and Normal Quantile-Quantile Plot</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">resid_panel</span>(M_Cars6, <span class="at">smoother=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="fu">resid_panel</span>(M_Cars6, <span class="at">smoother=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch5_files/figure-html/unnamed-chunk-65-1.png" class="img-fluid figure-img" width="864"></p>
+<p><img src="Ch5_files/figure-html/unnamed-chunk-99-1.png" class="img-fluid figure-img" width="864"></p>
 </figure>
 </div>
 </div>
@@ -1686,11 +2366,11 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>There is slight concern about constant variance, but otherwise, the model assumptions look good.</p>
 <p><strong>Residual by Predictor Plots</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">resid_xpanel</span>(M_Cars6, <span class="at">smoother=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="fu">resid_xpanel</span>(M_Cars6, <span class="at">smoother=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch5_files/figure-html/unnamed-chunk-66-1.png" class="img-fluid figure-img" width="864"></p>
+<p><img src="Ch5_files/figure-html/unnamed-chunk-100-1.png" class="img-fluid figure-img" width="864"></p>
 </figure>
 </div>
 </div>
@@ -1701,7 +2381,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <h3 data-number="5.5.6" class="anchored" data-anchor-id="interpretations"><span class="header-section-number">5.5.6</span> Interpretations</h3>
 <p>The model coefficients are shown below.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>M_Cars6<span class="sc">$</span>coefficients <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a>M_Cars6<span class="sc">$</span>coefficients <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept)      Acc060      HwyMPG      Weight    DriveFWD    DriveRWD 
       3.436      -0.147       0.009       0.000      -0.197      -0.203 </code></pre>
@@ -1709,7 +2389,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <p>Since we used a log transformation, we should interpret <span class="math inline">\(e^{b_j}\)</span> rather than <span class="math inline">\(b_j\)</span> itself.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(M_Cars6<span class="sc">$</span>coefficients) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(M_Cars6<span class="sc">$</span>coefficients) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept)      Acc060      HwyMPG      Weight    DriveFWD    DriveRWD 
     31.0620      0.8636      1.0090      1.0002      0.8209      0.8164 </code></pre>
@@ -1727,11 +2407,11 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <h3 data-number="5.5.7" class="anchored" data-anchor-id="predictions"><span class="header-section-number">5.5.7</span> Predictions</h3>
 <p>We’ll use our model to estimate the average price with the following characteristics, and also to predict the price of a new car with the given characteristics.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>newcar <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Acc060 =</span> <span class="dv">8</span>, <span class="at">Weight=</span><span class="dv">3000</span>, <span class="at">HwyMPG =</span> <span class="dv">30</span>, <span class="at">Drive =</span> <span class="st">"AWD"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a>newcar <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Acc060 =</span> <span class="dv">8</span>, <span class="at">Weight=</span><span class="dv">3000</span>, <span class="at">HwyMPG =</span> <span class="dv">30</span>, <span class="at">Drive =</span> <span class="st">"AWD"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This is an interval for log(Price).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(M_Cars6, <span class="at">newdata=</span>newcar, <span class="at">interval=</span><span class="st">"confidence"</span>, <span class="at">level=</span><span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(M_Cars6, <span class="at">newdata=</span>newcar, <span class="at">interval=</span><span class="st">"confidence"</span>, <span class="at">level=</span><span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       fit      lwr      upr
 1 3.234658 3.100603 3.368712</code></pre>
@@ -1739,7 +2419,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <p>Exponentiating, we obtain</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">predict</span>(M_Cars6, <span class="at">newdata=</span>newcar, <span class="at">interval=</span><span class="st">"confidence"</span>, <span class="at">level=</span><span class="fl">0.95</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">predict</span>(M_Cars6, <span class="at">newdata=</span>newcar, <span class="at">interval=</span><span class="st">"confidence"</span>, <span class="at">level=</span><span class="fl">0.95</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       fit      lwr     upr
 1 25.39768 22.21135 29.0411</code></pre>
@@ -1748,7 +2428,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>We are 95% confident that the average price of all new 2020 cars that weigh 3000 lbs, take 8 seconds to accelerate from 0 to 60 mph, weigh 3,000 lbs, and have all wheel drive will cost between 22 and 29 thousand dollars.</p>
 <p>Next, we calculate a prediction interval for an individual car with these characteristics.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">predict</span>(M_Cars6, <span class="at">newdata=</span>newcar, <span class="at">interval=</span><span class="st">"prediction"</span>, <span class="at">level=</span><span class="fl">0.95</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">predict</span>(M_Cars6, <span class="at">newdata=</span>newcar, <span class="at">interval=</span><span class="st">"prediction"</span>, <span class="at">level=</span><span class="fl">0.95</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       fit      lwr      upr
 1 25.39768 15.71348 41.05023</code></pre>
@@ -2208,6 +2888,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./Ch6.html" class="pagination-link" aria-label="Logistic Regression">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
