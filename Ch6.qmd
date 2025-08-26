@@ -56,7 +56,8 @@ summary(Default)
 The plot displays each person's credit card balance on the x-axis, and whether or not they defaulted (a 0 or 1) on the y-axis.
 
 ```{r, fig.height=4, fig.width=10, message=FALSE, warning=FALSE}
-ggplot(data=Default, aes(y=default, x=balance)) + geom_point(alpha=0.2) 
+ggplot(data=Default, aes(y=default, x=balance)) + geom_jitter(alpha=0.2, height=0.05) + 
+  theme_bw()
 ```
 
 We see that defaults are rare when the balance is less than \$1,000, and more common for balances above \$2,000.
@@ -65,11 +66,12 @@ We'll first try fitting a linear regression model to the data to try to estimate
 
 ```{r}
 #convert default from yes/no to 0/1
-Default$default <- as.numeric(Default$default=="Yes") 
+Default <- Default |> mutate(default = as.numeric(default=="Yes")) 
 ```
 
 ```{r, fig.height=3, fig.width=8, message=FALSE, warning=FALSE}
-ggplot(data=Default, aes(y=default, x= balance)) + geom_point(alpha=0.2)  + stat_smooth(method="lm", se=FALSE)
+ggplot(data=Default, aes(y=default, x= balance)) + geom_jitter(alpha=0.2, height=0.05)  + 
+  stat_smooth(method="lm", se=FALSE)  + theme_bw()
 ```
 
 There are a lot of problems with this model!
@@ -78,12 +80,10 @@ It allows the estimated probability of of default to be negative. It also assume
 
 A sigmoidal curve, like the one below, seems like a better model for default probabilities. This curve stays between 0 and 1, and its curved nature seems like a better fit for the data.
 
-```{r, fig.height=3, fig.width=8, message=FALSE, warning=FALSE}
-ggplot(data=Default, aes(y=default, x= balance)) + geom_point(alpha=0.2) + 
-  stat_smooth(method="glm", se=FALSE, method.args = list(family=binomial)) 
-```
 
 ### Logistic Regression Model
+
+
 
 A logistic regression model uses a sigmoidal curve like the one we saw to model default probabilities, using balance as an explanatory variable.
 
@@ -97,7 +97,7 @@ whose graph is shown below. This function is called an **inverse logit** functio
 x <- seq(from=-5, 5, by=0.01)
 y <- exp(x)/ (1+exp(x))
 df <- data.frame(x, y)
-gf_line(data=df, y~x) + xlab("x") + ylab("y")
+gf_line(data=df, y~x) + xlab("x") + ylab("y") + theme_bw()
 ```
 
 Starting with our linear model $E(Y_i) = \beta_0+\beta_1x_{i1}$, we need to transform $\beta_0+\beta_1x_{i1}$ into the interval (0,1).
@@ -112,7 +112,7 @@ Starting with our linear model $E(Y_i) = \beta_0+\beta_1x_{i1}$, we need to tran
 x <- seq(from=-5, 5, by=0.01)
 y <- exp(x)/ (1+exp(x))
 df <- data.frame(x, y)
-gf_line(data=df, y~x) + xlab(expression(beta[0]+beta[1]*x[i])) + ylab(expression(pi[i]))
+gf_line(data=df, y~x) + xlab(expression(beta[0]+beta[1]*x[i])) + ylab(expression(pi[i])) + theme_bw()
 ```
 
 The **logistic regression model** assumes that:\
@@ -125,9 +125,11 @@ Instead of assuming that the expected response is a linear function of the expla
 We fit the logistic curve to the credit card data.
 
 ```{r, fig.height=3, fig.width=8, message=FALSE, warning=FALSE}
-ggplot(data=Default, aes(y=default, x= balance)) + geom_point(alpha=0.2) + 
-  stat_smooth(method="glm", se=FALSE, method.args = list(family=binomial)) 
+ggplot(data=Default, aes(y=default, x= balance)) + geom_jitter(alpha=0.2, height=0.05) + 
+  stat_smooth(method="glm", se=FALSE, method.args = list(family=binomial)) +
+  theme_bw()
 ```
+
 
 To fit the logistic regression model in R, we use the function `glm`, instead of `lm`. The function is specified the same way as before, and we add `family = binomial(link = "logit")`.
 
@@ -162,13 +164,12 @@ predict(CCDefault_M, newdata=data.frame((balance=1500)), type="response")
 predict(CCDefault_M, newdata=data.frame((balance=2000)), type="response")
 ```
 
-#### Where do the b's come from?
+#### Where do the b's come from? {.unnumbered}
 
 Recall that for a quantitative response variable, the values of $b_1, b_2, \ldots, b_p$ are chosen in a way that minimizes $\displaystyle\sum_{i=1}^n \left(y_i-(\beta_0+\beta_1x_{i1}+\ldots+\beta_px_{ip})^2\right)$. Least squares does not work well in this generalized setting. Instead, the b's are calculated using a more advanced technique, known as **maximum likelihood estimation**. We won't say anything more about that topic here, but it is a prominent technique, widely used in statistic modeling. It is explored in more detail in advanced statistics courses, such as STAT 445:Mathematical Statistics.
 
 \newpage
 
-## Interpreting Coefficients in Logistic Regression
 
 ### Odds and Odds Ratio
 
@@ -180,11 +181,11 @@ Examples: 1. The odds of a fair coin landing heads are $\frac{0.5}{1-0.5}=1$, so
 
 In the credit card example, the odds of default are:
 
--   For a \$1,000 balance - odds of default are $\frac{0.005752145}{1-0.005752145} \approx 1:173.$
+-   For a \$1,000 balance - odds of default are $\frac{0.00575}{1-0.00575} \approx 1:173.$
 
--   For a \$1,500 balance - odds of default are $\frac{0.08294762 }{1-0.08294762 } \approx 1:11.$
+-   For a \$1,500 balance - odds of default are $\frac{0.0829}{1-0.0829 } \approx 1:11.$
 
--   For a \$2,000 balance - odds of default are $\frac{0.5857694}{1-0.5857694} \approx 1.414:1.$
+-   For a \$2,000 balance - odds of default are $\frac{0.586}{1-0.586} \approx 1.414:1.$
 
 The quantity $\frac{\frac{\pi_i}{1-\pi_i}}{\frac{\pi_j}{1-\pi_j}}$ is called the **odds ratio** and represents the odds ratio of a default for user $i$, compared to user $j$.
 
@@ -196,7 +197,7 @@ The odds ratio is $\frac{\frac{1}{173}}{\frac{1.414}{1}}\approx 1:244.$
 
 The odds of a default are about 244 times larger for a \$2,000 payment than a \$1,000 payment.
 
-### Interpretation of $\beta_1$
+### Interpretation and of $\beta_1$
 
 Consider the odds ratio for a case $j$ with explanatory variable $x + 1$, compared to case $i$ with explanatory variable $x$.
 
@@ -254,20 +255,20 @@ summary(CCDefault_M2)
 The following graph gives an illustration of the model.
 
 ```{r}
-ggplot(data=Default, aes(y=default, x= balance, color=student)) + geom_point(alpha=0.2) + stat_smooth(method="glm", se=FALSE, method.args = list(family=binomial)) 
+ggplot(data=Default, aes(y=default, x= balance, color=student)) + geom_point(alpha=0.2) + stat_smooth(method="glm", se=FALSE, method.args = list(family=binomial)) + theme_bw()
 ```
 
 The regression equation is:
 
 $$
-P(\text{Default}) = \hat{\pi}\_i = \frac{e^{-10.75+0.005738\times\text{balance}-0.7149\times\text{student}_i}}{1+e^{-10.75+0.005738\times\text{balance}-0.7149\times\text{student}_i}}
+P(\text{Default}) = \hat{\pi}_i = \frac{e^{-10.75+0.005738\times\text{balance}-0.71\times\text{student}_i}}{1+e^{-10.75+0.0057\times\text{balance}-0.71\times\text{student}_i}}
 $$
 
--   For each 1 dollar increase in balance, the odds of default are estimated to multiply by a factor $e^{0.005738}\approx 1.00575$, assuming whether or not the person is a student is held constant. Thus, the estimated odds of default increase by about 0.5%, for each 1-dollar increase in balance..
+-   For each 1 dollar increase in balance, the odds of default are estimated to multiply by a factor $e^{0.0057}\approx 1.00575$, assuming whether or not the person is a student is held constant. Thus, the estimated odds of default increase by about 0.5%, for each 1-dollar increase in balance..
 
--   For every \$100 increase in balance, the odds of default are estimated to multiply by $e^{0.005738\times100}\approx 1.775$, assuming whether or not the person is a student is held constant. Thus, the estimated odds of default increase by about 77.5%.
+-   For every \$100 increase in balance, the odds of default are estimated to multiply by $e^{0.0057\times100}\approx 1.775$, assuming whether or not the person is a student is held constant. Thus, the estimated odds of default increase by about 77.5%.
 
--   The odds of default for students are estimated to be $e^{-0.7149} \approx 0.49$ as high for students as non-students, assuming balance amount is held constant.
+-   The odds of default for students are estimated to be $e^{-0.71} \approx 0.49$ as high for students as non-students, assuming balance amount is held constant.
 
 **Hypothesis Tests in Multiple Logistic Regression Model**
 
@@ -289,7 +290,7 @@ summary(CCDefault_M_Int)
 -   The regression equation is:
 
 $$
-P(\text{Default}) = \hat{\pi}\_i = \frac{e^{-10.87+0.0058\times\text{balance}-0.35\times\text{I}_{\text{student}}-0.0002\times\text{balance}\times{\text{I}_{\text{student}}}}}{1+e^{-10.87+0.0058\times\text{balance}-0.35\times\text{I}_{\text{student}}-0.0002\times\text{balance}\times{\text{I}_{\text{student}}}}}
+P(\text{Default}) = \hat{\pi}\_i = \frac{e^{-10.87+0.0058\times\text{balance}_i-0.35\times\text{student}_i-0.0002\times\text{balance}_i\times{\text{student}_i}}}{1+e^{-10.87+0.0058\times\text{balance}_i-0.35\times\text{student}_i-0.0002\times\text{balance}_i\times{\text{student}_i}}}
 $$
 
 **Equation for Students**
@@ -327,5 +328,5 @@ Assuming a person is a student, for every \$100 increase in balance, the odds of
 -   For models with interaction, we can only interpret $\beta_j$ when the values of all other explanatory variables are given (since the effect of $x_j$ depends on the other variables.)
 
 ```{r, echo=FALSE}
-save.image(file = "Environment.RData")
+#save.image(file = "Environment.RData")
 ```

@@ -226,17 +226,14 @@ window.Quarto = {
   <li><a href="#modeling-binary-response" id="toc-modeling-binary-response" class="nav-link" data-scroll-target="#modeling-binary-response"><span class="header-section-number">6.1.1</span> Modeling Binary Response</a></li>
   <li><a href="#credit-card-dataset" id="toc-credit-card-dataset" class="nav-link" data-scroll-target="#credit-card-dataset"><span class="header-section-number">6.1.2</span> Credit Card Dataset</a></li>
   <li><a href="#logistic-regression-model" id="toc-logistic-regression-model" class="nav-link" data-scroll-target="#logistic-regression-model"><span class="header-section-number">6.1.3</span> Logistic Regression Model</a></li>
+  <li><a href="#odds-and-odds-ratio" id="toc-odds-and-odds-ratio" class="nav-link" data-scroll-target="#odds-and-odds-ratio"><span class="header-section-number">6.1.4</span> Odds and Odds Ratio</a></li>
+  <li><a href="#interpretation-and-of-beta_1" id="toc-interpretation-and-of-beta_1" class="nav-link" data-scroll-target="#interpretation-and-of-beta_1"><span class="header-section-number">6.1.5</span> Interpretation and of <span class="math inline">\(\beta_1\)</span></a></li>
   </ul></li>
-  <li><a href="#interpreting-coefficients-in-logistic-regression" id="toc-interpreting-coefficients-in-logistic-regression" class="nav-link" data-scroll-target="#interpreting-coefficients-in-logistic-regression"><span class="header-section-number">6.2</span> Interpreting Coefficients in Logistic Regression</a>
+  <li><a href="#multiple-logistic-regression" id="toc-multiple-logistic-regression" class="nav-link" data-scroll-target="#multiple-logistic-regression"><span class="header-section-number">6.2</span> Multiple Logistic Regression</a>
   <ul class="collapse">
-  <li><a href="#odds-and-odds-ratio" id="toc-odds-and-odds-ratio" class="nav-link" data-scroll-target="#odds-and-odds-ratio"><span class="header-section-number">6.2.1</span> Odds and Odds Ratio</a></li>
-  <li><a href="#interpretation-of-beta_1" id="toc-interpretation-of-beta_1" class="nav-link" data-scroll-target="#interpretation-of-beta_1"><span class="header-section-number">6.2.2</span> Interpretation of <span class="math inline">\(\beta_1\)</span></a></li>
-  </ul></li>
-  <li><a href="#multiple-logistic-regression" id="toc-multiple-logistic-regression" class="nav-link" data-scroll-target="#multiple-logistic-regression"><span class="header-section-number">6.3</span> Multiple Logistic Regression</a>
-  <ul class="collapse">
-  <li><a href="#logistic-regression-models-with-multiple-explanatory-variables" id="toc-logistic-regression-models-with-multiple-explanatory-variables" class="nav-link" data-scroll-target="#logistic-regression-models-with-multiple-explanatory-variables"><span class="header-section-number">6.3.1</span> Logistic Regression Models with Multiple Explanatory Variables</a></li>
-  <li><a href="#multiple-logistic-regression-model-with-interaction" id="toc-multiple-logistic-regression-model-with-interaction" class="nav-link" data-scroll-target="#multiple-logistic-regression-model-with-interaction"><span class="header-section-number">6.3.2</span> Multiple Logistic Regression Model with Interaction</a></li>
-  <li><a href="#logistic-regression-key-points" id="toc-logistic-regression-key-points" class="nav-link" data-scroll-target="#logistic-regression-key-points"><span class="header-section-number">6.3.3</span> Logistic Regression Key Points</a></li>
+  <li><a href="#logistic-regression-models-with-multiple-explanatory-variables" id="toc-logistic-regression-models-with-multiple-explanatory-variables" class="nav-link" data-scroll-target="#logistic-regression-models-with-multiple-explanatory-variables"><span class="header-section-number">6.2.1</span> Logistic Regression Models with Multiple Explanatory Variables</a></li>
+  <li><a href="#multiple-logistic-regression-model-with-interaction" id="toc-multiple-logistic-regression-model-with-interaction" class="nav-link" data-scroll-target="#multiple-logistic-regression-model-with-interaction"><span class="header-section-number">6.2.2</span> Multiple Logistic Regression Model with Interaction</a></li>
+  <li><a href="#logistic-regression-key-points" id="toc-logistic-regression-key-points" class="nav-link" data-scroll-target="#logistic-regression-key-points"><span class="header-section-number">6.2.3</span> Logistic Regression Key Points</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -300,7 +297,8 @@ J. Perform logistic regression in R.</p>
 <p><strong>Default and Balance</strong></p>
 <p>The plot displays each person’s credit card balance on the x-axis, and whether or not they defaulted (a 0 or 1) on the y-axis.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Default, <span class="fu">aes</span>(<span class="at">y=</span>default, <span class="at">x=</span>balance)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.2</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Default, <span class="fu">aes</span>(<span class="at">y=</span>default, <span class="at">x=</span>balance)) <span class="sc">+</span> <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.2</span>, <span class="at">height=</span><span class="fl">0.05</span>) <span class="sc">+</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -313,10 +311,11 @@ J. Perform logistic regression in R.</p>
 <p>We’ll first try fitting a linear regression model to the data to try to estimate the probability of a person defaulting on a loan, using the size of their balance as the explanatory variable.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#convert default from yes/no to 0/1</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Default<span class="sc">$</span>default <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(Default<span class="sc">$</span>default<span class="sc">==</span><span class="st">"Yes"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Default <span class="ot">&lt;-</span> Default <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">default =</span> <span class="fu">as.numeric</span>(default<span class="sc">==</span><span class="st">"Yes"</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Default, <span class="fu">aes</span>(<span class="at">y=</span>default, <span class="at">x=</span> balance)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.2</span>)  <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Default, <span class="fu">aes</span>(<span class="at">y=</span>default, <span class="at">x=</span> balance)) <span class="sc">+</span> <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.2</span>, <span class="at">height=</span><span class="fl">0.05</span>)  <span class="sc">+</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>)  <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -328,17 +327,6 @@ J. Perform logistic regression in R.</p>
 <p>There are a lot of problems with this model!</p>
 <p>It allows the estimated probability of of default to be negative. It also assumes a linear trend that doesn’t seem to fit the data very well.</p>
 <p>A sigmoidal curve, like the one below, seems like a better model for default probabilities. This curve stays between 0 and 1, and its curved nature seems like a better fit for the data.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Default, <span class="fu">aes</span>(<span class="at">y=</span>default, <span class="at">x=</span> balance)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span> </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"glm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>, <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">family=</span>binomial)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Ch6_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="768"></p>
-</figure>
-</div>
-</div>
-</div>
 </section>
 <section id="logistic-regression-model" class="level3" data-number="6.1.3">
 <h3 data-number="6.1.3" class="anchored" data-anchor-id="logistic-regression-model"><span class="header-section-number">6.1.3</span> Logistic Regression Model</h3>
@@ -350,7 +338,7 @@ J. Perform logistic regression in R.</p>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch6_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="768"></p>
+<p><img src="Ch6_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
@@ -365,7 +353,7 @@ J. Perform logistic regression in R.</p>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch6_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="768"></p>
+<p><img src="Ch6_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
@@ -380,20 +368,21 @@ J. Perform logistic regression in R.</p>
 <p>Instead of assuming that the expected response is a linear function of the explanatory variables, we are assuming that it is a function of a linear function of the explanatory variables.</p>
 <p>We fit the logistic curve to the credit card data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Default, <span class="fu">aes</span>(<span class="at">y=</span>default, <span class="at">x=</span> balance)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span> </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"glm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>, <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">family=</span>binomial)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Default, <span class="fu">aes</span>(<span class="at">y=</span>default, <span class="at">x=</span> balance)) <span class="sc">+</span> <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.2</span>, <span class="at">height=</span><span class="fl">0.05</span>) <span class="sc">+</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"glm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>, <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">family=</span>binomial)) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch6_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="768"></p>
+<p><img src="Ch6_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>To fit the logistic regression model in R, we use the function <code>glm</code>, instead of <code>lm</code>. The function is specified the same way as before, and we add <code>family = binomial(link = "logit")</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>CCDefault_M <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="at">data=</span>Default, default <span class="sc">~</span> balance, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>))</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(CCDefault_M)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>CCDefault_M <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="at">data=</span>Default, default <span class="sc">~</span> balance, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(CCDefault_M)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -426,37 +415,34 @@ Number of Fisher Scoring iterations: 8</code></pre>
 </ul>
 <p>We confirm these, using the <code>predict</code> command in R.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(CCDefault_M, <span class="at">newdata=</span><span class="fu">data.frame</span>((<span class="at">balance=</span><span class="dv">1000</span>)), <span class="at">type=</span><span class="st">"response"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(CCDefault_M, <span class="at">newdata=</span><span class="fu">data.frame</span>((<span class="at">balance=</span><span class="dv">1000</span>)), <span class="at">type=</span><span class="st">"response"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          1 
 0.005752145 </code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(CCDefault_M, <span class="at">newdata=</span><span class="fu">data.frame</span>((<span class="at">balance=</span><span class="dv">1500</span>)), <span class="at">type=</span><span class="st">"response"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(CCDefault_M, <span class="at">newdata=</span><span class="fu">data.frame</span>((<span class="at">balance=</span><span class="dv">1500</span>)), <span class="at">type=</span><span class="st">"response"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         1 
 0.08294762 </code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(CCDefault_M, <span class="at">newdata=</span><span class="fu">data.frame</span>((<span class="at">balance=</span><span class="dv">2000</span>)), <span class="at">type=</span><span class="st">"response"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(CCDefault_M, <span class="at">newdata=</span><span class="fu">data.frame</span>((<span class="at">balance=</span><span class="dv">2000</span>)), <span class="at">type=</span><span class="st">"response"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        1 
 0.5857694 </code></pre>
 </div>
 </div>
-<section id="where-do-the-bs-come-from" class="level4" data-number="6.1.3.1">
-<h4 data-number="6.1.3.1" class="anchored" data-anchor-id="where-do-the-bs-come-from"><span class="header-section-number">6.1.3.1</span> Where do the b’s come from?</h4>
+<section id="where-do-the-bs-come-from" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="where-do-the-bs-come-from">Where do the b’s come from?</h4>
 <p>Recall that for a quantitative response variable, the values of <span class="math inline">\(b_1, b_2, \ldots, b_p\)</span> are chosen in a way that minimizes <span class="math inline">\(\displaystyle\sum_{i=1}^n \left(y_i-(\beta_0+\beta_1x_{i1}+\ldots+\beta_px_{ip})^2\right)\)</span>. Least squares does not work well in this generalized setting. Instead, the b’s are calculated using a more advanced technique, known as <strong>maximum likelihood estimation</strong>. We won’t say anything more about that topic here, but it is a prominent technique, widely used in statistic modeling. It is explored in more detail in advanced statistics courses, such as STAT 445:Mathematical Statistics.</p>
 <div style="page-break-after: always;"></div>
 </section>
 </section>
-</section>
-<section id="interpreting-coefficients-in-logistic-regression" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="interpreting-coefficients-in-logistic-regression"><span class="header-section-number">6.2</span> Interpreting Coefficients in Logistic Regression</h2>
-<section id="odds-and-odds-ratio" class="level3" data-number="6.2.1">
-<h3 data-number="6.2.1" class="anchored" data-anchor-id="odds-and-odds-ratio"><span class="header-section-number">6.2.1</span> Odds and Odds Ratio</h3>
+<section id="odds-and-odds-ratio" class="level3" data-number="6.1.4">
+<h3 data-number="6.1.4" class="anchored" data-anchor-id="odds-and-odds-ratio"><span class="header-section-number">6.1.4</span> Odds and Odds Ratio</h3>
 <p>For an event with probability <span class="math inline">\(p\)</span>, the <strong>odds</strong> of the event occurring are <span class="math inline">\(\frac{p}{1-p}\)</span>.</p>
 <p>Examples: 1. The odds of a fair coin landing heads are <span class="math inline">\(\frac{0.5}{1-0.5}=1\)</span>, sometimes written 1:1.</p>
 <ol start="2" type="1">
@@ -464,9 +450,9 @@ Number of Fisher Scoring iterations: 8</code></pre>
 </ol>
 <p>In the credit card example, the odds of default are:</p>
 <ul>
-<li><p>For a $1,000 balance - odds of default are <span class="math inline">\(\frac{0.005752145}{1-0.005752145} \approx 1:173.\)</span></p></li>
-<li><p>For a $1,500 balance - odds of default are <span class="math inline">\(\frac{0.08294762 }{1-0.08294762 } \approx 1:11.\)</span></p></li>
-<li><p>For a $2,000 balance - odds of default are <span class="math inline">\(\frac{0.5857694}{1-0.5857694} \approx 1.414:1.\)</span></p></li>
+<li><p>For a $1,000 balance - odds of default are <span class="math inline">\(\frac{0.00575}{1-0.00575} \approx 1:173.\)</span></p></li>
+<li><p>For a $1,500 balance - odds of default are <span class="math inline">\(\frac{0.0829}{1-0.0829 } \approx 1:11.\)</span></p></li>
+<li><p>For a $2,000 balance - odds of default are <span class="math inline">\(\frac{0.586}{1-0.586} \approx 1.414:1.\)</span></p></li>
 </ul>
 <p>The quantity <span class="math inline">\(\frac{\frac{\pi_i}{1-\pi_i}}{\frac{\pi_j}{1-\pi_j}}\)</span> is called the <strong>odds ratio</strong> and represents the odds ratio of a default for user <span class="math inline">\(i\)</span>, compared to user <span class="math inline">\(j\)</span>.</p>
 <p>Example:</p>
@@ -474,8 +460,8 @@ Number of Fisher Scoring iterations: 8</code></pre>
 <p>The odds ratio is <span class="math inline">\(\frac{\frac{1}{173}}{\frac{1.414}{1}}\approx 1:244.\)</span></p>
 <p>The odds of a default are about 244 times larger for a $2,000 payment than a $1,000 payment.</p>
 </section>
-<section id="interpretation-of-beta_1" class="level3" data-number="6.2.2">
-<h3 data-number="6.2.2" class="anchored" data-anchor-id="interpretation-of-beta_1"><span class="header-section-number">6.2.2</span> Interpretation of <span class="math inline">\(\beta_1\)</span></h3>
+<section id="interpretation-and-of-beta_1" class="level3" data-number="6.1.5">
+<h3 data-number="6.1.5" class="anchored" data-anchor-id="interpretation-and-of-beta_1"><span class="header-section-number">6.1.5</span> Interpretation and of <span class="math inline">\(\beta_1\)</span></h3>
 <p>Consider the odds ratio for a case <span class="math inline">\(j\)</span> with explanatory variable <span class="math inline">\(x + 1\)</span>, compared to case <span class="math inline">\(i\)</span> with explanatory variable <span class="math inline">\(x\)</span>.</p>
 <p>That is <span class="math inline">\(\text{log}\left(\frac{\pi_i}{1-\pi_i}\right) = \beta_0+\beta_1x\)</span>, and <span class="math inline">\(\text{log}\left(\frac{\pi_j}{1-\pi_j}\right) = \beta_0+\beta_1(x+1)\)</span>.</p>
 <p><span class="math inline">\(\text{log}\left(\frac{\frac{\pi_j}{1-\pi_j}}{\frac{\pi_i}{1-\pi_i}}\right)=\text{log}\left(\frac{\pi_j}{1-\pi_j}\right)-\text{log}\left(\frac{\pi_i}{1-\pi_i}\right)=\beta_0+\beta_1(x+1)-(\beta_0+\beta_1(x))=\beta_1.\)</span></p>
@@ -493,7 +479,7 @@ Number of Fisher Scoring iterations: 8</code></pre>
 <p>The fact that the p-value is so small tells us that there is strong evidence of a relationship between balance and odds of default.</p>
 <p><strong>Confidence Intervals for</strong> <span class="math inline">\(\beta_1\)</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(CCDefault_M, <span class="at">level =</span> <span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(CCDefault_M, <span class="at">level =</span> <span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                    2.5 %       97.5 %
 (Intercept) -11.383288936 -9.966565064
@@ -505,14 +491,14 @@ balance       0.005078926  0.005943365</code></pre>
 <div style="page-break-after: always;"></div>
 </section>
 </section>
-<section id="multiple-logistic-regression" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="multiple-logistic-regression"><span class="header-section-number">6.3</span> Multiple Logistic Regression</h2>
-<section id="logistic-regression-models-with-multiple-explanatory-variables" class="level3" data-number="6.3.1">
-<h3 data-number="6.3.1" class="anchored" data-anchor-id="logistic-regression-models-with-multiple-explanatory-variables"><span class="header-section-number">6.3.1</span> Logistic Regression Models with Multiple Explanatory Variables</h3>
+<section id="multiple-logistic-regression" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="multiple-logistic-regression"><span class="header-section-number">6.2</span> Multiple Logistic Regression</h2>
+<section id="logistic-regression-models-with-multiple-explanatory-variables" class="level3" data-number="6.2.1">
+<h3 data-number="6.2.1" class="anchored" data-anchor-id="logistic-regression-models-with-multiple-explanatory-variables"><span class="header-section-number">6.2.1</span> Logistic Regression Models with Multiple Explanatory Variables</h3>
 <p>We can also perform logistic regression in situations where there are multiple explanatory variables. We’ll estimate probability of default, using both balance and whether or not the person is a student (a categorical variable) as explanatory variables.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>CCDefault_M2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="at">data=</span>Default, default <span class="sc">~</span> balance <span class="sc">+</span> student, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>))</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(CCDefault_M2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>CCDefault_M2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="at">data=</span>Default, default <span class="sc">~</span> balance <span class="sc">+</span> student, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>))</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(CCDefault_M2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -538,23 +524,23 @@ Number of Fisher Scoring iterations: 8</code></pre>
 </div>
 <p>The following graph gives an illustration of the model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Default, <span class="fu">aes</span>(<span class="at">y=</span>default, <span class="at">x=</span> balance, <span class="at">color=</span>student)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"glm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>, <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">family=</span>binomial)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Default, <span class="fu">aes</span>(<span class="at">y=</span>default, <span class="at">x=</span> balance, <span class="at">color=</span>student)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"glm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>, <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">family=</span>binomial)) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Ch6_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Ch6_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>The regression equation is:</p>
 <p><span class="math display">\[
-P(\text{Default}) = \hat{\pi}\_i = \frac{e^{-10.75+0.005738\times\text{balance}-0.7149\times\text{student}_i}}{1+e^{-10.75+0.005738\times\text{balance}-0.7149\times\text{student}_i}}
+P(\text{Default}) = \hat{\pi}_i = \frac{e^{-10.75+0.005738\times\text{balance}-0.71\times\text{student}_i}}{1+e^{-10.75+0.0057\times\text{balance}-0.71\times\text{student}_i}}
 \]</span></p>
 <ul>
-<li><p>For each 1 dollar increase in balance, the odds of default are estimated to multiply by a factor <span class="math inline">\(e^{0.005738}\approx 1.00575\)</span>, assuming whether or not the person is a student is held constant. Thus, the estimated odds of default increase by about 0.5%, for each 1-dollar increase in balance..</p></li>
-<li><p>For every $100 increase in balance, the odds of default are estimated to multiply by <span class="math inline">\(e^{0.005738\times100}\approx 1.775\)</span>, assuming whether or not the person is a student is held constant. Thus, the estimated odds of default increase by about 77.5%.</p></li>
-<li><p>The odds of default for students are estimated to be <span class="math inline">\(e^{-0.7149} \approx 0.49\)</span> as high for students as non-students, assuming balance amount is held constant.</p></li>
+<li><p>For each 1 dollar increase in balance, the odds of default are estimated to multiply by a factor <span class="math inline">\(e^{0.0057}\approx 1.00575\)</span>, assuming whether or not the person is a student is held constant. Thus, the estimated odds of default increase by about 0.5%, for each 1-dollar increase in balance..</p></li>
+<li><p>For every $100 increase in balance, the odds of default are estimated to multiply by <span class="math inline">\(e^{0.0057\times100}\approx 1.775\)</span>, assuming whether or not the person is a student is held constant. Thus, the estimated odds of default increase by about 77.5%.</p></li>
+<li><p>The odds of default for students are estimated to be <span class="math inline">\(e^{-0.71} \approx 0.49\)</span> as high for students as non-students, assuming balance amount is held constant.</p></li>
 </ul>
 <p><strong>Hypothesis Tests in Multiple Logistic Regression Model</strong></p>
 <ul>
@@ -562,12 +548,12 @@ P(\text{Default}) = \hat{\pi}\_i = \frac{e^{-10.75+0.005738\times\text{balance}-
 <li><p>Since the p-value associated with <code>StudentYes</code> is very small, there is strong evidence that students are less likely to default than nonstudents, provided the balance on the card is the same.</p></li>
 </ul>
 </section>
-<section id="multiple-logistic-regression-model-with-interaction" class="level3" data-number="6.3.2">
-<h3 data-number="6.3.2" class="anchored" data-anchor-id="multiple-logistic-regression-model-with-interaction"><span class="header-section-number">6.3.2</span> Multiple Logistic Regression Model with Interaction</h3>
+<section id="multiple-logistic-regression-model-with-interaction" class="level3" data-number="6.2.2">
+<h3 data-number="6.2.2" class="anchored" data-anchor-id="multiple-logistic-regression-model-with-interaction"><span class="header-section-number">6.2.2</span> Multiple Logistic Regression Model with Interaction</h3>
 <p>The previous model assumes the effect of balance on default probability is the same for students as for nonstudents. If we suspect that the effect of having a larger balance might be different for students than for nonstudents, then we could use a model with interaction between the balance and student variables.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>CCDefault_M_Int <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="at">data=</span>Default, default <span class="sc">~</span> balance <span class="sc">*</span> student, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>))</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(CCDefault_M_Int)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>CCDefault_M_Int <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="at">data=</span>Default, default <span class="sc">~</span> balance <span class="sc">*</span> student, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>))</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(CCDefault_M_Int)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -597,7 +583,7 @@ Number of Fisher Scoring iterations: 8</code></pre>
 <li>The regression equation is:</li>
 </ul>
 <p><span class="math display">\[
-P(\text{Default}) = \hat{\pi}\_i = \frac{e^{-10.87+0.0058\times\text{balance}-0.35\times\text{I}_{\text{student}}-0.0002\times\text{balance}\times{\text{I}_{\text{student}}}}}{1+e^{-10.87+0.0058\times\text{balance}-0.35\times\text{I}_{\text{student}}-0.0002\times\text{balance}\times{\text{I}_{\text{student}}}}}
+P(\text{Default}) = \hat{\pi}\_i = \frac{e^{-10.87+0.0058\times\text{balance}_i-0.35\times\text{student}_i-0.0002\times\text{balance}_i\times{\text{student}_i}}}{1+e^{-10.87+0.0058\times\text{balance}_i-0.35\times\text{student}_i-0.0002\times\text{balance}_i\times{\text{student}_i}}}
 \]</span></p>
 <p><strong>Equation for Students</strong></p>
 <p><span class="math display">\[
@@ -613,8 +599,8 @@ P(\text{Default}) = \hat{\pi}\_i = \frac{e^{-10.87+0.0058\times\text{balance}}}{
 <li>Since estimate of the interaction effect is so small and the p-value on this estimate is large, it is plausible that there is no interaction at all. Thus, the simpler non-interaction model is preferable.</li>
 </ul>
 </section>
-<section id="logistic-regression-key-points" class="level3" data-number="6.3.3">
-<h3 data-number="6.3.3" class="anchored" data-anchor-id="logistic-regression-key-points"><span class="header-section-number">6.3.3</span> Logistic Regression Key Points</h3>
+<section id="logistic-regression-key-points" class="level3" data-number="6.2.3">
+<h3 data-number="6.2.3" class="anchored" data-anchor-id="logistic-regression-key-points"><span class="header-section-number">6.2.3</span> Logistic Regression Key Points</h3>
 <ul>
 <li><p><span class="math inline">\(Y\)</span> is a binary response variable.</p></li>
 <li><p><span class="math inline">\(\pi_i\)</span> is a function of explanatory variables <span class="math inline">\(x_{i1}, \ldots x_{ip}\)</span>.</p></li>
