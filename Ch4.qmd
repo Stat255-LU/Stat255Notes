@@ -8,10 +8,9 @@
 18. Interpret quantities in the R `lm summary output` including standard errors, residual standard error, $R^2$, and the F-statistic.\
 19. Use standard error formulas to calculate quantities in R model summary output (including estimates, standard errors, t-statistics, $R^2$, and F-statistics), as well as output for associated tests and confidence intervals.\
 20. Distinguish between confidence intervals for model parameters, confidence for expected response, and prediction intervals, and identify the sources of variability contributing to each.\
-21. Explain the regression effect in context.      
-22. Identify situations where multiple testing error is a concern and explain how to correct for such errors.    
-23. Identify situations where a statistically discernible result might not be practically important, or when a large p-value might still be meaningful.    
-
+21. Explain the regression effect in context. \
+22. Identify situations where multiple testing error is a concern and explain how to correct for such errors.\
+23. Identify situations where a statistically discernible result might not be practically important, or when a large p-value might still be meaningful.
 
 **Computational Learning Outcomes**\
 H. Perform hypothesis tests and calculate confidence and prediction intervals based on models using R.
@@ -80,18 +79,17 @@ ICplot + geom_abline(slope=2, intercept=0, color="red") + xlim(c(1.5,5)) + ylim(
   annotate("text", label="y=2x", x= 3.5, y=6.5, size=10, color="red") + theme_bw()
 ```
 
-We can think of the amount of ice cream a person receives as being a result of two separate components, often referred to as **signal** and **noise**. In the graphic the red line represents the signal, and the amount by which each point deviates from the line is the noise. 
+We can think of the amount of ice cream a person receives as being a result of two separate components, often referred to as **signal** and **noise**. In the graphic the red line represents the signal, and the amount by which each point deviates from the line is the noise.
 
 Signal represents the average amount of ice cream a person is expected to receive based on the amount of time holding the dispenser. In this case, signal is given by the function $\text{Expected Amount} = 2\times\text{Time}$. Everyone who holds the dispenser for $t$ seconds is expected to receive $2t$ ounces of ice cream.
 
 Noise represents how much each person's actual amount of ice cream deviates from their expected amount. For example, a person who holds the dispenser for 1.5 seconds and receives 3.58 oz. of ice cream will have received 0.58 ounces more than expected due to noise (i.e. factors other than the amount of time holding the dispenser).
 
-In a statistical model, we assume that in the data we observe, the value of the response variable is the sum of the signal and noise. The signal is a function of the explanatory variables in the model and noise is a deviation from the signal due to factors beyond those accounted for in the model. 
+In a statistical model, we assume that in the data we observe, the value of the response variable is the sum of the signal and noise. The signal is a function of the explanatory variables in the model and noise is a deviation from the signal due to factors beyond those accounted for in the model.
 
 ### Normal Distribution
 
-In the ice cream example it might be reasonable to expect that most people will get close to the amount of ice cream they should expect to get, based on the amount of time they hold down the dispenser, while a few people might get a lot more or less. When modeling noise, it is common to model noise using a symmetric, bell-shaped distribution, known as a **normal distribution**. 
-
+In the ice cream example it might be reasonable to expect that most people will get close to the amount of ice cream they should expect to get, based on the amount of time they hold down the dispenser, while a few people might get a lot more or less. When modeling noise, it is common to model noise using a symmetric, bell-shaped distribution, known as a **normal distribution**.
 
 ```{r, echo=FALSE, fig.height=3, fig.width=8, fig.cap = "Distribution of noise in ice cream dispenser"}
 dnorm1 <- function(x){
@@ -103,19 +101,18 @@ p <- ggplot(df, aes(x = x, y = y)) +
 p
 ```
 
-We can think of the noise associated with each person's amount of ice cream as if it came from randomly picking a point somewhere under the bell curve. Since most of the area under the curve is close to the middle, most people's deviation or noise, will be small, so they expect to get approximately the amount of ice cream they would expect, based on the amount of time they held down the dispenser. There is, however, some area in the tails of the bell curve, indicating that occasionally, a person will get much more or much less ice cream than expected. 
-
+We can think of the noise associated with each person's amount of ice cream as if it came from randomly picking a point somewhere under the bell curve. Since most of the area under the curve is close to the middle, most people's deviation or noise, will be small, so they expect to get approximately the amount of ice cream they would expect, based on the amount of time they held down the dispenser. There is, however, some area in the tails of the bell curve, indicating that occasionally, a person will get much more or much less ice cream than expected.
 
 **Spread in a Normal Distribution**
 
-A normal distribution is denoted $\mathcal{N}(\mu, \sigma)$. 
+A normal distribution is denoted $\mathcal{N}(\mu, \sigma)$.
 
-* $\mu$ represents the mean, or center, of the distribution. When modeling noise, we typically assume $\mu=0$.    
-* $\sigma$ represents the standard deviation in the normal distribution. More noise corresponds to higher values of $\sigma$.  
+-   $\mu$ represents the mean, or center, of the distribution. When modeling noise, we typically assume $\mu=0$.\
+-   $\sigma$ represents the standard deviation in the normal distribution. More noise corresponds to higher values of $\sigma$.
 
-In the ice cream example, $\sigma$ can be thought of as the standard deviation in amount of ice cream dispensed among people who hold the dispenser for the same amount of time. 
+In the ice cream example, $\sigma$ can be thought of as the standard deviation in amount of ice cream dispensed among people who hold the dispenser for the same amount of time.
 
-The normal distribution seen previously is shown again below (Dist. A), along with two others. The graph shows how the amount of noise can vary between normal distributions. If our ice cream was very consistent and had little noise, it would behave more like Distribution B, with noise most often being close to 0. If there is a lot of variability between ice cream dispensed, even for people holding the dispenser for the same amount of time, it would behave more like Distribution C with more area in the tails resulting in a higher probability of unusually high or low ice cream amounts. 
+The normal distribution seen previously is shown again below (Dist. A), along with two others. The graph shows how the amount of noise can vary between normal distributions. If our ice cream was very consistent and had little noise, it would behave more like Distribution B, with noise most often being close to 0. If there is a lot of variability between ice cream dispensed, even for people holding the dispenser for the same amount of time, it would behave more like Distribution C with more area in the tails resulting in a higher probability of unusually high or low ice cream amounts.
 
 ```{r, echo=FALSE, fig.height=3, fig.width=10}
 dnorm1 <- function(x){
@@ -145,26 +142,24 @@ p <- ggplot(df, aes(x = x, y = y)) +
               color=scales::hue_pal()(3)[2])  + theme_bw()
 p
 ```
-Here, we'll assume that the noise associated with our ice cream machine can be characterized by a normal distribution with mean $\mu=0$ and standard deviation $\sigma=1$. 
 
+Here, we'll assume that the noise associated with our ice cream machine can be characterized by a normal distribution with mean $\mu=0$ and standard deviation $\sigma=1$.
 
 Note that the square of the standard deviation $\sigma^2$ is called the variance. Some books denote the normal distribution as $\mathcal{N}(\mu, \sigma^2)$, instead of $\mathcal{N}(\mu,\sigma)$. We will use the $\mathcal{N}(\mu,\sigma)$ here, which is consistent with R.
 
-
 **Simulating the Ice Cream Dispenser**
 
-The amount of ice cream a person gets is thus determined by both the amount of time they hold the dispenser and by noise, representing factors other than time. The illustration below shows the amount of ice cream people might get as a function of time holding the dispenser. The grey dots represent ice cream amounts for individual people. Notice that people who hold the dispenser for 2 seconds get 4 oz. of ice cream, on average, but some come out higher or lower due to noise. 
+The amount of ice cream a person gets is thus determined by both the amount of time they hold the dispenser and by noise, representing factors other than time. The illustration below shows the amount of ice cream people might get as a function of time holding the dispenser. The grey dots represent ice cream amounts for individual people. Notice that people who hold the dispenser for 2 seconds get 4 oz. of ice cream, on average, but some come out higher or lower due to noise.
 
 ```{r echo=FALSE, out.width = '75%', fig.cap="The amount dispensed follows a normal distribution with mean equal to twice the time holding the dispenser and standard deviation 1"}
 knitr::include_graphics("SLR_Model_Assumptions.png")
 ```
 
+We'll simulate the amount of ice cream dispensed for 15 people. We'll assume the noise associated with each person's ice cream amount is normally distributed, as in the above illustration. So, we'll simulate the amount of ice cream they get by adding a random number from the normal distribution shown to each person's expected amount.
 
-We'll simulate the amount of ice cream dispensed for 15 people. We'll assume the noise associated with each person's ice cream amount is normally distributed, as in the above illustration. So, we'll simulate the amount of ice cream they get by adding a random number from the normal distribution shown to each person's expected amount. 
+The `rnorm` command below generates random numbers from a normal distribution. Here we tell it to generate 15 numbers from a normal distribution with with mean of 0, and standard deviation of 1, which is consistent with the illustrations we've seen.
 
-The `rnorm` command below generates random numbers from a normal distribution. Here we tell it to generate 15 numbers from a normal distribution with with mean of 0, and standard deviation of 1, which is consistent with the illustrations we've seen. 
-
-The table shows the time each person pressed the dispenser, the signal (the amount they would be expected to receive based on time holding the dispenser), the noise, and the amount they actually receive. 
+The table shows the time each person pressed the dispenser, the signal (the amount they would be expected to receive based on time holding the dispenser), the noise, and the amount they actually receive.
 
 ```{r, fig.height=2.5}
 set.seed(10082020)
@@ -184,42 +179,38 @@ ggplot(data=Icecream1, aes(x=time, y=amount)) + geom_point() + ggtitle("Icecream
   annotate("text", label="y=2x", x= 3.5, y=6.5, size=10, color="red")  + theme_bw()
 ```
 
-
-Mathematically, we write the amount of ice cream the $i-$th person gets as the sum of a linear function of time holding the dispenser (the signal), and a normal random variable $\epsilon_i$ (the noise). 
-
+Mathematically, we write the amount of ice cream the $i-$th person gets as the sum of a linear function of time holding the dispenser (the signal), and a normal random variable $\epsilon_i$ (the noise).
 
 $$
 \text{Amount}_i = \beta_0 + \beta_1\times\text{Time}_i+\epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, \sigma)
 $$
 
-
-In this instance, we know that a person who does not press the dispenser at all will, of course, get no ice cream, and a person who holds the dispenser for two seconds is supposed to get 2 ounces of ice cream for each second they hold the dispenser. Thus, we know so $\beta_0=0$ and $\beta_1=2$. We also know that $\sigma$, the standard deviation in amounts between people holding the dispenser for the same amount of time, is $\sigma=1$. Thus, the true equation of the regression line is: 
+In this instance, we know that a person who does not press the dispenser at all will, of course, get no ice cream, and a person who holds the dispenser for two seconds is supposed to get 2 ounces of ice cream for each second they hold the dispenser. Thus, we know so $\beta_0=0$ and $\beta_1=2$. We also know that $\sigma$, the standard deviation in amounts between people holding the dispenser for the same amount of time, is $\sigma=1$. Thus, the true equation of the regression line is:
 
 $$
 \text{Amount}_i = 0 + 2\times\text{Time}_i+\epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, 1)
 $$
 
-
 ### Estimating Signal
 
 In a real situation, we would not see the signal and noise columns in the table or the red line on the graph. We would only know the time and amount, and points on the scatter plot. From these, we would need to estimate the location of the red line by fitting a least squares regression line to the data, as we've done before.
 
-We can estimate the slope and intercept of the red line, $\beta_0$ and $\beta_1$ by fitting a regression line to the observed data. The blue line represents the regression line fit to the data from the 15 people in our simulation. Notice that it is close, but not identical to the red line. 
+We can estimate the slope and intercept of the red line, $\beta_0$ and $\beta_1$ by fitting a regression line to the observed data. The blue line represents the regression line fit to the data from the 15 people in our simulation. Notice that it is close, but not identical to the red line.
 
 ```{r, fig.height=4, fig.width = 8}
 ggplot(data=Icecream1, aes(x=time, y=amount)) + geom_point() + ggtitle("Icecream Dispensed") + xlab("Time Pressing dispenser") + ylab("Amount Dispensed") + stat_smooth(method="lm", se=FALSE) + geom_abline(slope=2, intercept=0, color="red")  + xlim(c(1.5,5)) + ylim(c(2.5,10)) + theme_bw()
 ```
 
-We fit the model to the simulated data. 
+We fit the model to the simulated data.
 
 ```{r}
 IC_Model <- lm(data=Icecream1, lm(amount~time))
 IC_Model
 ```
 
-The intercept and slope are $b_0=$ `r IC_Model$coef[1] |> round(2)` and `r IC_Model$coef[2]|>round(2)`. 
+The intercept and slope are $b_0=$ `r IC_Model$coef[1] |> round(2)` and `r IC_Model$coef[2]|>round(2)`.
 
-The estimated regression equation is 
+The estimated regression equation is
 
 $$ 
 \begin{aligned}
@@ -228,30 +219,28 @@ $$
 \end{aligned}
 $$
 
+The estimates $b_0$ and $b_1$ are close, but not identical to the the true values of $\beta_0$ and $\beta_1$, which in this case, we know are $\beta_0=0$ and $\beta_1=2$. Typically, the values of $b_0$ and $b_1$ calculated from a sample will deviate from the true values $\beta_0$ and $\beta_1$ due to noise in the observed data.
 
-The estimates $b_0$ and $b_1$ are close, but not identical to the the true values of $\beta_0$ and $\beta_1$, which in this case, we know are $\beta_0=0$ and $\beta_1=2$. Typically, the values of $b_0$ and $b_1$ calculated from a sample will deviate from the true values $\beta_0$ and $\beta_1$ due to noise in the observed data.    
-
-It is common for people to be confused about the difference between $\beta_0$ and $\beta_1$ and $b_0$ and $b_1$. To reemphasize the distinction, the Greek letters $\beta_0$ and $\beta_1$ are parameters about the true mechanism or process, which we typically don't know. The English letters $b_0$ and $b_1$ are statistics calculated from the sample of data we have. These will vary from sample to sample. As we did in Chapter 3, we'll use $b_0$ and $b_1$ to estimate and draw inferences about $\beta_0$ and $\beta_1$. 
-
+It is common for people to be confused about the difference between $\beta_0$ and $\beta_1$ and $b_0$ and $b_1$. To reemphasize the distinction, the Greek letters $\beta_0$ and $\beta_1$ are parameters about the true mechanism or process, which we typically don't know. The English letters $b_0$ and $b_1$ are statistics calculated from the sample of data we have. These will vary from sample to sample. As we did in Chapter 3, we'll use $b_0$ and $b_1$ to estimate and draw inferences about $\beta_0$ and $\beta_1$.
 
 ### Estimating Noise
 
-An estimate for $\sigma$, the amount of variability in amount of ice cream dispensed between people who hold the dispenser for the same amount of time (i.e. the amount of noise) can be estimated as a function of SSR, sample size (n), and number of parameters terms in the model (p), excluding the intercept.  
+An estimate for $\sigma$, the amount of variability in amount of ice cream dispensed between people who hold the dispenser for the same amount of time (i.e. the amount of noise) can be estimated as a function of SSR, sample size (n), and number of parameters terms in the model (p), excluding the intercept.
 
 $s =\sqrt{\frac{\text{SSR}}{n-(p+1)}} = \sqrt{\frac{\displaystyle\sum_{i=1}^n(y_i-\hat{y}_i)^2}{(n-(p+1))}}$.
 
 This quantity $s$ is called the **residual standard error.**
 
-Keeping with the convention of using Greek letters to represent population parameters $\sigma$ and English letters to represent estimates calculated from samples, we use $s$ to represent the estimate of $\sigma$ that we calculate from our sample. 
+Keeping with the convention of using Greek letters to represent population parameters $\sigma$ and English letters to represent estimates calculated from samples, we use $s$ to represent the estimate of $\sigma$ that we calculate from our sample.
 
-In this case, $n=15$, and $p=1$ so we can calculate $s$ as below. 
+In this case, $n=15$, and $p=1$ so we can calculate $s$ as below.
 
 ```{r}
 s <- sqrt(sum(IC_Model$residuals^2)/(15-(1+1)))
 s
 ```
 
-We notice that $s$ is a reasonable estimate of $\sigma$, which we know to be 1. In most situations, we won't know the true value of $\sigma$ and will use $s$ as an estimate. 
+We notice that $s$ is a reasonable estimate of $\sigma$, which we know to be 1. In most situations, we won't know the true value of $\sigma$ and will use $s$ as an estimate.
 
 ### Ordinary Linear Regression Model
 
@@ -271,22 +260,21 @@ Note that in place of $X_{ip}$, we could have indicators for categories, or func
 
 -   We use statistics $b_0, b_1, \ldots, b_p$ to obtain confidence intervals and hypothesis tests to make statements about parameters $\beta_0, \beta_1, \ldots, \beta_p$.
 
-### Model Assumptions 
+### Model Assumptions
 
-The linear regression model depends on four assumptions, which we made when simulating the behavior of the ice cream dispenser. 
+The linear regression model depends on four assumptions, which we made when simulating the behavior of the ice cream dispenser.
 
-1.  **Linearity** - The expected value of the response variable $Y$ is a linear function of the explanatory variable(s).  
+1.  **Linearity** - The expected value of the response variable $Y$ is a linear function of the explanatory variable(s).\
     **Ex.** the expected amount of ice cream dispensed (i.e the signal) is a linear function of time the dispenser was pressed.
 
-2.  **Constant Variance** - the variance between individual values of the response variable is the same for any values/categories of the explanatory variable(s)    
-     **Ex.** individual amounts dispensed varied from their expected amount with equal variability, regardless of the amount of time. That is, the amount of variability in individual amounts dispensed was the same for people who held the dispenser for 1 s. as for people who held it for 2 s. or 3 s., etc.
+2.  **Constant Variance** - the variance between individual values of the response variable is the same for any values/categories of the explanatory variable(s)\
+    **Ex.** individual amounts dispensed varied from their expected amount with equal variability, regardless of the amount of time. That is, the amount of variability in individual amounts dispensed was the same for people who held the dispenser for 1 s. as for people who held it for 2 s. or 3 s., etc.
 
-3.  **Normality** - for any values/categories of the explanatory variable(s) individual response values vary from their expectation in accordance with a normal distribution.     
+3.  **Normality** - for any values/categories of the explanatory variable(s) individual response values vary from their expectation in accordance with a normal distribution.\
     **Ex.** individual amounts dispensed varied from their expected amount in accordance with a normal distribution.
 
-4.  **Independence** - individual response values are not affected by one another     
+4.  **Independence** - individual response values are not affected by one another\
     **Ex.** the amount of ice cream dispensed for one person was not affected by the amount dispensed for anyone else.
-
 
 ### Statistical Abstraction
 
@@ -294,7 +282,7 @@ If we really believe that data come about as the ordinary regression model descr
 
 These methods are only valid, however, if data can reasonably be thought of as having come from a process consistent with the assumptions of the ordinary regression model process. If we don't believe that our observed data can be reasonably thought of as having come from such a process, then the confidence intervals and p-values produced by R, and other places that rely on probability-based methods will not be reliable.
 
-The process of formulating a real world situation as a statistical model is known as **statistical abstraction.** 
+The process of formulating a real world situation as a statistical model is known as **statistical abstraction.**
 
 We close the section with a philosophical question:
 
@@ -302,55 +290,48 @@ Do data really come about from processes like the ordinary regression model? Tha
 
 We won't attempt to answer that question here, but it is worth thinking about. After all, it is an assumption on which many frequently employed methods of statistical inference depends.
 
-
-
-
 \newpage
 
-## Theory-Based Inference   
+## Theory-Based Inference
 
-You probably noticed that most of the bootstrap and sampling distributions we saw in Chapter 3 were symmetric and bell-shaped in nature. When the assumptions of the ordinary regression model are reasonably satisfied, the distribution of common model estimates, including means, differences in means, and regression slopes will approximately follow symmetric, bell-shaped distributions. In such situations, we can use statistical theory to calculate confidence intervals and perform hypothesis tests, without needing to actually perform the simulations that we did in Chapter 3.   
+You probably noticed that most of the bootstrap and sampling distributions we saw in Chapter 3 were symmetric and bell-shaped in nature. When the assumptions of the ordinary regression model are reasonably satisfied, the distribution of common model estimates, including means, differences in means, and regression slopes will approximately follow symmetric, bell-shaped distributions. In such situations, we can use statistical theory to calculate confidence intervals and perform hypothesis tests, without needing to actually perform the simulations that we did in Chapter 3.
 
-
-In this Section, we'll look at the formulas and probability distributions we can use when the ordinary linear regression model is appropriate, and see how they lead to results very similar to those we've obtain previously via bootstrapping and permutation tests. 
+In this Section, we'll look at the formulas and probability distributions we can use when the ordinary linear regression model is appropriate, and see how they lead to results very similar to those we've obtain previously via bootstrapping and permutation tests.
 
 ### Common Standard Error Formulas
 
-In Chapter 3, we used bootstrapping to estimate the standard error associated with statistics $b_0$, $b_1$, ...$b_p$ in a regression model. Depending on the model, $b_j$ might represent an overall mean, means for different categories, or regression slopes. 
+In Chapter 3, we used bootstrapping to estimate the standard error associated with statistics $b_0$, $b_1$, ...$b_p$ in a regression model. Depending on the model, $b_j$ might represent an overall mean, means for different categories, or regression slopes.
 
-It is important to realize that the standard error of a statistic $\text{SE}(b_j)$ is not the same thing as the residual standard error $s$ that was used to estimate $\sigma$ in the previous section. The standard errors $\text{SE}(b_j)$, seen in Chapter 3, are estimates of much the statistic $b_j$ could vary between different samples of the same size as ours. On the other hand, the residual standard error $s$ is an estimate of the standard deviation in values of the response variable among individual observations with the same value(s) or category(ies) of all explanatory variables.  
+It is important to realize that the standard error of a statistic $\text{SE}(b_j)$ is not the same thing as the residual standard error $s$ that was used to estimate $\sigma$ in the previous section. The standard errors $\text{SE}(b_j)$, seen in Chapter 3, are estimates of much the statistic $b_j$ could vary between different samples of the same size as ours. On the other hand, the residual standard error $s$ is an estimate of the standard deviation in values of the response variable among individual observations with the same value(s) or category(ies) of all explanatory variables.
 
-These quantities are, however, related. It might not be surprising to find out that when there is more variability between individual observations, there is also more variability in statistics between samples. Thus, $\text{SE}(b_j)$ is a function of $s$. 
+These quantities are, however, related. It might not be surprising to find out that when there is more variability between individual observations, there is also more variability in statistics between samples. Thus, $\text{SE}(b_j)$ is a function of $s$.
 
 Recall
 
 $s =\sqrt{\frac{\text{SSR}}{n-(p+1)}} = \sqrt{\frac{\displaystyle\sum_{i=1}^n(y_i-\hat{y}_i)^2}{(n-(p+1))}}$.
 
-We can use $s$ to calculate standard errors $\text{SE}(b_j)$ when $b_j$ represents a statistic like a mean, difference in means, or slope. 
-
+We can use $s$ to calculate standard errors $\text{SE}(b_j)$ when $b_j$ represents a statistic like a mean, difference in means, or slope.
 
 **Theory-Based Standard Error Formulas**
 
 | Statistic | Standard Error |
-|------------------------------------|------------------------------------|
+|----|----|
 | Single Mean | $SE(b_0)=\frac{s}{\sqrt{n_{Group}}}$ |
 | Difference in Means | $SE(b_j)=s\sqrt{\frac{1}{n_{Groupj}}+\frac{1}{n_{Comp.Group}}}$ |
 | Intercept in Simple Linear Regression | $SE(b_0)=s\sqrt{\frac{1}{n}+\frac{\bar{x}^2}{\sum(x_i-\bar{x})^2}}$ |
 | Slope in Simple Linear Regression | $SE(b_1)=\sqrt{\frac{s^2}{\sum(x_i-\bar{x})^2}}=\sqrt{\frac{1}{n-2}\frac{{\sum(\hat{y}_i-y_i)^2}}{\sum(x_i-\bar{x})^2}}$ |
 
+Notes:
 
-Notes: 
+1.  $n$ represents the total sample size. In Formula 1, $n_{Group}$ represents the sample size for the group corresponding to the coefficient $b_0$. If there are no explanatory variables in the model, it will be $n$, otherwise, it will be the size of the baseline group. $n_{\text{Groupj}}$ represents the sample size for the group represented by $b_j$, and $n_{Comp.Group}$ represents the sample size for the group it's being compared to (i.e. the baseline group).
 
-1. $n$ represents the total sample size. In Formula 1, $n_{Group}$ represents the sample size for the group corresponding to the coefficient $b_0$. If there are no explanatory variables in the model, it will be $n$, otherwise, it will be the size of the baseline group. $n_{\text{Groupj}}$ represents the sample size for the group represented by $b_j$, and $n_{Comp.Group}$ represents the sample size for the group it's being compared to (i.e. the baseline group).    
-
-2. For the difference in means formula, the standard error estimate $s\sqrt{\frac{1}{n_1+n_0}}$ is called a "pooled" estimate since it combines information from all groups to estimate $s$. This is beneficial, as long as the constant variance assumption in the ordinary regression model is appropriate. When there is reason to believe standard deviation differs between groups, we can use an "unpooled" standard error estimate of $\sqrt{\frac{s_\text{Groupj}^2}{n_\text{Groupj}}+\frac{s_{\text{CompGroup}}^2}{n_{CompGroup}}}$, where $s_1, s_0$ represent the standard deviation for the two groups being compared. This can be used in situations where the explanatory variable is categorical and we have doubts about the constant variance assumption. By default, R assumes constant variance and uses a pooled estimate in its model summary output and related tests/intervals. 
+2.  For the difference in means formula, the standard error estimate $s\sqrt{\frac{1}{n_1+n_0}}$ is called a "pooled" estimate since it combines information from all groups to estimate $s$. This is beneficial, as long as the constant variance assumption in the ordinary regression model is appropriate. When there is reason to believe standard deviation differs between groups, we can use an "unpooled" standard error estimate of $\sqrt{\frac{s_\text{Groupj}^2}{n_\text{Groupj}}+\frac{s_{\text{CompGroup}}^2}{n_{CompGroup}}}$, where $s_1, s_0$ represent the standard deviation for the two groups being compared. This can be used in situations where the explanatory variable is categorical and we have doubts about the constant variance assumption. By default, R assumes constant variance and uses a pooled estimate in its model summary output and related tests/intervals.
 
 There is no theory-based formula for standard error associated with the median or standard deviation. For these, and many other statistics, we rely on simulation to estimate variability between samples.
 
 There are formulas for standard errors associated with coefficients in multiple regression, but these require mathematics beyond what is assumed in this class. They involve linear algebra and matrix inversion, which you can read about [here](https://web.stanford.edu/~mrosenfe/soc_meth_proj3/matrix_OLS_NYU_notes.pdf) if you are interested.
 
 ### Confidence Intervals
-
 
 When the sampling distribution is symmetric and bell-shaped, approximate 95% confidence intervals can be calculated using the formula,
 
@@ -362,17 +343,15 @@ where the standard error is estimated using a formula, rather than through boots
 
 In the next section, we'll go through some examples to illustrate how to calculate and interpret $s$ and $SE(b_j)$.
 
-
 We've now seen 3 different ways to obtain confidence intervals based on statistics calculated from data.
 
 The table below tells us what must be true of the sampling distribution for a statistic in order to use each technique.
 
-| Technique                | No Gaps | Bell-Shaped | Known SE Formula  |
-|--------------------------|---------|-------------|----------------------|
-| Bootstrap Percentile     | x       |             |                      |
-| Bootstrap Standard Error | x       | x           |                      |
-| Theory-Based             | x       | x           | x                    |
-
+| Technique                | No Gaps | Bell-Shaped | Known SE Formula |
+|--------------------------|---------|-------------|------------------|
+| Bootstrap Percentile     | x       |             |                  |
+| Bootstrap Standard Error | x       | x           |                  |
+| Theory-Based             | x       | x           | x                |
 
 ### t-tests
 
@@ -431,18 +410,17 @@ $$
 t= \frac{{\text{Statistic}}}{\text{SE}(\text{Statistic})}  =\frac{b_j}{\text{SE}(b_j)}
 $$
 
-approximately follows a t-distribution. The statistic $t$ is called a **standardized statistic**. 
+approximately follows a t-distribution. The statistic $t$ is called a **standardized statistic**.
 
-We can use a t-distribution to perform a hypothesis test with a null hypothesis that there is no difference between groups, or no relationship between variables. The null hypothesis is $\beta_j=0$. 
+We can use a t-distribution to perform a hypothesis test with a null hypothesis that there is no difference between groups, or no relationship between variables. The null hypothesis is $\beta_j=0$.
 
+The standardized statistic tells us how many standard errors higher or lower our statistic $b_j$ is than we would expect it to be if our null hypothesis were true.
 
-The standardized statistic tells us how many standard errors higher or lower our statistic $b_j$ is than we would expect it to be if our null hypothesis were true.   
-
-The larger the t-statistic is, the less consistent it is with the null hypothesis. t-statistics more extreme than $\pm 2$ typically provide evidence against the null hypothesis. 
+The larger the t-statistic is, the less consistent it is with the null hypothesis. t-statistics more extreme than $\pm 2$ typically provide evidence against the null hypothesis.
 
 To find a p-value, we use a t-distribution to find the probability of obtaining a t-statistic as or more extreme than the one calculated from our data.
 
-For example, for a t-distribution with 20 degrees of freedom the probability of obtaining a t-statistic as or more extreme than 1.5 is about 0.14, while the probability of obtaining a t-statistic as or more extreme than 2.8 is only 0.01. 
+For example, for a t-distribution with 20 degrees of freedom the probability of obtaining a t-statistic as or more extreme than 1.5 is about 0.14, while the probability of obtaining a t-statistic as or more extreme than 2.8 is only 0.01.
 
 ```{r, fig.height=4, fig.width=8, echo=FALSE}
 ts1=1.5
@@ -458,7 +436,7 @@ grid.arrange(P1, P2, ncol=2)
 
 ### F-tests
 
-Just as the ratio of a regression statistic to its standard error follows a t-distribution, F-statistics also follow a known probability distribution when the assumptions of the ordinary linear regression model are apropriate. 
+Just as the ratio of a regression statistic to its standard error follows a t-distribution, F-statistics also follow a known probability distribution when the assumptions of the ordinary linear regression model are apropriate.
 
 An **F distribution** is a right-skewed distribution. It is defined by two parameters, $\nu_1, \nu_2$, called numerator and denominator degrees of freedom.
 
@@ -475,9 +453,9 @@ $$
 F = \frac{\frac{\text{SSR}_{\text{Reduced}}-\text{SSR}_{\text{Full}}}{p-q}}{\frac{\text{SSR}_{\text{Full}}}{n-(p+1)}}
 $$
 
-approximately follows an F-distribution with $p-q$ and $n-(p+1)$ degrees of freedom. 
+approximately follows an F-distribution with $p-q$ and $n-(p+1)$ degrees of freedom.
 
-Like with a t-statistic, we can calculate an F-statistic by looking at how extreme our F-statistic is in its F-distribution. 
+Like with a t-statistic, we can calculate an F-statistic by looking at how extreme our F-statistic is in its F-distribution.
 
 For an F-distribution with 2 and 20 degrees of freedom, the probability of getting an F-statistic more extreme than 1.8 is about 0.19, while the probability of getting and F-statistic as extreme or more than 4.6 is about 0.02.
 
@@ -491,7 +469,6 @@ P2 <- gf_dist("f", df1=2, df2=20, geom = "area", fill = ~ (abs(x)< abs(ts2)), sh
 grid.arrange(P1, P2, ncol=2)
 ```
 
-
 ### Limitations of Theory-Based Inference
 
 We've seen that in situations where the sampling distribution for a regression coefficient $b_j$ is symmetric and bell-shaped, we can create confidence intervals and perform hypothesis tests using theory-based standard error formulas, as well as t- and F-distributions. This means we won't need to perform permutation-based hypothesis tests, or bootstrapping for confidence intervals as we did in Chapter 3.
@@ -502,7 +479,7 @@ These include:
 
 1.  There are lots of statistics, like medians and standard deviations, that do not have known standard error formulas, and do not follow symmetric bell-shaped distributions. In more advanced and complicated models, it is common to encounter statistics of interest with unknown sampling distributions. In these cases, we can estimate p-values and build confidence intervals via simulation, even if we cannot identify the distribution by name.
 
-2.  Even for statistics with known standard error formulas, the t-test is only appropriate when the sampling distribution for $b_j$ is symmetric and bell-shaped. If the assumptions of the ordinary regression model are reasonably satisfied, then we can be assured that this will be the case. Sometimes, however, those assumptions will not be satisfied. There is probability theory which tells us that even when model assumptions do not hold, t-tests and and theory-based confidence intervals for regression coefficients will still be reasonable when the sample size is "large enough," but there is no consistent definition of what "large enough." The necessary sample size depends on the context and the degree to which assumptions are violated. Simulation-based approaches offer a more flexible method for performing inference in these situations, and also offer a way to check the results we get using theory-based methods. Furthermore, F-tests become invalid when model assumptions are violated regardless of the sample size. 
+2.  Even for statistics with known standard error formulas, the t-test is only appropriate when the sampling distribution for $b_j$ is symmetric and bell-shaped. If the assumptions of the ordinary regression model are reasonably satisfied, then we can be assured that this will be the case. Sometimes, however, those assumptions will not be satisfied. There is probability theory which tells us that even when model assumptions do not hold, t-tests and and theory-based confidence intervals for regression coefficients will still be reasonable when the sample size is "large enough," but there is no consistent definition of what "large enough." The necessary sample size depends on the context and the degree to which assumptions are violated. Simulation-based approaches offer a more flexible method for performing inference in these situations, and also offer a way to check the results we get using theory-based methods. Furthermore, F-tests become invalid when model assumptions are violated regardless of the sample size.
 
 3.  The simulation-based approaches provide valuable insight to the logic behind hypothesis tests. When we permute values of an explanatory variable in a hypothesis test it is clear that we are simulating a situation where the null hypothesis is true. Likewise, when we simulate taking many samples in bootstrapping, it is clear that we are assessing the variability in a statistic across samples. Simply jumping to the t-based approximations of these distributions makes it easy to lose our sense of what they actually represent, and thus increases the likelihood of interpreting them incorrectly.
 
@@ -516,10 +493,9 @@ Proponents of simulation-based inference include Tim Hesterberg, Senior Statisti
 
 We will move forward by using probability-based inference where appropriate, while understanding that we are merely approximating what we would obtain via simulation. Meanwhile, we'll continue to employ simulation-based approaches where probability-based techniques are inappropriate or unavailable.
 
+## Model-Based Inference
 
-## Inference for Models
-
-In this section, we'll apply the theories and formulas from the previous section to the models won the Florida lakes data that we saw in Chapter 3. We'll illustrate how to calculate all of the important peices of information provided in the model summary output produced by R.   
+In this section, we'll apply the theories and formulas from the previous section to the models won the Florida lakes data that we saw in Chapter 3. We'll illustrate how to calculate all of the important peices of information provided in the model summary output produced by R.
 
 ### Difference in Means
 
@@ -541,24 +517,22 @@ This model assumes:
 
 4.  **Independence** - mercury levels of individual lakes are not affected by those of other lakes.
 
-A table summarizing the means and standard deviations among lakes in Northern and Southern Florida is shown below. 
-
+A table summarizing the means and standard deviations among lakes in Northern and Southern Florida is shown below.
 
 ```{r}
 kable(LakesTable)
 ```
 
-Note that the standard deviation in mercury levels is higher in Southern Florida than in Northern Florida, but the difference is not that big. As a rough guide we should be concerned about the constant variance assumption when the standard deviation in one group is more than twice as big as in another. Since that is not the case here, it seems reasonable to use the pooled standard deviation estimate as R does in its `lm` summary output, discussed next. 
+Note that the standard deviation in mercury levels is higher in Southern Florida than in Northern Florida, but the difference is not that big. As a rough guide we should be concerned about the constant variance assumption when the standard deviation in one group is more than twice as big as in another. Since that is not the case here, it seems reasonable to use the pooled standard deviation estimate as R does in its `lm` summary output, discussed next.
 
 **`lm` Summary Output**
 
-The `lm` summary command in R returns estimates, standard errors, test statistics, and p-values pertaining to the model. These are calculated using the formulas in Section 4.2. 
- 
+The `lm` summary command in R returns estimates, standard errors, test statistics, and p-values pertaining to the model. These are calculated using the formulas in Section 4.2.
+
 ```{r}
 M_Lakes_merc_loc <- lm(data=FloridaLakes, Mercury ~ Location)
 summary(M_Lakes_merc_loc)
 ```
-
 
 -   **Estimate** gives the least-squares estimates $b_0, b_1, \ldots, b_p$
 
@@ -582,13 +556,13 @@ $$ F=\frac{\frac{SST - SSR}{p}}{\frac{SSR}{n-(p+1)}} $$
 
 The degrees of freedom associated with the F-statistic are given by $p$ and $(n-(p+1))$.
 
--   The **p-value associated with the F-statistic** tells us the probability of obtaining an F-statistic as extreme or more extreme than we did if there is really no relationship between the response variable and any explanatory variables in our model. 
+-   The **p-value associated with the F-statistic** tells us the probability of obtaining an F-statistic as extreme or more extreme than we did if there is really no relationship between the response variable and any explanatory variables in our model.
 
 **Calculations in Summary Output**
 
-Let's go through how all of these quantities are calculated and discuss what they tell us. 
+Let's go through how all of these quantities are calculated and discuss what they tell us.
 
-In order to do the calculations, we'll need to know the values of SSR and SST. These are 
+In order to do the calculations, we'll need to know the values of SSR and SST. These are
 
 SSR:
 
@@ -603,7 +577,7 @@ MeanMerc <- mean(FloridaLakes$Mercury)
 sum((FloridaLakes$Mercury - MeanMerc)^2)
 ```
 
-We'll start with the calculations in the bottom part, underneath the coefficients table, namely residual standard error, Multiple R-squared, and the F-statistic. 
+We'll start with the calculations in the bottom part, underneath the coefficients table, namely residual standard error, Multiple R-squared, and the F-statistic.
 
 #### Residual Standard Error {.unnumbered}
 
@@ -632,17 +606,17 @@ This F-statistic is associated with 1 and 51 degrees of freedom.
 
 ```{r}
 gf_dist("f", df1=1, df2=51, geom = "area", fill = ~ (x < 9.162), show.legend=FALSE) + geom_vline(xintercept=9.162, color="red")  + xlab("F") + theme_bw() + xlim(c(0,10)) 
-``` 
+```
 
-We can use the `pf()` command to calculate the p-value. Note that `pf()` this command returns the probability of obtaining an F-statistic less extreme than we did, so we subtract it from 1 to get the probability of obtaining an F-statistic more extreme than we did. 
+We can use the `pf()` command to calculate the p-value. Note that `pf()` this command returns the probability of obtaining an F-statistic less extreme than we did, so we subtract it from 1 to get the probability of obtaining an F-statistic more extreme than we did.
 
 ```{r}
 1 - pf(9.162, df1=1, df2=51)
 ```
 
-The large F-statistic and small p-value provide strong evidence against the null hypothesis that there is no relationship between a lake's location and mercury level. We have strong evidence that there is a relationship between location and mercury level, or in other words, that mean mercury level differs between lakes in Northern and Southern Florida. 
+The large F-statistic and small p-value provide strong evidence against the null hypothesis that there is no relationship between a lake's location and mercury level. We have strong evidence that there is a relationship between location and mercury level, or in other words, that mean mercury level differs between lakes in Northern and Southern Florida.
 
-We'll now move into the calculations in the coefficients table. 
+We'll now move into the calculations in the coefficients table.
 
 #### Estimates {.unnumbered}
 
@@ -651,7 +625,6 @@ The estimates column returns the estimates of $b_0$ and $b_1$. The estimated reg
 $$
 \widehat{\text{Mercury}} = `r M_Lakes_merc_loc$coef[1]` + `r M_Lakes_merc_loc$coef[2]`\times\text{Location}_{\text{South}}
 $$
-
 
 #### Standard Errors {.unnumbered}
 
@@ -673,9 +646,9 @@ The standard error of slope $b_1$ is 0.0898. This represents the variability in 
 
 These numbers match the values in the `Std. Error` column of the coefficients table of the `lm` summary output.
 
-#### Confidence Intervals  {.unnumbered}
+#### Confidence Intervals {.unnumbered}
 
-We can use these standard errors to calculate 95% confidence intervals for $\beta_0$ and $\beta_1$. 
+We can use these standard errors to calculate 95% confidence intervals for $\beta_0$ and $\beta_1$.
 
 A 95% confidence interval for $\beta_0$ is given by
 
@@ -687,8 +660,7 @@ $$
 \end{aligned}
 $$
 
-We are 95% confident that the mean mercury level among all lakes in Northern Florida is between 0.314 and 0.535 ppm.  
-
+We are 95% confident that the mean mercury level among all lakes in Northern Florida is between 0.314 and 0.535 ppm.
 
 A 95% confidence interval for $\beta_1$ is given by
 
@@ -708,10 +680,9 @@ These intervals can be obtained directly in R using the `confint` command.
 confint(M_Lakes_merc_loc, level=0.95)
 ```
 
+#### Hypotheses {.unnumbered}
 
-#### Hypotheses    {.unnumbered}
-
-Before interpreting t-values and p-values in the coefficients table, we should state the hypotheses associated with them. 
+Before interpreting t-values and p-values in the coefficients table, we should state the hypotheses associated with them.
 
 **Hypothesis Test for line (intercept)**
 
@@ -719,7 +690,7 @@ Before interpreting t-values and p-values in the coefficients table, we should s
 
 **Alternative Hypothesis:** The average mercury level among all lakes in Northern Florida is not 0 ($\beta_0\neq 0$).
 
-We already know the average mercury level among all lakes in North Florida is not 0, so this is a silly test. Not every test reported in the R output is a meaningful one, so we should not attempt to draw conclusions from this p-value. 
+We already know the average mercury level among all lakes in North Florida is not 0, so this is a silly test. Not every test reported in the R output is a meaningful one, so we should not attempt to draw conclusions from this p-value.
 
 **Hypothesis Test for line LocationS**
 
@@ -729,26 +700,25 @@ We already know the average mercury level among all lakes in North Florida is no
 
 #### t-value {.unnumbered}
 
-We calculate standardized t-statistics associated with $b_0$ and $b_1$. 
+We calculate standardized t-statistics associated with $b_0$ and $b_1$.
 
-**t-statistic for $b_0$:**
+**t-statistic for** $b_0$:
 
 $t=\frac{{b_0}}{\text{SE}(b_0)} = \frac{0.42455}{0.05519} = 7.692$
 
-In our sample, the average mercury level among lakes in Northern Florida is 7.7 standard errors higher than we would expect it to be if the average mercury level among all lakes in Northern Florida is 0. Since we know that the mean mercury level among all lakes in Northern Florida is not 0, this is not a meaningful interpretation. 
+In our sample, the average mercury level among lakes in Northern Florida is 7.7 standard errors higher than we would expect it to be if the average mercury level among all lakes in Northern Florida is 0. Since we know that the mean mercury level among all lakes in Northern Florida is not 0, this is not a meaningful interpretation.
 
-**t-statistic for $b_1$:**
+**t-statistic for** $b_1$:
 
 $t=\frac{{b_1}}{\text{SE}(b_1)} = \frac{0.27195}{0.08985} = 3.027$
 
-In our sample, the average mercury level among lakes in Southern Florida is 3 standard errors higher than we would expect it to be if the there was really no difference in average mercury levels between lakes in Northern and Southern Florida. Equivalently, we could say that the mean mercury level among lakes in Southern Florida is 3 standard errors higher than in Northern Florida.   
+In our sample, the average mercury level among lakes in Southern Florida is 3 standard errors higher than we would expect it to be if the there was really no difference in average mercury levels between lakes in Northern and Southern Florida. Equivalently, we could say that the mean mercury level among lakes in Southern Florida is 3 standard errors higher than in Northern Florida.
 
-
-#### Pr(>|t|)   {.unnumbered}
+#### Pr(\>\|t\|) {.unnumbered}
 
 **p-value for line (Intercept)**
 
-We already know the average mercury level among all lakes in North Florida is not 0, so this is a silly test. Not every test reported in the R output is a meaningful one, so we should not attempt to draw conclusions from this p-value. 
+We already know the average mercury level among all lakes in North Florida is not 0, so this is a silly test. Not every test reported in the R output is a meaningful one, so we should not attempt to draw conclusions from this p-value.
 
 **p-value for line LocationS**
 
@@ -759,7 +729,7 @@ ts=3.027
 gf_dist("t", df=51, geom = "area", fill = ~ (abs(x)< abs(ts)), show.legend=FALSE) + geom_vline(xintercept=c(ts, -ts), color="red")  + xlab("t") + theme_bw()
 ```
 
-We use the `pt` command to calculate the probability of getting a t-statistic as extreme or more extreme than the 3.027 we saw in our data. We multiply by 2 to get the area on both the left and right extremes. 
+We use the `pt` command to calculate the probability of getting a t-statistic as extreme or more extreme than the 3.027 we saw in our data. We multiply by 2 to get the area on both the left and right extremes.
 
 ```{r}
 2*pt(3.027, df=51, lower.tail = FALSE)
@@ -767,26 +737,26 @@ We use the `pt` command to calculate the probability of getting a t-statistic as
 
 The low p-value gives us strong evidence of a difference in average mercury levels between lakes in Northern and Southern Florida.
 
-Note that the p-value from the t-test is the same as for the F-statistic. This will happen when there is only one variable in the model.  
+Note that the p-value from the t-test is the same as for the F-statistic. This will happen when there is only one variable in the model.
 
 #### Comparison to Simulation {.unnumbered}
 
-Let's compare the confidence intervals and p-values we got to the ones we obtained in Chapter 3 using bootstrapping and a permutation test. 
+Let's compare the confidence intervals and p-values we got to the ones we obtained in Chapter 3 using bootstrapping and a permutation test.
 
-**Formula-Based 95% Confidence Interval for $b_1$**
+**Formula-Based 95% Confidence Interval for** $b_1$
 
 ```{r}
 confint(M_Lakes_merc_loc,  parm = c("LocationS"), level=0.95)
 ```
 
-**Bootstrap 95% Confidence Interval for $b_1$:**
+**Bootstrap 95% Confidence Interval for** $b_1$:
 
 ```{r}
 confint(M_Lakes_merc_loc_Bootstrap, parm = c("LocationS"),
               level = 0.95, method = "se")
 ```
 
-**p-value from t-distribution** 
+**p-value from t-distribution**
 
 ```{r, fig.height=4, fig.width=6}
 ts=3.027
@@ -796,8 +766,6 @@ gf_dist("t", df=51, geom = "area", fill = ~ (abs(x)< abs(ts)), show.legend=FALSE
 ```{r}
 2*pt(3.027, df=51, lower.tail = FALSE)
 ```
-
-
 
 **Permutation - based p-value**
 
@@ -821,16 +789,11 @@ Lakes_merc_loc_perm_test_plot
 prop(~ (abs(LocationS) > 0.272), data = Lakes_merc_loc_perm_test)
 ```
 
-
-The formula-based confidence interval and p-value are very close to those produced by simulation. Both approximations, so they are not expected to be identical, but should be close. They lead us to the same conclusion, namely that there is a difference in mean mercury level between lakes in Northern and Southern Florida and that the difference is somewhere between about 0.10 and 0.45 ppm. 
-
-
-
-
+The formula-based confidence interval and p-value are very close to those produced by simulation. Both approximations, so they are not expected to be identical, but should be close. They lead us to the same conclusion, namely that there is a difference in mean mercury level between lakes in Northern and Southern Florida and that the difference is somewhere between about 0.10 and 0.45 ppm.
 
 ### Regression Slope and Intercept
 
-We'll use the ordinary regression model to predict a lake's mercury level, using pH as the explanatory variable. In this case, the explanatory variable is quantitative, so $\beta_1$ represents a slope. 
+We'll use the ordinary regression model to predict a lake's mercury level, using pH as the explanatory variable. In this case, the explanatory variable is quantitative, so $\beta_1$ represents a slope.
 
 The regression model is:
 
@@ -859,7 +822,6 @@ M_Lakes_merc_pH <- lm(data=FloridaLakes, Mercury ~ pH)
 summary(M_Lakes_merc_pH)
 ```
 
-
 Let's go through the calculations in the coefficients table and the rows below it. We first need to calculate SST and SSR as well as $\bar{x}$ and $\sum(x_i-\bar{x})^2$, where $x$ represents the explanatory variable, $pH$.
 
 SST:
@@ -869,20 +831,17 @@ Mean_merc <- mean(FloridaLakes$Mercury)
 sum((FloridaLakes$Mercury-Mean_merc)^2)
 ```
 
-
 SSR:
 
 ```{r}
 sum(M_Lakes_merc_pH$residuals^2)
 ```
 
-
-$\bar{x}$: 
+$\bar{x}$:
 
 ```{r}
 mean(FloridaLakes$pH)
 ```
-
 
 $\sum(x_i-\bar{x})^2$
 
@@ -891,19 +850,17 @@ Mean_pH <- mean(FloridaLakes$pH)
 sum((FloridaLakes$pH-Mean_pH)^2)
 ```
 
-
 #### Residual Standard Error {.unlabeled}
 
 $$ s =\sqrt{\frac{\text{SSR}}{n-(p+1)}} = \sqrt{\frac{\text{SSR}}{n-(p+1)}} = \sqrt{\frac{4.045513}{53-(1+1)}}=0.2816 $$
 
 The degrees of freedom associated with this estimate is $53-(1+1) = 51$.
 
-#### Multiple R-Squared {.unlabeled} 
+#### Multiple R-Squared {.unlabeled}
 
 $$ R^2 = \frac{6.047875 - 4.045513}{6.047875} = 0.3311 $$
 
-
-#### F-Statistic {.unlabeled} 
+#### F-Statistic {.unlabeled}
 
 The F-statistic is
 
@@ -911,26 +868,21 @@ $$ F=\frac{\frac{SST - SSR}{p}}{\frac{SSR}{n-(p+1)}} = \frac{\frac{6.047875 - 4.
 
 This F-statistic is associated with 1 and 51 degrees of freedom.
 
-#### p-value associated with F-statistic  {.unnumbered}
+#### p-value associated with F-statistic {.unnumbered}
 
 ```{r}
 gf_dist("f", df1=1, df2=51, geom = "area", fill = ~ (x < 9.162), show.legend=FALSE) + geom_vline(xintercept=25.24, color="red")  + xlab("F") + theme_bw() + xlim(c(0,30)) 
-``` 
-
+```
 
 ```{r}
 1 - pf(25.24, df1=1, df2=51) |> round(4)
 ```
 
-
 #### Estimates {.unnumbered}
 
-The estimates $b_0 = 1.53$ and $b_1=-0.15$ are calculated by fitting the regression line that minimizes the sum of the squared residuals.  
-
-
+The estimates $b_0 = 1.53$ and $b_1=-0.15$ are calculated by fitting the regression line that minimizes the sum of the squared residuals.
 
 #### Standard Errors {.unnumbered}
-
 
 $$ SE(b_0)=s\sqrt{\frac{1}{n}+\frac{\bar{x}^2}{\sum(x_i-\bar{x})^2}} = 0.2816\sqrt{\frac{1}{53} + \frac{6.59^2}{86.32528} } = 0.2034 $$
 
@@ -940,8 +892,7 @@ $$ SE(b_1)=\sqrt{\frac{s^2}{\sum(x_i-\bar{x})^2}}=\sqrt{\frac{0.2816^2}{86.32528
 
 $SE(b_1)$ represents the variability in rate of change in mercury level for each additional one unit increase in pH, between different samples of size 53.
 
-
-#### Confidence Interval  {.unnumbered}
+#### Confidence Interval {.unnumbered}
 
 A 95% confidence interval for $\beta_0$ is given by
 
@@ -951,8 +902,7 @@ $$
 & = 1.53 \pm 2\times{0.203} \\
 & = (1.12, 1.94)
 \end{aligned}
-$$
-This, in theory, would be telling us that we are 95% confident that the mean mercury level among all lakes in  Florida with pH 0 would be between 1.12 and 1.94 ppm. Since there are no such lakes, this is not a sensible interpretation. 
+$$ This, in theory, would be telling us that we are 95% confident that the mean mercury level among all lakes in Florida with pH 0 would be between 1.12 and 1.94 ppm. Since there are no such lakes, this is not a sensible interpretation.
 
 A 95% confidence interval for $\beta_1$ is given by
 
@@ -964,14 +914,13 @@ $$
 \end{aligned}
 $$
 
-We are 95% confident that for each 1-unit increase in pH, mercury level is expected to decrease between 0.09 and 0.21 ppm. 
+We are 95% confident that for each 1-unit increase in pH, mercury level is expected to decrease between 0.09 and 0.21 ppm.
 
 These intervals can be obtained directly in R using the `confint` command.
 
 ```{r}
 confint(M_Lakes_merc_pH, level=0.95)
 ```
-
 
 #### Hypotheses {.unnumbered}
 
@@ -989,29 +938,27 @@ Since there are no lakes with pH level 0, this is not a meaningful test.
 
 **Alternative Hypothesis:** There is a relationship between mercury and pH level among all Florida lakes. ($\beta_1 \neq 0$).
 
-
 #### t-value {.unnumbered}
 
 **t-statistic for b_0**
 
 $t=\frac{{b_j}}{\text{SE}(b_j)} = \frac{1.53}{2.03} = 7.72$
 
-In our sample, the mean mercury level in lakes with pH 0 is estimated to be 7 standard errors lower than we would expect if  the mean mercury level in lakes with pH 0 was 0. This is not a meaningful interpretation since no lakes have pH 0. 
+In our sample, the mean mercury level in lakes with pH 0 is estimated to be 7 standard errors lower than we would expect if the mean mercury level in lakes with pH 0 was 0. This is not a meaningful interpretation since no lakes have pH 0.
 
 **t-statistic for b_1**
 
 $t=\frac{{b_j}}{\text{SE}(b_j)} = \frac{-0.15230}{0.03031} = -5.024$
 
-In our sample, the estimated change in mercury for each on unit change in pH is 5 standard errors less than we would expect it to be if there were no relationship between mercury and pH. 
+In our sample, the estimated change in mercury for each on unit change in pH is 5 standard errors less than we would expect it to be if there were no relationship between mercury and pH.
 
-#### Pr(>|t|)   {.unnumbered}
+#### Pr(\>\|t\|) {.unnumbered}
 
 **p-value for line intercept**
 
-Since the null hypothesis on the intercept line is not a sensible one, we should not draw conclusions based on this p-value.  
+Since the null hypothesis on the intercept line is not a sensible one, we should not draw conclusions based on this p-value.
 
 **p-value for line pH**
-
 
 ```{r, fig.height=4, fig.width=6}
 ts=5.024
@@ -1022,15 +969,13 @@ gf_dist("t", df=51, geom = "area", fill = ~ (abs(x)< abs(ts)), show.legend=FALSE
 2*pt(-abs(ts), df=51)
 ```
 
-The p-value is extremely small, providing strong evidence of a relationship between a lake's pH and mercury content. 
+The p-value is extremely small, providing strong evidence of a relationship between a lake's pH and mercury content.
 
-
-#### Comparison to Simulation   {.unnumbered}
+#### Comparison to Simulation {.unnumbered}
 
 We compare this standard error estimate and confidence interval to the ones we would obtain via bootstrapping.
 
 **Formula-Based 95% Confidence Interval for** $\beta_1$:
-
 
 ```{r}
 confint(M_Lakes_merc_pH, parm=c("pH"), level=0.95)
@@ -1056,7 +1001,6 @@ gf_dist("t", df=51, geom = "area", fill = ~ (abs(x)< abs(ts)), show.legend=FALSE
 2*pt(-abs(ts), df=51)
 ```
 
-
 **Permutation - based p-value**
 
 ```{r, fig.height=4, fig.width=6}
@@ -1067,12 +1011,11 @@ Lakes_merc_pH_perm_test_plot
 prop(~ (abs(pH) > 0.15), data = Lakes_merc_pH_perm_test)
 ```
 
-The interval and p-value produced by the theory based methods are again very similar those we obtained via simulation and lead us to the same conclusions.  
-
+The interval and p-value produced by the theory based methods are again very similar those we obtained via simulation and lead us to the same conclusions.
 
 ### Single Mean
 
-Now, we'll look at a simple model in which we seek to estimate the mean mercury level among all lakes in Florida, based on the 53 lakes in our sample.  
+Now, we'll look at a simple model in which we seek to estimate the mean mercury level among all lakes in Florida, based on the 53 lakes in our sample.
 
 The regression model is:
 
@@ -1099,47 +1042,44 @@ summary(M_Lakes_merc_0)
 
 The model estimates that the average mercury level is 0.527, which matches the sample mean, as we know it should.
 
-We'll again go through the calculations in the model summary output.  
+We'll again go through the calculations in the model summary output.
 
-We first calculate SST, which is equal to SSR for a model with no explanatory variables.  
+We first calculate SST, which is equal to SSR for a model with no explanatory variables.
 
 ```{r}
 Mean_merc <- mean(FloridaLakes$Mercury)
 sum((FloridaLakes$Mercury-Mean_merc)^2)
 ```
 
-
 #### Residual Standard Error {.unlabeled}
 
-Since there are no explanatory variables in this model, p=0. 
+Since there are no explanatory variables in this model, p=0.
 
 $$ s =\sqrt{\frac{\text{SSR}}{n-(p+1)}}  = \sqrt{\frac{6.047875}{53-(1+0)}}=0.341$$
 
 The degrees of freedom associated with this estimate is $53-(1+0) = 51$.
 
-
-
 #### Multiple R-Squared {.unnumbered}
 
-Since there are no explanatory variables in the model, SSR=SST, so $R^2=0$. Notice that $R^2$ is not given in the model summary. 
+Since there are no explanatory variables in the model, SSR=SST, so $R^2=0$. Notice that $R^2$ is not given in the model summary.
 
 #### F-Statistic {.unnumbered}
 
-Since there are no explanatory variables in the model, SSR=SST, so $F=0$. Notice that F is not given in the model summary. 
+Since there are no explanatory variables in the model, SSR=SST, so $F=0$. Notice that F is not given in the model summary.
 
 #### Estimates {.unnumbered}
 
 $b_0 = \bar{y} = 0.527$
 
-The mean mercury level among all lakes in Florida is 0.527 ppm.  
+The mean mercury level among all lakes in Florida is 0.527 ppm.
 
 #### Standard Errors {.unnumbered}
 
-$\text{SE}(b_0) = \frac{s}{\sqrt{n}} =\frac{0.341}{\sqrt{53}} = 0.4684$ 
+$\text{SE}(b_0) = \frac{s}{\sqrt{n}} =\frac{0.341}{\sqrt{53}} = 0.4684$
 
-#### Confidence Intervals   {.unnumbered}
+#### Confidence Intervals {.unnumbered}
 
-A 95% confidence interval for $\beta_0$ is 
+A 95% confidence interval for $\beta_0$ is
 
 $$
 \begin{aligned}
@@ -1147,31 +1087,27 @@ $$
 & = 0.527 \pm 2\times{0.0468} \\
 & = (0.43, 0.62)
 \end{aligned}
-$$
-We are 95% confident that the mean mercury level among all lakes in Florida is between 0.43 and 0.62 parts per million. 
+$$ We are 95% confident that the mean mercury level among all lakes in Florida is between 0.43 and 0.62 parts per million.
 
+#### Hypotheses {.unnumbered}
 
-#### Hypotheses    {.unnumbered}
-
-The null hypothesis on the line (Intercept) is that the average mercury level among all lakes in Florida is 0. We know this isn't true, so there is no reason to perform the hypothesis test.   
+The null hypothesis on the line (Intercept) is that the average mercury level among all lakes in Florida is 0. We know this isn't true, so there is no reason to perform the hypothesis test.
 
 #### t-value {.unnumbered}
 
 $t=\frac{b_0}{\text{SE}(b_0)} = \frac{0.527}{0.0468} = 11.25$
 
-The mean mercury level among the lakes in the sample is 11 standard errors higher than we would expect it to be if the mean mercury level among all lakes in the state were actually 0, but since we know that's not the case, this is not a meaningful interpretation.  
+The mean mercury level among the lakes in the sample is 11 standard errors higher than we would expect it to be if the mean mercury level among all lakes in the state were actually 0, but since we know that's not the case, this is not a meaningful interpretation.
 
-
-#### Pr(>|t|)   {.unnumbered}
+#### Pr(\>\|t\|) {.unnumbered}
 
 **p-value for line (Intercept)**
-
 
 ```{r}
 2*pt(-abs(11.25), df=52)
 ```
 
-The p-value is extremely small, but it is not meaningful since the null hypothesis being tested in nonsensical.  
+The p-value is extremely small, but it is not meaningful since the null hypothesis being tested in nonsensical.
 
 #### Comparison to Simulation {.unnumbered}
 
@@ -1187,20 +1123,17 @@ confint(M_Lakes_merc_0)
 confint(Lakes_Bootstrap_Mean, level = 0.95, parm= c("Intercept"), method = "stderr")
 ```
 
-
 ### Comparing Three Groups
 
-Now, we'll look at a model comparing mercury levels between deep, medium, and shallow lakes. 
+Now, we'll look at a model comparing mercury levels between deep, medium, and shallow lakes.
 
-The table shows the mean and standard deviation in mercury and number of lakes at each depth level. 
+The table shows the mean and standard deviation in mercury and number of lakes at each depth level.
 
 ```{r}
 kable(Lakes_merc_cond_Tab)
 ```
 
-
-Note that the standard deviations within each group are pretty similar. This suggests that the constant variance model assumption appears reasonable, so the R `lm` summary output, which uses a pooled standard deviation estimate should be reliable. 
-
+Note that the standard deviations within each group are pretty similar. This suggests that the constant variance model assumption appears reasonable, so the R `lm` summary output, which uses a pooled standard deviation estimate should be reliable.
 
 The model equation is:
 
@@ -1208,13 +1141,12 @@ $$
 \widehat{\text{Mercury}} = b_0 + b_1\times\text{DepthMedium} + b_2\times\text{DepthShallow}
 $$
 
-The model summary output is shown below. 
+The model summary output is shown below.
 
 ```{r}
 M_Lakes_merc_depth <- lm(data=FloridaLakes, Mercury~Depth)
 summary(M_Lakes_merc_depth)
 ```
-
 
 SSR is
 
@@ -1222,7 +1154,7 @@ SSR is
 sum(M_Lakes_merc_depth$residuals^2)
 ```
 
-SST is 
+SST is
 
 ```{r}
 Mean_merc <- mean(FloridaLakes$Mercury)
@@ -1231,16 +1163,15 @@ sum((FloridaLakes$Mercury - Mean_merc)^2)
 
 #### Residual Standard Error {.unnumbered}
 
-Since there are 2 explanatory variables in this model (DepthMedium and DepthShallow), p=2. 
+Since there are 2 explanatory variables in this model (DepthMedium and DepthShallow), p=2.
 
 $$ s =\sqrt{\frac{\text{SSR}}{n-(p+1)}}  = \sqrt{\frac{5.678062}{53-(1+2)}}=0.337$$
-
 
 #### Multiple R-Squared {.unnumbered}
 
 $R^2 = \frac{6.047875 - 5.678062}{6.047875} =0.06115$
 
-6% of the total variation in mercury level is explained by depth. 
+6% of the total variation in mercury level is explained by depth.
 
 #### F-Statistic {.unnumbered}
 
@@ -1250,24 +1181,21 @@ $$ F=\frac{\frac{SST - SSR}{p}}{\frac{SSR}{n-(p+1)}} = \frac{\frac{6.047875 - 5.
 
 ```{r}
 gf_dist("f", df1=2, df2=50, geom = "area", fill = ~ (x < 1.628), show.legend=FALSE) + geom_vline(xintercept=1.628, color="red")  + xlab("F") + theme_bw() + xlim(c(0,5)) 
-``` 
-
+```
 
 ```{r}
 1 - pf(1.628, df1=2, df2=50) |> round(4)
 ```
 
-
-The large p-value tells us we do not have enough evidence to conclude that a model accounting for depth better explains variability in mercury level than one that does not, implying we don't have enough evidence to conclude that average mercury level differs between shallow, medium, and deep lakes. 
+The large p-value tells us we do not have enough evidence to conclude that a model accounting for depth better explains variability in mercury level than one that does not, implying we don't have enough evidence to conclude that average mercury level differs between shallow, medium, and deep lakes.
 
 #### Estimates {.unnumbered}
 
-$b_0 = 0.604$ - the average mercury content in deep lakes in Florida is 0.604 ppm.   
+$b_0 = 0.604$ - the average mercury content in deep lakes in Florida is 0.604 ppm.
 
-$b_1 = 0.013$ - the average mercury content in medium lakes in Florida is 0.013 ppm less than in deep lakes.   
+$b_1 = 0.013$ - the average mercury content in medium lakes in Florida is 0.013 ppm less than in deep lakes.
 
-$b_2 = 0.18$ - the average mercury content in shallow lakes in Florida is 0.18 ppm less than in deep lakes.  
-
+$b_2 = 0.18$ - the average mercury content in shallow lakes in Florida is 0.18 ppm less than in deep lakes.
 
 #### Standard Errors {.unnumbered}
 
@@ -1277,9 +1205,9 @@ $SE(b_1)=s\sqrt{\frac{1}{\text{Deep}}+\frac{1}{\text{Medium}}} = 0.317\sqrt{\fra
 
 $SE(b_2)=s\sqrt{\frac{1}{\text{Deep}}+\frac{1}{\text{Shallow}}} = 0.317\sqrt{\frac{1}{15}+\frac{1}{22}} = 0.1128$
 
-#### Confidence Intervals   {.unnumbered}
+#### Confidence Intervals {.unnumbered}
 
-We can use these standard errors to calculate 95% confidence intervals for $\beta_0$ and $\beta_1$. 
+We can use these standard errors to calculate 95% confidence intervals for $\beta_0$ and $\beta_1$.
 
 A 95% confidence interval for $\beta_0$ is given by
 
@@ -1291,8 +1219,7 @@ $$
 \end{aligned}
 $$
 
-We are 95% confident that the mean mercury level among all deep lakes in Florida is between 0.43 and 0.78 ppm.  
-
+We are 95% confident that the mean mercury level among all deep lakes in Florida is between 0.43 and 0.78 ppm.
 
 A 95% confidence interval for $\beta_1$ is given by
 
@@ -1324,7 +1251,7 @@ We confirm these intervals using the `confint` command.
 confint(M_Lakes_merc_depth, level=0.95)
 ```
 
-#### Hypotheses    {.unnumbered}
+#### Hypotheses {.unnumbered}
 
 **Hypothesis Test for line (intercept)**
 
@@ -1332,7 +1259,7 @@ confint(M_Lakes_merc_depth, level=0.95)
 
 **Alternative Hypothesis:** The average mercury level among all deep lakes in Florida is not 0 ($\beta_0\neq 0$).
 
-We know the average mercury level is not 0, so there is no reason to do this hypothesis test. 
+We know the average mercury level is not 0, so there is no reason to do this hypothesis test.
 
 **Hypothesis Test for line DepthMedium**
 
@@ -1346,32 +1273,31 @@ We know the average mercury level is not 0, so there is no reason to do this hyp
 
 **Alternative Hypothesis:** There is a difference in average mercury levels between shallow and deep lakes in Florida ($\beta_2\neq 0$).
 
-
 #### t-value {.unnumbered}
 
-**t-statistic for $b_0$:**
+**t-statistic for** $b_0$:
 
 $t=\frac{{b_0}}{\text{SE}(b_0)} = \frac{0.60400}{0.08701} = 6.942$
 
-In our sample, the average mercury level among deep lakes in Florida is 6.9 standard errors higher than we would expect it to be if the average mercury level among all deep lakes in Florida is 0. Since we know that the mean mercury level among all deep lakes in Florida is not 0, this is not a meaningful interpretation. 
+In our sample, the average mercury level among deep lakes in Florida is 6.9 standard errors higher than we would expect it to be if the average mercury level among all deep lakes in Florida is 0. Since we know that the mean mercury level among all deep lakes in Florida is not 0, this is not a meaningful interpretation.
 
-**t-statistic for $b_1$:**
+**t-statistic for** $b_1$:
 
 $t=\frac{{b_1}}{\text{SE}(b_1)} = \frac{-0.01275}{0.12111} = -0.105$
 
-In our sample, the average mercury level among all medium lakes in Florida is 0.1 standard errors lower than we would expect it to be if the there was really no difference in average mercury levels between deep and medium lakes in Florida. Equivalently, we could say that the mean mercury level among lakes in medium depth lakes is 0.1 standard errors lower than in deep lakes.   
+In our sample, the average mercury level among all medium lakes in Florida is 0.1 standard errors lower than we would expect it to be if the there was really no difference in average mercury levels between deep and medium lakes in Florida. Equivalently, we could say that the mean mercury level among lakes in medium depth lakes is 0.1 standard errors lower than in deep lakes.
 
-**t-statistic for $b_2$:**
+**t-statistic for** $b_2$:
 
 $t=\frac{{b_2}}{\text{SE}(b_2)} = \frac{-0.17582}{0.11284} = -1.558$
 
-In our sample, the average mercury level among all shallow lakes in Florida is 1.56 standard errors lower than we would expect it to be if the there was really no difference in average mercury levels between deep and shallow lakes in Florida. Equivalently, we could say that the mean mercury level among lakes in shallow depth lakes is 1.56 standard errors lower than in deep lakes.  
+In our sample, the average mercury level among all shallow lakes in Florida is 1.56 standard errors lower than we would expect it to be if the there was really no difference in average mercury levels between deep and shallow lakes in Florida. Equivalently, we could say that the mean mercury level among lakes in shallow depth lakes is 1.56 standard errors lower than in deep lakes.
 
-#### Pr(>|t|)   {.unnumbered}
+#### Pr(\>\|t\|) {.unnumbered}
 
 **p-value for line (Intercept)**
 
-We already know the average mercury level among all deep lakes in Florida is not 0, so this is a silly test and we won't elaborate on it.  
+We already know the average mercury level among all deep lakes in Florida is not 0, so this is a silly test and we won't elaborate on it.
 
 **p-value for line DepthMedium**
 
@@ -1380,13 +1306,11 @@ ts=-0.105
 gf_dist("t", df=50, geom = "area", fill = ~ (abs(x)< abs(ts)), show.legend=FALSE) + geom_vline(xintercept=c(ts, -ts), color="red")  + xlab("t") + theme_bw()
 ```
 
-
 ```{r}
 2*pt(0.105, df=50, lower.tail = FALSE)
 ```
 
-The p-value is very large, indicating we have no evidence of differences between in average mercury level between deep and medium lakes. 
-
+The p-value is very large, indicating we have no evidence of differences between in average mercury level between deep and medium lakes.
 
 **p-value for line DepthShallow**
 
@@ -1395,18 +1319,17 @@ ts=1.558
 gf_dist("t", df=50, geom = "area", fill = ~ (abs(x)< abs(ts)), show.legend=FALSE) + geom_vline(xintercept=c(ts, -ts), color="red")  + xlab("t") + theme_bw()
 ```
 
-
 ```{r}
 2*pt(1.558, df=50, lower.tail = FALSE)
 ```
 
-The p-value is too big to conclude that there is evidence of differences in mean mercury level between deep and shallow lakes. 
+The p-value is too big to conclude that there is evidence of differences in mean mercury level between deep and shallow lakes.
 
-We did observe an average difference of about 0.18 ppm, which could potentially be meaningful, but given the size in our sample and amount of variability in the data, we cannot rule out the possibility that this difference was just a result of which lakes got randomly selected for the study. 
+We did observe an average difference of about 0.18 ppm, which could potentially be meaningful, but given the size in our sample and amount of variability in the data, we cannot rule out the possibility that this difference was just a result of which lakes got randomly selected for the study.
 
-#### Pairwise Comparisons  {.unnumbered}
+#### Pairwise Comparisons {.unnumbered}
 
-The model summary output allows us to compare mercury levels in medium and deep lakes to shallow ones, but it does not directly compare shallow and medium lakes. The `pairs` function in the `emmeans` command performs t-tests for all pairs of a categorical variable.    
+The model summary output allows us to compare mercury levels in medium and deep lakes to shallow ones, but it does not directly compare shallow and medium lakes. The `pairs` function in the `emmeans` command performs t-tests for all pairs of a categorical variable.
 
 ```{r}
 library(emmeans)
@@ -1415,17 +1338,17 @@ GroupMeans <- emmeans(M_Lakes_merc_depth, ~ Depth)
 pairs(GroupMeans, adjust = "none")
 ```
 
-We see that the t-ratios and p-values for the first two lines match those in the `lm` output, and we also get a comparison for medium and shallow lakes.   
+We see that the t-ratios and p-values for the first two lines match those in the `lm` output, and we also get a comparison for medium and shallow lakes.
 
 #### Multiple Testing Error {.unnumbered}
 
-In the previous table, we compared three groups simultaneously. Running multiple hypothesis tests at the same time increases the risk of a false positive - that is, detecting a difference when there actually isn't one.  
+In the previous table, we compared three groups simultaneously. Running multiple hypothesis tests at the same time increases the risk of a false positive - that is, detecting a difference when there actually isn't one.
 
-If we only ran one test and rejected the null hypothesis if the p-value is less than 0.05, then we would only have a 0.05 chance of rejecting the null hypothesis when it is actually true. If we run three tests though, and reject the null hypothesis for any test with a p-value less than 0.05, we will have a $1 - 0.95^3 = 0.14$ probability of rejecting a null hypothesis that is actually true. This problem gets worse the more tests we run, making it a big problem in areas like genomics, where hundreds of thousands of tests (or more) are run simultaneously. 
+If we only ran one test and rejected the null hypothesis if the p-value is less than 0.05, then we would only have a 0.05 chance of rejecting the null hypothesis when it is actually true. If we run three tests though, and reject the null hypothesis for any test with a p-value less than 0.05, we will have a $1 - 0.95^3 = 0.14$ probability of rejecting a null hypothesis that is actually true. This problem gets worse the more tests we run, making it a big problem in areas like genomics, where hundreds of thousands of tests (or more) are run simultaneously.
 
-One popular strategy for avoiding false positives when performing multiple tests is to simply multiple each p-value by the number of tests being run. This approach is called the **Bonferroni Correction**. In this case, since we are running three tests, instead of rejecting a null hypothesis when the p-value for the individual test is less than 0.05, we would need it to be less than $0.05/3 = 0.0167$. This ensures that the probability of wrongly rejecting the null hypothesis in *any* of our tests remains 0.05. The downside to the **Bonferroni Correction** is that it is a conservative method and can prevent us from detecting differences that are actually there. Other, more advanced methods, have been suggested in specific situations to try to improve on Bonferroni's approach and controlling multiple testing error remains an active area of research in statistics and biostatistics.   
+One popular strategy for avoiding false positives when performing multiple tests is to simply multiple each p-value by the number of tests being run. This approach is called the **Bonferroni Correction**. In this case, since we are running three tests, instead of rejecting a null hypothesis when the p-value for the individual test is less than 0.05, we would need it to be less than $0.05/3 = 0.0167$. This ensures that the probability of wrongly rejecting the null hypothesis in *any* of our tests remains 0.05. The downside to the **Bonferroni Correction** is that it is a conservative method and can prevent us from detecting differences that are actually there. Other, more advanced methods, have been suggested in specific situations to try to improve on Bonferroni's approach and controlling multiple testing error remains an active area of research in statistics and biostatistics.
 
-In R, we can implement the Bonferroni correction using `adjust="Bonferroni` in the `pairs` command. 
+In R, we can implement the Bonferroni correction using `adjust="Bonferroni` in the `pairs` command.
 
 ```{r}
 library(emmeans)
@@ -1434,42 +1357,10 @@ GroupMeans <- emmeans(M_Lakes_merc_depth, ~ Depth)
 pairs(GroupMeans, adjust = "Bonferroni")
 ```
 
-Notice that the p-values are tripled. In this case, we did not have evidence of differences between shallow, medium, and deep lakes even without using the Bonferroni correction, but the evidence grows even weaker after we apply the correction.   
-This finding is consistent with the F-test we performed on the entire model, which did not suggest evidence of differences in mercury levels between the three different depths of lakes.   
+Notice that the p-values are tripled. In this case, we did not have evidence of differences between shallow, medium, and deep lakes even without using the Bonferroni correction, but the evidence grows even weaker after we apply the correction.\
+This finding is consistent with the F-test we performed on the entire model, which did not suggest evidence of differences in mercury levels between the three different depths of lakes.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+````{=html}
 <!--
 
 ### Interaction Example (Move to chapter 5)
@@ -1515,7 +1406,7 @@ Since the p-value is small, we have enough evidence to say that there is evidenc
 Notice that this p-value is identical to the one we obtained in the previous section, using the t-test for interaction associated with the `lm` command.
 
 -->
-
+````
 
 \newpage
 
@@ -1523,13 +1414,13 @@ Notice that this p-value is identical to the one we obtained in the previous sec
 
 ### Intervals for Expected Response
 
-In Chapter 3, we saw two different types of confidence intervals. One type was for regression parameters, $\beta_0, \beta_1, \ldots, \beta_p$. For example, how much is a lake's mercury level expected to change when its pH goes up by 1? The other type was for expected responses, which involved estimating linear functions of these parameters, for example $\beta_0 + 7\beta_1$. For example, what is the expected mercury level among lakes with pH of 7? 
+In Chapter 3, we saw two different types of confidence intervals. One type was for regression parameters, $\beta_0, \beta_1, \ldots, \beta_p$. For example, how much is a lake's mercury level expected to change when its pH goes up by 1? The other type was for expected responses, which involved estimating linear functions of these parameters, for example $\beta_0 + 7\beta_1$. For example, what is the expected mercury level among lakes with pH of 7?
 
-We've seen how to calculate the first type of intervals using standard error formulas and the t-distribution. In this section, we'll talk about the second kind of interval.  
+We've seen how to calculate the first type of intervals using standard error formulas and the t-distribution. In this section, we'll talk about the second kind of interval.
 
 ### Estimation and Prediction
 
-Think about the ice cream machine in Section 4.1. Suppose we did not know that the machine is manufactured to dispense 2 oz of ice cream per second, and had only the data on the 15 people, shown below. 
+Think about the ice cream machine in Section 4.1. Suppose we did not know that the machine is manufactured to dispense 2 oz of ice cream per second, and had only the data on the 15 people, shown below.
 
 ```{r, echo=FALSE}
 ICplot + theme_bw()
@@ -1537,28 +1428,26 @@ ICplot + theme_bw()
 
 Suppose we are asked the following two questions:
 
-1. Give a range for the average amount of ice cream dispensed among people who hold the dispenser for 3 seconds.    
-2. Give a range for the amount of ice cream an individual person should expect to get if they hold the dispenser for 3 seconds.   
+1.  Give a range for the average amount of ice cream dispensed among people who hold the dispenser for 3 seconds.\
+2.  Give a range for the amount of ice cream an individual person should expect to get if they hold the dispenser for 3 seconds.
 
-To answer the first question, we only need to estimate the location of the red line in the diagram below. Since we would only have sample data, the regression line estimated from our sample would not exactly match the "true" regression line relating time and amount dispensed, due to sampling variability. So we would need to include a margin of error accounting for uncertainty in the location of our estimated regression line. 
+To answer the first question, we only need to estimate the location of the red line in the diagram below. Since we would only have sample data, the regression line estimated from our sample would not exactly match the "true" regression line relating time and amount dispensed, due to sampling variability. So we would need to include a margin of error accounting for uncertainty in the location of our estimated regression line.
 
-When answering the second question, we would need to account for variability between individual people, in addition to sampling variability. Even if we knew the exact location of the red line, we would need to account for the fact that some people would get more ice cream than expected, and others less, even if they hold the dispenser for the same amount of time. Thus, we will need to create a wider interval that is able to capture 95% of all individuals. 
+When answering the second question, we would need to account for variability between individual people, in addition to sampling variability. Even if we knew the exact location of the red line, we would need to account for the fact that some people would get more ice cream than expected, and others less, even if they hold the dispenser for the same amount of time. Thus, we will need to create a wider interval that is able to capture 95% of all individuals.
 
 ```{r echo=FALSE, out.width = '75%'}
 knitr::include_graphics("SLR_Pred_Int.png")
 ```
 
+An interval for the expected response among all individuals with given value(s) of explanatory variable(s) is called a **confidence interval**.
 
+An interval for an individual observation with given value(s) of explanatory variable(s) is called a **prediction interval**.
 
-An interval for the expected response among all individuals with given value(s) of explanatory variable(s) is called a **confidence interval**. 
-
-An interval for an individual observation with given value(s) of explanatory variable(s) is called a **prediction interval**.   
-
-A confidence interval only needs to account for uncertainty associated with sampling variability. A prediction interval needs to account for uncertainty associated with sampling variability and variability between individuals, hence it needs to be wider than a confidence interval. 
+A confidence interval only needs to account for uncertainty associated with sampling variability. A prediction interval needs to account for uncertainty associated with sampling variability and variability between individuals, hence it needs to be wider than a confidence interval.
 
 ### Calculating Confidence Intervals
 
-An estimate for the expected among of ice cream when a person holds the dispenser for three seconds is $b_0 + 3b_1$. In our model, we estimated $b_0$ = `r IC_Model$coef[1] |> round(2)` and $b_1$ = `r IC_Model$coef[2] |> round(2)`, so the estimated amount of ice cream is $`r IC_Model$coef[1] |> round(2)` + 3\times `r IC_Model$coef[2] |> round(2)` = `r (IC_Model$coef[1]  + 3 * IC_Model$coef[2]) |> round(2)`$ oz.
+An estimate for the expected among of ice cream when a person holds the dispenser for three seconds is $b_0 + 3b_1$. In our model, we estimated $b_0$ = `r IC_Model$coef[1] |> round(2)` and $b_1$ = `r IC_Model$coef[2] |> round(2)`, so the estimated amount of ice cream is $`r IC_Model$coef\[1\] \|\> round(2)`+ 3\times`r IC_Model$coef[2] |> round(2)` = `r (IC_Model$coef\[1\] + 3 \* IC_Model$coef[2]) |> round(2)`$ oz.
 
 ```{r, echo=FALSE}
 b0 <- IC_Model$coefficients[1] |> round(2)
@@ -1588,19 +1477,15 @@ $\displaystyle\sum(x_i-\bar{x})^2$
 sum((Icecream1$time - mean(Icecream1$time))^2) |> round(2)
 ```
 
-
 We begin by calculating the residual standard error $s$.
 
 $$
 s=\sqrt\frac{{SSR}}{n-(p+1)} = \sqrt{\frac{`r sum((IC_Model)$residuals^2) |> round(2)`}{15-(1+1)}} = `r s`
 $$
 
-
-A 95% confidence interval for the average amount of ice cream dispensed only needs to account for the amount of uncertainty associated with using $b_0$ and $b_1$, which are calculated from our sample to estimate the true, typically unknown, regression coefficients $\beta_0$ and $\beta_1$. 
-
+A 95% confidence interval for the average amount of ice cream dispensed only needs to account for the amount of uncertainty associated with using $b_0$ and $b_1$, which are calculated from our sample to estimate the true, typically unknown, regression coefficients $\beta_0$ and $\beta_1$.
 
 95% confidence interval for the average amount of ice cream dispensed when the dispenser is held for three seconds is
-
 
 $$
 \begin{aligned}
@@ -1611,21 +1496,17 @@ $$
 \end{aligned}
 $$
 
-
-This interval can be calculated using the `predict` command in R, entering the desired time in the `newdata` argument, and specifying `interval=confidence`.   
+This interval can be calculated using the `predict` command in R, entering the desired time in the `newdata` argument, and specifying `interval=confidence`.
 
 ```{r}
 predict(IC_Model, newdata=data.frame(time=3), interval = "confidence", level=0.95)
 ```
 
-
 We are 95% confident that the average amount of ice cream dispensed when the dispenser is held for 3 seconds is between `r predict(IC_Model, newdata=data.frame(time=3), interval = "confidence", level=0.95)[2] |> round(1)` and `r predict(IC_Model, newdata=data.frame(time=3), interval = "confidence", level=0.95)[3] |> round(1)` oz.
 
+Note there are small differences in the calculation, due to rounding and technicalities. R actually uses a number slightly different than 2 in its calculation, but the results are similar and these are all approximations anyway.
 
-Note there are small differences in the calculation, due to rounding and technicalities. R actually uses a number slightly different than 2 in its calculation, but the results are similar and these are all approximations anyway. 
-
-
-The plot shows 95% the estimated regression line from our sample (in blue), along with "true" regression line in read (which we wouldn't know in a real situation). The shaded gray area represents a 95% confidence interval for the average amount of ice cream dispensed for a given amount of time the dispenser is held.  
+The plot shows 95% the estimated regression line from our sample (in blue), along with "true" regression line in read (which we wouldn't know in a real situation). The shaded gray area represents a 95% confidence interval for the average amount of ice cream dispensed for a given amount of time the dispenser is held.
 
 ```{r, fig.height=4, fig.width = 8, echo=FALSE}
 ggplot(data=Icecream1, aes(x=time, y=amount)) + geom_point() + ggtitle("Icecream Dispensed") + xlab("Time Pressing dispenser") + ylab("Amount Dispensed") + stat_smooth(method="lm", se=TRUE) + geom_abline(slope=2, intercept=0, color="red")  + xlim(c(1.5,5)) + ylim(c(2.5,10)) + theme_bw()
@@ -1633,13 +1514,13 @@ ggplot(data=Icecream1, aes(x=time, y=amount)) + geom_point() + ggtitle("Icecream
 
 ### Calculating Prediction Interval
 
-When calculating an interval for the amount of ice cream an individual person receives, we need to account for variability between individual people in addition to variability associated with using $b_0$ and $b_1$ to estimate $\beta_0$ and $\beta_1$. 
+When calculating an interval for the amount of ice cream an individual person receives, we need to account for variability between individual people in addition to variability associated with using $b_0$ and $b_1$ to estimate $\beta_0$ and $\beta_1$.
 
-The residual standard error $s$ represents variability in ice cream amount between individuals who hold the dispenser for the same amount of time. So essentially, we need to add an extra $s$ into our calculation to account for variability between individuals. 
+The residual standard error $s$ represents variability in ice cream amount between individuals who hold the dispenser for the same amount of time. So essentially, we need to add an extra $s$ into our calculation to account for variability between individuals.
 
-A good first idea might be to add $s$ to $\text{SE}(b_0 + 3b_1)$ when calculating the margin of error needed for the prediction interval. It turns out that probability theory tells us that adding standard deviations isn't a good idea. But instead, we can add the variances, which are the squares of the standard deviations. So, we'll add $(\text{SE}(b_0 + 3b_1))^2+s^2$, when calculating the margin of error for the prediction interval, and then take the square root to get back to the scale of oz., rather than oz.$^2$. 
+A good first idea might be to add $s$ to $\text{SE}(b_0 + 3b_1)$ when calculating the margin of error needed for the prediction interval. It turns out that probability theory tells us that adding standard deviations isn't a good idea. But instead, we can add the variances, which are the squares of the standard deviations. So, we'll add $(\text{SE}(b_0 + 3b_1))^2+s^2$, when calculating the margin of error for the prediction interval, and then take the square root to get back to the scale of oz., rather than oz.$^2$.
 
-Thus, a 95% prediction interval for the amount of ice cream an individual person should expect to receive when holding the dispenser for 3 seconds is 
+Thus, a 95% prediction interval for the amount of ice cream an individual person should expect to receive when holding the dispenser for 3 seconds is
 
 $$
 \begin{aligned}
@@ -1652,11 +1533,9 @@ $$
 \end{aligned}
 $$
 
+While the calculation itself might look intimidating, the key intuition here is to note the extra $s^2$ being added under the square root, which accounts for the variability in amount dispensed between people who hold the dispenser for the same amount of time.
 
-While the calculation itself might look intimidating, the key intuition here is to note the extra $s^2$ being added under the square root, which accounts for the variability in amount dispensed between people who hold the dispenser for the same amount of time.  
-
-
-To perform the calculation in R, we simply change `interval="confidence"` to `interval="prediction"` in the `predict` command. 
+To perform the calculation in R, we simply change `interval="confidence"` to `interval="prediction"` in the `predict` command.
 
 ```{r}
 predict(IC_Model, newdata=data.frame(time=3), interval = "prediction", level=0.95)
@@ -1664,8 +1543,7 @@ predict(IC_Model, newdata=data.frame(time=3), interval = "prediction", level=0.9
 
 We are 95% confident that in individual who holds the dispenser for 3 seconds will get between `r round(predict(IC_Model, newdata=data.frame(time=3), interval = "predict", level=0.95)[2],2)` and `r round(predict(IC_Model, newdata=data.frame(time=3), interval = "predict", level=0.95)[3],2)` oz of ice cream.
 
-
-We add the red line, displaying prediction intervals for the amount of ice cream an individual person is expected to receive for a given amount of time holding the dispenser. Notice that the prediction intervals are considerably wider than the confidence intervals for the average amount, due to variability between individuals. 
+We add the red line, displaying prediction intervals for the amount of ice cream an individual person is expected to receive for a given amount of time holding the dispenser. Notice that the prediction intervals are considerably wider than the confidence intervals for the average amount, due to variability between individuals.
 
 ```{r, fig.height=4, fig.width=8, echo=FALSE}
 temp_var <- predict(IC_Model, interval="prediction")
@@ -1679,20 +1557,17 @@ gf_point(amount~time, data=new_df) %>%
   geom_abline(slope=2, intercept=0, color="red")
 ```
 
-
-
 ### Mercury and pH in Florida Lakes
 
-We'll calculate a confidence interval for the average mercury content among all Florida lakes with pH of 7 and for the mercury content of an individual lake with pH of 7. 
+We'll calculate a confidence interval for the average mercury content among all Florida lakes with pH of 7 and for the mercury content of an individual lake with pH of 7.
 
-These could be done using the same formulas as above, but we'll calculate them using the `predict` command in R.  
+These could be done using the same formulas as above, but we'll calculate them using the `predict` command in R.
 
-First, we fit the model in R. 
+First, we fit the model in R.
 
 ```{r}
 Lakes_M_merc_pH <- lm(data=FloridaLakes, Mercury~pH)
 ```
-
 
 **Confidence Interval**
 
@@ -1700,7 +1575,7 @@ Lakes_M_merc_pH <- lm(data=FloridaLakes, Mercury~pH)
 predict(Lakes_M_merc_pH, newdata=data.frame(pH=7), interval="confidence", level=0.95)
 ```
 
-We are 95% confident that the average mercury level among all Florida lakes with pH of 7 is between `r predict(Lakes_M_merc_pH, newdata=data.frame(pH=7), interval="confidence", level=0.95)[2] |> round(2)` and `r predict(Lakes_M_merc_pH, newdata=data.frame(pH=7), interval="confidence", level=0.95)[3] |> round(2)` ppm.  
+We are 95% confident that the average mercury level among all Florida lakes with pH of 7 is between `r predict(Lakes_M_merc_pH, newdata=data.frame(pH=7), interval="confidence", level=0.95)[2] |> round(2)` and `r predict(Lakes_M_merc_pH, newdata=data.frame(pH=7), interval="confidence", level=0.95)[3] |> round(2)` ppm.
 
 **Prediction Interval**
 
@@ -1708,11 +1583,9 @@ We are 95% confident that the average mercury level among all Florida lakes with
 predict(Lakes_M_merc_pH, newdata=data.frame(pH=7), interval="prediction", level=0.95)
 ```
 
+We are 95% confident that the mercury level for an individual lake in Florida with pH of 7 is between `r predict(Lakes_M_merc_pH, newdata=data.frame(pH=7), interval="prediction", level=0.95)[2] |> round(2)` and `r predict(Lakes_M_merc_pH, newdata=data.frame(pH=7), interval="prediction", level=0.95)[3] |> round(2)` ppm.
 
-We are 95% confident that the mercury level for an individual lake in Florida with pH of 7 is between `r predict(Lakes_M_merc_pH, newdata=data.frame(pH=7), interval="prediction", level=0.95)[2] |> round(2)` and `r predict(Lakes_M_merc_pH, newdata=data.frame(pH=7), interval="prediction", level=0.95)[3] |> round(2)` ppm.  
-
-This interval is very wide, and a bit nonsensical, since mercury content can't be negative, but we can say that we are confident such a lake will have mercury content below `r predict(Lakes_M_merc_pH, newdata=data.frame(pH=7), interval="prediction", level=0.95)[3] |> round(2)` ppm. 
-
+This interval is very wide, and a bit nonsensical, since mercury content can't be negative, but we can say that we are confident such a lake will have mercury content below `r predict(Lakes_M_merc_pH, newdata=data.frame(pH=7), interval="prediction", level=0.95)[3] |> round(2)` ppm.
 
 ```{r, fig.height=4, fig.width=8}
 temp_var <- predict(M_Lakes_merc_pH, interval="prediction")
@@ -1723,12 +1596,9 @@ ggplot(data=new_df, aes(x=pH, y=Mercury)) + geom_point() + labs(x="pH",
     geom_line(aes(y=upr), color = "red", linetype = "dashed") + theme_bw() 
 ```
 
-
-
-
 ### Mercury in Northern and Southern Lakes
 
-We can also calculate confidence and prediction intervals when the explanatory variable is categorical. Here we'll calcuate confidence intervals for the mean mercury content among all lakes in Northern and Southern Florida, as well as prediction intervals for individual lakes in these regions. 
+We can also calculate confidence and prediction intervals when the explanatory variable is categorical. Here we'll calcuate confidence intervals for the mean mercury content among all lakes in Northern and Southern Florida, as well as prediction intervals for individual lakes in these regions.
 
 ```{r}
 M_Lakes_merc_loc <- lm(data=FloridaLakes, Mercury ~ Location)
@@ -1756,8 +1626,7 @@ We are 95% confident that an individual lake in North Florida will have mercury 
 
 We are 95% confident that an individual lake in South Florida will have mercury level between 0.04 and 1.35 ppm.
 
-
-Confidence intervals for the mean are shown in blue, and prediction intervals for individual lakes in red, for each part of the state. 
+Confidence intervals for the mean are shown in blue, and prediction intervals for individual lakes in red, for each part of the state.
 
 ```{r, fig.height=4, fig.width=8}
 temp_var <- predict(M_Lakes_merc_loc, interval="prediction")
@@ -1771,7 +1640,6 @@ ggplot(data=new_df, aes(x=Location, y=Mercury)) + geom_jitter(width=0.2) + labs(
           y="Amount") + stat_smooth(method=lm, se=TRUE)
 ```
 
-
 \newpage
 
 ## The Regression Effect
@@ -1780,7 +1648,7 @@ ggplot(data=new_df, aes(x=Location, y=Mercury)) + geom_jitter(width=0.2) + labs(
 
 You might be wondering how regression gets its name. It comes from a well known phenomenon, known as "regression to the mean", or the "regression effect". While the word "regression" is often construed with a negative context (i.e. getting worse), it could also refer to movement in the positive direction.
 
-The scatterplot below shows student scores on two exams given in an introductory statistics class at another college. The data are part of the `Lock5Data` package. 
+The scatterplot below shows student scores on two exams given in an introductory statistics class at another college. The data are part of the `Lock5Data` package.
 
 ```{r, fig.height=6, fig.width=6, echo=FALSE}
 data(StatGrades)
@@ -1788,26 +1656,25 @@ ggplot(data=StatGrades, aes(y=Exam2, x=Exam1)) + geom_point() +
   stat_smooth(method="lm", se=FALSE) + geom_abline(slope=1) + theme_bw()
 ```
 
-The blue line represents the least squares regression line. The black line represents the line $y=x$. A student who scored exactly the same on  both exams would lie on the black line. 
+The blue line represents the least squares regression line. The black line represents the line $y=x$. A student who scored exactly the same on both exams would lie on the black line.
 
-We do see a positive relationship between the exam scores, as we would expect. On average students who scored higher on the first exam also did on the second one. If we look deeper, however, we notice some interesting results. 
+We do see a positive relationship between the exam scores, as we would expect. On average students who scored higher on the first exam also did on the second one. If we look deeper, however, we notice some interesting results.
 
-* There were 6 students who scored below a 70 on the first exam. Of these, 5 improved their score on the second exam (as indicated by the fact that they lie above the black line).    
+-   There were 6 students who scored below a 70 on the first exam. Of these, 5 improved their score on the second exam (as indicated by the fact that they lie above the black line).
 
-* There were 7 students who scored a 90 or above on the first exam. Of these, only 2 improved on the second exam.   
+-   There were 7 students who scored a 90 or above on the first exam. Of these, only 2 improved on the second exam.
 
-At first glance, a professor might think that the students who struggled on the first exam had begun studying harder, strengthened their understanding of the material, and thus improved on the second exam. Meanwhile, the professor might conclude that the students who had done well on the first exam had gotten lazy and not prepared or learned the material as well for the second exam. While these explanations may be true, there is another explanation we should consider here.  
+At first glance, a professor might think that the students who struggled on the first exam had begun studying harder, strengthened their understanding of the material, and thus improved on the second exam. Meanwhile, the professor might conclude that the students who had done well on the first exam had gotten lazy and not prepared or learned the material as well for the second exam. While these explanations may be true, there is another explanation we should consider here.
 
-We can think of a student's score on an exam as being a combination of their skill (or understanding) and luck. A certain with a strong understanding of the material will certainly be better positioned to score higher than a student with a weak understanding. Still, there are other factors that will affect an exam score, such as how the person is feeling on the day of the exam, or which questions are on the exam. 
+We can think of a student's score on an exam as being a combination of their skill (or understanding) and luck. A certain with a strong understanding of the material will certainly be better positioned to score higher than a student with a weak understanding. Still, there are other factors that will affect an exam score, such as how the person is feeling on the day of the exam, or which questions are on the exam.
 
-A student who scores very high on the first exam likely knew the material well, and also experienced some good luck. Perhaps they got a good night's sleep before the exam and the questions that were on the test were over the topics they knew best. If the student keeps studying and preparing just as well for the second exam, we would expect their skill level and understanding of the material to be just as good, but they may still see a slip in their score if their luck doesn't hold up as well. Perhaps they aren't feeling as well during the exam, or the professor happens to choose an exam question on their least favorite topic. Conversely, a student who scores very low on the first exam likely had a low understanding of the material and also experienced some bad luck. Unless they take action to improve their work in the class, it is unlikely that their level of understanding will be any better on the second exam, but their score may still improve if they get even average luck.   
+A student who scores very high on the first exam likely knew the material well, and also experienced some good luck. Perhaps they got a good night's sleep before the exam and the questions that were on the test were over the topics they knew best. If the student keeps studying and preparing just as well for the second exam, we would expect their skill level and understanding of the material to be just as good, but they may still see a slip in their score if their luck doesn't hold up as well. Perhaps they aren't feeling as well during the exam, or the professor happens to choose an exam question on their least favorite topic. Conversely, a student who scores very low on the first exam likely had a low understanding of the material and also experienced some bad luck. Unless they take action to improve their work in the class, it is unlikely that their level of understanding will be any better on the second exam, but their score may still improve if they get even average luck.
 
 ### Simulating Test Scores
 
 We'll conduct a simulation of the test scores under the assumption that a student's score is a combination of skill and luck. We'll assume there are 25 students in a class, and that the students' levels of understanding are normally distributed with an average understanding equivalent to a score of 80 on the exam. We'll assume that the standard deviation in understanding level between students is 10. We'll also assume that each student's score on the exam will deviate from their actual level of understanding in accordance with a normal distribution with standard deviation 5. (This means that most students will score within $\pm10$) points of their true level of understanding. **We'll assume that all of the students have the same level of understanding for both exams (none get any stronger or weaker), but that their luck might differ between the exams.**
 
-The figure below shows each student's simulated scores. The number on the diagram represents their actual level of understanding.  For example, the top center student understood the material well enough to merit an 83 on both exams, but actually scored a 79 on the first exam and a 95 on the second exam, due to somewhat poor luck on the first, and very good luck on the second. 
-
+The figure below shows each student's simulated scores. The number on the diagram represents their actual level of understanding. For example, the top center student understood the material well enough to merit an 83 on both exams, but actually scored a 79 on the first exam and a 95 on the second exam, due to somewhat poor luck on the first, and very good luck on the second.
 
 ```{r, fig.height=6, fig.width=6}
 set.seed(110322018)
@@ -1820,14 +1687,13 @@ ggplot(data=TestSim, aes(y=Score2, x=Score1))+ geom_point() + stat_smooth(method
   geom_abline(slope=1) + geom_text(aes(label=Understanding), vjust = 0, nudge_y = 0.5)  + theme_bw()
 ```
 
-
 Notice that the behavior of the simulated scores mirrors those of the real ones we saw. Students who scored very low on the first exam tended to improve, and students who scored very high tended to drop off, **even though this simulation was conducted under the assumption that their true level of understanding stayed the same!**
 
-The regression effect says that people who achieve very high performance in one event are likely to see a decrease in their next one, not because they got any worse, but because the excellent performance was probably a combination of both skill and good luck. Even if the skill persists, they are unlikely to experience the same good luck again, and thus are more likely to deteriorate or "regress"  to their true ability level. Conversely, those who achieved very poor performance likely experience both poor skill and bad luck, and even if they don't get any better, their performance is bound to improve based on better luck alone. Thus, a person who achieves very high or low performance is likely to "regress" toward their true ability level in the next attempt. This is known as the **regression effect**, or **regression to the mean.**
+The regression effect says that people who achieve very high performance in one event are likely to see a decrease in their next one, not because they got any worse, but because the excellent performance was probably a combination of both skill and good luck. Even if the skill persists, they are unlikely to experience the same good luck again, and thus are more likely to deteriorate or "regress" to their true ability level. Conversely, those who achieved very poor performance likely experience both poor skill and bad luck, and even if they don't get any better, their performance is bound to improve based on better luck alone. Thus, a person who achieves very high or low performance is likely to "regress" toward their true ability level in the next attempt. This is known as the **regression effect**, or **regression to the mean.**
 
 ### NFL Wins
 
-The graphic plots the number of games won by each team in the National Football League in 2021 and 2022. 
+The graphic plots the number of games won by each team in the National Football League in 2021 and 2022.
 
 ```{r, each=FALSE, fig.height=6, fig.width=6, echo=FALSE}
 #Wins2017 <- c(8,10,9,9,11,5,7,0,9,5,9,7,4,4,10,10,9,11,6,13,13,11,3,5,6,13,13,6,9,5,9,7)
@@ -1843,10 +1709,9 @@ gf_point(Wins2022~Wins2021, data=NFL) %>% gf_lm %>% gf_function(fun=identity) %>
 
 ```
 
-We see that among the teams that won 5 or fewer games in 2021 4 of the 5 improved the following year. Meanwhile, among the 7 teams that won 10 or more, only 2 improved, while one stayed the same. 
+We see that among the teams that won 5 or fewer games in 2021 4 of the 5 improved the following year. Meanwhile, among the 7 teams that won 10 or more, only 2 improved, while one stayed the same.
 
-While it may be the case that the weak teams got better and the good teams got worse, it is also possible that the teams that won fewer games in 2021 experienced some bad luck. Perhaps they had a lot of injuries, played difficult opponents,  or had questionable calls that went against them. In that case, they may have won more games in 2022 simply because their luck wasn't so bad. Likewise, the teams that did the best in 2021 may have been fortunate to stay healthy, play an easier schedule, or have calls go their way. They might see a decrease in wins the next year if their good luck reverts to being only average, even if they didn't actually get any worse as a team. This is another example of the regression effect. 
-
+While it may be the case that the weak teams got better and the good teams got worse, it is also possible that the teams that won fewer games in 2021 experienced some bad luck. Perhaps they had a lot of injuries, played difficult opponents, or had questionable calls that went against them. In that case, they may have won more games in 2022 simply because their luck wasn't so bad. Likewise, the teams that did the best in 2021 may have been fortunate to stay healthy, play an easier schedule, or have calls go their way. They might see a decrease in wins the next year if their good luck reverts to being only average, even if they didn't actually get any worse as a team. This is another example of the regression effect.
 
 ### Pilot Training
 
@@ -1857,8 +1722,6 @@ Trainees were praised after performing well and criticized after performing badl
 Kahneman and Tversky write that :
 
 *"We normally reinforce others when their behavior is good and punish them when their behavior is bad. By regression alone, therefore, they \[the trainees\] are most likely to improve after being punished and most likely to deteriorate after being rewarded. Consequently, we are exposed to a lifetime schedule in which we are most often rewarded for punishing others, and punished for rewarding."*
-
-
 
 ## Responsible Statistical Inference
 
@@ -1896,13 +1759,13 @@ Performing responsible statistical inference requires understanding what p-value
 
 ### Multiple Testing Error
 
-In Section 4.3.4, we talked about the risk of detecting false positives when performing multiple hypothesis tests at the same time. We noted that this could be controlled using methods like the Bonferroni correction. 
+In Section 4.3.4, we talked about the risk of detecting false positives when performing multiple hypothesis tests at the same time. We noted that this could be controlled using methods like the Bonferroni correction.
 
 An obvious example of multiple testing error occurred in a [2008 article by New Scientist](https://www.newscientist.com/article/dn13754-breakfast-cereals-boost-chances-of-conceiving-boys/) whose title made the surprising claim: "Breakfast cereals boost chances of conceiving boys." Although the article lacks details on the underlying study, researchers, in fact, tracked the eating habits of women who were attempting to become pregnant. They tracked 133 different food items, and tested whether there was a difference in the proportion of baby boys conceived between women who ate the food, compared to those who didn't. Of the 133 foods tested, only breakfast cereal showed a significant difference.
 
-If none of the food items had any effect on the likelihood of a baby being born male, we should expect to obtain p-values less than 0.05 for $0.05 \times 133 = 6.6$ food items, just by chance. The probability of getting at least one p-value less than 0.05 is $1-0.95^{133} = 99.9\%$. The link between sex at birth and the mother's consumption of breakfast cereal was almost certainly one of these false positives, resulting from performing 133 tests simultaneously. This [xkcd comic](https://xkcd.com/882/)? illustrates the faulty reasoning at play here. 
+If none of the food items had any effect on the likelihood of a baby being born male, we should expect to obtain p-values less than 0.05 for $0.05 \times 133 = 6.6$ food items, just by chance. The probability of getting at least one p-value less than 0.05 is $1-0.95^{133} = 99.9\%$. The link between sex at birth and the mother's consumption of breakfast cereal was almost certainly one of these false positives, resulting from performing 133 tests simultaneously. This [xkcd comic](https://xkcd.com/882/)? illustrates the faulty reasoning at play here.
 
-It is important to use the Bonferroni correction, or some other kind of correction to control for false positives when performing multiple tests simultaneously.  
+It is important to use the Bonferroni correction, or some other kind of correction to control for false positives when performing multiple tests simultaneously.
 
 ### Flights from New York to Chicago
 
@@ -1965,8 +1828,7 @@ confint(M_Flights)
 
 -   We are 95% confident that flights from LGA to ORD take between 2.2 and 2.9 minutes longer, on average, than flights from EWR to ORD.
 
-We obtained a small p-value, and thus a statistically discernible difference in mean flight time to Chicago between the two airports. And yet, the difference is very small (between 2-3 minutes). Most travelers would not make their decision on this basis, and would likely prioritize other factors, such as price and convenience. In this case, the small p-value is due to the fact that we have a very large sample size, rather than a meaningful difference in outcomes. 
-
+We obtained a small p-value, and thus a statistically discernible difference in mean flight time to Chicago between the two airports. And yet, the difference is very small (between 2-3 minutes). Most travelers would not make their decision on this basis, and would likely prioritize other factors, such as price and convenience. In this case, the small p-value is due to the fact that we have a very large sample size, rather than a meaningful difference in outcomes.
 
 ### Smoking and Birthweight Example
 
@@ -2016,7 +1878,7 @@ confint(M_Birthwt)
 
 Many studies have shown that a mother's smoking puts a baby at risk of low birthweight. Do our results contradict this research? Should we conclude that smoking has no impact on birthweights?
 
-#### Larger Study    {.unnumbered}
+#### Larger Study {.unnumbered}
 
 In fact, this sample of 80 babies is part of a larger dataset, consisting of 1,000 babies born in NC in 2004. When we consider the full dataset, notice that the difference between the groups is similar, but the p-value is much smaller, providing stronger evidence of a relationship between a mother's smoking and lower birthweight.
 
@@ -2035,8 +1897,7 @@ confint(M_Birthwt_Full)
 
 Notice that the estimated difference in birth weights is actually smaller in the full dataset than in the subset (though 0.3 lbs is still a pretty big difference for babies), and yet now the p-value is much smaller. Why do you think this happened? What should we learn from this?
 
-We saw that a difference that was not statistically discernible for the sample of 80 babies became discernible when we had a larger sample. The large p-value from the initial study was due to a small sample size, rather than the lack of an effect of smoking. It wasn't that smoking didn't have an effect on birth weight, only that the sample was too small to detect it conclusively, given the  amount of variability in the data. Had the researchers stopped and "accepted" the null hypothesis, concluding that smoking during pregnancy had no effect on the baby's health, they would have been making a disasterous mistake!
-
+We saw that a difference that was not statistically discernible for the sample of 80 babies became discernible when we had a larger sample. The large p-value from the initial study was due to a small sample size, rather than the lack of an effect of smoking. It wasn't that smoking didn't have an effect on birth weight, only that the sample was too small to detect it conclusively, given the amount of variability in the data. Had the researchers stopped and "accepted" the null hypothesis, concluding that smoking during pregnancy had no effect on the baby's health, they would have been making a disasterous mistake!
 
 ### Cautions and Advice
 
@@ -2054,11 +1915,488 @@ We saw that a difference that was not statistically discernible for the sample o
 -   Were treatments randomly assigned (for experiments)?\
 -   Are there other variables to consider?
 
-
 ## Practice Questions
-
-
 
 ```{r, echo=FALSE}
 #save.image(file = "Environment.RData")
 ```
+
+
+### 1) {.unnumbered}
+
+For each of the three plots, state whether it would be appropriate to use the ordinary linear regression model of the form
+
+$$
+\hat{y} = \beta_0 + \beta_1x + \epsilon_i, \text{ where } \epsilon_i\sim{\text{N}}(0,\sigma)
+$$
+
+Explain why or why not. (Hint: Think about whether the assumptions of the ordinary regression model in Section 4.1.6 appear to be satisfied. )
+
+```{r, fig.height=4, fig.width=12}
+set.seed(10082020)
+# set times 
+n <- 60
+time <- runif(n , 2, 5)
+
+noise <-rnorm(n , 0, (time-2)^2/2) %>% round(2)  #generate noise from normal distribution
+amount <- 2*time + noise  # calculate observed amounts
+IcecreamA <- data.frame(time,  amount) # set up data table
+
+
+noise <-rnorm(n , 0, 1) %>% round(2)  #generate noise from normal distribution
+amount <-  3*(time-3.5)^2 + 5 + noise  # calculate observed amounts
+IcecreamB <- data.frame(time,  amount) # set up data table
+
+
+noise <-rnorm(n , 0, 1) %>% round(2)  #generate noise from normal distribution
+amount <- 3*time + noise  # calculate observed amounts
+IcecreamC <- data.frame(time, amount) # set up data table
+
+PlotA <- ggplot(data=IcecreamA, aes(x=time, y=amount)) + geom_point()  + 
+  xlim(c(1.5,5)) + ylim(c(0,16)) + ggtitle("A)") + xlab("x") + ylab("y") + 
+  theme_bw()
+
+PlotB <- ggplot(data=IcecreamB, aes(x=time, y=amount)) + geom_point() + 
+  xlim(c(1.5,5)) + ylim(c(0,16)) +  ggtitle("B)") + xlab("x") + ylab("y") + 
+  theme_bw()
+
+PlotC <- ggplot(data=IcecreamC, aes(x=time, y=amount)) + geom_point() + 
+  xlim(c(1.5,5)) + ylim(c(0,16)) +  ggtitle("C)") + xlab("x") + ylab("y") + 
+  theme_bw()
+
+grid.arrange(PlotA, PlotB, PlotC, nrow=1)
+```
+
+
+
+
+### 2) {.unnumbered}
+
+Consider the data shown in each of the four plots, and the ordinary linear regression model
+
+$$
+\hat{y} = \beta_0 + \beta_1x + \epsilon_i, \text{ where } \epsilon_i\sim{\text{N}}(0,\sigma).
+$$
+```{r, fig.height=8, fig.width=8}
+set.seed(10082020)
+# set times 
+n <- 60
+time <- runif(n , 2, 5)
+
+noise <-rnorm(n, 0, 0.2) %>% round(2)  #generate noise from normal distribution
+amount <- 2*time + noise  # calculate observed amounts
+IcecreamA <- data.frame(time, signal, noise, amount) # set up data table
+
+
+noise <-rnorm(n, 0, 3) %>% round(2)  #generate noise from normal distribution
+amount <- 3*time + noise  # calculate observed amounts
+IcecreamB <- data.frame(time, signal, noise, amount) # set up data table
+
+
+noise <-rnorm(n, 0, 1) %>% round(2)  #generate noise from normal distribution
+amount <- 1*time + noise  # calculate observed amounts
+IcecreamC <- data.frame(time, signal, noise, amount) # set up data table
+
+noise <-rnorm(n, 0, 0.5) %>% round(2)  #generate noise from normal distribution
+amount <- 0.1*time + noise + 5  # calculate observed amounts
+IcecreamD <- data.frame(time, signal, noise, amount) # set up data table
+
+PlotA <- ggplot(data=IcecreamA, aes(x=time, y=amount)) + geom_point()  + 
+  xlim(c(1.5,5)) + ylim(c(0,16)) + ggtitle("A)") + 
+  theme_bw()
+
+PlotB <- ggplot(data=IcecreamB, aes(x=time, y=amount)) + geom_point() + 
+  xlim(c(1.5,5)) + ylim(c(0,16)) +  ggtitle("B)") + 
+  theme_bw()
+
+PlotC <- ggplot(data=IcecreamC, aes(x=time, y=amount)) + geom_point() + 
+  xlim(c(1.5,5)) + ylim(c(0,16)) +  ggtitle("C)") + 
+  theme_bw()
+
+PlotD <- ggplot(data=IcecreamD, aes(x=time, y=amount)) + geom_point() + 
+  xlim(c(1.5,5)) + ylim(c(0,16)) +  ggtitle("D)") + 
+  theme_bw()
+
+grid.arrange(PlotA, PlotB, PlotC, PlotD, nrow=2)
+```
+
+#### a) Order the plots from the one with the smallest value of $\beta_1$ to the largest.  {.unnumbered}
+
+#### b) Order the plots from the one with the smallest value of $\sigma$ to the largest.   {.unnumbered} 
+
+#### c) Order the plots from the one with the smallest value of $R^2$ to the largest.    {.unnumbered}
+
+
+### 3) {.unnumbered}
+
+Consider the data shown in each of the four plots, and the ordinary linear regression model
+
+$$
+\hat{y} = \beta_0 + \beta_1\text{GroupB}+ \epsilon_i, \text{ where } \epsilon_i\sim{\text{N}}(0,\sigma).
+$$
+
+```{r, fig.height=8, fig.width=8}
+set.seed(10082020)
+# set times 
+Group <- c("A","A","A","A","A","A","A","A","B","B","B","B","B","B","B","B" )
+
+noise <-rnorm(16, 0, 2) %>% round(2)  #generate noise from normal distribution
+amount <- 2*(Group=="A") + noise + 3  # calculate observed amounts
+IcecreamA <- data.frame(Group, amount) # set up data table
+
+
+noise <-rnorm(16, 0, 1) %>% round(2)  #generate noise from normal distribution
+amount <- 3*(Group=="B") + noise + 3  # calculate observed amounts
+IcecreamB <- data.frame(Group,  amount) # set up data table
+
+
+noise <-rnorm(16, 0, 0.5) %>% round(2)  #generate noise from normal distribution
+amount <- 0.5*(Group=="C") + noise + 5  # calculate observed amounts
+IcecreamC <- data.frame(Group,  amount) # set up data table
+
+noise <-rnorm(16, 0, 4) %>% round(2)  #generate noise from normal distribution
+amount <- 1*(Group=="D") + noise + 7  # calculate observed amounts
+IcecreamD <- data.frame(Group,  amount) # set up data table
+
+PlotA <- ggplot(data=IcecreamA, aes(x=Group, y=amount)) + geom_jitter(width=0.1)  + 
+  ylim(c(0,16)) + ggtitle("A)") + xlab("x") + ylab("y") +  
+  theme_bw()
+
+PlotB <- ggplot(data=IcecreamB, aes(x=Group, y=amount)) + geom_jitter(width=0.1) + 
+  ylim(c(0,16)) +  ggtitle("B)") + xlab("x") + ylab("y") + 
+  theme_bw()
+
+PlotC <- ggplot(data=IcecreamC, aes(x=Group, y=amount)) + geom_jitter(width=0.1) + 
+  ylim(c(0,16)) +  ggtitle("C)") + xlab("x") + ylab("y") + 
+  theme_bw()
+
+PlotD <- ggplot(data=IcecreamD, aes(x=Group, y=amount)) + geom_jitter(width=0.1) + 
+  ylim(c(0,16)) +  ggtitle("D)") + xlab("x") + ylab("y") + 
+  theme_bw()
+
+grid.arrange(PlotA, PlotB, PlotC, PlotD, nrow=2)
+```
+
+
+#### a) Order the plots from the one with the smallest value of $\beta_1$ to the largest.  {.unnumbered}
+
+#### b) Order the plots from the one with the smallest value of $\sigma$ to the largest.   {.unnumbered} 
+
+#### c) Order the plots from the one with the smallest F-statistic to the largest.    {.unnumbered}
+
+
+
+### 4) 
+
+
+**For Questions 4 and 5,recall that in Chapter 3 practice problems, we worked with a dataset pertaining to a sample of 200 high school seniors. Data were collected from student responses to the High School and Beyond Survey.** 
+
+
+We'll continue to work with those data, this time using theory based on the ordinary regression model to perform inference. 
+
+```{r, echo=FALSE}
+library(tidyverse)
+library(knitr)
+library(openintro)
+library(gridExtra)
+data(hsb2)
+HSSeniors <- hsb2 %>% select(schtyp, prog, write, science)
+```
+
+
+
+### 5) {.unnumbered}
+
+Consider a regression model of the form
+
+$$
+\text{Science Score} = \beta_0 + \beta_1\times\text{SchoolTypePrivate} + \epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, \sigma)
+$$
+
+
+#### a)  {.unnumbered}
+
+State the four assumptions of the ordinary regression model and explain what they mean in this context.  
+
+#### b)  {.unnumbered}
+
+The model output is shown below. 
+
+```{r}
+M_Seniors_science_schtype <- lm(data=HSSeniors, science~schtyp)
+```
+
+![M1 Output](Ch4_1.png){#id .class width=110% height=110%}
+The table shows the mean and standard deviation in science scores for public and private schools, as well as SSR and SST for the model.    
+
+```{r,echo=FALSE}
+kable(HSSeniors %>% group_by(schtyp) %>% summarize(Mean_Science = mean(science) %>% round(2), SD_Science =sd(science) %>% round(2), N=n()))
+```
+
+SSR: 
+
+```{r}
+sum(M_Seniors_science_schtype$residuals^2)
+```
+
+SST: 
+
+```{r}
+sum((HSSeniors$science-mean(HSSeniors$science))^2)
+```
+
+
+**Calculate the values that go in blanks (A)-(L) in the model output. Show your calculations. You may use the values in the tables and R output below.** 
+
+
+#### c)  {.unnumbered}
+
+Calculate 95% confidence intervals for $\beta_0$ and $\beta_1$.    
+
+#### d)  {.unnumbered}
+
+Give an estimate of $\sigma$. Explain what this number represents in context. It might be helpful to phrase the statement in the form "this quantity represents the variability in ________ between __________."   
+
+
+#### e)  {.unnumbered}
+
+Explain what the standard errors of $b_0$ and $b_1$ represent in context. It might be helpful to phrase these statements in the form "this quantity represents the variability in ________ between __________."    
+
+
+
+#### f)  {.unnumbered}
+
+Write the null hypothesis associated with the p-value on the line `intercept`. What (if anything) should we conclude from this p-value? 
+
+
+##### g)  {.unnumbered}
+
+Write the null hypothesis associated with the p-value on the line `schtypprivate`. What (if anything) should we conclude from this p-value?   
+
+##### h)  {.unnumbered}
+
+Write sentences interpreting each of the following intervals in context. If the command produces two intervals, interpret both of them.       
+
+i) 
+
+```{r}
+confint(M_Seniors_science_schtype)
+```
+
+
+
+ii) 
+
+```{r}
+predict(M_Seniors_science_schtype, newdata=data.frame(schtyp="private"), interval="confidence")
+```
+
+
+iii) 
+
+```{r}
+predict(M_Seniors_science_schtype, newdata=data.frame(schtyp="private"), interval="prediction")
+```
+
+
+
+
+
+
+### 6) {.unnumbered}
+
+Now consider a model of the form: 
+
+
+$$
+\text{Science Score} = \beta_0 + \beta_1\times\text{WritingScore} + \epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, \sigma)
+$$
+
+#### a)  {.unnumbered}
+
+State the four assumptions of the ordinary regression model and explain what they mean in this context.  
+
+
+#### b)  {.unnumbered}
+
+The model output is shown below, along with some quantities that can be used to calculate the model estimates.  
+
+```{r}
+M_Seniors_science_write <- lm(data=HSSeniors, lm(data=HSSeniors, science~write))
+```
+
+![M2 Output](Ch4_1.png){#id .class width=110% height=110%}
+
+SSR: 
+
+```{r}
+sum(M_Seniors_science_write$residuals^2)
+```
+
+SST: 
+
+```{r}
+sum((HSSeniors$science-mean(HSSeniors$science))^2)
+```   
+
+$\bar{x}$:
+
+```{r}
+mean(HSSeniors$write)
+```
+
+
+$\bar{y}$:
+
+```{r}
+mean(HSSeniors$science)
+```
+
+$\displaystyle\sum_{i=1}^n(x_i-\bar{x})^2$:
+
+```{r}
+sum((HSSeniors$write-mean(HSSeniors$write))^2)
+```
+
+
+**Calculate the values that go in blanks (A)-(L) in the model output. Show your calculations. You may use the values in the tables and R output below.** 
+
+
+
+
+
+#### c)  {.unnumbered}
+
+Calculate 95% confidence intervals for $\beta_0$ and $\beta_1$.    
+
+#### d)  {.unnumbered}
+
+Give an estimate of $\sigma$. Explain what this number represents in context. It might be helpful to phrase the statement in the form "this quantity represents the variability in ________ between __________."   
+
+
+#### e)  {.unnumbered}
+
+Explain what the standard errors of $b_0$ and $b_1$ represent in context. It might be helpful to phrase these statements in the form "this quantity represents the variability in ________ between __________."    
+
+
+#### f)   {.unnumbered}
+
+Write the null hypothesis associated with the p-value on the line `intercept`. What (if anything) should we conclude from this p-value? 
+
+#### g)   {.unnumbered}
+
+Write the null hypothesis associated with the p-value on the line `wrire`. What (if anything) should we conclude from this p-value?   
+
+##### h)  {.unnumbered}
+
+Write sentences interpreting each of the following intervals in context. If the command produces two intervals, interpret both of them.   
+
+i)   
+
+```{r}
+confint(M_Seniors_science_write)
+```
+
+
+ii) 
+
+```{r}
+predict(M_Seniors_science_write, newdata=data.frame(write=60), interval="confidence")
+```
+
+
+iii) 
+
+```{r}
+predict(M_Seniors_science_write, newdata=data.frame(write=60), interval="prediction")
+```
+
+
+
+### 6)    {.unnumbered}  
+
+a) Using the public/private schools data, suppose we randomly select a single public school student and find that they have a science score of 55. Should we conclude that this person is exceptionally strong at science, relative to other students? Why or why not?         
+
+b) Suppose we take a random sample of 168 public school students and find that the average science score in the group was 55. Should we conclude that this group was exceptionally strong at science, relative to other groups of students? Why or why not? 
+
+
+### 7)   {.unnumbered}
+
+The residual standard error $s$ is different for the model in Question 1 than in Question 2. Suppose a person says "these are both meant to be the standard deviation in science test scores, so how can they be different?" How should you respond?    
+
+
+### 8)    {.unnumbered}  
+
+Suppose the sample had consisted of 400 total students (instead of 200), of which 336 were from public schools and 64 from private schools (so the proportion from each school type is the same as in Question 1). Suppose the variability in the 400 students was similar to the variability in the original 200. For the quantities (A) - (L) in the Question 1 R Output, state whether each would be expected to increase, decrease, or stay about the same.    
+
+
+### 9) {.unnumbered}
+
+The following data and description come from the `alr4` R package. 
+
+
+"Karl Pearson organized the collection of data on over 1100 families in England in the period 1893 to 1898. This particular data set gives the Heights in inches of mothers and their daughters, with up to two daughters per mother. All daughters are at least age 18, and all mothers are younger than 65."
+
+A scatterplot of the heights of the mothers and their daughters is shown below. The black line represents the line "y=x" and the blue line is the least squares regression line.   
+
+```{r}
+library(alr4)
+data(Heights)
+ggplot(data=Heights, aes(x=mheight, y=dheight)) + geom_point() + 
+  stat_smooth(method="lm", se=FALSE) + 
+  geom_abline(slope=1, intercept=0) + theme_bw() + 
+  xlab("Mother Height") + ylab("Daughter Height")
+```
+
+#### a) {.unnumbered}
+
+Describe the strength and direction of the relationship between heights of mothers and their children? Approximately what is the value of $R^2$. 
+
+#### b) {.unnumbered}
+
+Among mothers who are less than 60 inches tall, how do their daughters' heights compare to the mothers'? What about for mothers who are more than 67 inches tall? Explain why this might be happening and give the statistical name for the behavior we see here. 
+
+#### c) {.unnumbered}
+
+Suppose a mother is 60 inches tall. What is the predicted height of her daughter?   
+
+#### d) {.unnumbered}
+
+Suppose a mother is 60 inches tall. Use the graph the approximate a 95% prediction interval for her daughter's height.   
+
+### 10) {.unnumbered}
+
+When a particular brain area becomes more active, it uses more oxygen. Functional Magnetic Resonance Imaging (fMRI) involves taking a scan of the brain to measure changes in blood flow to different regions. The fMRI machine can record the activity in a region of the brain, but it is subject to measurement error (noise). 
+
+In a [2009 study by Bennett et. al](http://prefrontal.org/files/posters/Bennett-Salmon-2009.pdf), an 18-inch, 3.8 lb. salmon was shown a series of photographs depicting human individuals in social situations with a specified emotional valence. Statistics measuring activity in voxels, tiny 3D regions of the brain, were calculated for both when the salmon was resting, and when it was viewing the photograph. t-tests were used on each voxel to test whether there was evidence of differences in brain activation when viewing the photograph, compared to at rest. Out of 8,064 voxels tested, 16 yielded p-values less than 0.001, thus showing evidence of differences in brain activity. 
+
+There was, however, a trick. The salmon was dead, and thus was experiencing no brain activity at all!
+
+a) Even if we hadn't known that the salmon was dead, why shouldn't we conclude that the salmon's brain was responding differently when viewing the photo, compared to when at rest, based on these results?    
+
+b) What could we do in this situation to reduce that risk of detecting a false positive when testing for change in a voxel of the brain?   
+
+### 11 {.unnumbered}
+
+[A 2015 study by Rohrer, Egloff, and Schmukle](https://www.pnas.org/doi/full/10.1073/pnas.1506451112) examined whether older siblings exhibited differences in intelligence and personality, compared to their younger siblings. The study used data from three large national panels from the United States (n = 5,240), Great Britain (n = 4,489), and Germany (n = 10,457).
+
+The article states:  
+
+*The question of whether a person’s position among siblings has a lasting impact on that person’s life course has fascinated both the scientific community and the general public for >100 years. By combining large datasets from three national panels, we confirmed the effect that firstborns score higher on objectively measured intelligence and additionally found a similar effect on self-reported intellect. However, we found no birth-order effects on extraversion, emotional stability, agreeableness, conscientiousness, or imagination. This finding contradicts lay beliefs and prominent scientific theories alike and indicates that the development of personality is less determined by the role within the family of origin than previously thought.*
+
+a) The study tested six different outcomes (intelligence, extraversion, emotional stability, agreeableness, conscientiousness, and imagination). For each outcome, the null hypothesis is that there is no relationship between that outcome and the sibling's birth order. Suppose that for each outcome there is a 0.05 probability of a hypothesis test resulting in a false positive (concluding an outcome is related to birth order when it really isn't). If hypothesis tests are run on all six outcomes, what is the probability of getting at least one false positive? How can we ensure that the probability of getting one or more false positives when running six tests simultaneously is no higher than 0.05?   
+
+c) To test intellect, the authors used scores on Intelligence Quotient (IQ) tests. The mean score on IQ tests is 100, with a standard deviation of 15 between individual scores. The authors found that an older sibling scored, on average 1.5 points higher than the next younger sibling in the family. An ANOVA F-test with the null hypothesis that there is no relationship between birth order and intelligence resulted in an F-statistic of 11.80 and p-value of less than 0.001. Is the relationship between birth order and intelligence statistically discernible? Do you think it is practically meaningful? Explain your answer.   
+
+### 12) {.unnumbered}
+
+
+Duchenne muscular dystrophy (DMD). DMD is a severe and progressive genetic disease that leads to muscle weakness, worsening over time. It is more common in boys than in girls. In 2016, a drug called Eteplirsen (now known as Exondys 51) was developed for the purpose of treating  DMD symptoms and improving quality of life. Because the disease is rare, it is difficult to collect a large sample of participants for a randomized clinical trial to test the effectiveness of the drug. In a sample of 12 boys, 6 were assigned to a treatment group and took Eteplirsen for 62 weeks. The other 6 were assigned to a control group and took a placebo for 24 weeks, followed by Eteplirsen for 38 weeks. The boys were randomly assigned to groups. Researchers recorded the distance each boy walked in 6 minutes at the beginning and end of the study. Two of the boys in the placebo group withdrew from the study due to health complications. The average distance walked by the remaining four boys in the placebo group decreased by 63.8 m. over the 62 weeks, compared to an average decrease of only 4.2 meters for boys in the treatment group. A hypothesis test with the null hypothesis that there is no difference in distance walked between the groups returned a p-value of 0.012.   
+
+a) Is the difference between the groups statistically discernible? Is it practically meaningful?   
+
+b) There was disagreement within the Federal Drug Administration about whether to to approve the Eteplirsen drug based on this study. Why might it be a good idea to approve the drug? What concerns might you have?
+
+c) Suppose the same difference in walking distances had been observed, but the p-value had been 0.072 instead of 0.012? Would this change your thoughts on whether the drug should be approved? Why or why not? 
+
+NOTE: In the end, the FDA approved the drug, while requiring its producer to conduct additional future tests and noting that approval could be withdrawn if those tests did not confirm a clinical benefit. Results and discussion of the study are available [here](https://www.fiercebiotech.com/biotech/sarepta-therapeutics-announces-a-continued-benefit-on-walking-test-through-62-weeks-phase), and [here](https://pubmed.ncbi.nlm.nih.gov/26573217/.).  
