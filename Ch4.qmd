@@ -315,7 +315,7 @@ We can use $s$ to calculate standard errors $\text{SE}(b_j)$ when $b_j$ represen
 **Theory-Based Standard Error Formulas**
 
 | Statistic | Standard Error |
-|----|----|
+|------------------------------------|------------------------------------|
 | Single Mean | $SE(b_0)=\frac{s}{\sqrt{n_{Group}}}$ |
 | Difference in Means | $SE(b_j)=s\sqrt{\frac{1}{n_{Groupj}}+\frac{1}{n_{Comp.Group}}}$ |
 | Intercept in Simple Linear Regression | $SE(b_0)=s\sqrt{\frac{1}{n}+\frac{\bar{x}^2}{\sum(x_i-\bar{x})^2}}$ |
@@ -1447,7 +1447,7 @@ A confidence interval only needs to account for uncertainty associated with samp
 
 ### Calculating Confidence Intervals
 
-An estimate for the expected among of ice cream when a person holds the dispenser for three seconds is $b_0 + 3b_1$. In our model, we estimated $b_0$ = `r IC_Model$coef[1] |> round(2)` and $b_1$ = `r IC_Model$coef[2] |> round(2)`, so the estimated amount of ice cream is $`r IC_Model$coef\[1\] \|\> round(2)`+ 3\times`r IC_Model$coef[2] |> round(2)` = `r (IC_Model$coef\[1\] + 3 \* IC_Model$coef[2]) |> round(2)`$ oz.
+An estimate for the expected among of ice cream when a person holds the dispenser for three seconds is $b_0 + 3b_1$. In our model, we estimated $b_0$ = `r IC_Model$coef[1] |> round(2)` and $b_1$ = `r IC_Model$coef[2] |> round(2)`, so the estimated amount of ice cream is $$`r IC_Model$coef[1] |> round(2)`+ 3\times`r IC_Model$coef[2] |> round(2)` = `r (IC_Model$coef[1] + 3*IC_Model$coef[2]) |> round(2)`$$ oz.
 
 ```{r, echo=FALSE}
 b0 <- IC_Model$coefficients[1] |> round(2)
@@ -1921,18 +1921,17 @@ We saw that a difference that was not statistically discernible for the sample o
 #save.image(file = "Environment.RData")
 ```
 
-
 ### 1) {.unnumbered}
 
 For each of the three plots, state whether it would be appropriate to use the ordinary linear regression model of the form
 
 $$
-\hat{y} = \beta_0 + \beta_1x + \epsilon_i, \text{ where } \epsilon_i\sim{\text{N}}(0,\sigma)
+y = \beta_0 + \beta_1x + \epsilon_i, \text{ where } \epsilon_i\sim{\text{N}}(0,\sigma)
 $$
 
 Explain why or why not. (Hint: Think about whether the assumptions of the ordinary regression model in Section 4.1.6 appear to be satisfied. )
 
-```{r, fig.height=4, fig.width=12}
+```{r, fig.height=4, fig.width=12, echo=FALSE}
 set.seed(10082020)
 # set times 
 n <- 60
@@ -1967,17 +1966,52 @@ PlotC <- ggplot(data=IcecreamC, aes(x=time, y=amount)) + geom_point() +
 grid.arrange(PlotA, PlotB, PlotC, nrow=1)
 ```
 
-
-
-
 ### 2) {.unnumbered}
+
+We use the ordinary linear regression model
+
+$$
+y = \beta_0 + \beta_1x + \epsilon_i, \text{ where } \epsilon_i\sim{\text{N}}(0,\sigma).
+$$
+
+Shown below are histograms showing the distribution of the explanatory variable $x$, the response variable, $y$, and a scatterplot displaying the relationship between $x$ and $y$.
+
+```{r, fig.width=12, fig.height=4}
+set.seed(10082020)
+# set times 
+n <- 60
+x <- rexp(n, rate=1)
+y <- x + rnorm(n, 0, 0.75)
+  
+  
+df <- data.frame(x, y) # set up data table
+
+P1 <- ggplot(data=df, aes(x=x)) + geom_histogram()  + 
+  xlim(c(0,5))  + ggtitle("A) Histogram of x") + xlab("x")  + 
+  theme_bw()
+
+P2 <- ggplot(data=df, aes(x=y)) + geom_histogram()  + 
+  xlim(c(0,5))  + ggtitle("B) Histogram of y") + xlab("y")  + 
+  theme_bw()
+
+P3 <- ggplot(data=df, aes(x=x, y=y)) + geom_point()  + 
+  xlim(c(0,5)) + ylim(c(0,5)) + ggtitle("C) Scatterplot of y and x") + xlab("x") + ylab("y") + 
+  theme_bw() + stat_smooth(method="lm", se=FALSE)
+
+grid.arrange(P1, P2, P3, ncol=3)
+```
+
+Based on these graphs, should we be concerned about the normality assumption in the ordinary linear regression model? Why or why not?
+
+### 3) {.unnumbered}
 
 Consider the data shown in each of the four plots, and the ordinary linear regression model
 
 $$
-\hat{y} = \beta_0 + \beta_1x + \epsilon_i, \text{ where } \epsilon_i\sim{\text{N}}(0,\sigma).
+y = \beta_0 + \beta_1x + \epsilon_i, \text{ where } \epsilon_i\sim{\text{N}}(0,\sigma).
 $$
-```{r, fig.height=8, fig.width=8}
+
+```{r, fig.height=8, fig.width=8, echo=FALSE}
 set.seed(10082020)
 # set times 
 n <- 60
@@ -2020,22 +2054,21 @@ PlotD <- ggplot(data=IcecreamD, aes(x=time, y=amount)) + geom_point() +
 grid.arrange(PlotA, PlotB, PlotC, PlotD, nrow=2)
 ```
 
-#### a) Order the plots from the one with the smallest value of $\beta_1$ to the largest.  {.unnumbered}
+#### a) Order the plots from the one with the smallest value of $\beta_1$ to the largest. {.unnumbered}
 
-#### b) Order the plots from the one with the smallest value of $\sigma$ to the largest.   {.unnumbered} 
+#### b) Order the plots from the one with the smallest value of $\sigma$ to the largest. {.unnumbered}
 
-#### c) Order the plots from the one with the smallest value of $R^2$ to the largest.    {.unnumbered}
+#### c) Order the plots from the one with the smallest value of $R^2$ to the largest. {.unnumbered}
 
-
-### 3) {.unnumbered}
+### 4) {.unnumbered}
 
 Consider the data shown in each of the four plots, and the ordinary linear regression model
 
 $$
-\hat{y} = \beta_0 + \beta_1\text{GroupB}+ \epsilon_i, \text{ where } \epsilon_i\sim{\text{N}}(0,\sigma).
+y = \beta_0 + \beta_1\text{GroupB}+ \epsilon_i, \text{ where } \epsilon_i\sim{\text{N}}(0,\sigma).
 $$
 
-```{r, fig.height=8, fig.width=8}
+```{r, fig.height=8, fig.width=8, echo=FALSE}
 set.seed(10082020)
 # set times 
 Group <- c("A","A","A","A","A","A","A","A","B","B","B","B","B","B","B","B" )
@@ -2077,22 +2110,13 @@ PlotD <- ggplot(data=IcecreamD, aes(x=Group, y=amount)) + geom_jitter(width=0.1)
 grid.arrange(PlotA, PlotB, PlotC, PlotD, nrow=2)
 ```
 
+#### a) Order the plots from the one with the smallest value of $\beta_1$ to the largest. {.unnumbered}
 
-#### a) Order the plots from the one with the smallest value of $\beta_1$ to the largest.  {.unnumbered}
+#### b) Order the plots from the one with the smallest value of $\sigma$ to the largest. {.unnumbered}
 
-#### b) Order the plots from the one with the smallest value of $\sigma$ to the largest.   {.unnumbered} 
+#### c) Order the plots from the one with the smallest F-statistic to the largest. {.unnumbered}
 
-#### c) Order the plots from the one with the smallest F-statistic to the largest.    {.unnumbered}
-
-
-
-### 4) 
-
-
-**For Questions 4 and 5,recall that in Chapter 3 practice problems, we worked with a dataset pertaining to a sample of 200 high school seniors. Data were collected from student responses to the High School and Beyond Survey.** 
-
-
-We'll continue to work with those data, this time using theory based on the ordinary regression model to perform inference. 
+#### **For Questions 5 and 6,recall that in Chapter 3 practice problems, we worked with a dataset pertaining to a sample of 200 high school seniors. Data were collected from student responses to the High School and Beyond Survey.We'll continue to work with those data, this time using theory based on the ordinary regression model to perform inference.** {.unnumbered}
 
 ```{r, echo=FALSE}
 library(tidyverse)
@@ -2103,8 +2127,6 @@ data(hsb2)
 HSSeniors <- hsb2 %>% select(schtyp, prog, write, science)
 ```
 
-
-
 ### 5) {.unnumbered}
 
 Consider a regression model of the form
@@ -2113,77 +2135,67 @@ $$
 \text{Science Score} = \beta_0 + \beta_1\times\text{SchoolTypePrivate} + \epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, \sigma)
 $$
 
+#### a) {.unnumbered}
 
-#### a)  {.unnumbered}
+State the four assumptions of the ordinary regression model and explain what they mean in this context.
 
-State the four assumptions of the ordinary regression model and explain what they mean in this context.  
+#### b) {.unnumbered}
 
-#### b)  {.unnumbered}
-
-The model output is shown below. 
+The model output is shown below.
 
 ```{r}
 M_Seniors_science_schtype <- lm(data=HSSeniors, science~schtyp)
 ```
 
-![M1 Output](Ch4_1.png){#id .class width=110% height=110%}
-The table shows the mean and standard deviation in science scores for public and private schools, as well as SSR and SST for the model.    
+![M1 Output](Ch4_1.png){#id .class width="110%" height="110%"} The table shows the mean and standard deviation in science scores for public and private schools, as well as SSR and SST for the model.
 
 ```{r,echo=FALSE}
 kable(HSSeniors %>% group_by(schtyp) %>% summarize(Mean_Science = mean(science) %>% round(2), SD_Science =sd(science) %>% round(2), N=n()))
 ```
 
-SSR: 
+SSR:
 
 ```{r}
 sum(M_Seniors_science_schtype$residuals^2)
 ```
 
-SST: 
+SST:
 
 ```{r}
 sum((HSSeniors$science-mean(HSSeniors$science))^2)
 ```
 
+**Calculate the values that go in blanks (A)-(L) in the model output. Show your calculations. You may use the values in the tables and R output below.**
 
-**Calculate the values that go in blanks (A)-(L) in the model output. Show your calculations. You may use the values in the tables and R output below.** 
+#### c) {.unnumbered}
 
+Calculate 95% confidence intervals for $\beta_0$ and $\beta_1$.
 
-#### c)  {.unnumbered}
+#### d) {.unnumbered}
 
-Calculate 95% confidence intervals for $\beta_0$ and $\beta_1$.    
+Give an estimate of $\sigma$. Explain what this number represents in context. It might be helpful to phrase the statement in the form "this quantity represents the variability in \_\_\_\_\_\_\_\_ between \_\_\_\_\_\_\_\_\_\_."
 
-#### d)  {.unnumbered}
+#### e) {.unnumbered}
 
-Give an estimate of $\sigma$. Explain what this number represents in context. It might be helpful to phrase the statement in the form "this quantity represents the variability in ________ between __________."   
+Explain what the standard errors of $b_0$ and $b_1$ represent in context. It might be helpful to phrase these statements in the form "this quantity represents the variability in \_\_\_\_\_\_\_\_ between \_\_\_\_\_\_\_\_\_\_."
 
+#### f) {.unnumbered}
 
-#### e)  {.unnumbered}
+Write the null hypothesis associated with the p-value on the line `intercept`. What (if anything) should we conclude from this p-value?
 
-Explain what the standard errors of $b_0$ and $b_1$ represent in context. It might be helpful to phrase these statements in the form "this quantity represents the variability in ________ between __________."    
+##### g) {.unnumbered}
 
+Write the null hypothesis associated with the p-value on the line `schtypprivate`. What (if anything) should we conclude from this p-value?
 
+##### h) {.unnumbered}
 
-#### f)  {.unnumbered}
+Write sentences interpreting each of the following intervals in context. If the command produces two intervals, interpret both of them.
 
-Write the null hypothesis associated with the p-value on the line `intercept`. What (if anything) should we conclude from this p-value? 
-
-
-##### g)  {.unnumbered}
-
-Write the null hypothesis associated with the p-value on the line `schtypprivate`. What (if anything) should we conclude from this p-value?   
-
-##### h)  {.unnumbered}
-
-Write sentences interpreting each of the following intervals in context. If the command produces two intervals, interpret both of them.       
-
-i) 
+i)  
 
 ```{r}
 confint(M_Seniors_science_schtype)
 ```
-
-
 
 ii) 
 
@@ -2191,60 +2203,51 @@ ii)
 predict(M_Seniors_science_schtype, newdata=data.frame(schtyp="private"), interval="confidence")
 ```
 
-
 iii) 
 
 ```{r}
 predict(M_Seniors_science_schtype, newdata=data.frame(schtyp="private"), interval="prediction")
 ```
 
-
-
-
-
-
 ### 6) {.unnumbered}
 
-Now consider a model of the form: 
-
+Now consider a model of the form:
 
 $$
 \text{Science Score} = \beta_0 + \beta_1\times\text{WritingScore} + \epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, \sigma)
 $$
 
-#### a)  {.unnumbered}
+#### a) {.unnumbered}
 
-State the four assumptions of the ordinary regression model and explain what they mean in this context.  
+State the four assumptions of the ordinary regression model and explain what they mean in this context.
 
+#### b) {.unnumbered}
 
-#### b)  {.unnumbered}
-
-The model output is shown below, along with some quantities that can be used to calculate the model estimates.  
+The model output is shown below, along with some quantities that can be used to calculate the model estimates.
 
 ```{r}
 M_Seniors_science_write <- lm(data=HSSeniors, lm(data=HSSeniors, science~write))
 ```
 
-![M2 Output](Ch4_1.png){#id .class width=110% height=110%}
+![M2 Output](Ch4_2.png){.class width="110%" height="110%"}
 
-SSR: 
+SSR:
 
 ```{r}
 sum(M_Seniors_science_write$residuals^2)
 ```
 
-SST: 
+SST:
 
 ```{r}
 sum((HSSeniors$science-mean(HSSeniors$science))^2)
-```   
+```
 
 $\bar{x}$:
 
 ```{r}
 mean(HSSeniors$write)
 ```
-
 
 $\bar{y}$:
 
@@ -2258,45 +2261,37 @@ $\displaystyle\sum_{i=1}^n(x_i-\bar{x})^2$:
 sum((HSSeniors$write-mean(HSSeniors$write))^2)
 ```
 
+**Calculate the values that go in blanks (A)-(J) in the model output. Show your calculations. You may use the values in the tables and R output below.**
 
-**Calculate the values that go in blanks (A)-(L) in the model output. Show your calculations. You may use the values in the tables and R output below.** 
+#### c) {.unnumbered}
 
+Calculate 95% confidence intervals for $\beta_0$ and $\beta_1$.
 
+#### d) {.unnumbered}
 
+Give an estimate of $\sigma$. Explain what this number represents in context. It might be helpful to phrase the statement in the form "this quantity represents the variability in \_\_\_\_\_\_\_\_ between \_\_\_\_\_\_\_\_\_\_."
 
+#### e) {.unnumbered}
 
-#### c)  {.unnumbered}
+Explain what the standard errors of $b_0$ and $b_1$ represent in context. It might be helpful to phrase these statements in the form "this quantity represents the variability in \_\_\_\_\_\_\_\_ between \_\_\_\_\_\_\_\_\_\_."
 
-Calculate 95% confidence intervals for $\beta_0$ and $\beta_1$.    
+#### f) {.unnumbered}
 
-#### d)  {.unnumbered}
+Write the null hypothesis associated with the p-value on the line `intercept`. What (if anything) should we conclude from this p-value?
 
-Give an estimate of $\sigma$. Explain what this number represents in context. It might be helpful to phrase the statement in the form "this quantity represents the variability in ________ between __________."   
+#### g) {.unnumbered}
 
+Write the null hypothesis associated with the p-value on the line `wrire`. What (if anything) should we conclude from this p-value?
 
-#### e)  {.unnumbered}
+##### h) {.unnumbered}
 
-Explain what the standard errors of $b_0$ and $b_1$ represent in context. It might be helpful to phrase these statements in the form "this quantity represents the variability in ________ between __________."    
+Write sentences interpreting each of the following intervals in context. If the command produces two intervals, interpret both of them.
 
-
-#### f)   {.unnumbered}
-
-Write the null hypothesis associated with the p-value on the line `intercept`. What (if anything) should we conclude from this p-value? 
-
-#### g)   {.unnumbered}
-
-Write the null hypothesis associated with the p-value on the line `wrire`. What (if anything) should we conclude from this p-value?   
-
-##### h)  {.unnumbered}
-
-Write sentences interpreting each of the following intervals in context. If the command produces two intervals, interpret both of them.   
-
-i)   
+i)  
 
 ```{r}
 confint(M_Seniors_science_write)
 ```
-
 
 ii) 
 
@@ -2304,40 +2299,33 @@ ii)
 predict(M_Seniors_science_write, newdata=data.frame(write=60), interval="confidence")
 ```
 
-
 iii) 
 
 ```{r}
 predict(M_Seniors_science_write, newdata=data.frame(write=60), interval="prediction")
 ```
 
+### 7) {.unnumbered}
 
+a)  Using the public/private schools data, suppose we randomly select a single public school student and find that they have a science score of 55. Should we conclude that this person is exceptionally strong at science, relative to other students? Why or why not?
 
-### 6)    {.unnumbered}  
+b)  Suppose we take a random sample of 168 public school students and find that the average science score in the group was 55. Should we conclude that this group was exceptionally strong at science, relative to other groups of students? Why or why not?
 
-a) Using the public/private schools data, suppose we randomly select a single public school student and find that they have a science score of 55. Should we conclude that this person is exceptionally strong at science, relative to other students? Why or why not?         
+### 8) {.unnumbered}
 
-b) Suppose we take a random sample of 168 public school students and find that the average science score in the group was 55. Should we conclude that this group was exceptionally strong at science, relative to other groups of students? Why or why not? 
-
-
-### 7)   {.unnumbered}
-
-The residual standard error $s$ is different for the model in Question 1 than in Question 2. Suppose a person says "these are both meant to be the standard deviation in science test scores, so how can they be different?" How should you respond?    
-
-
-### 8)    {.unnumbered}  
-
-Suppose the sample had consisted of 400 total students (instead of 200), of which 336 were from public schools and 64 from private schools (so the proportion from each school type is the same as in Question 1). Suppose the variability in the 400 students was similar to the variability in the original 200. For the quantities (A) - (L) in the Question 1 R Output, state whether each would be expected to increase, decrease, or stay about the same.    
-
+The residual standard error $s$ is different for the model in Question 1 than in Question 2. Suppose a person says "these are both meant to be the standard deviation in science test scores, so how can they be different?" How should you respond?
 
 ### 9) {.unnumbered}
 
-The following data and description come from the `alr4` R package. 
+Suppose the sample had consisted of 400 total students (instead of 200), of which 336 were from public schools and 64 from private schools (so the proportion from each school type is the same as in Question 1). Suppose the variability in the 400 students was similar to the variability in the original 200. For the quantities (A) - (L) in the Question 1 R Output, state whether each would be expected to increase, decrease, or stay about the same.
 
+### 10) {.unnumbered}
+
+The following data and description come from the `alr4` R package.
 
 "Karl Pearson organized the collection of data on over 1100 families in England in the period 1893 to 1898. This particular data set gives the Heights in inches of mothers and their daughters, with up to two daughters per mother. All daughters are at least age 18, and all mothers are younger than 65."
 
-A scatterplot of the heights of the mothers and their daughters is shown below. The black line represents the line "y=x" and the blue line is the least squares regression line.   
+A scatterplot of the heights of the mothers and their daughters is shown below. The black line represents the line "y=x" and the blue line is the least squares regression line.
 
 ```{r}
 library(alr4)
@@ -2350,53 +2338,52 @@ ggplot(data=Heights, aes(x=mheight, y=dheight)) + geom_point() +
 
 #### a) {.unnumbered}
 
-Describe the strength and direction of the relationship between heights of mothers and their children? Approximately what is the value of $R^2$. 
+Describe the strength and direction of the relationship between heights of mothers and their children? Approximately what is the value of $R^2$.
 
 #### b) {.unnumbered}
 
-Among mothers who are less than 60 inches tall, how do their daughters' heights compare to the mothers'? What about for mothers who are more than 67 inches tall? Explain why this might be happening and give the statistical name for the behavior we see here. 
+Among mothers who are less than 60 inches tall, how do their daughters' heights compare to the mothers'? What about for mothers who are more than 67 inches tall? Explain why this might be happening and give the statistical name for the behavior we see here.
 
 #### c) {.unnumbered}
 
-Suppose a mother is 60 inches tall. What is the predicted height of her daughter?   
+Suppose a mother is 60 inches tall. What is the predicted height of her daughter?
 
 #### d) {.unnumbered}
 
-Suppose a mother is 60 inches tall. Use the graph the approximate a 95% prediction interval for her daughter's height.   
+Suppose a mother is 60 inches tall. Use the graph the approximate a 95% prediction interval for her daughter's height.
 
-### 10) {.unnumbered}
+### 11) {.unnumbered}
 
-When a particular brain area becomes more active, it uses more oxygen. Functional Magnetic Resonance Imaging (fMRI) involves taking a scan of the brain to measure changes in blood flow to different regions. The fMRI machine can record the activity in a region of the brain, but it is subject to measurement error (noise). 
+When a particular brain area becomes more active, it uses more oxygen. Functional Magnetic Resonance Imaging (fMRI) involves taking a scan of the brain to measure changes in blood flow to different regions. The fMRI machine can record the activity in a region of the brain, but it is subject to measurement error (noise).
 
-In a [2009 study by Bennett et. al](http://prefrontal.org/files/posters/Bennett-Salmon-2009.pdf), an 18-inch, 3.8 lb. salmon was shown a series of photographs depicting human individuals in social situations with a specified emotional valence. Statistics measuring activity in voxels, tiny 3D regions of the brain, were calculated for both when the salmon was resting, and when it was viewing the photograph. t-tests were used on each voxel to test whether there was evidence of differences in brain activation when viewing the photograph, compared to at rest. Out of 8,064 voxels tested, 16 yielded p-values less than 0.001, thus showing evidence of differences in brain activity. 
+In a [2009 study by Bennett et. al](http://prefrontal.org/files/posters/Bennett-Salmon-2009.pdf), an 18-inch, 3.8 lb. salmon was shown a series of photographs depicting human individuals in social situations with a specified emotional valence. Statistics measuring activity in voxels, tiny 3D regions of the brain, were calculated for both when the salmon was resting, and when it was viewing the photograph. t-tests were used on each voxel to test whether there was evidence of differences in brain activation when viewing the photograph, compared to at rest. Out of 8,064 voxels tested, 16 yielded p-values less than 0.001, thus showing evidence of differences in brain activity.
 
 There was, however, a trick. The salmon was dead, and thus was experiencing no brain activity at all!
 
-a) Even if we hadn't known that the salmon was dead, why shouldn't we conclude that the salmon's brain was responding differently when viewing the photo, compared to when at rest, based on these results?    
+a)  Even if we hadn't known that the salmon was dead, why shouldn't we conclude that the salmon's brain was responding differently when viewing the photo, compared to when at rest, based on these results?
 
-b) What could we do in this situation to reduce that risk of detecting a false positive when testing for change in a voxel of the brain?   
-
-### 11 {.unnumbered}
-
-[A 2015 study by Rohrer, Egloff, and Schmukle](https://www.pnas.org/doi/full/10.1073/pnas.1506451112) examined whether older siblings exhibited differences in intelligence and personality, compared to their younger siblings. The study used data from three large national panels from the United States (n = 5,240), Great Britain (n = 4,489), and Germany (n = 10,457).
-
-The article states:  
-
-*The question of whether a person’s position among siblings has a lasting impact on that person’s life course has fascinated both the scientific community and the general public for >100 years. By combining large datasets from three national panels, we confirmed the effect that firstborns score higher on objectively measured intelligence and additionally found a similar effect on self-reported intellect. However, we found no birth-order effects on extraversion, emotional stability, agreeableness, conscientiousness, or imagination. This finding contradicts lay beliefs and prominent scientific theories alike and indicates that the development of personality is less determined by the role within the family of origin than previously thought.*
-
-a) The study tested six different outcomes (intelligence, extraversion, emotional stability, agreeableness, conscientiousness, and imagination). For each outcome, the null hypothesis is that there is no relationship between that outcome and the sibling's birth order. Suppose that for each outcome there is a 0.05 probability of a hypothesis test resulting in a false positive (concluding an outcome is related to birth order when it really isn't). If hypothesis tests are run on all six outcomes, what is the probability of getting at least one false positive? How can we ensure that the probability of getting one or more false positives when running six tests simultaneously is no higher than 0.05?   
-
-c) To test intellect, the authors used scores on Intelligence Quotient (IQ) tests. The mean score on IQ tests is 100, with a standard deviation of 15 between individual scores. The authors found that an older sibling scored, on average 1.5 points higher than the next younger sibling in the family. An ANOVA F-test with the null hypothesis that there is no relationship between birth order and intelligence resulted in an F-statistic of 11.80 and p-value of less than 0.001. Is the relationship between birth order and intelligence statistically discernible? Do you think it is practically meaningful? Explain your answer.   
+b)  What could we do in this situation to reduce that risk of detecting a false positive when testing for change in a voxel of the brain?
 
 ### 12) {.unnumbered}
 
+[A 2015 study by Rohrer, Egloff, and Schmukle](https://www.pnas.org/doi/full/10.1073/pnas.1506451112) examined whether older siblings exhibited differences in intelligence and personality, compared to their younger siblings. The study used data from three large national panels from the United States (n = 5,240), Great Britain (n = 4,489), and Germany (n = 10,457).
 
-Duchenne muscular dystrophy (DMD). DMD is a severe and progressive genetic disease that leads to muscle weakness, worsening over time. It is more common in boys than in girls. In 2016, a drug called Eteplirsen (now known as Exondys 51) was developed for the purpose of treating  DMD symptoms and improving quality of life. Because the disease is rare, it is difficult to collect a large sample of participants for a randomized clinical trial to test the effectiveness of the drug. In a sample of 12 boys, 6 were assigned to a treatment group and took Eteplirsen for 62 weeks. The other 6 were assigned to a control group and took a placebo for 24 weeks, followed by Eteplirsen for 38 weeks. The boys were randomly assigned to groups. Researchers recorded the distance each boy walked in 6 minutes at the beginning and end of the study. Two of the boys in the placebo group withdrew from the study due to health complications. The average distance walked by the remaining four boys in the placebo group decreased by 63.8 m. over the 62 weeks, compared to an average decrease of only 4.2 meters for boys in the treatment group. A hypothesis test with the null hypothesis that there is no difference in distance walked between the groups returned a p-value of 0.012.   
+The article states:
 
-a) Is the difference between the groups statistically discernible? Is it practically meaningful?   
+*The question of whether a person’s position among siblings has a lasting impact on that person’s life course has fascinated both the scientific community and the general public for \>100 years. By combining large datasets from three national panels, we confirmed the effect that firstborns score higher on objectively measured intelligence and additionally found a similar effect on self-reported intellect. However, we found no birth-order effects on extraversion, emotional stability, agreeableness, conscientiousness, or imagination. This finding contradicts lay beliefs and prominent scientific theories alike and indicates that the development of personality is less determined by the role within the family of origin than previously thought.*
 
-b) There was disagreement within the Federal Drug Administration about whether to to approve the Eteplirsen drug based on this study. Why might it be a good idea to approve the drug? What concerns might you have?
+a)  The study tested six different outcomes (intelligence, extraversion, emotional stability, agreeableness, conscientiousness, and imagination). For each outcome, the null hypothesis is that there is no relationship between that outcome and the sibling's birth order. Suppose that for each outcome there is a 0.05 probability of a hypothesis test resulting in a false positive (concluding an outcome is related to birth order when it really isn't). If hypothesis tests are run on all six outcomes, what is the probability of getting at least one false positive? How can we ensure that the probability of getting one or more false positives when running six tests simultaneously is no higher than 0.05?
 
-c) Suppose the same difference in walking distances had been observed, but the p-value had been 0.072 instead of 0.012? Would this change your thoughts on whether the drug should be approved? Why or why not? 
+b)  To test intellect, the authors used scores on Intelligence Quotient (IQ) tests. The mean score on IQ tests is 100, with a standard deviation of 15 between individual scores. The authors found that an older sibling scored, on average 1.5 points higher than the next younger sibling in the family. An ANOVA F-test with the null hypothesis that there is no relationship between birth order and intelligence resulted in an F-statistic of 11.80 and p-value of less than 0.001. Is the relationship between birth order and intelligence statistically discernible? Do you think it is practically meaningful? Explain your answer.
 
-NOTE: In the end, the FDA approved the drug, while requiring its producer to conduct additional future tests and noting that approval could be withdrawn if those tests did not confirm a clinical benefit. Results and discussion of the study are available [here](https://www.fiercebiotech.com/biotech/sarepta-therapeutics-announces-a-continued-benefit-on-walking-test-through-62-weeks-phase), and [here](https://pubmed.ncbi.nlm.nih.gov/26573217/.).  
+### 13) {.unnumbered}
+
+Duchenne muscular dystrophy (DMD). DMD is a severe and progressive genetic disease that leads to muscle weakness, worsening over time. It is more common in boys than in girls. In 2016, a drug called Eteplirsen (now known as Exondys 51) was developed for the purpose of treating DMD symptoms and improving quality of life. Because the disease is rare, it is difficult to collect a large sample of participants for a randomized clinical trial to test the effectiveness of the drug. In a sample of 12 boys, 6 were assigned to a treatment group and took Eteplirsen for 62 weeks. The other 6 were assigned to a control group and took a placebo for 24 weeks, followed by Eteplirsen for 38 weeks. The boys were randomly assigned to groups. Researchers recorded the distance each boy walked in 6 minutes at the beginning and end of the study. Two of the boys in the placebo group withdrew from the study due to health complications. The average distance walked by the remaining four boys in the placebo group decreased by 63.8 m. over the 62 weeks, compared to an average decrease of only 4.2 meters for boys in the treatment group. A hypothesis test with the null hypothesis that there is no difference in distance walked between the groups returned a p-value of 0.012.
+
+a)  Is the difference between the groups statistically discernible? Is it practically meaningful?
+
+b)  There was disagreement within the Federal Drug Administration about whether to to approve the Eteplirsen drug based on this study. Why might it be a good idea to approve the drug? What concerns might you have?
+
+c)  Suppose the same difference in walking distances had been observed, but the p-value had been 0.072 instead of 0.012? Would this change your thoughts on whether the drug should be approved? Why or why not?
+
+NOTE: In the end, the FDA approved the drug, while requiring its producer to conduct additional future tests and noting that approval could be withdrawn if those tests did not confirm a clinical benefit. Results and discussion of the study are available [here](https://www.fiercebiotech.com/biotech/sarepta-therapeutics-announces-a-continued-benefit-on-walking-test-through-62-weeks-phase), and [here](https://pubmed.ncbi.nlm.nih.gov/26573217/.).

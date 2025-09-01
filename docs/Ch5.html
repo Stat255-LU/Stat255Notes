@@ -268,6 +268,22 @@ window.Quarto = {
   <li><a href="#predictions" id="toc-predictions" class="nav-link" data-scroll-target="#predictions"><span class="header-section-number">5.5.7</span> Predictions</a></li>
   <li><a href="#model-building-summary" id="toc-model-building-summary" class="nav-link" data-scroll-target="#model-building-summary"><span class="header-section-number">5.5.8</span> Model Building Summary</a></li>
   </ul></li>
+  <li><a href="#practice-questions" id="toc-practice-questions" class="nav-link" data-scroll-target="#practice-questions"><span class="header-section-number">5.6</span> Practice Questions</a>
+  <ul class="collapse">
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section">1)</a></li>
+  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1">2)</a></li>
+  <li><a href="#section-2" id="toc-section-2" class="nav-link" data-scroll-target="#section-2">3)</a></li>
+  <li><a href="#section-3" id="toc-section-3" class="nav-link" data-scroll-target="#section-3">4)</a></li>
+  <li><a href="#section-4" id="toc-section-4" class="nav-link" data-scroll-target="#section-4">5)</a></li>
+  <li><a href="#section-5" id="toc-section-5" class="nav-link" data-scroll-target="#section-5">6)</a></li>
+  <li><a href="#section-6" id="toc-section-6" class="nav-link" data-scroll-target="#section-6">7)</a></li>
+  <li><a href="#section-7" id="toc-section-7" class="nav-link" data-scroll-target="#section-7">8)</a></li>
+  <li><a href="#section-8" id="toc-section-8" class="nav-link" data-scroll-target="#section-8"><span class="header-section-number">5.6.1</span> 9)</a></li>
+  <li><a href="#section-9" id="toc-section-9" class="nav-link" data-scroll-target="#section-9">10)</a></li>
+  <li><a href="#section-10" id="toc-section-10" class="nav-link" data-scroll-target="#section-10">11)</a></li>
+  <li><a href="#section-11" id="toc-section-11" class="nav-link" data-scroll-target="#section-11">12)</a></li>
+  <li><a href="#section-12" id="toc-section-12" class="nav-link" data-scroll-target="#section-12">13)</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -834,7 +850,7 @@ F-statistic: 119.3 on 1 and 108 DF,  p-value: &lt; 0.00000000000000022</code></p
 <ul>
 <li>For each additional second in acceleration time, price is expected to multiply by a a factor of <span class="math inline">\(e^{-0.1989}\)</span> = 0.82. Thus, each 1-second increase in acceleration time is estimated to be associated with a 18% drop in price, on average.</li>
 </ul>
-<p><strong>Confidence Interval for <span class="math inline">\(e^{\beta_1}\)</span></strong></p>
+<p><strong>Confidence Interval for</strong> <span class="math inline">\(e^{\beta_1}\)</span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">confint</span>(M_Cars_logprice_acc060, <span class="at">level=</span><span class="fl">0.95</span>, <span class="at">parm=</span><span class="st">"Acc060"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1143,7 +1159,7 @@ education5. Advanced Degree      jobclass2. Information
 <p><span class="math display">\[
 -0.00033 \times \text{Age}^2 + 0.03392 \times \text{Age}
 \]</span></p>
-<p>We see that this expression has a negative quadratic coefficient, meaning it will have the shape of a downward facing parabola. A sketch of the equation <span class="math inline">\(y=0.18661 \times \text{Age}^2 + 0.00559 \times \text{Age}\)</span> is shown below.</p>
+<p>We see that this expression has a negative quadratic coefficient, meaning it will have the shape of a downward facing parabola. A sketch of the equation <span class="math display">\[y=0.18661\times \text{Age}^2 +0.00559 \times \text{Age}\]</span> is shown below.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">summary</span>(M_logWage_price_yr_age2_ed_job)<span class="sc">$</span>coefficients[<span class="dv">4</span>]</span>
 <span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">summary</span>(M_logWage_price_yr_age2_ed_job)<span class="sc">$</span>coefficients[<span class="dv">3</span>] </span>
@@ -1168,9 +1184,6 @@ education5. Advanced Degree      jobclass2. Information
 \]</span></p>
 <p>years.</p>
 <!--
-
-
-
 
 ::: {.cell}
 
@@ -1211,6 +1224,7 @@ ggpairs(WageSample)
 ![](Ch5_files/figure-html/unnamed-chunk-50-1.png){width=672}
 :::
 :::
+
 
 ::: {.cell}
 
@@ -1271,6 +1285,7 @@ resid_panel(M_wage_year_age, smoother = TRUE)
 :::
 :::
 
+
 ::: {.cell}
 
 ```{.r .cell-code}
@@ -1321,6 +1336,7 @@ grid.arrange(P1, P2, P3, P4, ncol=2)
 ![](Ch5_files/figure-html/unnamed-chunk-55-1.png){width=960}
 :::
 :::
+
 
 ::: {.cell}
 
@@ -1493,6 +1509,7 @@ resid_xpanel(M_logwage_year_age_edu_jobclass, smoother=TRUE)
 :::
 :::
 
+
 ::: {.cell}
 
 ```{.r .cell-code}
@@ -1556,7 +1573,6 @@ resid_xpanel(M_logwage_year_age2_edu_jobclass, smoother = TRUE)
 ![](Ch5_files/figure-html/unnamed-chunk-65-1.png){width=672}
 :::
 :::
-
 ::: {.cell}
 
 ```{.r .cell-code}
@@ -1597,9 +1613,6 @@ F-statistic: 12.81 on 8 and 241 DF,  p-value: 0.000000000000002483
 
 :::
 :::
-
-
-
 
 
 -->
@@ -1840,14 +1853,14 @@ Model 2: log(Price) ~ Acc060 + Drive
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
-<p><strong><span class="math inline">\(R^2\)</span> for Model 1</strong></p>
+<p><span class="math inline">\(R^2\)</span> for Model 1</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Cars_logprice_acc060)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.5248405</code></pre>
 </div>
 </div>
-<p><strong><span class="math inline">\(R^2\)</span> for Model 2</strong></p>
+<p><span class="math inline">\(R^2\)</span> for Model 2</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Cars_logprice_acc060_drive)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1871,14 +1884,14 @@ Model 2: log(Price) ~ Acc060 + Drive + Acc060:Drive
 2    104 7.1277  2   0.19649 1.4335 0.2431</code></pre>
 </div>
 </div>
-<p><strong><span class="math inline">\(R^2\)</span> for Model 1</strong></p>
+<p><span class="math inline">\(R^2\)</span> for Model 1</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Cars_logprice_acc060_drive)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.6371841</code></pre>
 </div>
 </div>
-<p><strong><span class="math inline">\(R^2\)</span> for Model 2</strong></p>
+<p><span class="math inline">\(R^2\)</span> for Model 2</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Cars_logprice_acc060_drive_int)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -2120,9 +2133,9 @@ Multiple R-squared:  0.604, Adjusted R-squared:  0.5966
 F-statistic: 81.59 on 2 and 107 DF,  p-value: &lt; 0.00000000000000022</code></pre>
 </div>
 </div>
-<p>As the plot showed, highway MPG has a negative coefficient. Assuming acceleration time is held constant, price is expected to multiply by a factor of <span class="math inline">\(e^{-0.02} =0.98\)</span>, a 2 percent decrease.</p>
+<p>As the plot showed, highway MPG has a negative coefficient. Assuming acceleration time is held constant, price is expected to multiply by a factor of <span class="math display">\[e^{-0.02} =0.98\]</span>, a 2 percent decrease.</p>
 <p>It may be surprising to learn that cars that get better gas mileage tend to be less expensive than those with lower gas mileage. We see in the summary output that the p-value associated with <code>HwyMPG</code> is small, indicating a statistically discernible relationship.</p>
-<p>We’ve learned, however, that when something seems unusual, we should think deeper. We noticed that highway gas mileage was negativly associated with weight, and that both are negatively associated with price. Since heaviest cars tend to also be the most expensive, it may be that cars that get better gas mileage are less expensive because they they are smaller and weigh less.</p>
+<p>We’ve learned, however, that when something seems unusual, we should think deeper. We noticed that highway gas mileage was negatively associated with weight, and that both are negatively associated with price. Since heaviest cars tend to also be the most expensive, it may be that cars that get better gas mileage are less expensive because they they are smaller and weigh less.</p>
 <p>In the figure below we break the cars into three categories, based on their weight.</p>
 <p>Light = less than 3,500 lbs.<br>
 Medium = between 3,500 and 4,500 lbs.<br>
@@ -2170,9 +2183,9 @@ Multiple R-squared:  0.6907,    Adjusted R-squared:  0.6819
 F-statistic: 78.89 on 3 and 106 DF,  p-value: &lt; 0.00000000000000022</code></pre>
 </div>
 </div>
-<p>Notice that when weight is added to the model, the coefficient on HwyMPG changes signs and is now positive. This means that assuming we are comparing cars of the same acceleration time and weight, one with higher highway gas mileage is expected to cost more than one with lower gas mileage. The difference is small, with price expected to multiply by about <span class="math inline">\(e^{0.01} =1.01\)</span> (a -0.5022407) percent increase), and not statistically discernible (high p-value). So, there really doesn’t appear to be much of a relationship at all between price and gas mileage, after accounting for acceleration time and weight.</p>
+<p>Notice that when weight is added to the model, the coefficient on HwyMPG changes signs and is now positive. This means that assuming we are comparing cars of the same acceleration time and weight, one with higher highway gas mileage is expected to cost more than one with lower gas mileage. The difference is small, with price expected to multiply by about <span class="math display">\[e^{0.01} =1.01\]</span> (a -0.5022407) percent increase), and not statistically discernible (high p-value). So, there really doesn’t appear to be much of a relationship at all between price and gas mileage, after accounting for acceleration time and weight.</p>
 <p>Still, this is a different conclusion than we would have drawn if we had not accounted for weight in the model. It had originally appeared that highway MPG had a strong negative association with price, but we see that once we compare cars of similar weights, there is little to no relationship between price and highway MPG. This is an example of a phenomenon know as <strong>Simpson’s Paradox.</strong> In instances of Simpson’s Paradox, the relationship between two variables changes directions, or disappears once a third variable is accounted for. The weight variable is called a <strong>confounding variable</strong>. If we don’t account for weight, we get a misleading picture of the relationship between highway gas mileage and price.</p>
-<p>We saw that accounting for weight helps us better understand the relationship between price and gas mileage. We should also discuss the relationship between price and weight itself. Since weights of cars range from 2,000 to 6,000 lbs, it would be silly to talk about the effect of a single additional pound. Rather, let’s examine the effect of a 1,000 pound increase on price of a car. For each additional 1,000 lbs., price is expected to multiply by a factor of <span class="math inline">\(e^{0.00026 \times 1000} =1000.259645\)</span>, a 29.6426102 percent increase.</p>
+<p>We saw that accounting for weight helps us better understand the relationship between price and gas mileage. We should also discuss the relationship between price and weight itself. Since weights of cars range from 2,000 to 6,000 lbs, it would be silly to talk about the effect of a single additional pound. Rather, let’s examine the effect of a 1,000 pound increase on price of a car. For each additional 1,000 lbs., price is expected to multiply by a factor of <span class="math display">\[e^{0.00026\times 1000} =1000.259645\]</span>, a 29.6426102 percent increase.</p>
 <p>Our model with weight and highway gas mileage, in addition to acceleration time, now explains about 69.0673511 percent of the variability in log(Price), up from 52.4840462 for the model with only acceleration time.</p>
 <p>We saw in the preceding graph, that the direction of the relationship between price and gas mileage was negative for light weight cars and positive for medium weight ones, suggesting a possible interaction between weight and gas mileage. So, we might consider adding an interaction term to the model. The <code>:</code> command adds just the interaction term.</p>
 <div class="cell">
@@ -2458,6 +2471,738 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </li>
 </ul>
 <p>Keep in mind, there is no single correct model, but there are common characteristics of a good model. While two statisticians might use different models for a given set of data, they will hopefully lead to reasonably similar conclusions if constructed carefully.</p>
+</section>
+</section>
+<section id="practice-questions" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="practice-questions"><span class="header-section-number">5.6</span> Practice Questions</h2>
+<p>We’ll work with data on 120 houses that sold in the states of CA, NJ, NY, and PA. in 2019. The data are part of the <code>Lock5Data</code> package.</p>
+<p>The dataset is called <code>HomesForSale</code>. The first six rows of the dataset are shown here.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb124"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(HomesForSale)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  State Price Size Beds Baths
+1    CA   533 1589    3   2.5
+2    CA   610 2008    3   2.0
+3    CA   899 2380    5   3.0
+4    CA   929 1868    3   3.0
+5    CA   210 1360    2   2.0
+6    CA   268 2131    3   2.0</code></pre>
+</div>
+</div>
+<section id="section" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section">1)</h3>
+<p>We’ll model the price of the houses (which is given in thousands), using the size (in sq. ft.), and state as explanatory variables. We’ll use and ordinary linear regression model of the form:</p>
+<p><span class="math display">\[
+\text{Price} = \beta_0 + \beta_1\times\text{Size}+ \beta_2\times\text{StateNJ}+ \beta_3\times\text{StateNY}+ \beta_4\times\text{StatePA} + \epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, \sigma)
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb126"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a>M_Homes_price_size_state <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>HomesForSale, Price <span class="sc">~</span> Size <span class="sc">+</span> State)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The plots below can be used to check the assumptions associated with Model M1.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch5_files/figure-html/unnamed-chunk-111-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>State each of the four assumptions associated with the model. For each assumption, state which plot we should look at, and whether there is reason to be concerned about the validity of that assumption.</p>
+</section>
+<section id="section-1" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-1">2)</h3>
+<p>Now we fit a model using log(Price), where log() denotes the natural, base e logarithm.</p>
+<p><span class="math display">\[
+\text{log(Price)} = \beta_0 + \beta_1\times\text{Size}+ \beta_2\times\text{StateNJ}+ \beta_3\times\text{StateNY}+ \beta_4\times\text{StatePA} + \epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, \sigma)
+\]</span></p>
+<p>The model summary output and display the model summary output is displayed below.</p>
+<p>We fit the model in R and display residual plots.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb127"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a>M_Homes_logprice_size_state <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>HomesForSale, <span class="fu">log</span>(Price) <span class="sc">~</span> Size <span class="sc">+</span> State)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch5_files/figure-html/unnamed-chunk-114-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Does this model appear more consistent with the modeling assumptions than Model 1? Explain your answer.</p>
+</section>
+<section id="section-2" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-2">3)</h3>
+<p>Summary output for the model in Question 2 is shown below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb128"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb128-1"><a href="#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Homes_logprice_size_state)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = log(Price) ~ Size + State, data = HomesForSale)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.52375 -0.30947 -0.02936  0.32874  1.54434 
+
+Coefficients:
+               Estimate  Std. Error t value             Pr(&gt;|t|)    
+(Intercept)  5.29974295  0.15559521  34.061 &lt; 0.0000000000000002 ***
+Size         0.00047694  0.00006916   6.896       0.000000000306 ***
+StateNJ     -0.46554934  0.13881407  -3.354              0.00108 ** 
+StateNY     -0.66706497  0.13959321  -4.779       0.000005258665 ***
+StatePA     -0.79550507  0.13953556  -5.701       0.000000093536 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.5375 on 115 degrees of freedom
+Multiple R-squared:  0.3978,    Adjusted R-squared:  0.3769 
+F-statistic: 18.99 on 4 and 115 DF,  p-value: 0.000000000005162</code></pre>
+</div>
+</div>
+<p>Exponentiated model coefficients are also shown.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb130"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb130-1"><a href="#cb130-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(M_Homes_logprice_size_state<span class="sc">$</span>coefficients)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)        Size     StateNJ     StateNY     StatePA 
+200.2853201   1.0004771   0.6277901   0.5132127   0.4513532 </code></pre>
+</div>
+</div>
+<p>Write sentences interpreting each of the five estimates in context. If a parameter does not have a meaningful interpretation, explain why.</p>
+</section>
+<section id="section-3" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-3">4)</h3>
+<p>Continue referring to the R output from the model in Question 3.</p>
+<section id="a" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="a">a)</h4>
+<p>Suppose that the model estimates a house in CA to cost 400 thousand dollars. How much is a house in NY that is the same size expected to cost?</p>
+</section>
+<section id="b" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="b">b)</h4>
+<p>If one house has 500 square feet more than another house in the same state, how are their prices expected to compare?</p>
+</section>
+<section id="c" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="c">c)</h4>
+<p>Use the model to calculate the predicted price of a 2000 square foot house in CA.</p>
+</section>
+<section id="d" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="d">d)</h4>
+<p>Use the model to calculate the predicted price of a 2000 square foot house in PA.</p>
+</section>
+</section>
+<section id="section-4" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-4">5)</h3>
+<p>Again, continuing with the model for log house price in Questions 2-4, write sentences interpreting each of the following intervals in context.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb132"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb132-1"><a href="#cb132-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">predict</span>(M_Homes_logprice_size_state, <span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">Size=</span><span class="dv">2000</span>, <span class="at">State=</span><span class="st">"NJ"</span>), </span>
+<span id="cb132-2"><a href="#cb132-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">interval=</span><span class="st">"confidence"</span>, <span class="at">level=</span><span class="fl">0.95</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       fit      lwr      upr
+1 326.3836 268.1397 397.2789</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb134"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb134-1"><a href="#cb134-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">predict</span>(M_Homes_logprice_size_state, <span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">Size=</span><span class="dv">2000</span>, <span class="at">State=</span><span class="st">"NJ"</span>), </span>
+<span id="cb134-2"><a href="#cb134-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">interval=</span><span class="st">"prediction"</span>, <span class="at">level=</span><span class="fl">0.95</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       fit      lwr      upr
+1 326.3836 110.5396 963.6932</code></pre>
+</div>
+</div>
+</section>
+<section id="section-5" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-5">6)</h3>
+<p>The following intervals come from the model in Question 1 that did not use the log transformation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb136"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb136-1"><a href="#cb136-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(M_Homes_price_size_state, <span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">Size=</span><span class="dv">2000</span>, <span class="at">State=</span><span class="st">"NJ"</span>), <span class="at">interval=</span><span class="st">"confidence"</span>, <span class="at">level=</span><span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       fit      lwr      upr
+1 360.9054 285.3913 436.4194</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb138"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb138-1"><a href="#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(M_Homes_price_size_state, <span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">Size=</span><span class="dv">2000</span>, <span class="at">State=</span><span class="st">"NJ"</span>), <span class="at">interval=</span><span class="st">"prediction"</span>, <span class="at">level=</span><span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       fit       lwr     upr
+1 360.9054 -55.03327 776.844</code></pre>
+</div>
+</div>
+<p>How do the predicted prices and confidence and prediction intervals for the model without the log transformation compare to those from the model with the transformation? Which do you think are more reliable? Why?</p>
+</section>
+<section id="section-6" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-6">7)</h3>
+<p>Continnuing with the house price dataset in Questions 1-6, we add information about the number of bedrooms and bathrooms, in addition to size and state, to the model to predict log(price).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb140"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb140-1"><a href="#cb140-1" aria-hidden="true" tabindex="-1"></a>M1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>HomesForSale, <span class="fu">log</span>(Price) <span class="sc">~</span> Beds <span class="sc">+</span> Baths <span class="sc">+</span> Size <span class="sc">+</span> State)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Residual plots and residual by predictor plots are shown below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb141"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb141-1"><a href="#cb141-1" aria-hidden="true" tabindex="-1"></a><span class="fu">resid_panel</span>(M1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch5_files/figure-html/unnamed-chunk-122-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb142"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb142-1"><a href="#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="fu">resid_xpanel</span>(M1, <span class="at">smoother=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch5_files/figure-html/unnamed-chunk-123-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="a-1" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="a-1">a)</h4>
+<p>Is there anything we should be concerned about in the validity of the regression model assumptions? If so, state which assumption you are concerned about and which plot causes this concern.</p>
+</section>
+<section id="b-1" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="b-1">b)</h4>
+<p>In the residual by predictor plot for beds, we see a downward sloping parabola. This might suggest adding a quadratic term for beds to the model. Why might this <strong>NOT</strong> be a good idea?</p>
+</section>
+</section>
+<section id="section-7" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-7">8)</h3>
+<p>The <code>Boston</code> dataset contains data on the median property value (medv) in various Boston neighborhoods. The data were collected in the 1970’s. The <code>dis</code> variable provides a measure of distance from popular places of employment in Boston. (It was calculated by taking the weighed mean of distances from five different employment centers.) The <code>chas</code> variable is an indicator variable for whether or not the neighborhood borders the Charles River.</p>
+<section id="a-2" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="a-2">a)</h4>
+<p>We fit a model for log of median property value, using whether or not the house borders the Charles River, and distance from employment centers as explanatory variables.</p>
+<p>Residual plots and residual by predictor plots are shown below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb143"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb143-1"><a href="#cb143-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Boston)</span>
+<span id="cb143-2"><a href="#cb143-2" aria-hidden="true" tabindex="-1"></a>M_Boston_logmedv_chas_dis <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Boston, <span class="fu">log</span>(medv) <span class="sc">~</span> chas <span class="sc">+</span> dis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb144"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb144-1"><a href="#cb144-1" aria-hidden="true" tabindex="-1"></a><span class="fu">resid_panel</span>(M_Boston_logmedv_chas_dis, <span class="at">smoother=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch5_files/figure-html/unnamed-chunk-125-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb145"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb145-1"><a href="#cb145-1" aria-hidden="true" tabindex="-1"></a><span class="fu">resid_xpanel</span>(M_Boston_logmedv_chas_dis, <span class="at">smoother=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch5_files/figure-html/unnamed-chunk-126-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Do you see any reasons for concern about the validity of the regression assumptions? If so, which ones? How might we correct these.</p>
+</section>
+<section id="b-2" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="b-2">b)</h4>
+<p>We now add a quadratic term for distance from employment to the model. Residual and residual by predicted plots are again shown.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb146"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb146-1"><a href="#cb146-1" aria-hidden="true" tabindex="-1"></a>M_Boston_logmedv_chas_dis2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Boston, <span class="fu">log</span>(medv) <span class="sc">~</span> chas <span class="sc">+</span> dis <span class="sc">+</span> <span class="fu">I</span>(dis<span class="sc">^</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb147"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb147-1"><a href="#cb147-1" aria-hidden="true" tabindex="-1"></a><span class="fu">resid_panel</span>(M_Boston_logmedv_chas_dis2, <span class="at">smoother=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch5_files/figure-html/unnamed-chunk-128-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb148"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb148-1"><a href="#cb148-1" aria-hidden="true" tabindex="-1"></a><span class="fu">resid_xpanel</span>(M_Boston_logmedv_chas_dis2, <span class="at">smoother=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch5_files/figure-html/unnamed-chunk-129-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Does adding the quadratic term to the model appear to have helped? Explain your answer.</p>
+<p><strong>Model output for the model with the quadratic term is shown below. Use the output to answer parts (c - e)</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb149"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb149-1"><a href="#cb149-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Boston_logmedv_chas_dis2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = log(medv) ~ chas + dis + I(dis^2), data = Boston)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-1.1356 -0.2172 -0.0244  0.1776  1.2313 
+
+Coefficients:
+             Estimate Std. Error t value             Pr(&gt;|t|)    
+(Intercept)  2.413630   0.064225  37.581 &lt; 0.0000000000000002 ***
+chas         0.298927   0.064058   4.667  0.00000393536281267 ***
+dis          0.250086   0.030412   8.223  0.00000000000000171 ***
+I(dis^2)    -0.018530   0.003031  -6.113  0.00000000196889180 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.3636 on 502 degrees of freedom
+Multiple R-squared:  0.2134,    Adjusted R-squared:  0.2087 
+F-statistic: 45.41 on 3 and 502 DF,  p-value: &lt; 0.00000000000000022</code></pre>
+</div>
+</div>
+<p>Exponentiated model coefficients are also shown.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb151"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb151-1"><a href="#cb151-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(M_Boston_logmedv_chas_dis2<span class="sc">$</span>coefficients)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)        chas         dis    I(dis^2) 
+ 11.1744560   1.3484117   1.2841362   0.9816403 </code></pre>
+</div>
+</div>
+</section>
+<section id="c-1" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="c-1">c)</h4>
+<p>Write a sentence interpreting the coefficient on the chas variable in context. Do the data provide evidence that neighborhoods on the Charles River tend to be more or less expensive than other neighborhoods?</p>
+</section>
+<section id="d-1" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="d-1">d)</h4>
+<p>Do the data provide evidence of a quadratic relationship between a neighborhood’s distance from employment and property value? If so, explain, in real life terms what this might tell us about where people might prefer to live relative to where they work (at least in the 1970’s when the data were collected).</p>
+</section>
+<section id="e" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="e">e)</h4>
+<p>Calculate the approximate distance from employment centers where property values are at their highest (hint: recall that a quadratic function of the form <span class="math inline">\(f(x) = ax^2 + bx + c\)</span> attains its vertex at <span class="math inline">\(x=-b/(2a)\)</span>).</p>
+</section>
+</section>
+<section id="section-8" class="level3" data-number="5.6.1">
+<h3 data-number="5.6.1" class="anchored" data-anchor-id="section-8"><span class="header-section-number">5.6.1</span> 9)</h3>
+<p>The plots below show four different scenarios of a model involving response variable <span class="math inline">\(y\)</span>, a quantitative explanatory variable <span class="math inline">\(x_1\)</span> and a categorical explanatory variable <span class="math inline">\(x_2\)</span> with categories <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>.</p>
+<p>The model is</p>
+<p><span class="math display">\[
+y = b_0 + b_1\times x_1 + b_2\times x_2B + b_3\times x_1 \times x_2B + \epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, \sigma)
+\]</span></p>
+<p>For each of the four plots, state whether <span class="math inline">\(b_0\)</span>, <span class="math inline">\(b_1\)</span>, <span class="math inline">\(b_2\)</span>, and <span class="math inline">\(b_3\)</span> are positive, negative, or zero.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch5_files/figure-html/unnamed-chunk-132-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="section-9" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-9">10)</h3>
+<p>Recall the roller coaster dataset from the Chapter 2 practice problems. The plots show the relationship between a coaster’s max speed (in mph), the year it was built (in years since 1900), and whether it was a wooden or steel coaster. Plot (A) shows lines of best fit when the slopes are forced to be the same, while Plot (B) shows lines of best fit when slopes are allowed to differ.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb153"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb153-1"><a href="#cb153-1" aria-hidden="true" tabindex="-1"></a>PA <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Coasters, <span class="fu">aes</span>(<span class="at">y=</span>Speed, <span class="at">x=</span>Year_Since1900, <span class="at">color=</span>Type)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_parallel_slopes</span>(<span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Plot A"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span>
+<span id="cb153-2"><a href="#cb153-2" aria-hidden="true" tabindex="-1"></a>PB <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Coasters, <span class="fu">aes</span>(<span class="at">y=</span>Speed, <span class="at">x=</span>Year_Since1900, <span class="at">color=</span>Type)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Plot B"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span>
+<span id="cb153-3"><a href="#cb153-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(PA, PB, <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch5_files/figure-html/unnamed-chunk-133-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Consider the following two models.</p>
+<p>Model 1:</p>
+<p><span class="math display">\[
+\text{ Speed} = b_0 + b_1\times\text{Year\_Since1900} + b_2\times{\text{TypeWood}} + \epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, \sigma)
+\]</span></p>
+<p>Model 2:</p>
+<p><span class="math display">\[
+\text{ Speed} = b_0 + b_1\times\text{Year\_Since1900} + b_2\times{\text{TypeWood}} + b_3\times\text{Year\_Since1900}\times {\text{TypeWood}} + \epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, \sigma)
+\]</span></p>
+<section id="a-3" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="a-3">a)</h4>
+<p>Which plot corresponds to Model 1? Which corresponds to Model 2? Based on the data, which model do you think we should use? Why?</p>
+</section>
+<section id="b-3" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="b-3">b)</h4>
+<p>Model summary output for both models is shown below.</p>
+<p>Model 1 Output:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb154"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb154-1"><a href="#cb154-1" aria-hidden="true" tabindex="-1"></a>M1_Coasters_speed_year_type <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Coasters, Speed<span class="sc">~</span>Year_Since1900 <span class="sc">+</span> Type)</span>
+<span id="cb154-2"><a href="#cb154-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M1_Coasters_speed_year_type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Speed ~ Year_Since1900 + Type, data = Coasters)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-35.096  -8.307  -0.551   7.573  56.711 
+
+Coefficients:
+               Estimate Std. Error t value  Pr(&gt;|t|)    
+(Intercept)    38.71917    7.00063   5.531 0.0000002 ***
+Year_Since1900  0.23854    0.07183   3.321    0.0012 ** 
+TypeWooden     -2.82890    3.04157  -0.930    0.3543    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 13.3 on 116 degrees of freedom
+Multiple R-squared:  0.1445,    Adjusted R-squared:  0.1297 
+F-statistic: 9.793 on 2 and 116 DF,  p-value: 0.0001175</code></pre>
+</div>
+</div>
+<p>Model 2 Output:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb156"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb156-1"><a href="#cb156-1" aria-hidden="true" tabindex="-1"></a>M2_Coasters_speed_year_type_int <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Coasters, Speed<span class="sc">~</span>Year_Since1900 <span class="sc">*</span> Type)</span>
+<span id="cb156-2"><a href="#cb156-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M2_Coasters_speed_year_type_int)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Speed ~ Year_Since1900 * Type, data = Coasters)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-36.217  -6.572   0.071   7.964  53.495 
+
+Coefficients:
+                          Estimate Std. Error t value  Pr(&gt;|t|)    
+(Intercept)                -1.2293    15.5957  -0.079   0.93731    
+Year_Since1900              0.6576     0.1629   4.036 0.0000982 ***
+TypeWooden                 44.1321    16.7633   2.633   0.00964 ** 
+Year_Since1900:TypeWooden  -0.5130     0.1803  -2.846   0.00525 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 12.91 on 115 degrees of freedom
+Multiple R-squared:  0.2007,    Adjusted R-squared:  0.1799 
+F-statistic: 9.628 on 3 and 115 DF,  p-value: 0.00001011</code></pre>
+</div>
+</div>
+<p>Based on the R output, which model appears to be more appropriate? Justify your answer by citing specific information contained in the R output.</p>
+</section>
+<section id="c-2" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="c-2">c)</h4>
+<p>Write sentences interpreting the coefficients <span class="math inline">\(b_0\)</span>, <span class="math inline">\(b_1\)</span>, and <span class="math inline">\(b_2\)</span> in Model M1. Specifically give the numerical estimate of each coefficient in your interpretation. Also state what (if anything) we can conclude from the p-value associated with each coefficient.</p>
+</section>
+<section id="d-2" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="d-2">d)</h4>
+<p>Write sentences interpreting the coefficients <span class="math inline">\(b_0\)</span>, <span class="math inline">\(b_1\)</span>, <span class="math inline">\(b_2\)</span>, and <span class="math inline">\(b_3\)</span> in Model M2. Specifically give the numerical estimate of each coefficient in your interpretation. Also state what (if anything) we can conclude from the p-value associated with each coefficient.</p>
+</section>
+<section id="e-1" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="e-1">e)</h4>
+<p>For each model, calculate the estimated top speed of the following coasters, both located at Cedar Point in Ohio:</p>
+<ol type="i">
+<li>Blue Streak, a wooden coaster that opened in 1964.<br>
+</li>
+<li>Millennium Force, a steel coaster that opened in 2000.</li>
+</ol>
+<p>Which model’s predictions do you think are more accurate? Why?</p>
+</section>
+<section id="f" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="f">f)</h4>
+<p>Is the following statement correct? Why or why not?</p>
+<p>“Before 1950, only wooden coasters were built. Over time, steel coasters became more common, and since 1990, the majority of coasters built are steel. Thus, there is an interaction between year built and type of coaster.”</p>
+</section>
+</section>
+<section id="section-10" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-10">11)</h3>
+<p>We’ll continue working with the roller coasters dataset. The plots show the relationship between a coaster’s max speed (in mph), duration (in seconds), and design (sit down or other). Plot (A) shows lines of best fit when the slopes are forced to be the same, while Plot (B) shows lines of best fit when slopes are allowed to differ.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb158"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb158-1"><a href="#cb158-1" aria-hidden="true" tabindex="-1"></a>PA <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Coasters, <span class="fu">aes</span>(<span class="at">y=</span>Speed, <span class="at">x=</span>Duration, <span class="at">color=</span>Design)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_parallel_slopes</span>(<span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Plot A"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span>
+<span id="cb158-2"><a href="#cb158-2" aria-hidden="true" tabindex="-1"></a>PB <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Coasters, <span class="fu">aes</span>(<span class="at">y=</span>Speed, <span class="at">x=</span>Duration, <span class="at">color=</span>Design)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Plot B"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span>
+<span id="cb158-3"><a href="#cb158-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(PA, PB, <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch5_files/figure-html/unnamed-chunk-136-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Consider the following two models.</p>
+<p>Model 1:</p>
+<p><span class="math display">\[
+\widehat{\text{ Speed}} = b_0 + b_1\times\text{Duration} + b_2\times{\text{SitDown}} + \epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, \sigma)
+\]</span></p>
+<p>Model 2:</p>
+<p><span class="math display">\[
+\widehat{\text{ Speed}} = b_0 + b_1\times\text{Duration} + b_2\times{\text{SitDown}} + b_3\times\text{Duration}\times {\text{SitDown}} + \epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, \sigma)
+\]</span></p>
+<section id="a-4" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="a-4">a)</h4>
+<p>Which plot corresponds to Model 1? Which corresponds to Model 2? Based on the data, which model do you think we should use? Why?</p>
+</section>
+<section id="b-4" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="b-4">b)</h4>
+<p>Model summary output for both models is shown below.</p>
+<p>Model 1 Output:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb159"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb159-1"><a href="#cb159-1" aria-hidden="true" tabindex="-1"></a>M1_Coasters_speed_duration_design <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Coasters, Speed <span class="sc">~</span> Duration <span class="sc">+</span> Design)</span>
+<span id="cb159-2"><a href="#cb159-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M1_Coasters_speed_duration_design)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Speed ~ Duration + Design, data = Coasters)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-36.073  -8.809  -0.290   6.451  65.456 
+
+Coefficients:
+               Estimate Std. Error t value             Pr(&gt;|t|)    
+(Intercept)    48.33888    5.09703   9.484 0.000000000000000385 ***
+Duration        0.05686    0.03140   1.811               0.0728 .  
+DesignSit Down  4.49938    3.23346   1.392               0.1667    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 14.09 on 116 degrees of freedom
+Multiple R-squared:  0.03959,   Adjusted R-squared:  0.02303 
+F-statistic: 2.391 on 2 and 116 DF,  p-value: 0.09604</code></pre>
+</div>
+</div>
+<p>Model 2 Output:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb161"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb161-1"><a href="#cb161-1" aria-hidden="true" tabindex="-1"></a>M2_Coasters_speed_duration_design_int <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Coasters, Speed <span class="sc">~</span>  Duration <span class="sc">*</span> Design)</span>
+<span id="cb161-2"><a href="#cb161-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M2_Coasters_speed_duration_design_int)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Speed ~ Duration * Design, data = Coasters)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-36.125  -8.791  -0.242   6.487  65.544 
+
+Coefficients:
+                         Estimate Std. Error t value  Pr(&gt;|t|)    
+(Intercept)             49.099395  11.630842   4.221 0.0000487 ***
+Duration                 0.051186   0.084078   0.609     0.544    
+DesignSit Down           3.623370  12.460529   0.291     0.772    
+Duration:DesignSit Down  0.006605   0.090701   0.073     0.942    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 14.15 on 115 degrees of freedom
+Multiple R-squared:  0.03964,   Adjusted R-squared:  0.01458 
+F-statistic: 1.582 on 3 and 115 DF,  p-value: 0.1975</code></pre>
+</div>
+</div>
+<p>Based on the R output, which model appears to be more appropriate? Justify your answer by citing specific information contained in the R output.</p>
+</section>
+<section id="c-3" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="c-3">c)</h4>
+<p>Write sentences interpreting the coefficients <span class="math inline">\(b_0\)</span>, <span class="math inline">\(b_1\)</span>, and <span class="math inline">\(b_2\)</span> in Model M1. Specifically give the numerical estimate of each coefficient in your interpretation. Also state what (if anything) we can conclude from the p-value associated with each coefficient.</p>
+</section>
+<section id="d-3" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="d-3">d)</h4>
+<p>Write sentences interpreting the coefficients <span class="math inline">\(b_0\)</span>, <span class="math inline">\(b_1\)</span>, <span class="math inline">\(b_2\)</span>, and <span class="math inline">\(b_3\)</span> in Model M2. Specifically give the numerical estimate of each coefficient in your interpretation. Also state what (if anything) we can conclude from the p-value associated with each coefficient.</p>
+</section>
+<section id="e-2" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="e-2">e)</h4>
+<p>For each model, calculate the estimated top speed of the following coasters, both located at Six Flags Great America in Illinois:</p>
+<ol type="i">
+<li>Superman Ultimate Flight, a flying (non sit-down) coaster with duration 180 seconds.<br>
+</li>
+<li>Viper, a sit-down coaster with duration 105 seconds</li>
+</ol>
+<p>Which model’s predictions do you think are more accurate? Why?</p>
+</section>
+</section>
+<section id="section-11" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-11">12)</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb163"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb163-1"><a href="#cb163-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(diamonds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The boxplot shows the distribution of prices in a set of 53,940 diamonds, broken down by quality of cut (Fair, Good, Very Good, Premium, Ideal).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb164"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb164-1"><a href="#cb164-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>diamonds, <span class="fu">aes</span>(<span class="at">x=</span>price, <span class="at">y=</span>cut, <span class="at">fill=</span>cut)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>(<span class="at">outlier.size=</span><span class="fl">0.01</span>, <span class="at">outlier.alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span> </span>
+<span id="cb164-2"><a href="#cb164-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_summary</span>(<span class="at">fun=</span>mean, <span class="at">geom=</span><span class="st">"point"</span>, <span class="at">shape=</span><span class="dv">4</span>, <span class="at">color=</span><span class="st">"red"</span>, <span class="at">size=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Ch5_files/figure-html/unnamed-chunk-140-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Box plot of prices of diamonds by quality of cut</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The histogram shows the number of diamonds of each cut, along with the carat size (larger diamonds larger carat measurements).</p>
+<p>The table shows the mean and standard deviation in price by quality of cut.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb165"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb165-1"><a href="#cb165-1" aria-hidden="true" tabindex="-1"></a>DTab <span class="ot">&lt;-</span> diamonds <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(cut) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">N=</span><span class="fu">n</span>(), </span>
+<span id="cb165-2"><a href="#cb165-2" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">Avg_carat=</span><span class="fu">mean</span>(carat) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>), </span>
+<span id="cb165-3"><a href="#cb165-3" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">Avg_price=</span><span class="fu">mean</span>(price) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">0</span>)</span>
+<span id="cb165-4"><a href="#cb165-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb165-5"><a href="#cb165-5" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(DTab, <span class="at">caption=</span><span class="st">"Average carat size and price by quality of cut"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Average carat size and price by quality of cut</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">cut</th>
+<th style="text-align: right;">N</th>
+<th style="text-align: right;">Avg_carat</th>
+<th style="text-align: right;">Avg_price</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Fair</td>
+<td style="text-align: right;">1610</td>
+<td style="text-align: right;">1.05</td>
+<td style="text-align: right;">4359</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Good</td>
+<td style="text-align: right;">4906</td>
+<td style="text-align: right;">0.85</td>
+<td style="text-align: right;">3929</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Very Good</td>
+<td style="text-align: right;">12082</td>
+<td style="text-align: right;">0.81</td>
+<td style="text-align: right;">3982</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Premium</td>
+<td style="text-align: right;">13791</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">4584</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ideal</td>
+<td style="text-align: right;">21551</td>
+<td style="text-align: right;">0.70</td>
+<td style="text-align: right;">3458</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb166"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb166-1"><a href="#cb166-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>diamonds, <span class="fu">aes</span>(<span class="at">x=</span>carat, <span class="at">fill=</span>cut)) <span class="sc">+</span> <span class="fu">geom_histogram</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Ch5_files/figure-html/unnamed-chunk-142-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Histogram of carat size and quality of cut</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Finally, the scatterplot shows the relationship between price, carat size, and quality of cut.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb167"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb167-1"><a href="#cb167-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>diamonds, <span class="fu">aes</span>(<span class="at">x=</span>carat, <span class="at">y=</span>price, <span class="at">color=</span>cut)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Ch5_files/figure-html/unnamed-chunk-143-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Scatterplot of carat, price, and cut</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>We fit a model for price, using only quality of cut as an explanatory variable. Model summary output is shown below. (L=Good, Q=Very Good, c=Premium, ^4=Ideal).</p>
+<p>Model 1:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb168"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb168-1"><a href="#cb168-1" aria-hidden="true" tabindex="-1"></a>M_Diamond_price_cut <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>diamonds, price<span class="sc">~</span>cut)</span>
+<span id="cb168-2"><a href="#cb168-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Diamond_price_cut)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = price ~ cut, data = diamonds)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+ -4258  -2741  -1494   1360  15348 
+
+Coefficients:
+            Estimate Std. Error t value             Pr(&gt;|t|)    
+(Intercept)  4062.24      25.40 159.923 &lt; 0.0000000000000002 ***
+cut.L        -362.73      68.04  -5.331       0.000000098033 ***
+cut.Q        -225.58      60.65  -3.719               0.0002 ***
+cut.C        -699.50      52.78 -13.253 &lt; 0.0000000000000002 ***
+cut^4        -280.36      42.56  -6.588       0.000000000045 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 3964 on 53935 degrees of freedom
+Multiple R-squared:  0.01286,   Adjusted R-squared:  0.01279 
+F-statistic: 175.7 on 4 and 53935 DF,  p-value: &lt; 0.00000000000000022</code></pre>
+</div>
+</div>
+<section id="a-5" class="level4" data-number="5.6.1.1">
+<h4 data-number="5.6.1.1" class="anchored" data-anchor-id="a-5"><span class="header-section-number">5.6.1.1</span> a)</h4>
+<p>In Model 1, are the higher quality cuts, (L, Q, C, ^4) expected to be more or less expensive than fair cuts? Is this surprising? Why or why not?</p>
+<p>Now, we include carat size in the model.</p>
+<p>Model 2:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb170"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb170-1"><a href="#cb170-1" aria-hidden="true" tabindex="-1"></a>M_Diamond_price_cut_carat <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>diamonds, price<span class="sc">~</span>cut <span class="sc">+</span> carat)</span>
+<span id="cb170-2"><a href="#cb170-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Diamond_price_cut_carat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = price ~ cut + carat, data = diamonds)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-17540.7   -791.6    -37.6    522.1  12721.4 
+
+Coefficients:
+            Estimate Std. Error  t value             Pr(&gt;|t|)    
+(Intercept) -2701.38      15.43 -175.061 &lt; 0.0000000000000002 ***
+cut.L        1239.80      26.10   47.502 &lt; 0.0000000000000002 ***
+cut.Q        -528.60      23.13  -22.851 &lt; 0.0000000000000002 ***
+cut.C         367.91      20.21   18.201 &lt; 0.0000000000000002 ***
+cut^4          74.59      16.24    4.593           0.00000437 ***
+carat        7871.08      13.98  563.040 &lt; 0.0000000000000002 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1511 on 53934 degrees of freedom
+Multiple R-squared:  0.8565,    Adjusted R-squared:  0.8565 
+F-statistic: 6.437e+04 on 5 and 53934 DF,  p-value: &lt; 0.00000000000000022</code></pre>
+</div>
+</div>
+</section>
+<section id="b-5" class="level4" data-number="5.6.1.2">
+<h4 data-number="5.6.1.2" class="anchored" data-anchor-id="b-5"><span class="header-section-number">5.6.1.2</span> b)</h4>
+<p>After accounting for carat size are the higher quality cuts, (L, Q, C, ^4) expected to be more or less expensive than fair cuts? How does this compare to your answer from (a) Why do you think this happens? What do we see in the graphs that explains this behavior?</p>
+</section>
+</section>
+<section id="section-12" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-12">13)</h3>
+<p>A correlation matrix and plot between different quantitative variables in the diamonds dataset is shown below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb172"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb172-1"><a href="#cb172-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
+<span id="cb172-2"><a href="#cb172-2" aria-hidden="true" tabindex="-1"></a>Diamonds_Num <span class="ot">&lt;-</span> <span class="fu">select_if</span>(diamonds, is.numeric)</span>
+<span id="cb172-3"><a href="#cb172-3" aria-hidden="true" tabindex="-1"></a>C <span class="ot">&lt;-</span> <span class="fu">cor</span>(Diamonds_Num, <span class="at">use =</span> <span class="st">"pairwise.complete.obs"</span>)</span>
+<span id="cb172-4"><a href="#cb172-4" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(C,<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      carat depth table price     x     y    z
+carat  1.00  0.03  0.18  0.92  0.98  0.95 0.95
+depth  0.03  1.00 -0.30 -0.01 -0.03 -0.03 0.09
+table  0.18 -0.30  1.00  0.13  0.20  0.18 0.15
+price  0.92 -0.01  0.13  1.00  0.88  0.87 0.86
+x      0.98 -0.03  0.20  0.88  1.00  0.97 0.97
+y      0.95 -0.03  0.18  0.87  0.97  1.00 0.95
+z      0.95  0.09  0.15  0.86  0.97  0.95 1.00</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb174"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb174-1"><a href="#cb174-1" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(C)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch5_files/figure-html/unnamed-chunk-146-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Suppose we add the variable x (a measure of the diamond’s width) to the model. State whether the following quantities would be expected to increase, decrease, or stay about the same.</p>
+<p>A. The standard error associated with the <code>carat</code> variable.<br>
+B. The t-statistic associated with the <code>carat</code> variable.<br>
+C. The p-value associated with the <code>carat</code> variable.<br>
+D. The <span class="math inline">\(R^2\)</span> value.<br>
+E. The predicted price for a diamond of Very Good cut, with 1 carat and x=5.</p>
 
 
 </section>

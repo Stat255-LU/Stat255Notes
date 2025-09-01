@@ -240,7 +240,7 @@ window.Quarto = {
   <li><a href="#f-tests" id="toc-f-tests" class="nav-link" data-scroll-target="#f-tests"><span class="header-section-number">4.2.4</span> F-tests</a></li>
   <li><a href="#limitations-of-theory-based-inference" id="toc-limitations-of-theory-based-inference" class="nav-link" data-scroll-target="#limitations-of-theory-based-inference"><span class="header-section-number">4.2.5</span> Limitations of Theory-Based Inference</a></li>
   </ul></li>
-  <li><a href="#inference-for-models" id="toc-inference-for-models" class="nav-link" data-scroll-target="#inference-for-models"><span class="header-section-number">4.3</span> Inference for Models</a>
+  <li><a href="#model-based-inference" id="toc-model-based-inference" class="nav-link" data-scroll-target="#model-based-inference"><span class="header-section-number">4.3</span> Model-Based Inference</a>
   <ul class="collapse">
   <li><a href="#difference-in-means" id="toc-difference-in-means" class="nav-link" data-scroll-target="#difference-in-means"><span class="header-section-number">4.3.1</span> Difference in Means</a></li>
   <li><a href="#regression-slope-and-intercept" id="toc-regression-slope-and-intercept" class="nav-link" data-scroll-target="#regression-slope-and-intercept"><span class="header-section-number">4.3.2</span> Regression Slope and Intercept</a></li>
@@ -270,7 +270,22 @@ window.Quarto = {
   <li><a href="#smoking-and-birthweight-example" id="toc-smoking-and-birthweight-example" class="nav-link" data-scroll-target="#smoking-and-birthweight-example"><span class="header-section-number">4.6.3</span> Smoking and Birthweight Example</a></li>
   <li><a href="#cautions-and-advice" id="toc-cautions-and-advice" class="nav-link" data-scroll-target="#cautions-and-advice"><span class="header-section-number">4.6.4</span> Cautions and Advice</a></li>
   </ul></li>
-  <li><a href="#practice-questions" id="toc-practice-questions" class="nav-link" data-scroll-target="#practice-questions"><span class="header-section-number">4.7</span> Practice Questions</a></li>
+  <li><a href="#practice-questions" id="toc-practice-questions" class="nav-link" data-scroll-target="#practice-questions"><span class="header-section-number">4.7</span> Practice Questions</a>
+  <ul class="collapse">
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section">1)</a></li>
+  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1">2)</a></li>
+  <li><a href="#section-2" id="toc-section-2" class="nav-link" data-scroll-target="#section-2">3)</a></li>
+  <li><a href="#section-3" id="toc-section-3" class="nav-link" data-scroll-target="#section-3">4)</a></li>
+  <li><a href="#section-4" id="toc-section-4" class="nav-link" data-scroll-target="#section-4">5)</a></li>
+  <li><a href="#section-5" id="toc-section-5" class="nav-link" data-scroll-target="#section-5">6)</a></li>
+  <li><a href="#section-6" id="toc-section-6" class="nav-link" data-scroll-target="#section-6">7)</a></li>
+  <li><a href="#section-7" id="toc-section-7" class="nav-link" data-scroll-target="#section-7">8)</a></li>
+  <li><a href="#section-8" id="toc-section-8" class="nav-link" data-scroll-target="#section-8">9)</a></li>
+  <li><a href="#section-9" id="toc-section-9" class="nav-link" data-scroll-target="#section-9">10)</a></li>
+  <li><a href="#section-10" id="toc-section-10" class="nav-link" data-scroll-target="#section-10">11)</a></li>
+  <li><a href="#section-11" id="toc-section-11" class="nav-link" data-scroll-target="#section-11">12)</a></li>
+  <li><a href="#section-12" id="toc-section-12" class="nav-link" data-scroll-target="#section-12">13)</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -700,12 +715,6 @@ Coefficients:
 <p>We’ve now seen 3 different ways to obtain confidence intervals based on statistics calculated from data.</p>
 <p>The table below tells us what must be true of the sampling distribution for a statistic in order to use each technique.</p>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 37%">
-<col style="width: 12%">
-<col style="width: 18%">
-<col style="width: 31%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Technique</th>
@@ -816,8 +825,8 @@ F = \frac{\frac{\text{SSR}_{\text{Reduced}}-\text{SSR}_{\text{Full}}}{p-q}}{\fra
 <p>We will move forward by using probability-based inference where appropriate, while understanding that we are merely approximating what we would obtain via simulation. Meanwhile, we’ll continue to employ simulation-based approaches where probability-based techniques are inappropriate or unavailable.</p>
 </section>
 </section>
-<section id="inference-for-models" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="inference-for-models"><span class="header-section-number">4.3</span> Inference for Models</h2>
+<section id="model-based-inference" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="model-based-inference"><span class="header-section-number">4.3</span> Model-Based Inference</h2>
 <p>In this section, we’ll apply the theories and formulas from the previous section to the models won the Florida lakes data that we saw in Chapter 3. We’ll illustrate how to calculate all of the important peices of information provided in the model summary output produced by R.</p>
 <section id="difference-in-means" class="level3" data-number="4.3.1">
 <h3 data-number="4.3.1" class="anchored" data-anchor-id="difference-in-means"><span class="header-section-number">4.3.1</span> Difference in Means</h3>
@@ -1032,10 +1041,10 @@ LocationS   0.09157768 0.4523314</code></pre>
 <section id="t-value" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="t-value">t-value</h4>
 <p>We calculate standardized t-statistics associated with <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span>.</p>
-<p><strong>t-statistic for <span class="math inline">\(b_0\)</span>:</strong></p>
+<p><strong>t-statistic for</strong> <span class="math inline">\(b_0\)</span>:</p>
 <p><span class="math inline">\(t=\frac{{b_0}}{\text{SE}(b_0)} = \frac{0.42455}{0.05519} = 7.692\)</span></p>
 <p>In our sample, the average mercury level among lakes in Northern Florida is 7.7 standard errors higher than we would expect it to be if the average mercury level among all lakes in Northern Florida is 0. Since we know that the mean mercury level among all lakes in Northern Florida is not 0, this is not a meaningful interpretation.</p>
-<p><strong>t-statistic for <span class="math inline">\(b_1\)</span>:</strong></p>
+<p><strong>t-statistic for</strong> <span class="math inline">\(b_1\)</span>:</p>
 <p><span class="math inline">\(t=\frac{{b_1}}{\text{SE}(b_1)} = \frac{0.27195}{0.08985} = 3.027\)</span></p>
 <p>In our sample, the average mercury level among lakes in Southern Florida is 3 standard errors higher than we would expect it to be if the there was really no difference in average mercury levels between lakes in Northern and Southern Florida. Equivalently, we could say that the mean mercury level among lakes in Southern Florida is 3 standard errors higher than in Northern Florida.</p>
 </section>
@@ -1069,7 +1078,7 @@ LocationS   0.09157768 0.4523314</code></pre>
 <section id="comparison-to-simulation" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="comparison-to-simulation">Comparison to Simulation</h4>
 <p>Let’s compare the confidence intervals and p-values we got to the ones we obtained in Chapter 3 using bootstrapping and a permutation test.</p>
-<p><strong>Formula-Based 95% Confidence Interval for <span class="math inline">\(b_1\)</span></strong></p>
+<p><strong>Formula-Based 95% Confidence Interval for</strong> <span class="math inline">\(b_1\)</span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(M_Lakes_merc_loc,  <span class="at">parm =</span> <span class="fu">c</span>(<span class="st">"LocationS"</span>), <span class="at">level=</span><span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1077,7 +1086,7 @@ LocationS   0.09157768 0.4523314</code></pre>
 LocationS 0.09157768 0.4523314</code></pre>
 </div>
 </div>
-<p><strong>Bootstrap 95% Confidence Interval for <span class="math inline">\(b_1\)</span>:</strong></p>
+<p><strong>Bootstrap 95% Confidence Interval for</strong> <span class="math inline">\(b_1\)</span>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(M_Lakes_merc_loc_Bootstrap, <span class="at">parm =</span> <span class="fu">c</span>(<span class="st">"LocationS"</span>),</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">level =</span> <span class="fl">0.95</span>, <span class="at">method =</span> <span class="st">"se"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1694,13 +1703,13 @@ DepthShallow -0.4024618 0.05082548</code></pre>
 </section>
 <section id="t-value-3" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="t-value-3">t-value</h4>
-<p><strong>t-statistic for <span class="math inline">\(b_0\)</span>:</strong></p>
+<p><strong>t-statistic for</strong> <span class="math inline">\(b_0\)</span>:</p>
 <p><span class="math inline">\(t=\frac{{b_0}}{\text{SE}(b_0)} = \frac{0.60400}{0.08701} = 6.942\)</span></p>
 <p>In our sample, the average mercury level among deep lakes in Florida is 6.9 standard errors higher than we would expect it to be if the average mercury level among all deep lakes in Florida is 0. Since we know that the mean mercury level among all deep lakes in Florida is not 0, this is not a meaningful interpretation.</p>
-<p><strong>t-statistic for <span class="math inline">\(b_1\)</span>:</strong></p>
+<p><strong>t-statistic for</strong> <span class="math inline">\(b_1\)</span>:</p>
 <p><span class="math inline">\(t=\frac{{b_1}}{\text{SE}(b_1)} = \frac{-0.01275}{0.12111} = -0.105\)</span></p>
 <p>In our sample, the average mercury level among all medium lakes in Florida is 0.1 standard errors lower than we would expect it to be if the there was really no difference in average mercury levels between deep and medium lakes in Florida. Equivalently, we could say that the mean mercury level among lakes in medium depth lakes is 0.1 standard errors lower than in deep lakes.</p>
-<p><strong>t-statistic for <span class="math inline">\(b_2\)</span>:</strong></p>
+<p><strong>t-statistic for</strong> <span class="math inline">\(b_2\)</span>:</p>
 <p><span class="math inline">\(t=\frac{{b_2}}{\text{SE}(b_2)} = \frac{-0.17582}{0.11284} = -1.558\)</span></p>
 <p>In our sample, the average mercury level among all shallow lakes in Florida is 1.56 standard errors lower than we would expect it to be if the there was really no difference in average mercury levels between deep and shallow lakes in Florida. Equivalently, we could say that the mean mercury level among lakes in shallow depth lakes is 1.56 standard errors lower than in deep lakes.</p>
 </section>
@@ -1804,9 +1813,6 @@ F &= \frac{\frac{\text{SSR}_{\text{Reduced}}-\text{SSR}_{\text{Full}}}{p-q}}{\fr
 \end{aligned}
 $$
 
-
-
-
 ::: {.cell}
 
 ```{.r .cell-code}
@@ -1826,13 +1832,7 @@ gf_dist("f", df1=1, df2=96, geom = "area", fill = ~ (abs(x)>! abs(ts)), show.leg
 :::
 :::
 
-
-
-
 **p-value:**
-
-
-
 
 ::: {.cell}
 
@@ -1850,13 +1850,7 @@ gf_dist("f", df1=1, df2=96, geom = "area", fill = ~ (abs(x)>! abs(ts)), show.leg
 :::
 :::
 
-
-
-
 The probability-based F-test is used in the `anova` command.
-
-
-
 
 ::: {.cell}
 
@@ -1883,9 +1877,6 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 :::
 :::
-
-
-
 
 Since the p-value is small, we have enough evidence to say that there is evidence of an interaction between size and whether or not the house is on the waterfront.
 
@@ -1938,7 +1929,7 @@ Notice that this p-value is identical to the one we obtained in the previous sec
 </section>
 <section id="calculating-confidence-intervals" class="level3" data-number="4.4.3">
 <h3 data-number="4.4.3" class="anchored" data-anchor-id="calculating-confidence-intervals"><span class="header-section-number">4.4.3</span> Calculating Confidence Intervals</h3>
-<p>An estimate for the expected among of ice cream when a person holds the dispenser for three seconds is <span class="math inline">\(b_0 + 3b_1\)</span>. In our model, we estimated <span class="math inline">\(b_0\)</span> = -0.32 and <span class="math inline">\(b_1\)</span> = 2.06, so the estimated amount of ice cream is <span class="math inline">\(-0.32 + 3\times 2.06 = 5.87\)</span> oz.</p>
+<p>An estimate for the expected among of ice cream when a person holds the dispenser for three seconds is <span class="math inline">\(b_0 + 3b_1\)</span>. In our model, we estimated <span class="math inline">\(b_0\)</span> = -0.32 and <span class="math inline">\(b_1\)</span> = 2.06, so the estimated amount of ice cream is <span class="math display">\[-0.32+ 3\times2.06 = 5.87\]</span> oz.</p>
 <p>In order to calculate a 95% confidence interval using the standard error formula in Section 4.2, we’ll need the following quantities:</p>
 <p>SSR:</p>
 <div class="cell">
@@ -2500,8 +2491,432 @@ habitsmoker -0.5965648 -0.03452013</code></pre>
 </section>
 <section id="practice-questions" class="level2" data-number="4.7">
 <h2 data-number="4.7" class="anchored" data-anchor-id="practice-questions"><span class="header-section-number">4.7</span> Practice Questions</h2>
+<section id="section" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section">1)</h3>
+<p>For each of the three plots, state whether it would be appropriate to use the ordinary linear regression model of the form</p>
+<p><span class="math display">\[
+y = \beta_0 + \beta_1x + \epsilon_i, \text{ where } \epsilon_i\sim{\text{N}}(0,\sigma)
+\]</span></p>
+<p>Explain why or why not. (Hint: Think about whether the assumptions of the ordinary regression model in Section 4.1.6 appear to be satisfied. )</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch4_files/figure-html/unnamed-chunk-109-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="section-1" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-1">2)</h3>
+<p>We use the ordinary linear regression model</p>
+<p><span class="math display">\[
+y = \beta_0 + \beta_1x + \epsilon_i, \text{ where } \epsilon_i\sim{\text{N}}(0,\sigma).
+\]</span></p>
+<p>Shown below are histograms showing the distribution of the explanatory variable <span class="math inline">\(x\)</span>, the response variable, <span class="math inline">\(y\)</span>, and a scatterplot displaying the relationship between <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb134"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb134-1"><a href="#cb134-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">10082020</span>)</span>
+<span id="cb134-2"><a href="#cb134-2" aria-hidden="true" tabindex="-1"></a><span class="co"># set times </span></span>
+<span id="cb134-3"><a href="#cb134-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">60</span></span>
+<span id="cb134-4"><a href="#cb134-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rexp</span>(n, <span class="at">rate=</span><span class="dv">1</span>)</span>
+<span id="cb134-5"><a href="#cb134-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="fl">0.75</span>)</span>
+<span id="cb134-6"><a href="#cb134-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb134-7"><a href="#cb134-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb134-8"><a href="#cb134-8" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(x, y) <span class="co"># set up data table</span></span>
+<span id="cb134-9"><a href="#cb134-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb134-10"><a href="#cb134-10" aria-hidden="true" tabindex="-1"></a>P1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>df, <span class="fu">aes</span>(<span class="at">x=</span>x)) <span class="sc">+</span> <span class="fu">geom_histogram</span>()  <span class="sc">+</span> </span>
+<span id="cb134-11"><a href="#cb134-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">5</span>))  <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"A) Histogram of x"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"x"</span>)  <span class="sc">+</span> </span>
+<span id="cb134-12"><a href="#cb134-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb134-13"><a href="#cb134-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb134-14"><a href="#cb134-14" aria-hidden="true" tabindex="-1"></a>P2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>df, <span class="fu">aes</span>(<span class="at">x=</span>y)) <span class="sc">+</span> <span class="fu">geom_histogram</span>()  <span class="sc">+</span> </span>
+<span id="cb134-15"><a href="#cb134-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">5</span>))  <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"B) Histogram of y"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"y"</span>)  <span class="sc">+</span> </span>
+<span id="cb134-16"><a href="#cb134-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb134-17"><a href="#cb134-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb134-18"><a href="#cb134-18" aria-hidden="true" tabindex="-1"></a>P3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span> <span class="fu">geom_point</span>()  <span class="sc">+</span> </span>
+<span id="cb134-19"><a href="#cb134-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">5</span>)) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">5</span>)) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"C) Scatterplot of y and x"</span>) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"x"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"y"</span>) <span class="sc">+</span> </span>
+<span id="cb134-20"><a href="#cb134-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>)</span>
+<span id="cb134-21"><a href="#cb134-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb134-22"><a href="#cb134-22" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(P1, P2, P3, <span class="at">ncol=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch4_files/figure-html/unnamed-chunk-110-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Based on these graphs, should we be concerned about the normality assumption in the ordinary linear regression model? Why or why not?</p>
+</section>
+<section id="section-2" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-2">3)</h3>
+<p>Consider the data shown in each of the four plots, and the ordinary linear regression model</p>
+<p><span class="math display">\[
+y = \beta_0 + \beta_1x + \epsilon_i, \text{ where } \epsilon_i\sim{\text{N}}(0,\sigma).
+\]</span></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch4_files/figure-html/unnamed-chunk-111-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="a-order-the-plots-from-the-one-with-the-smallest-value-of-beta_1-to-the-largest." class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="a-order-the-plots-from-the-one-with-the-smallest-value-of-beta_1-to-the-largest.">a) Order the plots from the one with the smallest value of <span class="math inline">\(\beta_1\)</span> to the largest.</h4>
+</section>
+<section id="b-order-the-plots-from-the-one-with-the-smallest-value-of-sigma-to-the-largest." class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="b-order-the-plots-from-the-one-with-the-smallest-value-of-sigma-to-the-largest.">b) Order the plots from the one with the smallest value of <span class="math inline">\(\sigma\)</span> to the largest.</h4>
+</section>
+<section id="c-order-the-plots-from-the-one-with-the-smallest-value-of-r2-to-the-largest." class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="c-order-the-plots-from-the-one-with-the-smallest-value-of-r2-to-the-largest.">c) Order the plots from the one with the smallest value of <span class="math inline">\(R^2\)</span> to the largest.</h4>
+</section>
+</section>
+<section id="section-3" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-3">4)</h3>
+<p>Consider the data shown in each of the four plots, and the ordinary linear regression model</p>
+<p><span class="math display">\[
+y = \beta_0 + \beta_1\text{GroupB}+ \epsilon_i, \text{ where } \epsilon_i\sim{\text{N}}(0,\sigma).
+\]</span></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch4_files/figure-html/unnamed-chunk-112-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="a-order-the-plots-from-the-one-with-the-smallest-value-of-beta_1-to-the-largest.-1" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="a-order-the-plots-from-the-one-with-the-smallest-value-of-beta_1-to-the-largest.-1">a) Order the plots from the one with the smallest value of <span class="math inline">\(\beta_1\)</span> to the largest.</h4>
+</section>
+<section id="b-order-the-plots-from-the-one-with-the-smallest-value-of-sigma-to-the-largest.-1" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="b-order-the-plots-from-the-one-with-the-smallest-value-of-sigma-to-the-largest.-1">b) Order the plots from the one with the smallest value of <span class="math inline">\(\sigma\)</span> to the largest.</h4>
+</section>
+<section id="c-order-the-plots-from-the-one-with-the-smallest-f-statistic-to-the-largest." class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="c-order-the-plots-from-the-one-with-the-smallest-f-statistic-to-the-largest.">c) Order the plots from the one with the smallest F-statistic to the largest.</h4>
+</section>
+<section id="for-questions-5-and-6recall-that-in-chapter-3-practice-problems-we-worked-with-a-dataset-pertaining-to-a-sample-of-200-high-school-seniors.-data-were-collected-from-student-responses-to-the-high-school-and-beyond-survey.well-continue-to-work-with-those-data-this-time-using-theory-based-on-the-ordinary-regression-model-to-perform-inference." class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="for-questions-5-and-6recall-that-in-chapter-3-practice-problems-we-worked-with-a-dataset-pertaining-to-a-sample-of-200-high-school-seniors.-data-were-collected-from-student-responses-to-the-high-school-and-beyond-survey.well-continue-to-work-with-those-data-this-time-using-theory-based-on-the-ordinary-regression-model-to-perform-inference."><strong>For Questions 5 and 6,recall that in Chapter 3 practice problems, we worked with a dataset pertaining to a sample of 200 high school seniors. Data were collected from student responses to the High School and Beyond Survey.We’ll continue to work with those data, this time using theory based on the ordinary regression model to perform inference.</strong></h4>
+</section>
+</section>
+<section id="section-4" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-4">5)</h3>
+<p>Consider a regression model of the form</p>
+<p><span class="math display">\[
+\text{Science Score} = \beta_0 + \beta_1\times\text{SchoolTypePrivate} + \epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, \sigma)
+\]</span></p>
+<section id="a" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="a">a)</h4>
+<p>State the four assumptions of the ordinary regression model and explain what they mean in this context.</p>
+</section>
+<section id="b" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="b">b)</h4>
+<p>The model output is shown below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb135"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb135-1"><a href="#cb135-1" aria-hidden="true" tabindex="-1"></a>M_Seniors_science_schtype <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>HSSeniors, science<span class="sc">~</span>schtyp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><img src="Ch4_1.png" id="id" class="class" style="width:110.0%;height:110.0%" alt="M1 Output"> The table shows the mean and standard deviation in science scores for public and private schools, as well as SSR and SST for the model.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">schtyp</th>
+<th style="text-align: right;">Mean_Science</th>
+<th style="text-align: right;">SD_Science</th>
+<th style="text-align: right;">N</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">public</td>
+<td style="text-align: right;">51.57</td>
+<td style="text-align: right;">10.19</td>
+<td style="text-align: right;">168</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">private</td>
+<td style="text-align: right;">53.31</td>
+<td style="text-align: right;">8.19</td>
+<td style="text-align: right;">32</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>SSR:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb136"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb136-1"><a href="#cb136-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(M_Seniors_science_schtype<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 19426.02</code></pre>
+</div>
+</div>
+<p>SST:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb138"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb138-1"><a href="#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>((HSSeniors<span class="sc">$</span>science<span class="sc">-</span><span class="fu">mean</span>(HSSeniors<span class="sc">$</span>science))<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 19507.5</code></pre>
+</div>
+</div>
+<p><strong>Calculate the values that go in blanks (A)-(L) in the model output. Show your calculations. You may use the values in the tables and R output below.</strong></p>
+</section>
+<section id="c" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="c">c)</h4>
+<p>Calculate 95% confidence intervals for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>.</p>
+</section>
+<section id="d" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="d">d)</h4>
+<p>Give an estimate of <span class="math inline">\(\sigma\)</span>. Explain what this number represents in context. It might be helpful to phrase the statement in the form “this quantity represents the variability in ________ between __________.”</p>
+</section>
+<section id="e" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="e">e)</h4>
+<p>Explain what the standard errors of <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> represent in context. It might be helpful to phrase these statements in the form “this quantity represents the variability in ________ between __________.”</p>
+</section>
+<section id="f" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="f">f)</h4>
+<p>Write the null hypothesis associated with the p-value on the line <code>intercept</code>. What (if anything) should we conclude from this p-value?</p>
+<section id="g" class="level5 unnumbered">
+<h5 class="unnumbered anchored" data-anchor-id="g">g)</h5>
+<p>Write the null hypothesis associated with the p-value on the line <code>schtypprivate</code>. What (if anything) should we conclude from this p-value?</p>
+</section>
+<section id="h" class="level5 unnumbered">
+<h5 class="unnumbered anchored" data-anchor-id="h">h)</h5>
+<p>Write sentences interpreting each of the following intervals in context. If the command produces two intervals, interpret both of them.</p>
+<ol type="i">
+<li></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb140"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb140-1"><a href="#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(M_Seniors_science_schtype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  2.5 %   97.5 %
+(Intercept)   50.064421 53.07844
+schtypprivate -2.026447  5.50859</code></pre>
+</div>
+</div>
+<ol start="2" type="i">
+<li></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb142"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb142-1"><a href="#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(M_Seniors_science_schtype, <span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">schtyp=</span><span class="st">"private"</span>), <span class="at">interval=</span><span class="st">"confidence"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      fit      lwr      upr
+1 53.3125 49.85951 56.76549</code></pre>
+</div>
+</div>
+<ol start="3" type="i">
+<li></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb144"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb144-1"><a href="#cb144-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(M_Seniors_science_schtype, <span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">schtyp=</span><span class="st">"private"</span>), <span class="at">interval=</span><span class="st">"prediction"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      fit      lwr      upr
+1 53.3125 33.47659 73.14841</code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="section-5" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-5">6)</h3>
+<p>Now consider a model of the form:</p>
+<p><span class="math display">\[
+\text{Science Score} = \beta_0 + \beta_1\times\text{WritingScore} + \epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, \sigma)
+\]</span></p>
+<section id="a-1" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="a-1">a)</h4>
+<p>State the four assumptions of the ordinary regression model and explain what they mean in this context.</p>
+</section>
+<section id="b-1" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="b-1">b)</h4>
+<p>The model output is shown below, along with some quantities that can be used to calculate the model estimates.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb146"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb146-1"><a href="#cb146-1" aria-hidden="true" tabindex="-1"></a>M_Seniors_science_write <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>HSSeniors, <span class="fu">lm</span>(<span class="at">data=</span>HSSeniors, science<span class="sc">~</span>write))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Ch4_2.png" class="class figure-img" style="width:110.0%;height:110.0%"></p>
+<figcaption>M2 Output</figcaption>
+</figure>
+</div>
+<p>SSR:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb147"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb147-1"><a href="#cb147-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(M_Seniors_science_write<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 13159.69</code></pre>
+</div>
+</div>
+<p>SST:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb149"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb149-1"><a href="#cb149-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>((HSSeniors<span class="sc">$</span>science<span class="sc">-</span><span class="fu">mean</span>(HSSeniors<span class="sc">$</span>science))<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 19507.5</code></pre>
+</div>
+</div>
+<p><span class="math inline">\(\bar{x}\)</span>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb151"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb151-1"><a href="#cb151-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(HSSeniors<span class="sc">$</span>write)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 52.775</code></pre>
+</div>
+</div>
+<p><span class="math inline">\(\bar{y}\)</span>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb153"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb153-1"><a href="#cb153-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(HSSeniors<span class="sc">$</span>science)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 51.85</code></pre>
+</div>
+</div>
+<p><span class="math inline">\(\displaystyle\sum_{i=1}^n(x_i-\bar{x})^2\)</span>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb155"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb155-1"><a href="#cb155-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>((HSSeniors<span class="sc">$</span>write<span class="sc">-</span><span class="fu">mean</span>(HSSeniors<span class="sc">$</span>write))<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 17878.87</code></pre>
+</div>
+</div>
+<p><strong>Calculate the values that go in blanks (A)-(J) in the model output. Show your calculations. You may use the values in the tables and R output below.</strong></p>
+</section>
+<section id="c-1" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="c-1">c)</h4>
+<p>Calculate 95% confidence intervals for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>.</p>
+</section>
+<section id="d-1" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="d-1">d)</h4>
+<p>Give an estimate of <span class="math inline">\(\sigma\)</span>. Explain what this number represents in context. It might be helpful to phrase the statement in the form “this quantity represents the variability in ________ between __________.”</p>
+</section>
+<section id="e-1" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="e-1">e)</h4>
+<p>Explain what the standard errors of <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> represent in context. It might be helpful to phrase these statements in the form “this quantity represents the variability in ________ between __________.”</p>
+</section>
+<section id="f-1" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="f-1">f)</h4>
+<p>Write the null hypothesis associated with the p-value on the line <code>intercept</code>. What (if anything) should we conclude from this p-value?</p>
+</section>
+<section id="g-1" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="g-1">g)</h4>
+<p>Write the null hypothesis associated with the p-value on the line <code>wrire</code>. What (if anything) should we conclude from this p-value?</p>
+<section id="h-1" class="level5 unnumbered">
+<h5 class="unnumbered anchored" data-anchor-id="h-1">h)</h5>
+<p>Write sentences interpreting each of the following intervals in context. If the command produces two intervals, interpret both of them.</p>
+<ol type="i">
+<li></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb157"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb157-1"><a href="#cb157-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(M_Seniors_science_write)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 2.5 %     97.5 %
+(Intercept) 13.9572262 26.8500841
+write        0.4756219  0.7160918</code></pre>
+</div>
+</div>
+<ol start="2" type="i">
+<li></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb159"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb159-1"><a href="#cb159-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(M_Seniors_science_write, <span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">write=</span><span class="dv">60</span>), <span class="at">interval=</span><span class="st">"confidence"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       fit      lwr      upr
+1 56.15507 54.72435 57.58579</code></pre>
+</div>
+</div>
+<ol start="3" type="i">
+<li></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb161"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb161-1"><a href="#cb161-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(M_Seniors_science_write, <span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">write=</span><span class="dv">60</span>), <span class="at">interval=</span><span class="st">"prediction"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       fit      lwr      upr
+1 56.15507 40.01468 72.29545</code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="section-6" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-6">7)</h3>
+<ol type="a">
+<li><p>Using the public/private schools data, suppose we randomly select a single public school student and find that they have a science score of 55. Should we conclude that this person is exceptionally strong at science, relative to other students? Why or why not?</p></li>
+<li><p>Suppose we take a random sample of 168 public school students and find that the average science score in the group was 55. Should we conclude that this group was exceptionally strong at science, relative to other groups of students? Why or why not?</p></li>
+</ol>
+</section>
+<section id="section-7" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-7">8)</h3>
+<p>The residual standard error <span class="math inline">\(s\)</span> is different for the model in Question 1 than in Question 2. Suppose a person says “these are both meant to be the standard deviation in science test scores, so how can they be different?” How should you respond?</p>
+</section>
+<section id="section-8" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-8">9)</h3>
+<p>Suppose the sample had consisted of 400 total students (instead of 200), of which 336 were from public schools and 64 from private schools (so the proportion from each school type is the same as in Question 1). Suppose the variability in the 400 students was similar to the variability in the original 200. For the quantities (A) - (L) in the Question 1 R Output, state whether each would be expected to increase, decrease, or stay about the same.</p>
+</section>
+<section id="section-9" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-9">10)</h3>
+<p>The following data and description come from the <code>alr4</code> R package.</p>
+<p>“Karl Pearson organized the collection of data on over 1100 families in England in the period 1893 to 1898. This particular data set gives the Heights in inches of mothers and their daughters, with up to two daughters per mother. All daughters are at least age 18, and all mothers are younger than 65.”</p>
+<p>A scatterplot of the heights of the mothers and their daughters is shown below. The black line represents the line “y=x” and the blue line is the least squares regression line.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb163"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb163-1"><a href="#cb163-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(alr4)</span>
+<span id="cb163-2"><a href="#cb163-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Heights)</span>
+<span id="cb163-3"><a href="#cb163-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Heights, <span class="fu">aes</span>(<span class="at">x=</span>mheight, <span class="at">y=</span>dheight)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb163-4"><a href="#cb163-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>) <span class="sc">+</span> </span>
+<span id="cb163-5"><a href="#cb163-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope=</span><span class="dv">1</span>, <span class="at">intercept=</span><span class="dv">0</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb163-6"><a href="#cb163-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Mother Height"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Daughter Height"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch4_files/figure-html/unnamed-chunk-130-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="a-2" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="a-2">a)</h4>
+<p>Describe the strength and direction of the relationship between heights of mothers and their children? Approximately what is the value of <span class="math inline">\(R^2\)</span>.</p>
+</section>
+<section id="b-2" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="b-2">b)</h4>
+<p>Among mothers who are less than 60 inches tall, how do their daughters’ heights compare to the mothers’? What about for mothers who are more than 67 inches tall? Explain why this might be happening and give the statistical name for the behavior we see here.</p>
+</section>
+<section id="c-2" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="c-2">c)</h4>
+<p>Suppose a mother is 60 inches tall. What is the predicted height of her daughter?</p>
+</section>
+<section id="d-2" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="d-2">d)</h4>
+<p>Suppose a mother is 60 inches tall. Use the graph the approximate a 95% prediction interval for her daughter’s height.</p>
+</section>
+</section>
+<section id="section-10" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-10">11)</h3>
+<p>When a particular brain area becomes more active, it uses more oxygen. Functional Magnetic Resonance Imaging (fMRI) involves taking a scan of the brain to measure changes in blood flow to different regions. The fMRI machine can record the activity in a region of the brain, but it is subject to measurement error (noise).</p>
+<p>In a <a href="http://prefrontal.org/files/posters/Bennett-Salmon-2009.pdf">2009 study by Bennett et. al</a>, an 18-inch, 3.8 lb. salmon was shown a series of photographs depicting human individuals in social situations with a specified emotional valence. Statistics measuring activity in voxels, tiny 3D regions of the brain, were calculated for both when the salmon was resting, and when it was viewing the photograph. t-tests were used on each voxel to test whether there was evidence of differences in brain activation when viewing the photograph, compared to at rest. Out of 8,064 voxels tested, 16 yielded p-values less than 0.001, thus showing evidence of differences in brain activity.</p>
+<p>There was, however, a trick. The salmon was dead, and thus was experiencing no brain activity at all!</p>
+<ol type="a">
+<li><p>Even if we hadn’t known that the salmon was dead, why shouldn’t we conclude that the salmon’s brain was responding differently when viewing the photo, compared to when at rest, based on these results?</p></li>
+<li><p>What could we do in this situation to reduce that risk of detecting a false positive when testing for change in a voxel of the brain?</p></li>
+</ol>
+</section>
+<section id="section-11" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-11">12)</h3>
+<p><a href="https://www.pnas.org/doi/full/10.1073/pnas.1506451112">A 2015 study by Rohrer, Egloff, and Schmukle</a> examined whether older siblings exhibited differences in intelligence and personality, compared to their younger siblings. The study used data from three large national panels from the United States (n = 5,240), Great Britain (n = 4,489), and Germany (n = 10,457).</p>
+<p>The article states:</p>
+<p><em>The question of whether a person’s position among siblings has a lasting impact on that person’s life course has fascinated both the scientific community and the general public for &gt;100 years. By combining large datasets from three national panels, we confirmed the effect that firstborns score higher on objectively measured intelligence and additionally found a similar effect on self-reported intellect. However, we found no birth-order effects on extraversion, emotional stability, agreeableness, conscientiousness, or imagination. This finding contradicts lay beliefs and prominent scientific theories alike and indicates that the development of personality is less determined by the role within the family of origin than previously thought.</em></p>
+<ol type="a">
+<li><p>The study tested six different outcomes (intelligence, extraversion, emotional stability, agreeableness, conscientiousness, and imagination). For each outcome, the null hypothesis is that there is no relationship between that outcome and the sibling’s birth order. Suppose that for each outcome there is a 0.05 probability of a hypothesis test resulting in a false positive (concluding an outcome is related to birth order when it really isn’t). If hypothesis tests are run on all six outcomes, what is the probability of getting at least one false positive? How can we ensure that the probability of getting one or more false positives when running six tests simultaneously is no higher than 0.05?</p></li>
+<li><p>To test intellect, the authors used scores on Intelligence Quotient (IQ) tests. The mean score on IQ tests is 100, with a standard deviation of 15 between individual scores. The authors found that an older sibling scored, on average 1.5 points higher than the next younger sibling in the family. An ANOVA F-test with the null hypothesis that there is no relationship between birth order and intelligence resulted in an F-statistic of 11.80 and p-value of less than 0.001. Is the relationship between birth order and intelligence statistically discernible? Do you think it is practically meaningful? Explain your answer.</p></li>
+</ol>
+</section>
+<section id="section-12" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-12">13)</h3>
+<p>Duchenne muscular dystrophy (DMD). DMD is a severe and progressive genetic disease that leads to muscle weakness, worsening over time. It is more common in boys than in girls. In 2016, a drug called Eteplirsen (now known as Exondys 51) was developed for the purpose of treating DMD symptoms and improving quality of life. Because the disease is rare, it is difficult to collect a large sample of participants for a randomized clinical trial to test the effectiveness of the drug. In a sample of 12 boys, 6 were assigned to a treatment group and took Eteplirsen for 62 weeks. The other 6 were assigned to a control group and took a placebo for 24 weeks, followed by Eteplirsen for 38 weeks. The boys were randomly assigned to groups. Researchers recorded the distance each boy walked in 6 minutes at the beginning and end of the study. Two of the boys in the placebo group withdrew from the study due to health complications. The average distance walked by the remaining four boys in the placebo group decreased by 63.8 m. over the 62 weeks, compared to an average decrease of only 4.2 meters for boys in the treatment group. A hypothesis test with the null hypothesis that there is no difference in distance walked between the groups returned a p-value of 0.012.</p>
+<ol type="a">
+<li><p>Is the difference between the groups statistically discernible? Is it practically meaningful?</p></li>
+<li><p>There was disagreement within the Federal Drug Administration about whether to to approve the Eteplirsen drug based on this study. Why might it be a good idea to approve the drug? What concerns might you have?</p></li>
+<li><p>Suppose the same difference in walking distances had been observed, but the p-value had been 0.072 instead of 0.012? Would this change your thoughts on whether the drug should be approved? Why or why not?</p></li>
+</ol>
+<p>NOTE: In the end, the FDA approved the drug, while requiring its producer to conduct additional future tests and noting that approval could be withdrawn if those tests did not confirm a clinical benefit. Results and discussion of the study are available <a href="https://www.fiercebiotech.com/biotech/sarepta-therapeutics-announces-a-continued-benefit-on-walking-test-through-62-weeks-phase">here</a>, and <a href="https://pubmed.ncbi.nlm.nih.gov/26573217/.">here</a>.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

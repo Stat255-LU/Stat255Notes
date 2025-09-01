@@ -80,10 +80,7 @@ It allows the estimated probability of of default to be negative. It also assume
 
 A sigmoidal curve, like the one below, seems like a better model for default probabilities. This curve stays between 0 and 1, and its curved nature seems like a better fit for the data.
 
-
 ### Logistic Regression Model
-
-
 
 A logistic regression model uses a sigmoidal curve like the one we saw to model default probabilities, using balance as an explanatory variable.
 
@@ -130,7 +127,6 @@ ggplot(data=Default, aes(y=default, x= balance)) + geom_jitter(alpha=0.2, height
   theme_bw()
 ```
 
-
 To fit the logistic regression model in R, we use the function `glm`, instead of `lm`. The function is specified the same way as before, and we add `family = binomial(link = "logit")`.
 
 ```{r}
@@ -169,7 +165,6 @@ predict(CCDefault_M, newdata=data.frame((balance=2000)), type="response")
 Recall that for a quantitative response variable, the values of $b_1, b_2, \ldots, b_p$ are chosen in a way that minimizes $\displaystyle\sum_{i=1}^n \left(y_i-(\beta_0+\beta_1x_{i1}+\ldots+\beta_px_{ip})^2\right)$. Least squares does not work well in this generalized setting. Instead, the b's are calculated using a more advanced technique, known as **maximum likelihood estimation**. We won't say anything more about that topic here, but it is a prominent technique, widely used in statistic modeling. It is explored in more detail in advanced statistics courses, such as STAT 445:Mathematical Statistics.
 
 \newpage
-
 
 ### Odds and Odds Ratio
 
@@ -255,7 +250,7 @@ summary(CCDefault_M2)
 The following graph gives an illustration of the model.
 
 ```{r}
-ggplot(data=Default, aes(y=default, x= balance, color=student)) + geom_point(alpha=0.2) + stat_smooth(method="glm", se=FALSE, method.args = list(family=binomial)) + theme_bw()
+ggplot(data=Default, aes(y=default, x= balance, color=student)) + geom_jitter(alpha=0.2, height=0.05) + stat_smooth(method="glm", se=FALSE, method.args = list(family=binomial)) + theme_bw()
 ```
 
 The regression equation is:
@@ -326,6 +321,146 @@ Assuming a person is a student, for every \$100 increase in balance, the odds of
 -   For categorical $x_j$, when all other explanatory variables are held constant, the odds of "success" are $e^{\beta_j}$ times higher for category $j$ than for the "baseline category."
 
 -   For models with interaction, we can only interpret $\beta_j$ when the values of all other explanatory variables are given (since the effect of $x_j$ depends on the other variables.)
+
+## Practice Problems
+
+### 1) {.unnumbered}
+
+In which of the following situations would it be appropriate to use a logistic regression model? Choose all that apply.    
+
+A. We want to predict whether or not it will rain on a given day, using information on temperature, wind speed, and amount of cloud cover.     
+
+B. We want to predict the number of hours a person will sleep in a given night, based on whether or not they take medication designed to improve sleep quality.   
+
+C. We want to predict whether the incumbent party will win an election, using information on unemployment and inflation rates, and stock market growth.   
+
+D. We want to predict whether a person will use the term "Pop" or "Soda" based on which state they grew up in.    
+
+E. We want to predict whether or not a person will get into a college, using information including their high school GPA, standardized test scores, and whether or not they participated in certain activities.    
+
+F. We want to predict the number of people crossing a street in a given hour, using information about the time of the day, the day of the week, and the temperature.    
+
+G. We want to predict whether or not a sports team will win a game, using information on the number of games they've won and lost previously, as well as the number of games their opponent has won and lost previously, as well as the strength of opponents that they and their opponent have played against in prior games.    
+
+### 2)  {.unnumbered}
+
+**We'll work with a dataset on admissions to graduate school. We have data on a student's graduate records exam (GRE) test score out of 800, and whether or not they attended a top-tier undergraduate college. Data are from (https://stats.idre.ucla.edu/stat/data/binary.csv). The response variable is whether or not the student was admitted to the graduate program (1=Yes, 0=No).** 
+
+**The dataset contains the following variables.** 
+
+`gre` - score on the GRE exam    
+`TopTier` - whether or not the student attended a top tier undergraduate institution    
+`admit` - whether or not the student was admitted to the program (1=yes, 0=no)
+
+```{r, echo=FALSE}
+Grad <- read_csv("Grad.csv")
+Grad <- Grad %>% mutate(TopTier = rank%in%c(1)) %>% dplyr::select(gre, TopTier, admit)
+```
+
+A graph showing whether or not a person was admitted to graduate school along with their gre score and whether or not they attended a top tier undergraduate college is shown below. The curves estimating admission probability using logistic regression are also shown.  
+
+```{r}
+ggplot(data=Grad, aes(y=admit, x= gre, color=TopTier)) + geom_jitter(alpha=0.2, height=0.05) + stat_smooth(method="glm", se=FALSE, method.args = list(family=binomial)) + theme_bw()
+```
+
+We fit a logistic regression model with `admit` as the response variable and `gre` and `TopTier` as explanatory variables. 
+
+R output for the model is shown below.   
+
+```{r}
+M_Grad_admit_gre_top <- glm(data=Grad, admit ~ gre + TopTier, family = binomial(link = "logit"))
+summary(M_Grad_admit_gre_top)
+```
+
+Exponentiated regression coefficients are shown below. 
+
+```{r}
+exp(M_Grad_admit_gre_top$coefficients)
+```
+
+
+#### a)  {.unnumbered}
+
+Give interpretations of each of the three numbers in the `Estimate` column of the coefficient table, in context. Give your answer in rounded numeric form. (i.e. don't put $e^\#$.)    
+
+#### b)  {.unnumbered}
+
+Write a sentence interpreting the confidence intervals on the "gre" and "HighlyRankedTRUE" lines in context. Give answers in rounded numeric form. (i.e. don't put $e^\#$.)   
+
+```{r}
+exp(confint(M_Grad_admit_gre_top, level = 0.95))
+```
+
+
+#### c)  {.unnumbered}
+
+Do the data provide evidence that higher GRE scores are associated with increased chance of being admitted to graduate school, for students attending similar institutions? Cite a p-value to support your answer.   
+
+
+#### d) {.unnumbered}
+
+Do the data provide evidence that attending a highly ranked institution improves the chances for graduate school admission for students of the same GRE score?
+
+
+### 3)  {.unnumbered}
+
+Continue with the R output from Question 2. 
+
+#### a)  {.unnumbered}
+
+Estimate the admission probability of a student who attended a top-tier institution and had a GRE score of 575. Give your answer as a probability in rounded numeric form. (i.e. don't put $e^\#$.)     
+
+
+#### b)  {.unnumbered}
+
+Estimate the admission probability of a student who did not attend a top-tier institution and had a GRE score of 650. Give your answer as a probability in rounded numeric form. (i.e. don't put $e^\#$.)    
+
+
+#### c)  {.unnumbered}
+
+If two students attend the same institution, and one scores 50 points higher on the GRE, how many times greater are the odds of that student to be admitted to the graduate program, compared to the student with the lower GRE score? Give your answer in rounded numeric form. (i.e. don't put $e^\#$.)  
+
+
+#### d) {.unnumbered}
+
+If two students achieve the same GRE score, and one attended a top-tier institution, while the other did not, how many times greater are the odds of the student who attended the highly ranked institution being accepted to grad school, compared with the one who did not? Give your answer in rounded numeric form. (i.e. don't put $e^\#$.)  
+
+
+#### e)  {.unnumbered}
+
+Suppose that, according to the above model, Student A is estimated to have a 25% chance of getting into the the graduate program. Student B goes to the same school and scores 55 points higher on the GRE. Approximately, what is the estimated probability of student B getting into the graduate program? 
+
+Hint: The following calculation may be helpful.   
+
+```{r}
+exp(0.003377*55)
+```
+
+
+### 4)  {.unnumbered}
+
+Now, consider the logistic regression model resulting from the following R command.
+
+
+```{r}
+M_Grad_admit_gre_top_int <- glm(data=Grad, admit ~ gre * TopTier, family = binomial(link = "logit"))
+summary(M_Grad_admit_gre_top_int)
+```
+
+#### a) {.unnumbered}
+
+Explain, in context, how this model is different than the one in Questions 2 and 3. (Don't just say that it contains an interaction, but rather, explain what that means in context.)
+
+#### b) {.unnumbered}
+
+Do the data provide evidence that gre score affects the probability of successful grad school admission differently for students at top tier schools than at other schools? Justify your answer. 
+
+
+#### c) {.unnumbered}
+
+Which model should we use (this one or the one in Question 2) to make inferences? Explain your answer.  
+
+
 
 ```{r, echo=FALSE}
 #save.image(file = "Environment.RData")

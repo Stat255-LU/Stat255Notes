@@ -235,6 +235,13 @@ window.Quarto = {
   <li><a href="#multiple-logistic-regression-model-with-interaction" id="toc-multiple-logistic-regression-model-with-interaction" class="nav-link" data-scroll-target="#multiple-logistic-regression-model-with-interaction"><span class="header-section-number">6.2.2</span> Multiple Logistic Regression Model with Interaction</a></li>
   <li><a href="#logistic-regression-key-points" id="toc-logistic-regression-key-points" class="nav-link" data-scroll-target="#logistic-regression-key-points"><span class="header-section-number">6.2.3</span> Logistic Regression Key Points</a></li>
   </ul></li>
+  <li><a href="#practice-problems" id="toc-practice-problems" class="nav-link" data-scroll-target="#practice-problems"><span class="header-section-number">6.3</span> Practice Problems</a>
+  <ul class="collapse">
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section">1)</a></li>
+  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1">2)</a></li>
+  <li><a href="#section-2" id="toc-section-2" class="nav-link" data-scroll-target="#section-2">3)</a></li>
+  <li><a href="#section-3" id="toc-section-3" class="nav-link" data-scroll-target="#section-3">4)</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -524,7 +531,7 @@ Number of Fisher Scoring iterations: 8</code></pre>
 </div>
 <p>The following graph gives an illustration of the model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Default, <span class="fu">aes</span>(<span class="at">y=</span>default, <span class="at">x=</span> balance, <span class="at">color=</span>student)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"glm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>, <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">family=</span>binomial)) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Default, <span class="fu">aes</span>(<span class="at">y=</span>default, <span class="at">x=</span> balance, <span class="at">color=</span>student)) <span class="sc">+</span> <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.2</span>, <span class="at">height=</span><span class="fl">0.05</span>) <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"glm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>, <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">family=</span>binomial)) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -610,8 +617,176 @@ P(\text{Default}) = \hat{\pi}\_i = \frac{e^{-10.87+0.0058\times\text{balance}}}{
 <li><p>For categorical <span class="math inline">\(x_j\)</span>, when all other explanatory variables are held constant, the odds of “success” are <span class="math inline">\(e^{\beta_j}\)</span> times higher for category <span class="math inline">\(j\)</span> than for the “baseline category.”</p></li>
 <li><p>For models with interaction, we can only interpret <span class="math inline">\(\beta_j\)</span> when the values of all other explanatory variables are given (since the effect of <span class="math inline">\(x_j\)</span> depends on the other variables.)</p></li>
 </ul>
+</section>
+</section>
+<section id="practice-problems" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="practice-problems"><span class="header-section-number">6.3</span> Practice Problems</h2>
+<section id="section" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section">1)</h3>
+<p>In which of the following situations would it be appropriate to use a logistic regression model? Choose all that apply.</p>
+<p>A. We want to predict whether or not it will rain on a given day, using information on temperature, wind speed, and amount of cloud cover.</p>
+<p>B. We want to predict the number of hours a person will sleep in a given night, based on whether or not they take medication designed to improve sleep quality.</p>
+<p>C. We want to predict whether the incumbent party will win an election, using information on unemployment and inflation rates, and stock market growth.</p>
+<p>D. We want to predict whether a person will use the term “Pop” or “Soda” based on which state they grew up in.</p>
+<p>E. We want to predict whether or not a person will get into a college, using information including their high school GPA, standardized test scores, and whether or not they participated in certain activities.</p>
+<p>F. We want to predict the number of people crossing a street in a given hour, using information about the time of the day, the day of the week, and the temperature.</p>
+<p>G. We want to predict whether or not a sports team will win a game, using information on the number of games they’ve won and lost previously, as well as the number of games their opponent has won and lost previously, as well as the strength of opponents that they and their opponent have played against in prior games.</p>
+</section>
+<section id="section-1" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-1">2)</h3>
+<p><strong>We’ll work with a dataset on admissions to graduate school. We have data on a student’s graduate records exam (GRE) test score out of 800, and whether or not they attended a top-tier undergraduate college. Data are from (https://stats.idre.ucla.edu/stat/data/binary.csv). The response variable is whether or not the student was admitted to the graduate program (1=Yes, 0=No).</strong></p>
+<p><strong>The dataset contains the following variables.</strong></p>
+<p><code>gre</code> - score on the GRE exam<br>
+<code>TopTier</code> - whether or not the student attended a top tier undergraduate institution<br>
+<code>admit</code> - whether or not the student was admitted to the program (1=yes, 0=no)</p>
+<p>A graph showing whether or not a person was admitted to graduate school along with their gre score and whether or not they attended a top tier undergraduate college is shown below. The curves estimating admission probability using logistic regression are also shown.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Grad, <span class="fu">aes</span>(<span class="at">y=</span>admit, <span class="at">x=</span> gre, <span class="at">color=</span>TopTier)) <span class="sc">+</span> <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.2</span>, <span class="at">height=</span><span class="fl">0.05</span>) <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span><span class="st">"glm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>, <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">family=</span>binomial)) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Ch6_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We fit a logistic regression model with <code>admit</code> as the response variable and <code>gre</code> and <code>TopTier</code> as explanatory variables.</p>
+<p>R output for the model is shown below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>M_Grad_admit_gre_top <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="at">data=</span>Grad, admit <span class="sc">~</span> gre <span class="sc">+</span> TopTier, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>))</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Grad_admit_gre_top)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = admit ~ gre + TopTier, family = binomial(link = "logit"), 
+    data = Grad)
+
+Coefficients:
+             Estimate Std. Error z value   Pr(&gt;|z|)    
+(Intercept) -2.960822   0.617269  -4.797 0.00000161 ***
+gre          0.003377   0.001004   3.363   0.000770 ***
+TopTierTRUE  1.065127   0.289486   3.679   0.000234 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 499.98  on 399  degrees of freedom
+Residual deviance: 472.56  on 397  degrees of freedom
+AIC: 478.56
+
+Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+</div>
+<p>Exponentiated regression coefficients are shown below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(M_Grad_admit_gre_top<span class="sc">$</span>coefficients)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)         gre TopTierTRUE 
+ 0.05177633  1.00338305  2.90120814 </code></pre>
+</div>
+</div>
+<section id="a" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="a">a)</h4>
+<p>Give interpretations of each of the three numbers in the <code>Estimate</code> column of the coefficient table, in context. Give your answer in rounded numeric form. (i.e.&nbsp;don’t put <span class="math inline">\(e^\#\)</span>.)</p>
+</section>
+<section id="b" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="b">b)</h4>
+<p>Write a sentence interpreting the confidence intervals on the “gre” and “HighlyRankedTRUE” lines in context. Give answers in rounded numeric form. (i.e.&nbsp;don’t put <span class="math inline">\(e^\#\)</span>.)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">confint</span>(M_Grad_admit_gre_top, <span class="at">level =</span> <span class="fl">0.95</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 2.5 %    97.5 %
+(Intercept) 0.01494934 0.1688771
+gre         1.00143970 1.0053977
+TopTierTRUE 1.64705190 5.1438511</code></pre>
+</div>
+</div>
+</section>
+<section id="c" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="c">c)</h4>
+<p>Do the data provide evidence that higher GRE scores are associated with increased chance of being admitted to graduate school, for students attending similar institutions? Cite a p-value to support your answer.</p>
+</section>
+<section id="d" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="d">d)</h4>
+<p>Do the data provide evidence that attending a highly ranked institution improves the chances for graduate school admission for students of the same GRE score?</p>
+</section>
+</section>
+<section id="section-2" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-2">3)</h3>
+<p>Continue with the R output from Question 2.</p>
+<section id="a-1" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="a-1">a)</h4>
+<p>Estimate the admission probability of a student who attended a top-tier institution and had a GRE score of 575. Give your answer as a probability in rounded numeric form. (i.e.&nbsp;don’t put <span class="math inline">\(e^\#\)</span>.)</p>
+</section>
+<section id="b-1" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="b-1">b)</h4>
+<p>Estimate the admission probability of a student who did not attend a top-tier institution and had a GRE score of 650. Give your answer as a probability in rounded numeric form. (i.e.&nbsp;don’t put <span class="math inline">\(e^\#\)</span>.)</p>
+</section>
+<section id="c-1" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="c-1">c)</h4>
+<p>If two students attend the same institution, and one scores 50 points higher on the GRE, how many times greater are the odds of that student to be admitted to the graduate program, compared to the student with the lower GRE score? Give your answer in rounded numeric form. (i.e.&nbsp;don’t put <span class="math inline">\(e^\#\)</span>.)</p>
+</section>
+<section id="d-1" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="d-1">d)</h4>
+<p>If two students achieve the same GRE score, and one attended a top-tier institution, while the other did not, how many times greater are the odds of the student who attended the highly ranked institution being accepted to grad school, compared with the one who did not? Give your answer in rounded numeric form. (i.e.&nbsp;don’t put <span class="math inline">\(e^\#\)</span>.)</p>
+</section>
+<section id="e" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="e">e)</h4>
+<p>Suppose that, according to the above model, Student A is estimated to have a 25% chance of getting into the the graduate program. Student B goes to the same school and scores 55 points higher on the GRE. Approximately, what is the estimated probability of student B getting into the graduate program?</p>
+<p>Hint: The following calculation may be helpful.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fl">0.003377</span><span class="sc">*</span><span class="dv">55</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.204103</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="section-3" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-3">4)</h3>
+<p>Now, consider the logistic regression model resulting from the following R command.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>M_Grad_admit_gre_top_int <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="at">data=</span>Grad, admit <span class="sc">~</span> gre <span class="sc">*</span> TopTier, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>))</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Grad_admit_gre_top_int)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = admit ~ gre * TopTier, family = binomial(link = "logit"), 
+    data = Grad)
+
+Coefficients:
+                  Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)     -2.8825292  0.6839726  -4.214 0.000025 ***
+gre              0.0032473  0.0011183   2.904  0.00369 ** 
+TopTierTRUE      0.6630025  1.5695442   0.422  0.67272    
+gre:TopTierTRUE  0.0006627  0.0025429   0.261  0.79439    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 499.98  on 399  degrees of freedom
+Residual deviance: 472.49  on 396  degrees of freedom
+AIC: 480.49
+
+Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+</div>
+<section id="a-2" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="a-2">a)</h4>
+<p>Explain, in context, how this model is different than the one in Questions 2 and 3. (Don’t just say that it contains an interaction, but rather, explain what that means in context.)</p>
+</section>
+<section id="b-2" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="b-2">b)</h4>
+<p>Do the data provide evidence that gre score affects the probability of successful grad school admission differently for students at top tier schools than at other schools? Justify your answer.</p>
+</section>
+<section id="c-2" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="c-2">c)</h4>
+<p>Which model should we use (this one or the one in Question 2) to make inferences? Explain your answer.</p>
 
 
+</section>
 </section>
 </section>
 

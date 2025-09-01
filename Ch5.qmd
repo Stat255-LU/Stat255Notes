@@ -8,7 +8,7 @@
 26. Calculate predicted values for models involving log transformations.\
 27. Interpret regression coefficient estimates on models with interaction terms.\
 28. Calculate predicted values for models with interaction terms.\
-29. Draw conclusions about models involving polynomial terms and interactions based on graphical representations of data.   
+29. Draw conclusions about models involving polynomial terms and interactions based on graphical representations of data.\
 30. Identify instances of confounding and Simpson's paradox and draw conclusions in these situations.\
 31. Explain how multicollinearity impacts predictions and confidence/prediction intervals.\
 32. Determine whether it is appropriate to add terms to a model using information such as $R^2$, F-statistic, residual plots, correlation, and other visual representations.
@@ -509,15 +509,13 @@ exp(M_Cars_logprice_acc060$coefficients)
 
 -   For each additional second in acceleration time, price is expected to multiply by a a factor of $e^{`r Cars_Log_b1`}$ = `r exp(M_Cars_logprice_acc060$coefficients[2]) |> round(2)`. Thus, each 1-second increase in acceleration time is estimated to be associated with a `r ((1-exp(M_Cars_logprice_acc060$coefficients[2]))*100) |> round(0)`% drop in price, on average.
 
-**Confidence Interval for $e^{\beta_1}$**
-
+**Confidence Interval for** $e^{\beta_1}$
 
 ```{r}
 exp(confint(M_Cars_logprice_acc060, level=0.95, parm="Acc060"))
 ```
 
--   We are 95% confident that for each additional second in acceleration time, the price of a car multiplies by a factor between `r (exp(confint(M_Cars_logprice_acc060, level=0.95, parm="Acc060")))[1]|>round(2)` and `r (exp(confint(M_Cars_logprice_acc060, level=0.95, parm="Acc060")))[2]|>round(2)`, an estimated decrease between `r ((1-(exp(confint(M_Cars_logprice_acc060, level=0.95, parm="Acc060")))[2])*100)|>round(0)` and `r ((1-(exp(confint(M_Cars_logprice_acc060, level=0.95, parm="Acc060")))[1])*100)|>round(0)` percent. 
-
+-   We are 95% confident that for each additional second in acceleration time, the price of a car multiplies by a factor between `r (exp(confint(M_Cars_logprice_acc060, level=0.95, parm="Acc060")))[1]|>round(2)` and `r (exp(confint(M_Cars_logprice_acc060, level=0.95, parm="Acc060")))[2]|>round(2)`, an estimated decrease between `r ((1-(exp(confint(M_Cars_logprice_acc060, level=0.95, parm="Acc060")))[2])*100)|>round(0)` and `r ((1-(exp(confint(M_Cars_logprice_acc060, level=0.95, parm="Acc060")))[1])*100)|>round(0)` percent.
 
 **Log Model CI for Expected Response**
 
@@ -615,23 +613,20 @@ In this section, we looked at a transformation involving a single quantitative e
 
 If the explanatory variable is categorical:\
 
-       
 -   $e^{\beta_0}$ represents the expected response in the baseline category\
 -   $e^{\beta_j}$ represents the number of times larger the expected response in category $j$ is, compared to the baseline category.
-
 
 When working with multiple regression models, it is still important to mention holding other variables constant when interpreting parameters associated with one of the variables.
 
 \newpage
 
-
-## Polynomial Regression 
+## Polynomial Regression
 
 ### Modeling Wages
 
 In this section, we'll work with a dataset containing information on a sample of 250 male employees living in the Mid-Atlantic region. These data are a subset of a larger dataset available in the `ISLR` R package.
 
-Data were collected in the years 2003 through 2009. We'll fit a model to predict the employee's salary using the employee's age and education level, the year the data was collected, and whether the job was industrial or informational in nature as explanatory variables. 
+Data were collected in the years 2003 through 2009. We'll fit a model to predict the employee's salary using the employee's age and education level, the year the data was collected, and whether the job was industrial or informational in nature as explanatory variables.
 
 ```{r, echo=FALSE}
 set.seed(08232025)
@@ -640,7 +635,7 @@ data("Wage")
 WageSample <- sample_n(Wage, size=250) |> select(year, age, maritl, race, education, jobclass, wage)
 ```
 
-The plots below show the relationship between wage and each of the four explanatory variables.  
+The plots below show the relationship between wage and each of the four explanatory variables.
 
 ```{r, fig.height=8, fig.width=8}
 P1 <- ggplot(data=WageSample, aes(y = wage, x = year)) + geom_point() + theme_bw()
@@ -650,11 +645,9 @@ P4 <- ggplot(data=WageSample, aes(y = wage, x = jobclass)) + geom_boxplot() + th
 grid.arrange(P1, P2, P3, P4, ncol=2)
 ```
 
-The most obvious relationship appears to be that people with higher levels of education tend to make more money. We'll use a statistical model to investigate this and other relationships. 
+The most obvious relationship appears to be that people with higher levels of education tend to make more money. We'll use a statistical model to investigate this and other relationships.
 
-
-
-We first fit a model for price, using each of the explanatory variables shown above. 
+We first fit a model for price, using each of the explanatory variables shown above.
 
 The model equation is
 
@@ -674,44 +667,44 @@ We fit the model in R.
 M_Wage_price_yr_age_ed_job <- lm(data=WageSample, wage ~ year + age + education + jobclass)
 ```
 
-Before we examine model output, let's check the model assumptions using residual plots. 
+Before we examine model output, let's check the model assumptions using residual plots.
 
 ```{r, fig.height=8, fig.width=8}
 resid_panel(M_Wage_price_yr_age_ed_job, smoother=TRUE)
 ```
 
-We notice some right-skewness and large outliers in the qq-plot and histogram of residuals. 
+We notice some right-skewness and large outliers in the qq-plot and histogram of residuals.
 
-Let's model log(wage) to try to correct for the right skewness. 
+Let's model log(wage) to try to correct for the right skewness.
 
 ```{r}
 M_logWage_price_yr_age_ed_job <- lm(data=WageSample, log(wage) ~ year + age + 
                                                           education + jobclass)
 ```
 
-We check the residual plots on the model for log(wage). 
+We check the residual plots on the model for log(wage).
 
 ```{r, fig.height=8, fig.width=8}
 resid_panel(M_logWage_price_yr_age_ed_job, smoother=TRUE)
 ```
 
-Although not perfect, these look better. There are only a few points out of line at each end of the qq-plot, and the histogram of residuals looks pretty symmetric. 
+Although not perfect, these look better. There are only a few points out of line at each end of the qq-plot, and the histogram of residuals looks pretty symmetric.
 
 ### Residual by Predictor Plots
 
-When working with multiple explanatory variables, we should not only plot residuals vs predicted values, but also vs all explanatory variables. This will help us see whether there are any explanatory variables whose relationship could be better explained in the model. 
+When working with multiple explanatory variables, we should not only plot residuals vs predicted values, but also vs all explanatory variables. This will help us see whether there are any explanatory variables whose relationship could be better explained in the model.
 
-The `resid_xpanel()` function in the `ggResidplot` package creates these plots. 
+The `resid_xpanel()` function in the `ggResidplot` package creates these plots.
 
 ```{r, fig.height=8, fig.width=8}
 resid_xpanel(M_logWage_price_yr_age_ed_job, smoother=TRUE)
 ```
 
-The plots for year, education, and jobclass don't raise any concerns, but we notice a quadratic trend in the residuals for age. 
+The plots for year, education, and jobclass don't raise any concerns, but we notice a quadratic trend in the residuals for age.
 
 ### Add Quadratic Term
 
-When only one or some variables show a violation, we can improve the model using a transformation on just that variable. Since we see a quadratic trend, we can fit a quadratic term for the age variable. To do this, we add `I(age^2)` to the model. We still leave the linear term for `age` in the model as well. 
+When only one or some variables show a violation, we can improve the model using a transformation on just that variable. Since we see a quadratic trend, we can fit a quadratic term for the age variable. To do this, we add `I(age^2)` to the model. We still leave the linear term for `age` in the model as well.
 
 The model equation is
 
@@ -725,37 +718,35 @@ $$
 \end{aligned}
 $$
 
-
 ```{r}
 M_logWage_price_yr_age2_ed_job <- lm(data=WageSample, 
                                      log(wage) ~ year + age + I(age^2) + 
                                                 education + jobclass)
 ```
 
-We again check the residual plots. 
+We again check the residual plots.
 
 ```{r, fig.height=8, fig.width=8}
 resid_panel(M_logWage_price_yr_age2_ed_job, smoother=TRUE)
 ```
 
-We also check residual by predictor plots. 
+We also check residual by predictor plots.
 
 ```{r, fig.height=8, fig.width=8}
 resid_xpanel(M_logWage_price_yr_age_ed_job, smoother=TRUE)
 ```
 
-Notice that the quadratic trend in residuals has gone away in the age plot, telling us that the model with `age^2` has properly accounted for the quadratic trend.  
-
+Notice that the quadratic trend in residuals has gone away in the age plot, telling us that the model with `age^2` has properly accounted for the quadratic trend.
 
 ### Model Output
 
-Now that we've found a model that appears to reasonably satisfy model assumptions, let's look at the model summary output. 
+Now that we've found a model that appears to reasonably satisfy model assumptions, let's look at the model summary output.
 
 ```{r}
 summary(M_logWage_price_yr_age_ed_job)
 ```
 
-Since we modeled `log(wage)`, we'll exponentiate the model coefficients to make our interpretations. 
+Since we modeled `log(wage)`, we'll exponentiate the model coefficients to make our interpretations.
 
 ```{r}
 exp(M_logWage_price_yr_age_ed_job$coefficients) |>round(3)
@@ -763,36 +754,35 @@ exp(M_logWage_price_yr_age_ed_job$coefficients) |>round(3)
 
 **Interpretations**
 
-Since the intercept would refer to things like year 0 and a person of age 0, it does not make sense to interpret. 
-The interpretation of the age coefficient gets tricky since it involves a quadratic term, so we'll interpret the other variables first. 
+Since the intercept would refer to things like year 0 and a person of age 0, it does not make sense to interpret. The interpretation of the age coefficient gets tricky since it involves a quadratic term, so we'll interpret the other variables first.
 
-* For each year since 1993, average salary is expected to multiply by `r exp(M_logWage_price_yr_age_ed_job$coefficients)[2] |>round(3)`, a `r ((exp(M_logWage_price_yr_age_ed_job$coefficients)[2] -1) |>round(3))*100` percent increase, assuming all other variables are held constant. Since the p-value on `year` is large, we cannot conclusively say that salaries are changing over time.  
+-   For each year since 1993, average salary is expected to multiply by `r exp(M_logWage_price_yr_age_ed_job$coefficients)[2] |>round(3)`, a `r ((exp(M_logWage_price_yr_age_ed_job$coefficients)[2] -1) |>round(3))*100` percent increase, assuming all other variables are held constant. Since the p-value on `year` is large, we cannot conclusively say that salaries are changing over time.
 
-* Workers with a high school degree are estimated to make `r ((exp(M_logWage_price_yr_age_ed_job$coefficients)[5] -1) |>round(3))*100` percent more than workers with less than a high school degree, assuming all other variables are held constant.  
+-   Workers with a high school degree are estimated to make `r ((exp(M_logWage_price_yr_age_ed_job$coefficients)[5] -1) |>round(3))*100` percent more than workers with less than a high school degree, assuming all other variables are held constant.
 
-* Workers with some college are estimated to make `r ((exp(M_logWage_price_yr_age_ed_job$coefficients)[6] -1) |>round(3))*100` percent more than workers with less than a high school degree, assuming all other variables are held constant.  
+-   Workers with some college are estimated to make `r ((exp(M_logWage_price_yr_age_ed_job$coefficients)[6] -1) |>round(3))*100` percent more than workers with less than a high school degree, assuming all other variables are held constant.
 
-* Workers with a college degree are estimated to make `r ((exp(M_logWage_price_yr_age_ed_job$coefficients)[7] -1) |>round(3))*100` percent more than workers with less than a high school degree, assuming all other variables are held constant.  
+-   Workers with a college degree are estimated to make `r ((exp(M_logWage_price_yr_age_ed_job$coefficients)[7] -1) |>round(3))*100` percent more than workers with less than a high school degree, assuming all other variables are held constant.
 
-* Workers with a college degree are estimated to make `r ((exp(M_logWage_price_yr_age_ed_job$coefficients)[8] -1) |>round(3))*100` percent more than workers with less than a high school degree, assuming all other variables are held constant.  
+-   Workers with a college degree are estimated to make `r ((exp(M_logWage_price_yr_age_ed_job$coefficients)[8] -1) |>round(3))*100` percent more than workers with less than a high school degree, assuming all other variables are held constant.
 
-The differences in education levels are all statistically discernible.  
+The differences in education levels are all statistically discernible.
 
-* Workers with an informational job are estimated to make `r ((exp(M_logWage_price_yr_age_ed_job$coefficients)[9] -1) |>round(3))*100` percent more than workers with an industrial one, assuming all other variables are held constant. This difference is not big enough to be statistically discernible.   
+-   Workers with an informational job are estimated to make `r ((exp(M_logWage_price_yr_age_ed_job$coefficients)[9] -1) |>round(3))*100` percent more than workers with an industrial one, assuming all other variables are held constant. This difference is not big enough to be statistically discernible.
 
 ### Interpreting the Quadratic Term
 
-First, notice that the p-value on the `I(age^2)` term is small. This tells us that there is evidence of a quadratic relationship between age and salary, so adding the `age^2` term was a good idea. 
+First, notice that the p-value on the `I(age^2)` term is small. This tells us that there is evidence of a quadratic relationship between age and salary, so adding the `age^2` term was a good idea.
 
-When we have a quadratic term in the model, we can't make interpretations on the `age` or `age^2` estimates individually, since we can't change one while holding the other constant. Instead, we'll look at the two estimates together. 
+When we have a quadratic term in the model, we can't make interpretations on the `age` or `age^2` estimates individually, since we can't change one while holding the other constant. Instead, we'll look at the two estimates together.
 
-Focusing on only the terms relating to age, we get the expression 
+Focusing on only the terms relating to age, we get the expression
 
 $$
-`r summary(M_logWage_price_yr_age2_ed_job)$coefficients[4] |> round(5)` \times \text{Age}^2 + `r summary(M_logWage_price_yr_age2_ed_job)$coefficients[3] |> round(5)` \times \text{Age}
-$$ 
+`r (summary(M_logWage_price_yr_age2_ed_job)$coefficients[4]) |> round(5)` \times \text{Age}^2 + `r (summary(M_logWage_price_yr_age2_ed_job)$coefficients[3]) |> round(5)` \times \text{Age}
+$$
 
-We see that this expression has a negative quadratic coefficient, meaning it will have the shape of a downward facing parabola. A sketch of the equation $y=`r summary(M_logWage_price_yr_age_ed_job)$coefficients[4] |> round(5)` \times \text{Age}^2 + `r summary(M_logWage_price_yr_age_ed_job)$coefficients[3] |> round(5)` \times \text{Age}$ is shown below. 
+We see that this expression has a negative quadratic coefficient, meaning it will have the shape of a downward facing parabola. A sketch of the equation $$y=`r (summary(M_logWage_price_yr_age_ed_job)$coefficients[4]) |> round(5)`\times \text{Age}^2 +`r (summary(M_logWage_price_yr_age_ed_job)$coefficients[3]) |> round(5)` \times \text{Age}$$ is shown below.
 
 ```{r}
 a <- summary(M_logWage_price_yr_age2_ed_job)$coefficients[4]
@@ -805,16 +795,17 @@ ggplot(data.frame(x = seq(from=18, to=80, by=1)), aes(x)) +
           axis.title.y=element_blank())
 ```
 
-We see that the parabola appears to hit its max between 50 and 60 years, suggesting that on average workers wages increase until this age, and then start to decrease. This makes sense, as workers will often see pay raises with experience and promotions for most of their career, until some begin to retire or take less intensive jobs in their 50's and 60's.   
+We see that the parabola appears to hit its max between 50 and 60 years, suggesting that on average workers wages increase until this age, and then start to decrease. This makes sense, as workers will often see pay raises with experience and promotions for most of their career, until some begin to retire or take less intensive jobs in their 50's and 60's.
 
-Using a fact from high school algebra, a quadratic function $f(x) = ax^2 + bx + c$ attains it's max or min at $x=-b/(2a)$, so in this case, the model estimates that salaries are at their highest, on average, at the age of 
+Using a fact from high school algebra, a quadratic function $f(x) = ax^2 + bx + c$ attains it's max or min at $x=-b/(2a)$, so in this case, the model estimates that salaries are at their highest, on average, at the age of
 
 $$
 - `r b |> round(5)` / (2\times `r a |> round(5)`) = `r (-1*b/(2*a)) |>round(1)`
-$$ 
+$$
 
 years.
 
+````{=html}
 <!--
 
 ```{r}
@@ -908,6 +899,7 @@ summary(M_logwage_year_age2_edu_jobclass)
 
 
 -->
+````
 
 ## Models with Interaction
 
@@ -973,10 +965,10 @@ Thus, the model allows both the slope and intercept to differ between waterfront
 
 ### Interaction Models in R
 
-To fit a model with variables `var1` and `var2` and their interaction, you can do either of the following. 
+To fit a model with variables `var1` and `var2` and their interaction, you can do either of the following.
 
-1. `y ~ var1 + var2 + var1:var2`    OR
-2. `y ~ var1*var2`
+1.  `y ~ var1 + var2 + var1:var2` OR
+2.  `y ~ var1*var2`
 
 `var1:var2` means include the interaction term, and `var1*var2` means include both variables plus the interaction. (Note: we should never include an interaction term without also including the variables individually.)
 
@@ -1053,16 +1045,15 @@ $$
 \widehat{Price}_2 =  `r House_Int_b0` + `r House_Int_b1`\times `r Houses$sqft_living[1]`  + `r House_Int_b2`\times1 + `r House_Int_b3`\times `r Houses$sqft_living[1]` \times 1 = `r House_Int_b0 + House_Int_b2 + (House_Int_b1 + House_Int_b3)*Houses$sqft_living[1] |> round(0)` \text{ thousand dollars}
 $$
 
-
 We'll calculate $R^2$ for the model with and without the interaction term.
 
-**Model with Interaction**    
+**Model with Interaction**
 
 ```{r}
 summary(M_House_price_sqft_wf_int)$r.squared
 ```
 
-**Model without Interaction**    
+**Model without Interaction**
 
 ```{r}
 summary(M_House_price_sqft_wf)$r.squared
@@ -1070,23 +1061,21 @@ summary(M_House_price_sqft_wf)$r.squared
 
 We see that adding an interaction term improved the proportion of variability in house price explained by the model from `r summary(M_House_price_sqft_wf_int)$r.squared |> round(2)` to `r summary(M_House_price_sqft_wf)$r.squared |> round(2)`. This is a fairly notable increase.
 
-We can also perform an ANOVA F-test to compare a full model that includes the interaction term to a reduced model that doesn't.   
+We can also perform an ANOVA F-test to compare a full model that includes the interaction term to a reduced model that doesn't.
 
 ```{r}
 anova(M_House_price_sqft_wf, M_House_price_sqft_wf_int)
 ```
-The large F-statistic and small p-value provides strong evidence that the model with interaction better explains variability in price than the model without interaction. There is strong reason for including the interaction term in the model. 
 
+The large F-statistic and small p-value provides strong evidence that the model with interaction better explains variability in price than the model without interaction. There is strong reason for including the interaction term in the model.
 
 ### When to Include Interaction Terms
 
+We should only include interaction terms in a model when we have good reason to believe that the effect of one explanatory variable on the response depends on another explanatory variable. We've seen that adding interaction terms to a model make it harder to interpret. Making a model more complex than necessary also increases the risk of overfitting. We can use graphs, our background knowledge and domain are expertise, and model comparison tests to guide us.
 
-We should only include interaction terms in a model when we have good reason to believe that the effect of one explanatory variable on the response depends on another explanatory variable. We've seen that adding interaction terms to a model make it harder to interpret. Making a model more complex than necessary also increases the risk of overfitting.  We can use graphs, our background knowledge and domain are expertise, and model comparison tests to guide us. 
+Let's look at another example, involving the 2020 cars data.
 
-Let's look at another example, involving the 2020 cars data. 
-
-The plot below shows the relationship between log(price), acceleration time, and drive type for a sample of new cars release in 2020. 
-
+The plot below shows the relationship between log(price), acceleration time, and drive type for a sample of new cars release in 2020.
 
 ```{r}
 ggplot(data=Cars2020, aes(x=Acc060, y=log(Price), color=Drive)) + geom_point()+stat_smooth(method="lm", se=FALSE) + theme_bw()
@@ -1098,16 +1087,13 @@ Let's consider three different models:
 
 $$
 \widehat{LogPrice} = b_0 + b_1\times\text{Acc060} + b_3\times\text{DriveFWD} + b_2\times\text{DriveRWD} 
-$$
-Model 1 assumes that log(price) changes linearly with acceleration time and that drive type has no effect on price. 
+$$ Model 1 assumes that log(price) changes linearly with acceleration time and that drive type has no effect on price.
 
 **Model 2 (Acc060 and Drive - No interaction):**
 
 $$
 \widehat{LogPrice} = b_0 + b_1\times\text{Acc060} + b_3\times\text{DriveFWD} + b_2\times\text{DriveRWD} 
-$$
-Model 2 assumes log(price) changes linearly with acceleration time. Some drive types might be more or less expensive than others, but the rate of change in price with respect to acceleration time (i.e. the slope) is the same for each drive type.  
-
+$$ Model 2 assumes log(price) changes linearly with acceleration time. Some drive types might be more or less expensive than others, but the rate of change in price with respect to acceleration time (i.e. the slope) is the same for each drive type.
 
 **Model 3 (Acc060 and Drive - with Interaction):**
 
@@ -1117,19 +1103,19 @@ $$
 \end{aligned}
 $$
 
-Model 2 assumes log(price) changes linearly with acceleration time. It allows for the possibility that some drive types might be more expensive than others, and that price might change at different rates with respect to acceleration time for some drive types than others.   
+Model 2 assumes log(price) changes linearly with acceleration time. It allows for the possibility that some drive types might be more expensive than others, and that price might change at different rates with respect to acceleration time for some drive types than others.
 
-**Which Model to Use?**   
+**Which Model to Use?**
 
-We see in the plot that AWD cars tend to be more expensive than FWD and RWD. This suggests that drive type does have an effect on log(price), so Model 2 appears more appropriate than Model 1.   
+We see in the plot that AWD cars tend to be more expensive than FWD and RWD. This suggests that drive type does have an effect on log(price), so Model 2 appears more appropriate than Model 1.
 
-However, the slopes aren't that different. Price seems to decrease at roughly the same rate with respect to acceleration time for all three drive types. There doesn't seem to be a reason to add interaction terms to the model.  
+However, the slopes aren't that different. Price seems to decrease at roughly the same rate with respect to acceleration time for all three drive types. There doesn't seem to be a reason to add interaction terms to the model.
 
-Model 2 seems most appropriate.   
+Model 2 seems most appropriate.
 
-We can use ANOVA F-tests and $R^2$ to compare the models. First, let's compare Models 1 and 2.  
+We can use ANOVA F-tests and $R^2$ to compare the models. First, let's compare Models 1 and 2.
 
-**ANOVA F-Test for Model 1 vs Model 2**    
+**ANOVA F-Test for Model 1 vs Model 2**
 
 ```{r}
 M_Cars_logprice_acc060 <- lm(data=Cars2020, log(Price) ~ Acc060)
@@ -1137,24 +1123,23 @@ M_Cars_logprice_acc060_drive <- lm(data=Cars2020, log(Price) ~ Acc060 + Drive)
 anova(M_Cars_logprice_acc060, M_Cars_logprice_acc060_drive)
 ```
 
-**$R^2$ for Model 1**
+$R^2$ for Model 1
 
 ```{r}
 summary(M_Cars_logprice_acc060)$r.squared
 ```
 
-**$R^2$ for Model 2**
+$R^2$ for Model 2
 
 ```{r}
 summary(M_Cars_logprice_acc060_drive)$r.squared
 ```
 
-The large F-statistic and small p-value suggest that Model 2 better explains variability in price than Model 1. Furthermore, Model 2 explains more than 10% more of the variability in price. Model 2 is preferred over Model 1.  
+The large F-statistic and small p-value suggest that Model 2 better explains variability in price than Model 1. Furthermore, Model 2 explains more than 10% more of the variability in price. Model 2 is preferred over Model 1.
 
+Now, we'll compare Model 2 to Model 3.
 
-Now, we'll compare Model 2 to Model 3.   
-
-**ANOVA F-Test for Model 2 vs Model 3**    
+**ANOVA F-Test for Model 2 vs Model 3**
 
 ```{r}
 M_Cars_logprice_acc060_drive <- lm(data=Cars2020, log(Price) ~ Acc060 + Drive)
@@ -1162,25 +1147,23 @@ M_Cars_logprice_acc060_drive_int <- lm(data=Cars2020, log(Price) ~ Acc060 + Driv
 anova(M_Cars_logprice_acc060_drive, M_Cars_logprice_acc060_drive_int)
 ```
 
-**$R^2$ for Model 1**
+$R^2$ for Model 1
 
 ```{r}
 summary(M_Cars_logprice_acc060_drive)$r.squared
 ```
 
-**$R^2$ for Model 2**
+$R^2$ for Model 2
 
 ```{r}
 summary(M_Cars_logprice_acc060_drive_int)$r.squared
 ```
 
-The small F-statistic and large p-value provide no evidence that Model 3 is better than Model 2. Furthermore, $R^2$ only increases slightly when the interaction terms are added. There is not justification for choosing Model 3 over Model 2.  
+The small F-statistic and large p-value provide no evidence that Model 3 is better than Model 2. Furthermore, $R^2$ only increases slightly when the interaction terms are added. There is not justification for choosing Model 3 over Model 2.
 
-Model 2 appears to be the best model.   
+Model 2 appears to be the best model.
 
-
-When using model comparison tests, it's important to remember that p-values are only part of the picture. We shouldn't make decisions based solely on the p-value. When sample size is large a model comparison test might yield a small p-value even if the difference between the models is not practically meaningful. It's important to also consider graphical intuition, real-life knowledge about the situation, and change in $R^2$ when deciding whether to add an interaction term to a model.   
-
+When using model comparison tests, it's important to remember that p-values are only part of the picture. We shouldn't make decisions based solely on the p-value. When sample size is large a model comparison test might yield a small p-value even if the difference between the models is not practically meaningful. It's important to also consider graphical intuition, real-life knowledge about the situation, and change in $R^2$ when deciding whether to add an interaction term to a model.
 
 ### Interaction vs Correlation
 
@@ -1208,15 +1191,13 @@ The fact that there is a correlation between explanatory variables is NOT a reas
 
 3.  Suppose that audiences become more favorable to dramas as they get longer, but less favorable to comedies as they get longer. In this scenario, the effect of movie length on audience rating depends on the genre of the movie, indicating an interaction between length and genre.
 
-
-
 ### Interaction More Generally
 
-In this section, we've seen examples of models with interaction involving a categorical and quantitative explanatory variable. These are easiest to picture graphically. It is possibly, however, to have interactions between two quantitative variables, or two categorical ones. 
+In this section, we've seen examples of models with interaction involving a categorical and quantitative explanatory variable. These are easiest to picture graphically. It is possibly, however, to have interactions between two quantitative variables, or two categorical ones.
 
-For example, suppose that for light weight cars those that can accelerate faster tended to be more expensive, but for heavier cars, there was no relationship between price and acceleration time. This would be an example of an interaction between weight and acceleration time, both quantitative variables.    
+For example, suppose that for light weight cars those that can accelerate faster tended to be more expensive, but for heavier cars, there was no relationship between price and acceleration time. This would be an example of an interaction between weight and acceleration time, both quantitative variables.
 
-Or, suppose that sedans with all wheel drive were more expensive than sedans with only front wheel drive, but that trucks with all wheel drive were the same price as trucks with only front wheel drive. This would be an example of an interaction between type of car and drive type. 
+Or, suppose that sedans with all wheel drive were more expensive than sedans with only front wheel drive, but that trucks with all wheel drive were the same price as trucks with only front wheel drive. This would be an example of an interaction between type of car and drive type.
 
 ## Building a Model for Interpretation
 
@@ -1231,7 +1212,7 @@ We'll need to think about things like:
 -   should we use any nonlinear terms?\
 -   should we use a transformation of the response variable?
 
-In this section we'll go through a set of steps to build a model that will help us understand factors that contribute to the price of a car. 
+In this section we'll go through a set of steps to build a model that will help us understand factors that contribute to the price of a car.
 
 ### Exploratory Data Analysis
 
@@ -1259,9 +1240,7 @@ The Cars2020 dataset from the `Lock5Data` R package contains several variables w
 -   `Weight` - Curb weight (in pounds)\
 -   `Size` - Large, Midsized, or Small
 
-
-We'll start by creating some graphs and tables to explore the data. 
-
+We'll start by creating some graphs and tables to explore the data.
 
 We'll look at a summary of the categorical variables in the dataset.
 
@@ -1283,8 +1262,7 @@ library(corrplot)
 C <- corrplot(C)
 ```
 
-We see there is strong correlation between many of the variables. We'll want to include variables that are highly correlated with price in the model. At the same time, we'll see that including too many explanatory variables, especially when they are highly correlated, makes the model hard to interpret. We'll need to carefully select explanatory variables that help us answer the questions we're most interested in. 
-
+We see there is strong correlation between many of the variables. We'll want to include variables that are highly correlated with price in the model. At the same time, we'll see that including too many explanatory variables, especially when they are highly correlated, makes the model hard to interpret. We'll need to carefully select explanatory variables that help us answer the questions we're most interested in.
 
 So far, we've explored the relationship between price and acceleration time. We found that modeling log(Price) as a function of acceleration time was more consistent with regression model assumptions than modeling price itself, so we'll start there.
 
@@ -1293,13 +1271,13 @@ M_Cars1 <- lm(data=Cars2020, log(Price) ~ Acc060)
 summary(M_Cars1)
 ```
 
-We see that just over 50% of the total variability in log(Price) is explained by acceleration time alone. Let's investigate what other variables we should add to the model to better understand the factors contributing to the price of a car.   
+We see that just over 50% of the total variability in log(Price) is explained by acceleration time alone. Let's investigate what other variables we should add to the model to better understand the factors contributing to the price of a car.
 
-Along the way, we'll discover some statistical considerations we should think about when building models.   
+Along the way, we'll discover some statistical considerations we should think about when building models.
 
 ### Simpson's Paradox
 
-Let's next investigate the effect of a car's gas mileage on price. There are two gas mileage variables in the dataset, CityMPG and HwyMPG. We'll use HwyMPG, which is the number of miles the car can go on one mile of gas when driving on the highway. We'll also account for the weight of the car in lbs. The plot below shows the relationships between each of these variables with log(Price), as well as the relationship between Weight and Hwy MPG.  
+Let's next investigate the effect of a car's gas mileage on price. There are two gas mileage variables in the dataset, CityMPG and HwyMPG. We'll use HwyMPG, which is the number of miles the car can go on one mile of gas when driving on the highway. We'll also account for the weight of the car in lbs. The plot below shows the relationships between each of these variables with log(Price), as well as the relationship between Weight and Hwy MPG.
 
 ```{r}
 P1 <- ggplot(data=Cars2020, aes(x=HwyMPG, y=log(Price))) + geom_point() + stat_smooth(method="lm", se=FALSE) + theme_bw() 
@@ -1311,20 +1289,20 @@ P3 <- ggplot(data=Cars2020, aes(x=Weight, y=HwyMPG)) + geom_point() + stat_smoot
 grid.arrange(P1, P2, P3, ncol=3)
 ```
 
-We see that both highway MPG and weight are negatively associated with price, and that there is also a negative relationship between weight and highway MPG. 
+We see that both highway MPG and weight are negatively associated with price, and that there is also a negative relationship between weight and highway MPG.
 
-Let's add highway gas mileage to our model, along with acceleration time. 
+Let's add highway gas mileage to our model, along with acceleration time.
 
 ```{r}
 M_Cars2 <- lm(data=Cars2020, log(Price) ~ Acc060 + HwyMPG)
 summary(M_Cars2)
 ```
 
-As the plot showed, highway MPG has a negative coefficient. Assuming acceleration time is held constant, price is expected to multiply by a factor of $e^{`r M_Cars2$coef[3] |> round(2)`} =`r exp(M_Cars2$coef[3]) |> round(2)`$, a `r ((1-exp(M_Cars2$coef[3]))*100) |>round(0)` percent decrease.
+As the plot showed, highway MPG has a negative coefficient. Assuming acceleration time is held constant, price is expected to multiply by a factor of $$e^{`r (M_Cars2$coef[3]) |> round(2)`} =`r (exp(M_Cars2$coef[3])) |> round(2)`$$, a `r ((1-exp(M_Cars2$coef[3]))*100) |>round(0)` percent decrease.
 
-It may be surprising to learn that cars that get better gas mileage tend to be less expensive than those with lower gas mileage. We see in the summary output that the p-value associated with `HwyMPG` is small, indicating a statistically discernible relationship. 
+It may be surprising to learn that cars that get better gas mileage tend to be less expensive than those with lower gas mileage. We see in the summary output that the p-value associated with `HwyMPG` is small, indicating a statistically discernible relationship.
 
-We've learned, however, that when something seems unusual, we should think deeper. We noticed that highway gas mileage was negativly associated with weight, and that both are negatively associated with price. Since heaviest cars tend to also be the most expensive, it may be that cars that get better gas mileage are less expensive because they they are smaller and weigh less. 
+We've learned, however, that when something seems unusual, we should think deeper. We noticed that highway gas mileage was negatively associated with weight, and that both are negatively associated with price. Since heaviest cars tend to also be the most expensive, it may be that cars that get better gas mileage are less expensive because they they are smaller and weigh less.
 
 In the figure below we break the cars into three categories, based on their weight.
 
@@ -1341,61 +1319,58 @@ ggplot(data=Cars2020, aes( y=Price, x=HwyMPG )) +geom_point() + facet_wrap(facet
 stat_smooth(method="lm", se=FALSE) + xlab("Highway MPG") + theme_bw()
 ```
 
-Once we compare cars of similar weights, we see that there is little to no relationship between highway MPG and price. The negative trend for low weight cars is due primarily to one outlier, while the other two weights show slightly positive to no trend. This is different than the strong negative relationship we saw in the previous graph.   
+Once we compare cars of similar weights, we see that there is little to no relationship between highway MPG and price. The negative trend for low weight cars is due primarily to one outlier, while the other two weights show slightly positive to no trend. This is different than the strong negative relationship we saw in the previous graph.
 
-Let's add weight to the model and see what happens to to estimate associated with highway MPG. 
-
+Let's add weight to the model and see what happens to to estimate associated with highway MPG.
 
 ```{r}
 M_Cars3 <- lm(data=Cars2020, log(Price) ~ Acc060 + HwyMPG + Weight)
 summary(M_Cars3)
 ```
 
-Notice that when weight is added to the model, the coefficient on HwyMPG changes signs and is now positive. This means that assuming we are comparing cars of the same acceleration time and weight, one with higher highway gas mileage is expected to cost more than one with lower gas mileage. The difference is small, with price expected to multiply by about $e^{`r M_Cars3$coef[3] |> round(2)`} =`r exp(M_Cars3$coef[3]) |> round(2)`$ (a `r (1-exp(M_Cars3$coef[3]))*100 |>round(0)`) percent increase), and not statistically discernible (high p-value). So, there really doesn't appear to be much of a relationship at all between price and gas mileage, after accounting for acceleration time and weight.   
+Notice that when weight is added to the model, the coefficient on HwyMPG changes signs and is now positive. This means that assuming we are comparing cars of the same acceleration time and weight, one with higher highway gas mileage is expected to cost more than one with lower gas mileage. The difference is small, with price expected to multiply by about $$e^{`r M_Cars3$coef[3] |> round(2)`} =`r exp(M_Cars3$coef[3]) |> round(2)`$$ (a `r (1-exp(M_Cars3$coef[3]))*100 |>round(0)`) percent increase), and not statistically discernible (high p-value). So, there really doesn't appear to be much of a relationship at all between price and gas mileage, after accounting for acceleration time and weight.
 
-Still, this is a different conclusion than we would have drawn if we had not accounted for weight in the model. It had originally appeared that highway MPG had a strong negative association with price, but we see that once we compare cars of similar weights, there is little to no relationship between price and highway MPG. This is an example of a phenomenon know as **Simpson's Paradox.** In instances of Simpson's Paradox, the relationship between two variables changes directions, or disappears once a third variable is accounted for. The weight variable is called a **confounding variable**. If we don't account for weight, we get a misleading picture of the relationship between highway gas mileage and price.       
+Still, this is a different conclusion than we would have drawn if we had not accounted for weight in the model. It had originally appeared that highway MPG had a strong negative association with price, but we see that once we compare cars of similar weights, there is little to no relationship between price and highway MPG. This is an example of a phenomenon know as **Simpson's Paradox.** In instances of Simpson's Paradox, the relationship between two variables changes directions, or disappears once a third variable is accounted for. The weight variable is called a **confounding variable**. If we don't account for weight, we get a misleading picture of the relationship between highway gas mileage and price.
 
-We saw that accounting for weight helps us better understand the relationship between price and gas mileage. We should also discuss the relationship between price and weight itself. Since weights of cars range from 2,000 to 6,000 lbs, it would be silly to talk about the effect of a single additional pound. Rather, let's examine the effect of a 1,000 pound increase on price of a car. For each additional 1,000 lbs., price is expected to multiply by a factor of $e^{`r M_Cars3$coef[4] |> round(6)` \times 1000} =`r exp(M_Cars3$coef[4])*1000 |> round(2)`$, a `r ((exp(M_Cars3$coef[4]*1000))-1)*100 |>round(0)` percent increase.
+We saw that accounting for weight helps us better understand the relationship between price and gas mileage. We should also discuss the relationship between price and weight itself. Since weights of cars range from 2,000 to 6,000 lbs, it would be silly to talk about the effect of a single additional pound. Rather, let's examine the effect of a 1,000 pound increase on price of a car. For each additional 1,000 lbs., price is expected to multiply by a factor of $$e^{`r M_Cars3$coef[4] |> round(6)`\times 1000} =`r exp(M_Cars3$coef[4])*1000 |> round(2)`$$, a `r ((exp(M_Cars3$coef[4]*1000))-1)*100 |>round(0)` percent increase.
 
-Our model with weight and highway gas mileage, in addition to acceleration time, now explains about `r summary(M_Cars3)$r.squared*100 |> round(1)` percent of the variability in log(Price), up from `r summary(M_Cars1)$r.squared*100 |> round(1)` for the model with only acceleration time.      
+Our model with weight and highway gas mileage, in addition to acceleration time, now explains about `r summary(M_Cars3)$r.squared*100 |> round(1)` percent of the variability in log(Price), up from `r summary(M_Cars1)$r.squared*100 |> round(1)` for the model with only acceleration time.
 
-We saw in the preceding graph, that the direction of the relationship between price and gas mileage was negative for light weight cars and positive for medium weight ones, suggesting a possible interaction between weight and gas mileage. So, we might consider adding an interaction term to the model. The `:` command adds just the interaction term. 
+We saw in the preceding graph, that the direction of the relationship between price and gas mileage was negative for light weight cars and positive for medium weight ones, suggesting a possible interaction between weight and gas mileage. So, we might consider adding an interaction term to the model. The `:` command adds just the interaction term.
 
 ```{r}
 M_Cars4 <- lm(data=Cars2020, log(Price) ~ Acc060 + HwyMPG + Weight + HwyMPG:Weight)
 summary(M_Cars4)
 ```
 
-The coefficient estimate on the interaction term is small and the p-value is large, telling us we don't have much evidence of an interaction between weight and MPG. Also notice that $R^2$ barely changed, moving from `r summary(M_Cars3)$r.squared |> round(3)` to `r summary(M_Cars4)$r.squared  |> round(3)` when the interaction term is included. Since interactions make the model harder to interpret, we shouldn't include one unless we have good reason to. So, in this case, we'll stick with the simpler model with no interaction term. 
-
+The coefficient estimate on the interaction term is small and the p-value is large, telling us we don't have much evidence of an interaction between weight and MPG. Also notice that $R^2$ barely changed, moving from `r summary(M_Cars3)$r.squared |> round(3)` to `r summary(M_Cars4)$r.squared  |> round(3)` when the interaction term is included. Since interactions make the model harder to interpret, we shouldn't include one unless we have good reason to. So, in this case, we'll stick with the simpler model with no interaction term.
 
 ### Multicollinearity
 
-Let's continue to add variables to our model that might help us learn about factors affecting the price of a car. Another variable in the dataset was the amount of time it takes a car to drive a quarter mile. We'll add that variable to the model. 
+Let's continue to add variables to our model that might help us learn about factors affecting the price of a car. Another variable in the dataset was the amount of time it takes a car to drive a quarter mile. We'll add that variable to the model.
 
 ```{r}
 M_Cars5 <- lm(data=Cars2020, log(Price) ~ Acc060 + HwyMPG + Weight + QtrMile)
 summary(M_Cars5)
 ```
 
-The coefficient estimate for QtrMile time is negative , which is not surprising. We would expect cars that take longer to drive a quarter mile to be less expensive. But, look at what happened to the Acc060 variable. The estimate now is very slightly negative (a change from Model M_Cars4), but the most striking change is in the standard error column. The standard error associated with the Acc060 variable increased from `r summary(M_Cars3)$coefficients[2,2] |> round(3)` to `r summary(M_Cars5)$coefficients[2,2]  |> round(3)`, (more than 4 times larger). This has a big impact on the t-statistic, p-value, and confidence intervals associated with Acc060. Since standard errors are used to calculate confidence intervals, it will impact these as well.   
+The coefficient estimate for QtrMile time is negative , which is not surprising. We would expect cars that take longer to drive a quarter mile to be less expensive. But, look at what happened to the Acc060 variable. The estimate now is very slightly negative (a change from Model M_Cars4), but the most striking change is in the standard error column. The standard error associated with the Acc060 variable increased from `r summary(M_Cars3)$coefficients[2,2] |> round(3)` to `r summary(M_Cars5)$coefficients[2,2]  |> round(3)`, (more than 4 times larger). This has a big impact on the t-statistic, p-value, and confidence intervals associated with Acc060. Since standard errors are used to calculate confidence intervals, it will impact these as well.
 
-**Confidence Interval for Acceleration Time - Model without Quarter Mile Time** 
+**Confidence Interval for Acceleration Time - Model without Quarter Mile Time**
 
 ```{r}
 exp(confint(M_Cars3, level=0.95, parm="Acc060")) |> round(2)
 ```
 
-We are 95% confident that a 1-second increase in acceleration time is associated with an average price decrease between `r ((1 - exp(confint(M_Cars3, level=0.95, parm="Acc060"))[2])*100)|> round(0)` and `r ((1 - exp(confint(M_Cars3, level=0.95, parm="Acc060"))[1])*100)|> round(0)` percent, assuming weight and highway gas mileage are held constant.   
+We are 95% confident that a 1-second increase in acceleration time is associated with an average price decrease between `r ((1 - exp(confint(M_Cars3, level=0.95, parm="Acc060"))[2])*100)|> round(0)` and `r ((1 - exp(confint(M_Cars3, level=0.95, parm="Acc060"))[1])*100)|> round(0)` percent, assuming weight and highway gas mileage are held constant.
 
-**Confidence Interval for Acceleration Time - Model with Quarter Mile Time** 
+**Confidence Interval for Acceleration Time - Model with Quarter Mile Time**
 
 ```{r}
 exp(confint(M_Cars5, level=0.95, parm="Acc060")) |> round(2)
 ```
 
-We are 95% confident that a 1-second increase in acceleration time is associated with an average price change between a `r ((1 - exp(confint(M_Cars5, level=0.95, parm="Acc060"))[1])*100)|> round(0)` decrease and  a `r (( exp(confint(M_Cars5, level=0.95, parm="Acc060"))[2]-1)*100) |> round(0)` percent increase, assuming weight, highway gas mileage, and quarter mile time are held constant.   
-
+We are 95% confident that a 1-second increase in acceleration time is associated with an average price change between a `r ((1 - exp(confint(M_Cars5, level=0.95, parm="Acc060"))[1])*100)|> round(0)` decrease and a `r (( exp(confint(M_Cars5, level=0.95, parm="Acc060"))[2]-1)*100) |> round(0)` percent increase, assuming weight, highway gas mileage, and quarter mile time are held constant.
 
 Notice how the second interval is so much wider than the first that it is practically useless. It tells us almost nothing about the relationship between price and acceleration time. This happens because quarter mile time is strongly correlated with Acc060. Recall their correlation was 0.98. When we add an explanatory variable that is highly correlated with a variable already in the model, the model will be unable to separate the effect of one variable from the effect of the other, causing it to yield high standard errors, reflecting lots of uncertainty about the effect of both variables. Further, recall that interpreting one variable in a multiple regression model requires assuming all others are held constant. But, if a can accelerate faster, it will most surely be able to drive a quarter mile more quickly, so it doesn't make sense to talk about increasing acceleration time while holding quarter mile time constant.
 
@@ -1403,11 +1378,11 @@ Notice how the second interval is so much wider than the first that it is practi
 
 **Impact of Multicollinearity on Prediction**
 
-We've seen that multicollinearity can have a substantial affect on confidence intervals for regression coefficients $b_j$. Let's see how multicollinearity affects predicted values. 
+We've seen that multicollinearity can have a substantial affect on confidence intervals for regression coefficients $b_j$. Let's see how multicollinearity affects predicted values.
 
 Suppose we want to predict the price of a car that can accelerate from 0 to 60 mph in 9.5 seconds, weighs 4000 lbs, gets 25 mpg on the highway, and completes a quarter mile in 17.5 seconds.
 
-**Prediction interval based on Model without Quarter Mile Time:**    
+**Prediction interval based on Model without Quarter Mile Time:**
 
 ```{r}
 exp(predict(M_Cars3, newdata = data.frame(Acc060=9.5, 
@@ -1416,7 +1391,7 @@ exp(predict(M_Cars3, newdata = data.frame(Acc060=9.5,
                                           interval="prediction"))
 ```
 
-**Prediction interval based on Model with Quarter Mile Time:**    
+**Prediction interval based on Model with Quarter Mile Time:**
 
 ```{r}
 exp(predict(M_Cars5, newdata = data.frame(Acc060=9.5, 
@@ -1426,11 +1401,11 @@ exp(predict(M_Cars5, newdata = data.frame(Acc060=9.5,
                                           level=0.95, interval="prediction"))
 ```
 
-We see that the predicted values and intervals are nearly identical. While multicollinearity has a severe impact on confidence intervals for model estimates, it does not affect predictions or prediction intervals. 
+We see that the predicted values and intervals are nearly identical. While multicollinearity has a severe impact on confidence intervals for model estimates, it does not affect predictions or prediction intervals.
 
 ### Model Comparison Tests
 
-Next, we'll consider adding categorical explanatory variables Size, and Drive. The plot shows the relationship between each of these variables and price. 
+Next, we'll consider adding categorical explanatory variables Size, and Drive. The plot shows the relationship between each of these variables and price.
 
 ```{r, fig.width=10, fig.height=3}
 P1 <- ggplot(data=Cars2020, aes(x=log(Price), y=Size)) + geom_boxplot() + ggtitle("Price by Size")
@@ -1445,25 +1420,22 @@ M_Cars6 <- lm(data=Cars2020, log(Price) ~ Acc060 + HwyMPG + Weight + Drive)
 summary(M_Cars6)
 ```
 
-The baseline category for drive is AWD (all wheel drive). We see that FWD (front wheel) and RWD (rear wheel) both have negative estimates, indicating cars of these drive types tend to be less expensive than all wheel drive cars. Because the sample size for RWD cars is very small (only 5 cars), the difference between rear and all wheel  drive cars is not statistically discernible, but the difference between FWD and AWD (which is roughly the same size), is statistically discernible.    
+The baseline category for drive is AWD (all wheel drive). We see that FWD (front wheel) and RWD (rear wheel) both have negative estimates, indicating cars of these drive types tend to be less expensive than all wheel drive cars. Because the sample size for RWD cars is very small (only 5 cars), the difference between rear and all wheel drive cars is not statistically discernible, but the difference between FWD and AWD (which is roughly the same size), is statistically discernible.
 
-We can use an ANOVA F-test to see if there is evidence of a relationship between price and drive type overall. We'll compare the model that includes acceleration time, weight, and gas mileage, but not drive type (M_Cars3) to a model that includes these variables plus drive type (M_Cars6) . 
+We can use an ANOVA F-test to see if there is evidence of a relationship between price and drive type overall. We'll compare the model that includes acceleration time, weight, and gas mileage, but not drive type (M_Cars3) to a model that includes these variables plus drive type (M_Cars6) .
 
 ```{r}
 anova(M_Cars3, M_Cars6)
 ```
 
-The large F-statistic and small p-value provides evidence of a relationship between price and drive type after accounting for the other variables, suggesting we should add drive type to the model. We found evidence of differences in price between front-wheel drive and rear-wheel drive, compared to all wheel drive cars. Adding drive type to the model results in a modest increase in $R^2$, as the model now explains about `r (summary(M_Cars6)$r.squared*100) |> round(1)` percent of the variability in Log(Price).  
+The large F-statistic and small p-value provides evidence of a relationship between price and drive type after accounting for the other variables, suggesting we should add drive type to the model. We found evidence of differences in price between front-wheel drive and rear-wheel drive, compared to all wheel drive cars. Adding drive type to the model results in a modest increase in $R^2$, as the model now explains about `r (summary(M_Cars6)$r.squared*100) |> round(1)` percent of the variability in Log(Price).
 
-
-Model comparison tests can be helpful in deciding whether variables should be added to a model. We should keep in mind that when sample size is very large, even very small differences will return statistically discernible differences using the F-test, so we should also consider factors like $R^2$, the size of our estimate(s) $b_j$, background knowledge, and the variable's relevance to our research question, when deciding whether or not to add it to a model. 
-
-
+Model comparison tests can be helpful in deciding whether variables should be added to a model. We should keep in mind that when sample size is very large, even very small differences will return statistically discernible differences using the F-test, so we should also consider factors like $R^2$, the size of our estimate(s) $b_j$, background knowledge, and the variable's relevance to our research question, when deciding whether or not to add it to a model.
 
 ### Checking Model Assumptions
 
 We could keep looking at other variables to add, but at this point, we have a model that gives us a good sense of the factors related to price of a car, capturing `r (summary(M_Cars6)$r.squared*100) |> round(0)` of total variability in car price, and is still easy to interpret. Furthermore, other variables that are correlated with price (such as fuel capacity, length, width, wheelbase, and UTurn diameter) are highly correlated with variables already in the model. Adding them to the model will do little to explain variability in price, and could create problems associated with multicollinearilty. For our research purposes, our model is good enough.
- 
+
 We'll use residuals to check the model assumptions.
 
 **Residual by Predicted Plot, Histogram of Residuals, and Normal Quantile-Quantile Plot**
@@ -1482,7 +1454,7 @@ resid_xpanel(M_Cars6, smoother=TRUE)
 
 These plots don't raise any concerns.
 
-### Interpretations 
+### Interpretations
 
 The model coefficients are shown below.
 
@@ -1496,19 +1468,19 @@ Since we used a log transformation, we should interpret $e^{b_j}$ rather than $b
 exp(M_Cars6$coefficients) |> round(4)
 ```
 
-The intercept theoretically tells us that a car that accelerates from 0 to 60 mph in no time, gets 0 mpg, weighs 0 lbs, and is AWD would be expected to cost `r exp(M_Cars6$coefficients) |> round(4)` thousand dollars. This statement is nonsensical and we shouldn't try to interpret the intercept.  
+The intercept theoretically tells us that a car that accelerates from 0 to 60 mph in no time, gets 0 mpg, weighs 0 lbs, and is AWD would be expected to cost `r exp(M_Cars6$coefficients) |> round(4)` thousand dollars. This statement is nonsensical and we shouldn't try to interpret the intercept.
 
-The price of a car is expected to decrease by `r ((1-exp(M_Cars6$coefficients[2]))*100) |> round(0)` percent for each additional second it takes to accelerate from 0 to 60 mph, assumping highway MPG, weight and type of drive are held constant.   
+The price of a car is expected to decrease by `r ((1-exp(M_Cars6$coefficients[2]))*100) |> round(0)` percent for each additional second it takes to accelerate from 0 to 60 mph, assumping highway MPG, weight and type of drive are held constant.
 
-The price of a car is expected to increase by `r ((exp(M_Cars6$coefficients[3])-1)*100) |> round(1)` percent for each additional highway MPG, assumping acceleration time, weight and type of drive are held constant.   
+The price of a car is expected to increase by `r ((exp(M_Cars6$coefficients[3])-1)*100) |> round(1)` percent for each additional highway MPG, assumping acceleration time, weight and type of drive are held constant.
 
-The price of a car is expected to increase by `r ((exp(M_Cars6$coefficients[4])-1)*100) |> round(3)` percent for each additional pound in weight, assumping acceleration time, highway MPG, and type of drive are held constant. This is equivalent to a `r ((exp(M_Cars6$coefficients[4])-1)*100*1000) |> round(0)` percent increase for each additional 1,000 pounds in weight.    
+The price of a car is expected to increase by `r ((exp(M_Cars6$coefficients[4])-1)*100) |> round(3)` percent for each additional pound in weight, assumping acceleration time, highway MPG, and type of drive are held constant. This is equivalent to a `r ((exp(M_Cars6$coefficients[4])-1)*100*1000) |> round(0)` percent increase for each additional 1,000 pounds in weight.
 
 FWD cars are expected to cost `r ((1-exp(M_Cars6$coefficients[5]))*100) |> round(0)` less than AWD cars, assuming acceleration time, highway MPG, and weight are held constant.
 
 RWD cars are expected to cost `r ((1-exp(M_Cars6$coefficients[6]))*100) |> round(0)` less than AWD cars, assuming acceleration time, highway MPG, and weight are held constant.
 
-Referring back to the model summary output, we saw that the effects associated with acceleration time, weight and the difference between FWD and AWD were statistically discernible, while the effect of highway MPG and the difference between RWD and AWD are not.  
+Referring back to the model summary output, we saw that the effects associated with acceleration time, weight and the difference between FWD and AWD were statistically discernible, while the effect of highway MPG and the difference between RWD and AWD are not.
 
 ### Predictions
 
@@ -1530,8 +1502,7 @@ Exponentiating, we obtain
 exp(predict(M_Cars6, newdata=newcar, interval="confidence", level=0.95))
 ```
 
-
-We are 95% confident that the average price of all new 2020 cars that weigh 3000 lbs, take 8 seconds to accelerate from 0 to 60 mph, weigh 3,000 lbs, and have all wheel drive will cost between `r (exp(predict(M_Cars6, newdata=newcar, interval="confidence", level=0.95))[2]) |> round(0)` and `r (exp(predict(M_Cars6, newdata=newcar, interval="confidence", level=0.95))[3]) |> round(0)` thousand dollars. 
+We are 95% confident that the average price of all new 2020 cars that weigh 3000 lbs, take 8 seconds to accelerate from 0 to 60 mph, weigh 3,000 lbs, and have all wheel drive will cost between `r (exp(predict(M_Cars6, newdata=newcar, interval="confidence", level=0.95))[2]) |> round(0)` and `r (exp(predict(M_Cars6, newdata=newcar, interval="confidence", level=0.95))[3]) |> round(0)` thousand dollars.
 
 Next, we calculate a prediction interval for an individual car with these characteristics.
 
@@ -1539,13 +1510,13 @@ Next, we calculate a prediction interval for an individual car with these charac
 exp(predict(M_Cars6, newdata=newcar, interval="prediction", level=0.95))
 ```
 
-We are 95% confident that the price of an individual car that weighs 3000 lbs, takes 8 seconds to accelerate from 0 to 60 mph, weighs 3,000 lbs, and has all wheel drive will cost between `r (exp(predict(M_Cars6, newdata=newcar, interval="prediction", level=0.95))[2]) |> round(0)` and `r (exp(predict(M_Cars6, newdata=newcar, interval="prediction", level=0.95))[3]) |> round(0)` thousand dollars. 
+We are 95% confident that the price of an individual car that weighs 3000 lbs, takes 8 seconds to accelerate from 0 to 60 mph, weighs 3,000 lbs, and has all wheel drive will cost between `r (exp(predict(M_Cars6, newdata=newcar, interval="prediction", level=0.95))[2]) |> round(0)` and `r (exp(predict(M_Cars6, newdata=newcar, interval="prediction", level=0.95))[3]) |> round(0)` thousand dollars.
 
 ### Model Building Summary
 
 Consider the following when building a model for the purpose of interpreting parameters and understanding and drawing conclusions about a population or process.
 
-**Characteristics of a good model:**  
+**Characteristics of a good model:**
 
 -   Model driven by research question
 -   Include variables of interest\
@@ -1558,7 +1529,499 @@ Consider the following when building a model for the purpose of interpreting par
 
 Keep in mind, there is no single correct model, but there are common characteristics of a good model. While two statisticians might use different models for a given set of data, they will hopefully lead to reasonably similar conclusions if constructed carefully.
 
-
 ```{r, echo=FALSE}
 #save.image(file = "Environment.RData")
 ```
+
+## Practice Questions
+
+We'll work with data on 120 houses that sold in the states of CA, NJ, NY, and PA. in 2019. The data are part of the `Lock5Data` package.
+
+```{r, include=FALSE}
+options(scipen=999)
+library(tidyverse)
+library(knitr)
+library(openintro)
+library(gridExtra)
+library(Lock5Data)
+data("HomesForSale")
+```
+
+The dataset is called `HomesForSale`. The first six rows of the dataset are shown here.
+
+```{r}
+head(HomesForSale)
+```
+
+### 1) {.unnumbered}
+
+We'll model the price of the houses (which is given in thousands), using the size (in sq. ft.), and state as explanatory variables. We'll use and ordinary linear regression model of the form:
+
+$$
+\text{Price} = \beta_0 + \beta_1\times\text{Size}+ \beta_2\times\text{StateNJ}+ \beta_3\times\text{StateNY}+ \beta_4\times\text{StatePA} + \epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, \sigma)
+$$
+
+```{r}
+M_Homes_price_size_state <- lm(data=HomesForSale, Price ~ Size + State)
+```
+
+The plots below can be used to check the assumptions associated with Model M1.
+
+```{r, fig.width=8, fig.height=8, echo=FALSE}
+resid_panel(M_Homes_price_size_state, smoother=TRUE)
+```
+
+State each of the four assumptions associated with the model. For each assumption, state which plot we should look at, and whether there is reason to be concerned about the validity of that assumption.
+
+### 2) {.unnumbered}
+
+Now we fit a model using log(Price), where log() denotes the natural, base e logarithm.
+
+$$
+\text{log(Price)} = \beta_0 + \beta_1\times\text{Size}+ \beta_2\times\text{StateNJ}+ \beta_3\times\text{StateNY}+ \beta_4\times\text{StatePA} + \epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, \sigma)
+$$
+
+The model summary output and display the model summary output is displayed below.
+
+```{r, echo=FALSE}
+options(scipen=999)
+```
+
+We fit the model in R and display residual plots.
+
+```{r}
+M_Homes_logprice_size_state <- lm(data=HomesForSale, log(Price) ~ Size + State)
+```
+
+```{r, fig.width=8, fig.height=8, echo=FALSE}
+resid_panel(M_Homes_logprice_size_state, smoother=TRUE)
+```
+
+Does this model appear more consistent with the modeling assumptions than Model 1? Explain your answer.
+
+### 3) {.unnumbered}
+
+Summary output for the model in Question 2 is shown below.
+
+```{r}
+summary(M_Homes_logprice_size_state)
+```
+
+Exponentiated model coefficients are also shown.
+
+```{r}
+exp(M_Homes_logprice_size_state$coefficients)
+```
+
+Write sentences interpreting each of the five estimates in context. If a parameter does not have a meaningful interpretation, explain why.
+
+### 4) {.unnumbered}
+
+Continue referring to the R output from the model in Question 3.
+
+#### a) {.unnumbered}
+
+Suppose that the model estimates a house in CA to cost 400 thousand dollars. How much is a house in NY that is the same size expected to cost?
+
+#### b) {.unnumbered}
+
+If one house has 500 square feet more than another house in the same state, how are their prices expected to compare?
+
+#### c) {.unnumbered}
+
+Use the model to calculate the predicted price of a 2000 square foot house in CA.
+
+#### d) {.unnumbered}
+
+Use the model to calculate the predicted price of a 2000 square foot house in PA.
+
+### 5) {.unnumbered}
+
+Again, continuing with the model for log house price in Questions 2-4, write sentences interpreting each of the following intervals in context.
+
+```{r}
+exp(predict(M_Homes_logprice_size_state, newdata=data.frame(Size=2000, State="NJ"), 
+            interval="confidence", level=0.95))
+```
+
+```{r}
+exp(predict(M_Homes_logprice_size_state, newdata=data.frame(Size=2000, State="NJ"), 
+            interval="prediction", level=0.95))
+```
+
+### 6) {.unnumbered}
+
+The following intervals come from the model in Question 1 that did not use the log transformation.
+
+```{r}
+predict(M_Homes_price_size_state, newdata=data.frame(Size=2000, State="NJ"), interval="confidence", level=0.95)
+```
+
+```{r}
+predict(M_Homes_price_size_state, newdata=data.frame(Size=2000, State="NJ"), interval="prediction", level=0.95)
+```
+
+How do the predicted prices and confidence and prediction intervals for the model without the log transformation compare to those from the model with the transformation? Which do you think are more reliable? Why?
+
+### 7) {.unnumbered}
+
+Continnuing with the house price dataset in Questions 1-6, we add information about the number of bedrooms and bathrooms, in addition to size and state, to the model to predict log(price).
+
+```{r}
+M1 <- lm(data=HomesForSale, log(Price) ~ Beds + Baths + Size + State)
+```
+
+Residual plots and residual by predictor plots are shown below.
+
+```{r}
+resid_panel(M1)
+```
+
+```{r}
+resid_xpanel(M1, smoother=TRUE)
+```
+
+#### a) {.unnumbered}
+
+Is there anything we should be concerned about in the validity of the regression model assumptions? If so, state which assumption you are concerned about and which plot causes this concern.
+
+#### b) {.unnumbered}
+
+In the residual by predictor plot for beds, we see a downward sloping parabola. This might suggest adding a quadratic term for beds to the model. Why might this **NOT** be a good idea?
+
+### 8) {.unnumbered}
+
+The `Boston` dataset contains data on the median property value (medv) in various Boston neighborhoods. The data were collected in the 1970's. The `dis` variable provides a measure of distance from popular places of employment in Boston. (It was calculated by taking the weighed mean of distances from five different employment centers.) The `chas` variable is an indicator variable for whether or not the neighborhood borders the Charles River.
+
+#### a) {.unnumbered}
+
+We fit a model for log of median property value, using whether or not the house borders the Charles River, and distance from employment centers as explanatory variables.
+
+Residual plots and residual by predictor plots are shown below.
+
+```{r}
+data(Boston)
+M_Boston_logmedv_chas_dis <- lm(data=Boston, log(medv) ~ chas + dis)
+```
+
+```{r}
+resid_panel(M_Boston_logmedv_chas_dis, smoother=TRUE)
+```
+
+```{r}
+resid_xpanel(M_Boston_logmedv_chas_dis, smoother=TRUE)
+```
+
+Do you see any reasons for concern about the validity of the regression assumptions? If so, which ones? How might we correct these.
+
+#### b) {.unnumbered}
+
+We now add a quadratic term for distance from employment to the model. Residual and residual by predicted plots are again shown.
+
+```{r}
+M_Boston_logmedv_chas_dis2 <- lm(data=Boston, log(medv) ~ chas + dis + I(dis^2))
+```
+
+```{r}
+resid_panel(M_Boston_logmedv_chas_dis2, smoother=TRUE)
+```
+
+```{r}
+resid_xpanel(M_Boston_logmedv_chas_dis2, smoother=TRUE)
+```
+
+Does adding the quadratic term to the model appear to have helped? Explain your answer.
+
+**Model output for the model with the quadratic term is shown below. Use the output to answer parts (c - e)**
+
+```{r}
+summary(M_Boston_logmedv_chas_dis2)
+```
+
+Exponentiated model coefficients are also shown.
+
+```{r}
+exp(M_Boston_logmedv_chas_dis2$coefficients)
+```
+
+#### c) {.unnumbered}
+
+Write a sentence interpreting the coefficient on the chas variable in context. Do the data provide evidence that neighborhoods on the Charles River tend to be more or less expensive than other neighborhoods?
+
+#### d) {.unnumbered}
+
+Do the data provide evidence of a quadratic relationship between a neighborhood's distance from employment and property value? If so, explain, in real life terms what this might tell us about where people might prefer to live relative to where they work (at least in the 1970's when the data were collected).
+
+#### e) {.unnumbered}
+
+Calculate the approximate distance from employment centers where property values are at their highest (hint: recall that a quadratic function of the form $f(x) = ax^2 + bx + c$ attains its vertex at $x=-b/(2a)$).
+
+
+
+### 9)
+
+The plots below show four different scenarios of a model involving response variable $y$, a quantitative explanatory variable $x_1$ and a categorical explanatory variable $x_2$ with categories $A$ and $B$. 
+
+The model is
+
+$$
+y = b_0 + b_1\times x_1 + b_2\times x_2B + b_3\times x_1 \times x_2B + \epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, \sigma)
+$$
+
+For each of the four plots, state whether $b_0$, $b_1$, $b_2$, and $b_3$ are positive, negative, or zero. 
+
+```{r, fig.height=8, fig.width=8, echo=FALSE}
+x1 <- runif(50, 0, 10)
+x2 <- factor(rep(c("A","B"), 25))
+y <- 3*x1 + 5*(x2=="B") + 2*x1*(x2=="B") -4 + rnorm(50, 0, 1)
+df1 <- data.frame(x1, x2, y)
+
+x1 <- runif(50, 0, 10)
+x2 <- factor(rep(c("A","B"), 25))
+y <- 1*x1 -6*(x2=="B") + 2*x1*(x2=="B") +6 + rnorm(50, 0, 1)
+df2 <- data.frame(x1, x2, y)
+
+x1 <- runif(50, 0, 10)
+x2 <- factor(rep(c("A","B"), 25))
+y <- 3*x1 + 2*(x2=="B") -1*x1*(x2=="B") +2 + rnorm(50, 0, 1)
+df3 <- data.frame(x1, x2, y)
+
+x1 <- runif(50, 0, 10)
+x2 <- factor(rep(c("A","B"), 25))
+y <- -3*x1 + 2*(x2=="B") + 2*x1*(x2=="B") +3 + rnorm(50, 0, 1)
+df4 <- data.frame(x1, x2, y)
+
+
+P1 <- ggplot(data=df1, aes(x=x1, y=y, color=x2)) + geom_point() + 
+  stat_smooth(method="lm", se=FALSE) + theme_bw() + xlim(c(0,10))  + ylim(c(-40, 40)) + ggtitle("(A)")
+P2 <- ggplot(data=df2, aes(x=x1, y=y, color=x2)) + geom_point() + 
+  stat_smooth(method="lm", se=FALSE) + theme_bw()+ xlim(c(0,10))  + ylim(c(-40, 40))  + ggtitle("(B)")
+P3 <- ggplot(data=df3, aes(x=x1, y=y, color=x2)) + geom_point() + 
+  stat_smooth(method="lm", se=FALSE) + theme_bw()+ xlim(c(0,10))  + ylim(c(-40, 40))  + ggtitle("(C)")
+P4 <- ggplot(data=df4, aes(x=x1, y=y, color=x2)) + geom_point() + 
+  stat_smooth(method="lm", se=FALSE) + theme_bw()+ xlim(c(0,10))  + ylim(c(-40, 40))  + ggtitle("(D)")
+
+
+grid.arrange(P1, P2, P3, P4, ncol=2)
+```
+
+
+
+
+### 10) {.unnumbered}
+
+Recall the roller coaster dataset from the Chapter 2 practice problems. The plots show the relationship between a coaster's max speed (in mph), the year it was built (in years since 1900), and whether it was a wooden or steel coaster. Plot (A) shows lines of best fit when the slopes are forced to be the same, while Plot (B) shows lines of best fit when slopes are allowed to differ.
+
+```{r, fig.width=12, fig.height=4}
+PA <- ggplot(data=Coasters, aes(y=Speed, x=Year_Since1900, color=Type)) + geom_point() + geom_parallel_slopes(se=FALSE) + ggtitle("Plot A") + theme_bw()
+PB <- ggplot(data=Coasters, aes(y=Speed, x=Year_Since1900, color=Type)) + geom_point() + stat_smooth(method="lm", se=FALSE) + ggtitle("Plot B") + theme_bw()
+grid.arrange(PA, PB, ncol=2)
+```
+
+Consider the following two models.
+
+Model 1:
+
+$$
+\text{ Speed} = b_0 + b_1\times\text{Year\_Since1900} + b_2\times{\text{TypeWood}} + \epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, \sigma)
+$$
+
+Model 2:
+
+$$
+\text{ Speed} = b_0 + b_1\times\text{Year\_Since1900} + b_2\times{\text{TypeWood}} + b_3\times\text{Year\_Since1900}\times {\text{TypeWood}} + \epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, \sigma)
+$$
+
+#### a) {.unnumbered}
+
+Which plot corresponds to Model 1? Which corresponds to Model 2? Based on the data, which model do you think we should use? Why?
+
+#### b) {.unnumbered}
+
+Model summary output for both models is shown below.
+
+Model 1 Output:
+
+```{r}
+M1_Coasters_speed_year_type <- lm(data=Coasters, Speed~Year_Since1900 + Type)
+summary(M1_Coasters_speed_year_type)
+```
+
+Model 2 Output:
+
+```{r}
+M2_Coasters_speed_year_type_int <- lm(data=Coasters, Speed~Year_Since1900 * Type)
+summary(M2_Coasters_speed_year_type_int)
+```
+
+Based on the R output, which model appears to be more appropriate? Justify your answer by citing specific information contained in the R output.
+
+#### c) {.unnumbered}
+
+Write sentences interpreting the coefficients $b_0$, $b_1$, and $b_2$ in Model M1. Specifically give the numerical estimate of each coefficient in your interpretation. Also state what (if anything) we can conclude from the p-value associated with each coefficient.
+
+#### d) {.unnumbered}
+
+Write sentences interpreting the coefficients $b_0$, $b_1$, $b_2$, and $b_3$ in Model M2. Specifically give the numerical estimate of each coefficient in your interpretation. Also state what (if anything) we can conclude from the p-value associated with each coefficient.
+
+#### e) {.unnumbered}
+
+For each model, calculate the estimated top speed of the following coasters, both located at Cedar Point in Ohio:
+
+i)  Blue Streak, a wooden coaster that opened in 1964.\
+ii) Millennium Force, a steel coaster that opened in 2000.
+
+Which model's predictions do you think are more accurate? Why?
+
+#### f)  {.unnumbered}
+
+Is the following statement correct? Why or why not?
+
+"Before 1950, only wooden coasters were built. Over time, steel coasters became more common, and since 1990, the majority of coasters built are steel. Thus, there is an interaction between year built and type of coaster."
+
+### 11) {.unnumbered}
+
+We'll continue working with the roller coasters dataset. The plots show the relationship between a coaster's max speed (in mph), duration (in seconds), and design (sit down or other). Plot (A) shows lines of best fit when the slopes are forced to be the same, while Plot (B) shows lines of best fit when slopes are allowed to differ.
+
+```{r, fig.width=12, fig.height=4}
+PA <- ggplot(data=Coasters, aes(y=Speed, x=Duration, color=Design)) + geom_point() + geom_parallel_slopes(se=FALSE) + ggtitle("Plot A") + theme_bw()
+PB <- ggplot(data=Coasters, aes(y=Speed, x=Duration, color=Design)) + geom_point() + stat_smooth(method="lm", se=FALSE) + ggtitle("Plot B") + theme_bw()
+grid.arrange(PA, PB, ncol=2)
+```
+
+Consider the following two models.
+
+Model 1:
+
+$$
+\widehat{\text{ Speed}} = b_0 + b_1\times\text{Duration} + b_2\times{\text{SitDown}} + \epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, \sigma)
+$$
+
+Model 2:
+
+$$
+\widehat{\text{ Speed}} = b_0 + b_1\times\text{Duration} + b_2\times{\text{SitDown}} + b_3\times\text{Duration}\times {\text{SitDown}} + \epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, \sigma)
+$$
+
+#### a) {.unnumbered}
+
+Which plot corresponds to Model 1? Which corresponds to Model 2? Based on the data, which model do you think we should use? Why?
+
+#### b) {.unnumbered}
+
+Model summary output for both models is shown below.
+
+Model 1 Output:
+
+```{r}
+M1_Coasters_speed_duration_design <- lm(data=Coasters, Speed ~ Duration + Design)
+summary(M1_Coasters_speed_duration_design)
+```
+
+Model 2 Output:
+
+```{r}
+M2_Coasters_speed_duration_design_int <- lm(data=Coasters, Speed ~  Duration * Design)
+summary(M2_Coasters_speed_duration_design_int)
+```
+
+Based on the R output, which model appears to be more appropriate? Justify your answer by citing specific information contained in the R output.
+
+#### c) {.unnumbered}
+
+Write sentences interpreting the coefficients $b_0$, $b_1$, and $b_2$ in Model M1. Specifically give the numerical estimate of each coefficient in your interpretation. Also state what (if anything) we can conclude from the p-value associated with each coefficient.
+
+#### d) {.unnumbered}
+
+Write sentences interpreting the coefficients $b_0$, $b_1$, $b_2$, and $b_3$ in Model M2. Specifically give the numerical estimate of each coefficient in your interpretation. Also state what (if anything) we can conclude from the p-value associated with each coefficient.
+
+#### e) {.unnumbered}
+
+For each model, calculate the estimated top speed of the following coasters, both located at Six Flags Great America in Illinois:
+
+i)  Superman Ultimate Flight, a flying (non sit-down) coaster with duration 180 seconds.\
+ii) Viper, a sit-down coaster with duration 105 seconds
+
+Which model's predictions do you think are more accurate? Why?
+
+
+### 12) {.unnumbered}
+
+```{r}
+data(diamonds)
+```
+
+The boxplot shows the distribution of prices in a set of 53,940 diamonds, broken down by quality of cut (Fair, Good, Very Good, Premium, Ideal).
+
+```{r, fig.cap="Box plot of prices of diamonds by quality of cut"}
+ggplot(data=diamonds, aes(x=price, y=cut, fill=cut)) + geom_boxplot(outlier.size=0.01, outlier.alpha = 0.1) + 
+    stat_summary(fun=mean, geom="point", shape=4, color="red", size=3)
+```
+
+The histogram shows the number of diamonds of each cut, along with the carat size (larger diamonds larger carat measurements).
+
+The table shows the mean and standard deviation in price by quality of cut.
+
+```{r}
+DTab <- diamonds %>% group_by(cut) %>% summarize(N=n(), 
+                                         Avg_carat=mean(carat) |> round(2), 
+                                         Avg_price=mean(price) |> round(0)
+)
+kable(DTab, caption="Average carat size and price by quality of cut")
+```
+
+```{r, fig.cap="Histogram of carat size and quality of cut"}
+ggplot(data=diamonds, aes(x=carat, fill=cut)) + geom_histogram()
+```
+
+Finally, the scatterplot shows the relationship between price, carat size, and quality of cut.
+
+```{r, fig.cap="Scatterplot of carat, price, and cut"}
+ggplot(data=diamonds, aes(x=carat, y=price, color=cut)) + geom_point()
+```
+
+We fit a model for price, using only quality of cut as an explanatory variable. Model summary output is shown below. (L=Good, Q=Very Good, c=Premium, \^4=Ideal).
+
+Model 1:
+
+```{r}
+M_Diamond_price_cut <- lm(data=diamonds, price~cut)
+summary(M_Diamond_price_cut)
+```
+
+#### a)
+
+In Model 1, are the higher quality cuts, (L, Q, C, \^4) expected to be more or less expensive than fair cuts? Is this surprising? Why or why not?
+
+Now, we include carat size in the model.
+
+Model 2:
+
+```{r}
+M_Diamond_price_cut_carat <- lm(data=diamonds, price~cut + carat)
+summary(M_Diamond_price_cut_carat)
+```
+
+#### b)
+
+After accounting for carat size are the higher quality cuts, (L, Q, C, \^4) expected to be more or less expensive than fair cuts? How does this compare to your answer from (a) Why do you think this happens? What do we see in the graphs that explains this behavior?
+
+### 13) {.unnumbered}
+
+A correlation matrix and plot between different quantitative variables in the diamonds dataset is shown below.
+
+```{r}
+library(corrplot)
+Diamonds_Num <- select_if(diamonds, is.numeric)
+C <- cor(Diamonds_Num, use = "pairwise.complete.obs")
+round(C,2)
+corrplot(C)
+```
+
+Suppose we add the variable x (a measure of the diamond's width) to the model. State whether the following quantities would be expected to increase, decrease, or stay about the same.
+
+A. The standard error associated with the `carat` variable.\
+B. The t-statistic associated with the `carat` variable.\
+C. The p-value associated with the `carat` variable.\
+D. The $R^2$ value.\
+E. The predicted price for a diamond of Very Good cut, with 1 carat and x=5.
