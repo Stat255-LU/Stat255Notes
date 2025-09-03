@@ -110,11 +110,10 @@ We see that the flexibility of the model increases as we add higher-order terms.
 
 ### Predicting New Data
 
-Now, suppose we have a new dataset of 100, x-values, and want to predict $y$. The first 5 rows of the new dataset are shown
+Now, suppose we have a new dataset of 100, x-values, and want to predict $y$. The first 5 rows of the new dataset are: 
 
 ```{r, echo=FALSE}
-df$Prediction <- "?"
-kable(df %>% filter(new==TRUE) %>% dplyr::select(x, Prediction) %>%  head(5))
+head(Newdf$x) |> round(1)
 ```
 
 We fit polynomial models of degree 0 through 8 to the data. 
@@ -148,34 +147,11 @@ Newdf$Deg8Pred <- predict(Sim_M8, newdata=Newdf)
 In fact, since these data were simulated, we know the true value of $y$, so we can compare the predicted values to the true ones.
 
 ```{r}
-kable(Newdf %>% dplyr::select(-c(samp)) %>% round(2) %>% head(5))
+print(Newdf %>% dplyr::select(-c(samp)) %>% round(1) %>% head(5))
 ```
 
 
-### Training Data Error
-
-Now, let's examine the behavior if we had fit the models to the data, instead of the test data.
-
-```{r}
-RMSE0 <- sqrt(mean(Sim_M0$residuals^2))
-RMSE1 <- sqrt(mean(Sim_M1$residuals^2))
-RMSE2 <- sqrt(mean(Sim_M2$residuals^2))
-RMSE3 <- sqrt(mean(Sim_M3$residuals^2))
-RMSE4 <- sqrt(mean(Sim_M4$residuals^2))
-RMSE5 <- sqrt(mean(Sim_M5$residuals^2))
-RMSE6 <- sqrt(mean(Sim_M6$residuals^2))
-RMSE7 <- sqrt(mean(Sim_M7$residuals^2))
-RMSE8 <- sqrt(mean(Sim_M8$residuals^2))
-```
-
-
-```{r, echo=FALSE}
-Degree <- 0:8
-RMSE <- c(RMSE0, RMSE1, RMSE2, RMSE3, RMSE4, RMSE5, RMSE6, RMSE7, RMSE8) |> round(2)
-kable(data.frame(Degree, RMSE))
-```
-
-### Evaluating Predictions - RMSPE
+### Prediction Error
 
 For quantitative response variables, we can evaluate the predictions by calculating the average of the squared differences between the true and predicted values. Often, we look at the square root of this quantity. This is called the Root Mean Square Prediction Error (RMSPE).
 
@@ -202,7 +178,7 @@ RMSPE8 <- sqrt(mean((Newdf$y-Newdf$Deg8Pred)^2))
 ```{r, echo=FALSE}
 Degree <- 0:8
 RMSPE <- c(RMSPE0, RMSPE1, RMSPE2, RMSPE3, RMSPE4, RMSPE5, RMSPE6, RMSPE7, RMSPE8) |> round(2)
-kable(data.frame(Degree, RMSPE))
+kable(data.frame(Degree, RMSPE), caption="Prediction error on new data")
 ```
 
 The third degree model did the best at predicting the new data.
@@ -210,6 +186,26 @@ The third degree model did the best at predicting the new data.
 Notice that making the model more complex beyond third degree not only didn't help, but actually hurt prediction accuracy.
 
 
+Now, let's examine the behavior if we had fit the models to the data, instead of the test data.
+
+```{r}
+RMSE0 <- sqrt(mean(Sim_M0$residuals^2))
+RMSE1 <- sqrt(mean(Sim_M1$residuals^2))
+RMSE2 <- sqrt(mean(Sim_M2$residuals^2))
+RMSE3 <- sqrt(mean(Sim_M3$residuals^2))
+RMSE4 <- sqrt(mean(Sim_M4$residuals^2))
+RMSE5 <- sqrt(mean(Sim_M5$residuals^2))
+RMSE6 <- sqrt(mean(Sim_M6$residuals^2))
+RMSE7 <- sqrt(mean(Sim_M7$residuals^2))
+RMSE8 <- sqrt(mean(Sim_M8$residuals^2))
+```
+
+
+```{r, echo=FALSE}
+Degree <- 0:8
+RMSE <- c(RMSE0, RMSE1, RMSE2, RMSE3, RMSE4, RMSE5, RMSE6, RMSE7, RMSE8) |> round(2)
+kable(data.frame(Degree, RMSE), caption="Error on training data")
+```
 
 ```{r}
 Degree <- 0:8
@@ -223,7 +219,7 @@ Notice that the most complex model achieves the best performance on the training
 
 As the model complexity grows, the model will always fit the training data better, but that does not mean it will perform better on new data. It is possible to start modeling noise, rather than true signal in the training data, which hurts the accuracy of the model when applied to new data.
 
-### Graph of RMSPE
+
 
 ```{r, echo=FALSE}
 RMSPEdf <- RMSPEdf %>% pivot_longer(c(Test_Error, Train_Error), names_to="Error_Type", values_to = "Error")
@@ -236,15 +232,14 @@ ggplot(data=RMSPEdf, aes(x=Degree, y=Error, color=Error_Type)) +  geom_point() +
 -   Training error decreases as model becomes more complex\
 -   Testing error is lowest for the 3rd degree model, then starts to increase again
 
-### Best Model
 
 Of the models we looked at, the third degree model does the best. The estimates of its coefficients are shown below.
 
 ```{r}
-summary(Sim_M3)
+Sim_M3
 ```
 
-In fact, the data were generated from the model $y_i = 4.5x  - 1.4x^2 +  0.1x^3 + \epsilon_i$, where $\epsilon_i\sim\mathcal{N}(0,3)$
+In fact, the data were generated from the model $y_i = 0 + 4.5x  - 1.4x^2 +  0.1x^3 + \epsilon_i$, where $\epsilon_i\sim\mathcal{N}(0,3)$
 
 We compare the true expected response curve (in yellow) to the estimated curve in blue. We see that they are not identical, but close. 
 
@@ -261,7 +256,7 @@ PM3
 ```
 
 
-### Model Complexity, Training Error, and Test Error
+### Variance Bias Tradeoff
 
 As we make a model more complex (such as by adding more variables or higher order polynomial terms), it will always fit the training data better. However, at some point, it will begin to model random noise, rather than true signal in the training data, and thus will perform worse on new data. This is called **overfitting.**
 
@@ -277,7 +272,7 @@ text("RMSPE on Test Data", x=3.1, y=1.85, col="blue")
 
 \newpage
 
-### Variance-Bias Tradeoff
+
 
 Suppose $Y_i = f(x_i) + \epsilon_i$, where $\epsilon_i\sim\mathcal{N}(0,\sigma)$.
 
@@ -319,7 +314,9 @@ text("Bias^2", x=2.8, y=0.2, col="red")
 
 
 
-### Cross-Validation
+## Cross-Validation
+
+### Cross-Validation Illustration
 
 We've seen that training error is not an accurate approximation of test error. Instead, we'll approximate test error, by setting aside a set of the training data, and using it as if it were a test set. This process is called **cross-validation**, and the set we put aside is called the **validation set.**
 
@@ -332,25 +329,67 @@ We've seen that training error is not an accurate approximation of test error. I
 
 If computational resources permit, it is often beneficial to perform CV multiple times, using different sets of folds.
 
-### Cross-Validation Illustration
 
 ```{r echo=FALSE, out.width = '75%', fig.cap = "https://www.researchgate.net/figure/A-schematic-illustration-of-K-fold-cross-validation-for-K-5-Original-dataset-shown_fig5_311668395"}
 knitr::include_graphics("CV2.png", )
 ```
 
+### Ames Housing Data
 
-The `train` function in the `caret` R package performs cross validation automatically. We'll use it to compare five different models for house prices among a dataset of 1,000 houses sold in Ames, IA between 2006 and 2010.
+We'll use it to compare five different models for house prices among a dataset of 1,000 houses sold in Ames, IA between 2006 and 2010. We have data on 25 different explanatory variables. 
 
-We'll consider six different models of (mostly) increasing complexity.
+This is actually a subset of a larger dataset available in the `Ames Housing` R package. 
+
 
 ```{r}
 library(tidyverse)
-Train_Data <- read_csv("Ames_Train_Data.csv")  # Load data
+#library(AmesHousing)
+#data("ames_raw")
+Ames_Train <- read_csv("Ames_Train_Data.csv")  # Load data
 library(caret)   # load caret package
 ```
 
 ```{r}
+library(AmesHousing)
+data("ames_raw")
+ames_raw <- as.data.frame(ames_raw)
+ames_raw <- ames_raw %>% mutate_if(is.character,as.factor)
+Ames_Num <- select_if(ames_raw, is.numeric)
+ames_raw <- ames_raw[complete.cases(Ames_Num),]
+ames_raw <- ames_raw %>% mutate_if(is.character, addNA)
+ames_raw <- ames_raw %>% mutate_if(is.factor, addNA)
+ames_raw$PID <- as.numeric(ames_raw$PID)
+ames_raw <- ames_raw %>% select( `Overall Qual`, `Year Built`, `Mas Vnr Area`, `Central Air`, `Gr Liv Area`, `Lot Frontage`, `1st Flr SF`, `Bedroom AbvGr`, `TotRms AbvGrd`, everything())
+ames_raw <- ames_raw %>% select(-c(Utilities, `Exterior 2nd`, `Bldg Type`, `Bsmt Cond`, `BsmtFin Type 1`, `Low Qual Fin SF`, `Total Bsmt SF`, `BsmtFin Type 2`, `Bsmt Cond`, `Exterior 1st`, `House Style`))
+ames_raw <- ames_raw |> mutate_if(is.factor, droplevels)
 
+
+
+set.seed(10302021)
+samp <- sample(1:nrow(ames_raw))
+Ames_Train <- ames_raw[samp[1:1000],]
+Ames_Test <- ames_raw[samp[1001:2000],]
+Ames_Train <- Ames_Train |> mutate_if(is.factor, droplevels)
+Ames_Test <- Ames_Test |> mutate_if(is.factor, droplevels)
+```
+
+
+
+```{r}
+head(Ames_Train)
+```
+
+
+
+### Cross-Validation with `caret`
+
+The `train` function in the `caret` R package performs cross validation automatically. `number` represents the number of folds, and repeats is the number of repetitions.  
+
+
+We'll consider six different models of (mostly) increasing complexity.
+
+```{r, message=FALSE, warning=FALSE}
+library(caret)  
 # set cross-validation settings - use 10 repeats of 10-fold CV
 control <- trainControl(method="repeatedcv", number=10, repeats=10, savePredictions = "all" )
 
@@ -358,54 +397,57 @@ control <- trainControl(method="repeatedcv", number=10, repeats=10, savePredicti
 # set same random seed before each model to ensure same partitions are used in CV, making them comparable
 
 set.seed(10302023)   
-model1 <- train(data=Train_Data, 
+model1 <- train(data=Ames_Train, 
                 SalePrice ~ `Overall Qual` ,  
                 method="lm", trControl=control)
 
 set.seed(10302023) 
-model2 <- train(data=Train_Data, 
+model2 <- train(data=Ames_Train, 
                 SalePrice ~ `Overall Qual` +  `Gr Liv Area` + `Garage Area`,  
                 method="lm", trControl=control)
 
 set.seed(10302023) 
-model3 <- train(data=Train_Data, SalePrice ~ `Overall Qual` + 
+model3 <- train(data=Ames_Train, SalePrice ~ `Overall Qual` + 
                   `Gr Liv Area` + `Garage Area` + 
-                  `Neighborhood` + `Bldg Type`,  
+                  `Neighborhood` ,  
                 method="lm", trControl=control)
 
 set.seed(10302023) 
-model4 <- train(data=Train_Data, SalePrice ~ `Overall Qual` 
+model4 <- train(data=Ames_Train, SalePrice ~ `Overall Qual` 
                 + `Gr Liv Area`  + `Garage Area` 
-                + `Neighborhood` + `Bldg Type` + `Year Built`,  
+                + `Neighborhood` + `Year Built`,  
                 method="lm", trControl=control)
 
 set.seed(10302023) 
-model5 <- train(data=Train_Data, SalePrice ~ `Overall Qual` + 
+model5 <- train(data=Ames_Train, SalePrice ~ `Overall Qual` + 
                   `Gr Liv Area` + `Garage Area` + `Neighborhood` + 
-                  `Bldg Type` + `Year Built` + I(`Overall Qual`^2) + 
+                  `Year Built` + I(`Overall Qual`^2) + 
                   I(`Gr Liv Area`^2) + I(`Garage Area`^2) + 
                   I(`Year Built`^2),  method="lm", trControl=control)
 
 set.seed(10302023) 
-model6 <- train(data=Train_Data, SalePrice ~ .,  method="lm", trControl=control)  # include everything linearly
+model6 <- train(data=Ames_Train, SalePrice ~ .,  method="lm", trControl=control)  # include everything linearly
+```
 
+Cross validation root mean square error is shown below. This is an estimate of the root mean square prediction error we would see when making predictions on new data.   
 
+```{r}
 # Calculate RMSPE for each model
-RMSPE1 <- sqrt(mean((model1$pred$obs-model1$pred$pred)^2))
-RMSPE2 <- sqrt(mean((model2$pred$obs-model2$pred$pred)^2))
-RMSPE3 <- sqrt(mean((model3$pred$obs-model3$pred$pred)^2))
-RMSPE4 <- sqrt(mean((model4$pred$obs-model4$pred$pred)^2))
-RMSPE5 <- sqrt(mean((model5$pred$obs-model5$pred$pred)^2))
-RMSPE6 <- sqrt(mean((model6$pred$obs-model6$pred$pred)^2))
+CVRMSE1 <- sqrt(mean((model1$pred$obs-model1$pred$pred)^2))
+CVRMSE2 <- sqrt(mean((model2$pred$obs-model2$pred$pred)^2))
+CVRMSE3 <- sqrt(mean((model3$pred$obs-model3$pred$pred)^2))
+CVRMSE4 <- sqrt(mean((model4$pred$obs-model4$pred$pred)^2))
+CVRMSE5 <- sqrt(mean((model5$pred$obs-model5$pred$pred)^2))
+CVRMSE6 <- sqrt(mean((model6$pred$obs-model6$pred$pred)^2))
 ```
 
 ```{r}
-RMSPE1
-RMSPE2
-RMSPE3
-RMSPE4
-RMSPE5
-RMSPE6
+CVRMSE1
+CVRMSE2
+CVRMSE3
+CVRMSE4
+CVRMSE5
+CVRMSE6
 ```
 
 We see that in this case, model M4 performed the best on the hold-out data. We should use Model 4 to make predictions on new data over the other models seen here. It is likely that there are better models out there than model 4, likely with complexity somewhere between that of model 4 and models 5 and 6. Perhaps you can find one.
@@ -413,10 +455,23 @@ We see that in this case, model M4 performed the best on the hold-out data. We s
 Once we have our preferred model, we can read in our test data and make predictions, and display the first 10 predicted values.
 
 ```{r}
-TestData <- read_csv("Ames_Test_Data.csv")
-predictions <- predict(model4, newdata=TestData)  # substitute your best model
+Ames_Test <- read_csv("Ames_Test_Data.csv")
+```
+
+The first ten rows of the test data are shown below. 
+
+```{r}
+head(Ames_Test, 10)
+```
+
+We use Model 4 to predict the prices of the new houses. The first 1- predictions are shown below. 
+
+```{r}
+predictions <- predict(model4, newdata=Ames_Test)  # substitute your best model
 head(data.frame(predictions), 10)
 ```
+
+A quick look at the data reveals that the houses with the highest predicted prices, among these ten, were the newest ones, each built in 2007.
 
 We create a csv file containing the predictions, using the code below.
 
@@ -432,32 +487,18 @@ write.csv(predictions, file = "predictions.csv")
 
 We've thought about complexity in terms of the number of terms we include in a model, as well as whether we include quadratic terms and higher order terms and interactions. We can also think about model complexity in terms of the coefficients $b_1, \ldots, b_p$. Larger values of $b_1, \ldots, b_p$ are associated with more complex models. Smaller values of $b_1, \ldots, b_p$ are associated with less complex models. When $b_j=0$, this mean variable $j$ is not used in the model.
 
-To illustrate, we fit a regression model to the Ames housing dataset, which includes 71 possible explanatory variables, in addition to price.
+To illustrate, we fit a regression model to the Ames housing dataset, which includes 24 possible explanatory variables, in addition to price.
 
-```{r, echo=FALSE}
-library(AmesHousing)
-data("ames_raw")
-ames_raw <- as.data.frame(ames_raw)
-ames_raw <- ames_raw %>% mutate_if(is.character,as.factor)
-Ames_Num <- select_if(ames_raw, is.numeric)
-ames_raw <- ames_raw[complete.cases(Ames_Num),]
-ames_raw <- ames_raw %>% mutate_if(is.character, addNA)
-ames_raw <- ames_raw %>% mutate_if(is.factor, addNA)
-ames_raw$PID <- as.numeric(ames_raw$PID)
-ames_raw <- ames_raw %>% select( `Overall Qual`, `Year Built`, `Mas Vnr Area`, `Central Air`, `Gr Liv Area`, `Lot Frontage`, `1st Flr SF`, `Bedroom AbvGr`, `TotRms AbvGrd`, everything())
-ames_raw <- ames_raw %>% select(-c(Utilities, `Bldg Type`, `Exterior 2nd`, `Bsmt Cond`, `BsmtFin Type 1`, `Low Qual Fin SF`, `Total Bsmt SF`, `BsmtFin Type 2`, `Bsmt Cond`, `Exterior 1st`, `House Style`))
-```
+We'll begin by standardizing all variables in the dataset using the `scale` command. This involves subtracting the mean and dividing by the standard deviation. Standardizing ensures that all variables are on the same scale. If we didn't do this, then the weight given to each variable might differ depending on its units of measure.   
 
 ```{r}
-set.seed(10302021)
-samp <- sample(1:nrow(ames_raw), 1000)
-Train_Data <- ames_raw[samp,]
+Ames_Train_sc <- Ames_Train |>  mutate_if(is.numeric, scale) 
 ```
 
 The full list of coefficient estimates is shown below.
 
 ```{r}
-M_OLS <- lm(data=Train_Data, SalePrice ~ .)
+M_OLS <- lm(data=Ames_Train_sc, SalePrice ~ .)
 M_OLS$coefficients
 ```
 
@@ -509,7 +550,7 @@ $$
 -   As $\lambda$ increases, $|b_j|$'s shrink toward 0. The model becomes less complex, thus bias increases, but variance decreases.\
 -   We can use cross validation to determine the optimal value of $\lambda$
 
-```{r, echo=FALSE, fig.height=4, fig.width=10, cache=FALSE}
+```{r, echo=FALSE, fig.height=6, fig.width=10, cache=FALSE}
 x <- seq(from=1, to=3, by=0.01)
 Var <- x^2/10
 Bias <- 1/x
@@ -524,23 +565,20 @@ text("Bias^2", x=2.8, y=0.2, col="red")
 
 When using ridge regression, it is important to standardize each explanatory variable (i.e. subtract the mean and divide by the standard deviation). This ensures each variable has mean 0 and standard deviation 1. Without standardizing the optimal choice of $b_j$'s would depend on scale, with variables with larger absolute measurements having more influence. We'll standardize the response variable too. Though this is not strictly necessary, it doesn't hurt. We can always transform back if necessary.
 
-Standardization is performed using the `scale` command in R.
-
-```{r}
-Train_sc <- Train_Data %>% mutate_if(is.numeric, scale)
-```
 
 ### Ridge Regression on Housing Dataset
 
 We'll use the `caret` package to perform cross validation in order to find the optimal value of $\lambda$. To use ridge regression, we specify `method = "glmnet"`, and `tuneGrid=expand.grid(alpha=0, lambda=l_vals)`. Note the `alpha` value can be changed to use other types of penalized regression sometimes used in predictive modeling, such as lasso or elastic net.
 
+
+
 ```{r}
 control = trainControl("repeatedcv", number = 10, repeats=10)
-l_vals = 10^seq(-3, 3, length = 100)  # test values between 1/1000 and 1000
+l_vals = 10^seq(-4, 4, length = 1000)  # test values between 1/10000 and 10000
 
 set.seed(11162020)
 Housing_ridge <- train(SalePrice ~ .,
-                       data = Train_sc, method = "glmnet", trControl=control , 
+                       data = Ames_Train_sc, method = "glmnet", trControl=control , 
                       tuneGrid=expand.grid(alpha=0, lambda=l_vals))
 ```
 
@@ -554,36 +592,36 @@ We examine RMSPE on the withheld data as a function of $\lambda$.
 
 ```{r, echo=FALSE}
 lambda <- Housing_ridge$results$lambda
-RMSPE <- Housing_ridge$results$RMSE
-ggplot(data=data.frame(lambda, RMSPE), aes(x=lambda, y=RMSPE))+geom_line() + xlim(c(0,2)) + ylim(c(0.45, 0.5)) + ggtitle("Ridge Regression Cross Validation Results")
+CVRMSE <- Housing_ridge$results$RMSE
+ggplot(data=data.frame(lambda, CVRMSE), aes(x=lambda, y=CVRMSE))+geom_line() + xlim(c(0,2)) + ylim(c(0.4, 0.5)) + ggtitle("Ridge Regression Cross Validation Results") + theme_bw()
 ```
 
 Using $\lambda$ = `r Housing_ridge$bestTune$lambda`, obtain the following set of ridge regression coefficients. Notice how the ridge coefficients are typically closer to 0 than the ordinary least squares coefficients, indicating a less complex model.
 
 ```{r}
-M_OLS_sc <- lm(data=Train_sc, SalePrice ~ .)
-OLS_coef <- M_OLS_sc$coefficients
+M_OLS_sc <- lm(data=Ames_Train_sc, SalePrice ~ .)
+OLS_coef <- M_OLS_sc$coefficients 
 Ridge_coef <- coef(Housing_ridge$finalModel, Housing_ridge$bestTune$lambda)[,1]
-df <- data.frame(OLS_coef[2:10], Ridge_coef[2:10])
+df <- data.frame(OLS_coef[-1] |> round(3), Ridge_coef[-1] |> round(3))
 names(df) <-c("OLS Coeff", "Ridge Coeff")
-df
+kable(df[1:10,])
 ```
 
 Predictions and residuals for the first six houses in the traning data, using ordinary least squares and ridge regression, are shown below.
 
 ```{r}
 library(glmnet)
-MAT <- model.matrix(SalePrice~., data=Train_sc)
-ridge_mod <- glmnet(x=MAT, y=Train_sc$SalePrice, alpha = 0, lambda=Housing_ridge$bestTune$lambda )
+MAT <- model.matrix(SalePrice~., data=Ames_Train_sc)
+ridge_mod <- glmnet(x=MAT, y=Ames_Train_sc$SalePrice, alpha = 0, lambda=Housing_ridge$bestTune$lambda )
 ```
 
 ```{r}
-y <- Train_sc$SalePrice
+y <- Ames_Train_sc$SalePrice
 Pred_OLS <- predict(M_OLS_sc)
 Pred_Ridge <- predict(ridge_mod, newx=MAT)
 OLS_Resid <- y - Pred_OLS
 Ridge_Resid <- y - Pred_Ridge
-Resdf <- data.frame(y, Pred_OLS, Pred_Ridge, OLS_Resid, Ridge_Resid)
+Resdf <- data.frame(y, Pred_OLS, Pred_Ridge, OLS_Resid, Ridge_Resid) |> round(2)
 names(Resdf) <- c("y", "OLS Pred", "Ridge Pred", "OLS Resid", "Ridge Resid")
 kable(head(Resdf))
 ```
@@ -593,7 +631,7 @@ kable(head(Resdf))
 In OLS, we choose $b_0, b_1, \ldots, b_p$ are chosen in a way that minimizes
 
 $$
-\displaystyle\sum*{i=1}\^n (y_i -\hat{y}i)\^2 =\* \displaystyle\sum{i=1}\^n (y_i -(b_0 + b_1x{i1} + b_2x\_{i2} + \ldots + b_px\_{ip}))\^2
+\displaystyle\sum_{i=1}^n (y_i -\hat{y}_i)^2 =\displaystyle\sum_{i=1}^n (y_i -(b_0 + b_1x_{i1} + b_2x_{i2} + \ldots + b_px_{ip}))^2
 $$
 
 OLS: $\displaystyle\sum_{i=1}^n (y_i -\hat{y}_i)^2$
@@ -621,13 +659,13 @@ $$
 OLS: $\displaystyle\sum_{i=1}^n (y_i -\hat{y}_i)^2  + \lambda\displaystyle\sum_{j=1}^pb_j^2$
 
 ```{r}
-sum((y-Pred_OLS)^2) + 0.6136*sum(coef(M_OLS_sc)[-1]^2) 
+sum((y-Pred_OLS)^2) + Housing_ridge$bestTune$lambda*sum(coef(M_OLS_sc)[-1]^2) 
 ```
 
 Ridge: $\displaystyle\sum_{i=1}^n (y_i -\hat{y}_i)^2  + \lambda\displaystyle\sum_{j=1}^pb_j^2$
 
 ```{r}
-sum((y-Pred_Ridge)^2) + 0.6136*sum((Ridge_coef)[-1]^2)
+sum((y-Pred_Ridge)^2) + Housing_ridge$bestTune$lambda*sum((Ridge_coef)[-1]^2)
 ```
 
 We see that the ridge coefficients achieve a lower value of Q than the OLS ones.
@@ -642,7 +680,10 @@ $$
 \begin{aligned}
 & \displaystyle\sum_{i=1}^n (y_i -\hat{y}_i)^2  + \lambda\displaystyle\sum_{j=1}^p|b_j|\\ =  & \displaystyle\sum_{i=1}^n (y_i -(b_0 + b_1x_{i1} + b_2x_{i2} + \ldots + b_px_{ip}))^2 + \lambda\displaystyle\sum_{j=1}^p|b_j|
 \end{aligned}
-$$ Regression with an elastic net uses both ridge and lasso penalty terms and determines the values of $b_0, b_1, \ldots, b_p$ by minimizing
+$$ 
+
+
+Regression with an elastic net uses both ridge and lasso penalty terms and determines the values of $b_0, b_1, \ldots, b_p$ by minimizing
 
 $$
 \begin{aligned}
