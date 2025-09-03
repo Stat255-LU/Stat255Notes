@@ -1,14 +1,14 @@
 # Predictive Modeling
 
-### Learning Outcomes   {.unnumbered}
+### Learning Outcomes {.unnumbered}
 
 **Conceptual Learning Outcomes**\
-36. Explain how model complexity relates to training and test error, prediction variance and bias, and overfitting.\    
-37. Explain how to use cross-validation in model selection.\    
-38. Explain how complexity parameters associated with ridge regression, decision trees, and splines impact variance, bias, and likelihood of overfitting.\    
-39. Make predictions from a decision tree.\    
-40. Calculate classification accuracy, sensitivity, specificity, confusion matrix, and receiver operating characteristic curves.     
-41. Assess ethical considerations associated with predictive models in context.    
+36. Explain how model complexity relates to training and test error, prediction variance and bias, and overfitting. \
+37. Explain how to use cross-validation in model selection. \
+38. Explain how complexity parameters associated with ridge regression, decision trees, and splines impact variance, bias, and likelihood of overfitting. \
+39. Make predictions from a decision tree. \
+40. Calculate classification accuracy, sensitivity, specificity, confusion matrix, and receiver operating characteristic curves.\
+41. Assess ethical considerations associated with predictive models in context.
 
 **Computational Learning Outcomes**\
 K. Perform cross-validation to build and assess predictive models in R.\
@@ -47,9 +47,9 @@ We've seen that when we model for interpretation, we encounter a tradeoff betwee
 
 **Predictive Modeling Vocabulary**
 
--   The new data on which we make predictions is called **test data**.
+-   The new data on which we make predictions are called **test data**.
 
--   The data used to fit the model is called **training data**.
+-   The data used to fit the model are called **training data**.
 
 In the training data, we know the values of the explanatory and response variables. In the test data, we know only the values of the explanatory variables and want to predict the values of the response variable.
 
@@ -75,45 +75,38 @@ df$new <- rownames(df) %in% new
 ```
 
 ```{r, fig.height=5, fig.width=8, echo=FALSE}
-ggplot(data=Sampdf, aes(y=y, x=x))+geom_point() 
+ggplot(data=Sampdf, aes(y=y, x=x))+geom_point() + theme_bw()
 ```
 
 We'll fit several different polynomial models to the data, increasing in complexity from the most simple model we could possibly use, a constant model, to a very complex eighth degree polynomial model.
 
 **Constant Model to Sample Data**
 
-```{r, fig.height=5, fig.width=8, echo=FALSE}
-ggplot(data=Sampdf, aes(y=y, x=x))+geom_point() + geom_hline(yintercept = mean(Sampdf$y), color="blue")
-```
+```{r, fig.height=9, fig.width=9, echo=FALSE}
 
-**Linear Model to Sample Data**
+P0 <- ggplot(data=Sampdf, aes(y=y, x=x))+geom_point() + geom_hline(yintercept = mean(Sampdf$y), color="blue") + theme_bw() + ggtitle("Constant Model - Degree 0")
 
-```{r, fig.height=5, fig.width=8, echo=FALSE}
-ggplot(data=Sampdf, aes(y=y, x=x))+geom_point() + stat_smooth(method="lm", se=FALSE, color="blue") 
-```
+P1 <- ggplot(data=Sampdf, aes(y=y, x=x))+geom_point() + stat_smooth(method="lm", se=FALSE, color="blue")  + theme_bw() + ggtitle("Linear Model - Degree 1")
 
-**Quadratic Model**
+P2 <- ggplot(data=Sampdf, aes(y=y, x=x)) + geom_point() + stat_smooth(method="lm", se=TRUE, fill=NA, formula=y ~ poly(x, 2, raw=TRUE),colour="blue")  + theme_bw() + ggtitle("Quadratic Model - Degree 2")
 
-```{r, fig.height=5, fig.width=8, echo=FALSE}
-ggplot(data=Sampdf, aes(y=y, x=x)) + geom_point() + stat_smooth(method="lm", se=TRUE, fill=NA, formula=y ~ poly(x, 2, raw=TRUE),colour="blue")  
-```
+P3 <- ggplot(data=Sampdf, aes(y=y, x=x)) + geom_point() + stat_smooth(method="lm", se=TRUE, fill=NA, formula=y ~ poly(x, 3, raw=TRUE),colour="blue")  + theme_bw() + ggtitle("Cubic Model - Degree 3")
 
-**Degree 3, 4, and 8 Models**
+P4 <- ggplot(data=Sampdf, aes(y=y, x=x)) + geom_point() + stat_smooth(method="lm", se=TRUE, fill=NA, formula=y ~ poly(x, 4, raw=TRUE),colour="blue")  + theme_bw() + ggtitle("Quartic Model - Degree 4")
 
-We continue exploring higher order polynomial models. The blue curve represents a third degree (cubic) polynomial model, while the red curve represents a fourth degree (quartic) model and the green represents an eighth degree model.
+P5 <- ggplot(data=Sampdf, aes(y=y, x=x)) + geom_point() + stat_smooth(method="lm", se=TRUE, fill=NA, formula=y ~ poly(x, 5, raw=TRUE),colour="blue")  + theme_bw() + ggtitle("Degree 5 Polynomial Model")
 
-```{r, fig.height=5, fig.width=8, echo=FALSE}
-ggplot(data=Sampdf, aes(y=y, x=x)) + geom_point() + stat_smooth(method="lm", se=TRUE, fill=NA, formula=y ~ poly(x, 8, raw=TRUE),colour="darkgreen")  +  stat_smooth(method="lm", se=TRUE, fill=NA, formula=y ~ poly(x, 3, raw=TRUE),colour="blue") + stat_smooth(method="lm", se=TRUE, fill=NA, formula=y ~ poly(x, 4, raw=TRUE),colour="red") 
+P6 <- ggplot(data=Sampdf, aes(y=y, x=x)) + geom_point() + stat_smooth(method="lm", se=TRUE, fill=NA, formula=y ~ poly(x, 6, raw=TRUE),colour="blue")  + theme_bw() + ggtitle("Degree 6 Polynomial Model")
+
+P7 <- ggplot(data=Sampdf, aes(y=y, x=x)) + geom_point() + stat_smooth(method="lm", se=TRUE, fill=NA, formula=y ~ poly(x, 7, raw=TRUE),colour="blue")  + theme_bw() + ggtitle("Degree 7 Polynomial Model")
+
+P8 <- ggplot(data=Sampdf, aes(y=y, x=x)) + geom_point() + stat_smooth(method="lm", se=TRUE, fill=NA, formula=y ~ poly(x, 8, raw=TRUE),colour="blue")  + theme_bw() + ggtitle("Degree 8 Polynomial Model")
+
+grid.arrange(P0, P1, P2, P3, P4, P5, P6, P7, P8)
 ```
 
 We see that the flexibility of the model increases as we add higher-order terms. The curve is allowed to have more twists and bends. For higher-order, more complex models, individual points have more influence on the shape of the curve. This can be both a good and bad thing, as it allows the model to better bend and fit the data, but also makes it susceptible to the influence of outliers.
 
-```{r, echo=FALSE, fig.width=10, include=FALSE}
-p1 <- ggplot(data=Sampdf, aes(y=y, x=x))+geom_point() + geom_hline(yintercept = mean(Sampdf$y), color="blue") + ggtitle("Constant Model")
-p2 <- ggplot(data=Sampdf, aes(y=y, x=x))+geom_point() + stat_smooth(method="lm", se=TRUE, fill=NA, formula=y ~ poly(x, 3, raw=TRUE),colour="blue")+ ggtitle("Cubic Model")
-p3 <- ggplot(data=Sampdf, aes(y=y, x=x))+geom_point() + stat_smooth(method="lm", se=TRUE, fill=NA, formula=y ~ poly(x, 8, raw=TRUE),colour="blue") + ggtitle("Eighth Degree Model")
-grid.arrange(p1, p2, p3, ncol=3) 
-```
 
 ### Predicting New Data
 
@@ -124,7 +117,7 @@ df$Prediction <- "?"
 kable(df %>% filter(new==TRUE) %>% dplyr::select(x, Prediction) %>%  head(5))
 ```
 
-We fit polynomial models of degree 0 through 8 to the data. Note that although we did not show the 5th through 7th degree models in our illustrations, we'll still fit these to the data.
+We fit polynomial models of degree 0 through 8 to the data. 
 
 ```{r}
 Sim_M0 <-lm(data=Sampdf, y~1)
@@ -158,39 +151,6 @@ In fact, since these data were simulated, we know the true value of $y$, so we c
 kable(Newdf %>% dplyr::select(-c(samp)) %>% round(2) %>% head(5))
 ```
 
-### Evaluating Predictions - RMSPE
-
-For quantitative response variables, we can evaluate the predictions by calculating the average of the squared differences between the true and predicted values. Often, we look at the square root of this quantity. This is called the Root Mean Square Prediction Error (RMSPE).
-
-$$
-\text{RMSPE} = \sqrt{\displaystyle\sum_{i=1}^{n'}\frac{(y_i-\hat{y}_i)^2}{n'}},
-$$
-
-where $n'$ represents the number of new cases being predicted.
-
-We calcuate RMSPE for each of the 9 models.
-
-```{r}
-RMSPE0 <- sqrt(mean((Newdf$y-Newdf$Deg0Pred)^2))
-RMSPE1 <- sqrt(mean((Newdf$y-Newdf$Deg1Pred)^2))
-RMSPE2 <- sqrt(mean((Newdf$y-Newdf$Deg2Pred)^2))
-RMSPE3 <- sqrt(mean((Newdf$y-Newdf$Deg3Pred)^2))
-RMSPE4 <- sqrt(mean((Newdf$y-Newdf$Deg4Pred)^2))
-RMSPE5 <- sqrt(mean((Newdf$y-Newdf$Deg5Pred)^2))
-RMSPE6 <- sqrt(mean((Newdf$y-Newdf$Deg6Pred)^2))
-RMSPE7 <- sqrt(mean((Newdf$y-Newdf$Deg7Pred)^2))
-RMSPE8 <- sqrt(mean((Newdf$y-Newdf$Deg8Pred)^2))
-```
-
-```{r, echo=FALSE}
-Degree <- 0:8
-RMSPE <- c(RMSPE0, RMSPE1, RMSPE2, RMSPE3, RMSPE4, RMSPE5, RMSPE6, RMSPE7, RMSPE8)
-kable(data.frame(Degree, RMSPE))
-```
-
-The third degree model did the best at predicting the new data.
-
-Notice that making the model more complex beyond third degree not only didn't help, but actually hurt prediction accuracy.
 
 ### Training Data Error
 
@@ -208,11 +168,54 @@ RMSE7 <- sqrt(mean(Sim_M7$residuals^2))
 RMSE8 <- sqrt(mean(Sim_M8$residuals^2))
 ```
 
+
+```{r, echo=FALSE}
+Degree <- 0:8
+RMSE <- c(RMSE0, RMSE1, RMSE2, RMSE3, RMSE4, RMSE5, RMSE6, RMSE7, RMSE8) |> round(2)
+kable(data.frame(Degree, RMSE))
+```
+
+### Evaluating Predictions - RMSPE
+
+For quantitative response variables, we can evaluate the predictions by calculating the average of the squared differences between the true and predicted values. Often, we look at the square root of this quantity. This is called the Root Mean Square Prediction Error (RMSPE).
+
+$$
+\text{RMSPE} = \sqrt{\displaystyle\sum_{i=1}^{n'}\frac{(y_i-\hat{y}_i)^2}{n'}},
+$$
+
+where $n'$ represents the number of new cases being predicted.
+
+We calculate RMSPE for each of the 9 models.
+
+```{r}
+RMSPE0 <- sqrt(mean((Newdf$y-Newdf$Deg0Pred)^2)) 
+RMSPE1 <- sqrt(mean((Newdf$y-Newdf$Deg1Pred)^2))
+RMSPE2 <- sqrt(mean((Newdf$y-Newdf$Deg2Pred)^2))
+RMSPE3 <- sqrt(mean((Newdf$y-Newdf$Deg3Pred)^2))
+RMSPE4 <- sqrt(mean((Newdf$y-Newdf$Deg4Pred)^2))
+RMSPE5 <- sqrt(mean((Newdf$y-Newdf$Deg5Pred)^2))
+RMSPE6 <- sqrt(mean((Newdf$y-Newdf$Deg6Pred)^2))
+RMSPE7 <- sqrt(mean((Newdf$y-Newdf$Deg7Pred)^2))
+RMSPE8 <- sqrt(mean((Newdf$y-Newdf$Deg8Pred)^2))
+```
+
+```{r, echo=FALSE}
+Degree <- 0:8
+RMSPE <- c(RMSPE0, RMSPE1, RMSPE2, RMSPE3, RMSPE4, RMSPE5, RMSPE6, RMSPE7, RMSPE8) |> round(2)
+kable(data.frame(Degree, RMSPE))
+```
+
+The third degree model did the best at predicting the new data.
+
+Notice that making the model more complex beyond third degree not only didn't help, but actually hurt prediction accuracy.
+
+
+
 ```{r}
 Degree <- 0:8
-Test <- c(RMSPE0, RMSPE1, RMSPE2, RMSPE3, RMSPE4, RMSPE5, RMSPE6, RMSPE7, RMSPE8)
-Train <- c(RMSE0, RMSE1, RMSE2, RMSE3, RMSE4, RMSE5, RMSE6, RMSE7, RMSE8)
-RMSPEdf <- data.frame(Degree, Test, Train)
+Test_Error <- c(RMSPE0, RMSPE1, RMSPE2, RMSPE3, RMSPE4, RMSPE5, RMSPE6, RMSPE7, RMSPE8)|> round(2)
+Train_Error <- c(RMSE0, RMSE1, RMSE2, RMSE3, RMSE4, RMSE5, RMSE6, RMSE7, RMSE8) |> round(2)
+RMSPEdf <- data.frame(Degree, Train_Error, Test_Error)
 RMSPEdf
 ```
 
@@ -223,11 +226,11 @@ As the model complexity grows, the model will always fit the training data bette
 ### Graph of RMSPE
 
 ```{r, echo=FALSE}
-RMSPEdf <- RMSPEdf %>% pivot_longer(c(Test, Train), names_to="Error_Type", values_to = "Error")
+RMSPEdf <- RMSPEdf %>% pivot_longer(c(Test_Error, Train_Error), names_to="Error_Type", values_to = "Error")
 ```
 
 ```{r, echo=FALSE}
-ggplot(data=RMSPEdf, aes(x=Degree, y=Error, color=Error_Type)) +  geom_point() + ylim(c(2.7,4.5)) + geom_line()
+ggplot(data=RMSPEdf, aes(x=Degree, y=Error, color=Error_Type)) +  geom_point() + ylim(c(2.7,4.5)) + geom_line() + theme_bw()
 ```
 
 -   Training error decreases as model becomes more complex\
@@ -243,27 +246,24 @@ summary(Sim_M3)
 
 In fact, the data were generated from the model $y_i = 4.5x  - 1.4x^2 +  0.1x^3 + \epsilon_i$, where $\epsilon_i\sim\mathcal{N}(0,3)$
 
-We compare the true expected response curve (in yellow) to the estimates from the various polynomial models.
+We compare the true expected response curve (in yellow) to the estimated curve in blue. We see that they are not identical, but close. 
 
 ```{r, echo=FALSE}
-equation0 <- function(x){4.5*x -1.4*x^2 +0.1*x^3}
-equation1 <- function(x){coef(Sim_M1)[1] + coef(Sim_M1)[2]*x}
+equation1 <- function(x){4.5*x -1.4*x^2 +0.1*x^3}
 equation2 <- function(x){coef(Sim_M3)[1] + coef(Sim_M3)[2]*x+ coef(Sim_M3)[3]*x^2+ coef(Sim_M3)[4]*x^3}
-equation3  <- function(x){coef(Sim_M8)[1] + coef(Sim_M8)[2]*x+ coef(Sim_M8)[3]*x^2+ coef(Sim_M8)[4]*x^3 + coef(Sim_M8)[5]*x^4 + coef(Sim_M8)[6]*x^5 + coef(Sim_M8)[7]*x^6 + coef(Sim_M8)[8]*x^7 + coef(Sim_M8)[9]*x^8}
 ```
 
 ```{r, echo=FALSE, fig.height=4, fig.width=8}
 PM3 <- ggplot(data=df, aes(y=y, x=x, color=samp, size=samp)) + geom_point() + 
-        stat_function(fun=equation0,geom="line",color="yellow", size=3) +
-        stat_function(fun=equation1,geom="line",color="blue", size=3) +
-        stat_function(fun=equation2,geom="line",color="purple", size=3) +  
-        stat_function(fun=equation3,geom="line",color="green", size=3)   
+        stat_function(fun=equation1,geom="line",color="yellow", size=3) +
+        stat_function(fun=equation2,geom="line",color="blue", size=3) + theme_bw()
 PM3
 ```
 
-The 8th degree model performs worse than the cubic. The extra terms cause the model to be "too flexible," and it starts to model random fluctuations (noise) in the training data, that do not capture the true trend for the population. This is called **overfitting.**
 
 ### Model Complexity, Training Error, and Test Error
+
+As we make a model more complex (such as by adding more variables or higher order polynomial terms), it will always fit the training data better. However, at some point, it will begin to model random noise, rather than true signal in the training data, and thus will perform worse on new data. This is called **overfitting.**
 
 ```{r, echo=FALSE, fig.height=4.5, fig.width=10}
 x <- seq(from=1, to=4, by=0.01)
@@ -277,47 +277,34 @@ text("RMSPE on Test Data", x=3.1, y=1.85, col="blue")
 
 \newpage
 
-## Variance-Bias Tradeoff
-
-### What Contributes to Prediction Error?
+### Variance-Bias Tradeoff
 
 Suppose $Y_i = f(x_i) + \epsilon_i$, where $\epsilon_i\sim\mathcal{N}(0,\sigma)$.
 
 Let $\hat{f}$ represent the function of our explanatory variable(s) $x^*$ used to predict the value of response variable $y^*$. Thus $\hat{y}^* = f(x^*)$.
 
-There are three factors that contribute to the expected value of $\left(y^* - \hat{y}\right)^2 = \left(y^* - \hat{f}(x^*)\right)^2$.
+Prediction error is given by $\left(y^* - \hat{y}\right)^2 = \left(y^* - \hat{f}(x^*)\right)^2$.
 
-1.  **Bias associated with fitting model:** Model bias pertains to the difference between the true response function value $f(x^*)$, and the average value of $\hat{f}(x^*)$ that would be obtained in the long run over many samples.\
+There are three factors that contribute to prediction error RMSPE. 
 
-    -   for example, if the true response function $f$ is cubic, then using a constant, linear, or quadratic model would result in biased predictions for most values of $x^*$.
+1. **Model Bias** - Our model might not be complex enough to capture the true relationship between the response and explanatory variable(s). For example, if we use a linear or quadratic model when the true relationship is cubic, our predictions will suffer from model bias. Model bias pertains to the difference between the true response function value $f(x^*)$, and the expected value of $\hat{f}(x^*)$ that would be obtained in the long run over many samples.  
 
-2.  **Variance associated with fitting model:** Individual observations in the training data are subject to random sampling variability. The more flexible a model is, the more weight is put on each individual observation increasing the variance associated with the model.
+2. **Model Variance** - Individual observations in the training data are subject to random sampling variability. As model complexity increases, it becomes more flexible and prone to being pulled away from the true relationship because of outliers in the training data. 
 
-3.  **Variability associated with prediction:** Even if we knew the true value $f(x^*)$, which represents the expected value of $y^*$ given $x=x^*$, the actual value of $y^*$ will vary due to random noise (i.e. the $\epsilon_i\sim\mathcal{N}(0,\sigma)$ term).
+3. **Prediction Variance** - Even if two observations have the same value(s) for every explanatory variable, they will usually have different response values, due to random noise (i.e. the $\epsilon_i\sim\mathcal{N}(0,\sigma)$ term). So, even if we really knew the relationship between the response and explanatory variable(s), we would still not get every prediction exactly correct.   
 
-### Variance and Bias
+We cannot do anything about prediction variance, but we can try to control model bias and variance through our choice of model. If we could figure out how to minimize bias while also minimizing variance associated with a prediction, that would be great! Unfortunately, this is not possible. As model complexity (flexibility) increases, bias decreases. Variance, however, increases. Thus, we cannot make both of these smallest at the same time. Instead, the goal will be to find a model that is complex enough to keep bias fairly low, while not so complex that variability gets too big. 
 
-The third source of variability cannot be controlled or eliminated. The first two, however are things we can control. If we could figure out how to minimize bias while also minimizing variance associated with a prediction, that would be great! But...
 
-The constant model suffers from high bias. Since it does not include a linear, quadratic, or cubic term, it cannot accurately approximate the true regression function.
+In fact, it can be shown that:
 
-The Eighth degree model suffers from high variance. Although it could, in theory, approximate the true regression function correctly, it is too flexible, and is thrown off because of the influence of individual points with high degrees of variability.
+$\text{Expected RMSPE} = \text{Variance} + \text{Bias}^2$
 
-```{r, echo=FALSE, fig.height=3, fig.width=10}
-p1 <- ggplot(data=Sampdf, aes(y=y, x=x))+geom_point() + geom_hline(yintercept = mean(Sampdf$y), color="blue", size=2) + ggtitle("Constant Model") + 
-        stat_function(fun=equation0,geom="line",color="yellow", size=2)
-p2 <- ggplot(data=Sampdf, aes(y=y, x=x))+geom_point() + stat_smooth(method="lm", se=TRUE, fill=NA, formula=y ~ poly(x, 3, raw=TRUE),colour="blue", size=2)+ ggtitle("Cubic Model") + 
-        stat_function(fun=equation0,geom="line",color="yellow", size=2)
-p3 <- ggplot(data=Sampdf, aes(y=y, x=x))+geom_point() + stat_smooth(method="lm", se=TRUE, fill=NA, formula=y ~ poly(x, 8, raw=TRUE),colour="blue", size=2) + ggtitle("Eighth Degree Model") + 
-        stat_function(fun=equation0,geom="line",color="yellow", size=2)
-grid.arrange(p1, p2, p3, ncol=3) 
-```
+Our goal is the find the "sweetspot" where expected prediction error is minimized. 
 
-### Variance-Bias Tradeoff
 
-As model complexity (flexibility) increases, bias decreases. Variance, however, increases.
 
-```{r, echo=FALSE, fig.height=3.5, fig.width=10}
+```{r, echo=FALSE, fig.height=5, fig.width=10}
 x <- seq(from=1, to=3, by=0.01)
 Var <- x^2/10
 Bias <- 1/x
@@ -330,20 +317,7 @@ text("Variance", x=1.2, y=0.2, col="blue")
 text("Bias^2", x=2.8, y=0.2, col="red")
 ```
 
-In fact, it can be shown that:
 
-$\text{Expected RMSPE} = \text{Variance} + \text{Bias}^2$
-
-Our goal is the find the "sweetspot" where expected RMSPE is minimized.
-
-### Modeling for Prediction
-
--   When our purpose is purely prediction, we don't need to worry about keeping the model simple enough to interpret.\
--   Goal is to fit data well enough to make good predictions on new data without modeling random noise in the training (overfitting)\
--   A model that is too simple suffers from high bias\
--   A model that is too complex suffers from high variance and is prone to overfitting\
--   The right balance is different for every dataset\
--   Measuring error on data used to fit the model (training data) does not accurately predict how well model will be able to predict new data (test data)
 
 ### Cross-Validation
 
@@ -364,7 +338,6 @@ If computational resources permit, it is often beneficial to perform CV multiple
 knitr::include_graphics("CV2.png", )
 ```
 
-### CV in R
 
 The `train` function in the `caret` R package performs cross validation automatically. We'll use it to compare five different models for house prices among a dataset of 1,000 houses sold in Ames, IA between 2006 and 2010.
 
