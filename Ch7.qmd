@@ -386,7 +386,7 @@ head(Ames_Train)
 The `train` function in the `caret` R package performs cross validation automatically. `number` represents the number of folds, and repeats is the number of repetitions.  
 
 
-We'll consider six different models of (mostly) increasing complexity.
+We'll consider six different models of increasing complexity.
 
 ```{r, message=FALSE, warning=FALSE}
 library(caret)  
@@ -409,21 +409,23 @@ model2 <- train(data=Ames_Train,
 set.seed(10302023) 
 model3 <- train(data=Ames_Train, SalePrice ~ `Overall Qual` + 
                   `Gr Liv Area` + `Garage Area` + 
-                  `Neighborhood` ,  
+                  `Neighborhood` + `Year Built`,  
                 method="lm", trControl=control)
 
 set.seed(10302023) 
 model4 <- train(data=Ames_Train, SalePrice ~ `Overall Qual` 
                 + `Gr Liv Area`  + `Garage Area` 
-                + `Neighborhood` + `Year Built`,  
+                + `Neighborhood` + `Year Built` 
+                + `Lot Shape` + `Land Contour` + `Land Slope`,
                 method="lm", trControl=control)
 
 set.seed(10302023) 
-model5 <- train(data=Ames_Train, SalePrice ~ `Overall Qual` + 
-                  `Gr Liv Area` + `Garage Area` + `Neighborhood` + 
-                  `Year Built` + I(`Overall Qual`^2) + 
-                  I(`Gr Liv Area`^2) + I(`Garage Area`^2) + 
-                  I(`Year Built`^2),  method="lm", trControl=control)
+model5 <- train(data=Ames_Train, SalePrice ~ `Overall Qual` 
+                + `Gr Liv Area`  + `Garage Area` 
+                + `Neighborhood` + `Year Built` 
+                 + `Lot Shape` + `Land Contour` + `Land Slope` +
+                 + `Order` + `PID` ,
+                method="lm", trControl=control)
 
 set.seed(10302023) 
 model6 <- train(data=Ames_Train, SalePrice ~ .,  method="lm", trControl=control)  # include everything linearly
@@ -431,7 +433,9 @@ model6 <- train(data=Ames_Train, SalePrice ~ .,  method="lm", trControl=control)
 
 Cross validation root mean square error is shown below. This is an estimate of the root mean square prediction error we would see when making predictions on new data.   
 
+
 ```{r}
+
 # Calculate RMSPE for each model
 CVRMSE1 <- sqrt(mean((model1$pred$obs-model1$pred$pred)^2))
 CVRMSE2 <- sqrt(mean((model2$pred$obs-model2$pred$pred)^2))
@@ -439,9 +443,7 @@ CVRMSE3 <- sqrt(mean((model3$pred$obs-model3$pred$pred)^2))
 CVRMSE4 <- sqrt(mean((model4$pred$obs-model4$pred$pred)^2))
 CVRMSE5 <- sqrt(mean((model5$pred$obs-model5$pred$pred)^2))
 CVRMSE6 <- sqrt(mean((model6$pred$obs-model6$pred$pred)^2))
-```
 
-```{r}
 CVRMSE1
 CVRMSE2
 CVRMSE3
@@ -450,7 +452,7 @@ CVRMSE5
 CVRMSE6
 ```
 
-We see that in this case, model M4 performed the best on the hold-out data. We should use Model 4 to make predictions on new data over the other models seen here. It is likely that there are better models out there than model 4, likely with complexity somewhere between that of model 4 and models 5 and 6. Perhaps you can find one.
+We see that in this case, Model 3 performed the best on the validation data. Adding variables like lot shape, land contour, and land slope did not help with predictions, and actually cause the model to overfit and perform worse. We should use Model 3 to make predictions on new data over the other models seen here. It is likely that there are better models out there than Model 3, likely with complexity somewhere between that of Model 3 and Models 5-6. Perhaps you can find one.
 
 Once we have our preferred model, we can read in our test data and make predictions, and display the first 10 predicted values.
 
@@ -464,14 +466,14 @@ The first ten rows of the test data are shown below.
 head(Ames_Test, 10)
 ```
 
-We use Model 4 to predict the prices of the new houses. The first 1- predictions are shown below. 
+We use Model 3 to predict the prices of the new houses. The first 10 predictions are shown below. 
 
 ```{r}
-predictions <- predict(model4, newdata=Ames_Test)  # substitute your best model
+predictions <- predict(model3, newdata=Ames_Test)  # substitute your best model
 head(data.frame(predictions), 10)
 ```
 
-A quick look at the data reveals that the houses with the highest predicted prices, among these ten, were the newest ones, each built in 2007.
+A quick look at the data reveals that the one predicted to be most expensive was House #9, which was a newer house built in 2007, and was the biggest and one of the highest overall quality houses among the 10. 
 
 We create a csv file containing the predictions, using the code below.
 
@@ -706,7 +708,7 @@ We fit a decision tree to the Ames Housing dataset, using the `rpart` function i
 ```{r, fig.height=4.5, fig.width=11}
 library(rpart)
 library(rpart.plot)
-tree <- rpart(SalePrice~., data=Train_Data, cp=0.04)
+tree <- rpart(SalePrice ~., data=Ames_Train, cp=0.04)
 rpart.plot(tree, box.palette="RdBu", shadow.col="gray", nn=TRUE, cex=1, extra=1)
 ```
 
@@ -893,7 +895,7 @@ Splitting continues until nodes reach a certain predetermined minimal size, or u
 ```{r, echo=FALSE, fig.height=15, fig.width=11}
 library(rpart)
 library(rpart.plot)
-tree <- rpart(SalePrice~., data=Train_Data, cp=0.001)
+tree <- rpart(SalePrice~., data=Ames_Train, cp=0.001)
 rpart.plot(tree, box.palette="RdBu", shadow.col="gray", nn=TRUE, cex=1, extra=1)
 ```
 
@@ -909,12 +911,12 @@ The optimal depth of the tree, or minimal size for terminal nodes can be determi
 
 We'll use `caret` to determine the optimal value of the `cp` parameter. We use `method="rpart"` to grow decision trees.
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 cp_vals = 10^seq(-8, 1, length = 100) # test values between 1/10^8 and 1
-colnames(Train_sc) <- make.names(colnames(Train_sc))
+colnames(Ames_Train_sc) <- make.names(colnames(Ames_Train_sc))
 
 set.seed(11162020)
-Housing_Tree <- train(data=Train_sc, SalePrice ~ .,  method="rpart", trControl=control, 
+Housing_Tree <- train(data=Ames_Train_sc, SalePrice ~ .,  method="rpart", trControl=control, 
                      tuneGrid=expand.grid(cp=cp_vals))
 ```
 
@@ -935,12 +937,11 @@ ggplot(data=data.frame(cp, RMSPE), aes(x=cp, y=RMSPE))+geom_line() + xlim(c(0,0.
 
 ### Comparing OLS, Lasso, Ridge, and Tree
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 set.seed(11162020)
-Housing_OLS <- train(data=Train_sc, SalePrice ~ .,  method="lm", trControl=control)
+Housing_OLS <- train(data=Ames_Train_sc, SalePrice ~ .,  method="lm", trControl=control)
 set.seed(11162020)
-Housing_lasso <- train(SalePrice ~., data = Train_sc, method = "glmnet", trControl=control, 
-                      tuneGrid=expand.grid(alpha=1, lambda=l_vals))
+Housing_lasso <- train(SalePrice ~., data = Ames_Train_sc, method = "glmnet", trControl=control, tuneGrid=expand.grid(alpha=1, lambda=l_vals))
 ```
 
 RMSPE on the standardized version of the response variable is displayed below for ordinary least squares, ridge regression, lasso regression, and a decision tree.
@@ -952,7 +953,7 @@ min(Housing_lasso$results$RMSE)
 min(Housing_Tree$results$RMSE)
 ```
 
-In this situation, the tree outperforms OLS, but does not do as well as lasso or ridge. The best model will vary depending on the nature of the data. We can use cross-validation to determine which model is likely to perform best in prediction.
+In this situation, the tree outperforms OLS, but does not do as well as the ridge regression model. The best model will vary depending on the nature of the data. We can use cross-validation to determine which model is likely to perform best in prediction.
 
 ### Random Forest
 
@@ -1158,188 +1159,6 @@ The best choices for all of these will vary between datasets and can be assessed
 
 \newpage
 
-## Summary and Comparision
-
-In the previous sections, we've applied various predictive modeling techniques to predict house prices in Ames, IA. In each section, we've focused on an individual predictive technique (OLS, ridge/lasso regression, trees, splines), but in practice, we often test out these techniques together to find which is likely to perform best on a set of data. Here, we'll go through the steps to test out and evaluate these techniques on the Ames Housing dataset.
-
-There are no new statistical ideas presented in this section, just a synthesis of the preceding material. We leave out splines, since we did not discuss using splines in a multivariate setting, but we compare OLS, ridge and decision trees.
-
-We use a subset of variables for illustrative purposes.
-
-```{r, echo=FALSE}
-select <- dplyr::select
-data("ames_raw")
-ames_raw <- as.data.frame(ames_raw)
-ames_raw <- ames_raw %>% mutate_if(is.character, as.factor)
-ames_raw <- ames_raw %>% select( `Overall Qual`, `Year Built`,  `Central Air`, `Gr Liv Area`, `1st Flr SF`, `Bedroom AbvGr`, `TotRms AbvGrd`, `Lot Area`, `Lot Shape`, `Land Contour`, `Overall Cond`, `Exter Qual`, `Heating QC`, `Paved Drive`, `SalePrice`)
-ames_raw <- data.frame(ames_raw)
-```
-
-```{r}
-set.seed(10302021)
-samp <- sample(1:nrow(ames_raw), 1000)
-Ames_Houses <- ames_raw[samp,]
-```
-
-```{r}
-New_Houses <- ames_raw <- ames_raw[-samp,]
-New_Houses <- New_Houses[1:5, ]
-```
-
-We'll begin by doing some data preparation.
-
-We standardize all explanatory variables in the training and new data. We do not standardize the response variable, price, so we can interpret predicted values more easily.
-
-```{r}
-Houses_Combined <- rbind(Ames_Houses, New_Houses)
-Houses_sc <- Houses_Combined %>% mutate_if(is.numeric, scale)
-Houses_sc$SalePrice <- as.numeric(Houses_Combined$SalePrice)
-Houses_sc_Train <- Houses_sc[1:1000, ]
-Houses_sc_New <- Houses_sc[1001:1005, ]
-```
-
-The `Houses_sc_Train` dataset contains standardized values for the 1000 houses in the training data. The first six rows are shown below.
-
-```{r}
-head(Houses_sc_Train)
-```
-
-The `Houses_sc_New` displays standardized values for the new houses that we're trying to predict.
-
-```{r}
-head(Houses_sc_New)
-```
-
-Since the `glmnet` command requires training data to be entered as a matrix, we create versions of the datasets in matrix form.
-
-```{r}
-Houses_sc$SalePrice[is.na(Houses$SalePrice)] <- 0 #can't take NA's when fitting model matrix, doesn't matter since only need x-coeffs
-Houses_sc_Combined_MAT <- model.matrix(SalePrice~., data=rbind(Houses_sc))
-Houses_sc_Train_MAT <- Houses_sc_Combined_MAT[1:1000, ]
-Houses_sc_New_MAT <- Houses_sc_Combined_MAT[1001:1005, ]
-```
-
-### Modeling with OLS
-
-We first fit an ordinary least squares regression model to the data.
-
-```{r}
-Housing_OLS <- lm(data=Houses_sc_Train, SalePrice~ .)
-coef(Housing_OLS)
-```
-
-### Ridge Regression with Housing Data
-
-Now, we'll use ridge regression to predict insurance costs.
-
-We use cross validation to determine the optimal value of lamba. We perform 10 repeats of 10-fold cross-validation. We test 100 lambda-values ranging from $10^-5$ to $10^5$.
-
-```{r}
-control = trainControl("repeatedcv", number = 10, repeats=10)
-l_vals = 10^seq(-5, 5, length = 100)
-
-set.seed(2022)
-Housing_ridge <- train( SalePrice ~ ., data = Houses_sc_Train, method = "glmnet", trControl=control , tuneGrid=expand.grid(alpha=0, lambda=l_vals))
-```
-
-```{r}
-Housing_ridge$bestTune$lambda
-```
-
-We fit a model to the full training dataset using the optimal value of $lambda$ .
-
-```{r}
-ridge_mod <- glmnet(x=Houses_sc_Train_MAT, y=Houses_sc_Train$SalePrice, alpha = 0, lambda=Housing_ridge$bestTune$lambda )
-coef(ridge_mod)
-```
-
-The regression coefficients are displayed together with the OLS coefficients in a data.frame.
-
-```{r}
-Ridge_coef <- as.vector(ridge_mod$beta)[-1] #leave off intercept using [-1]
-OLS_coef <- coef(Housing_OLS)[-1]
-data.frame(OLS_coef, Ridge_coef)
-```
-
-### Decision Tree
-
-Now, we'll predict house prices using using a decision tree.
-
-First, we grow and display a small decision tree, by setting the `cp` parameter equal to 0.05.
-
-```{r}
-tree <- rpart(SalePrice~., data=Houses_sc_Train, cp=0.05)
-rpart.plot(tree, box.palette="RdBu", shadow.col="gray", nn=TRUE, cex=1, extra=1)
-```
-
-Now we use cross-validation to determine the optimal value of the `cp` parameter. We use 10 repeats of 10-fold cross-validation. We test 1000 cp-values ranging from $10^-5$ to $10^5$.
-
-```{r}
-cp_vals = 10^seq(-5, 5, length = 100)
-colnames(Houses_sc_Train) <- make.names(colnames(Houses_sc_Train))
-
-set.seed(2022)
-Housing_Tree <- train(data=Houses_sc_Train, SalePrice ~ .,  method="rpart", trControl=control,tuneGrid=expand.grid(cp=cp_vals))
-Housing_Tree$bestTune
-```
-
-We grow a full tree using the optimal `cp` value.
-
-```{r}
-Housing_Best_Tree <- rpart(SalePrice~., data=Houses_sc_Train, cp=Housing_Tree$bestTune)
-```
-
-### Comparing Performance
-
-We use cross-validation to compare the performance of the linear model, ridge regression model, and decision tree.
-
-```{r}
-set.seed(2022)
-Housing_OLS <- train(data=Houses_sc_Train, SalePrice ~ .,  method="lm", trControl=control)
-```
-
-```{r}
-min(Housing_OLS$results$RMSE)
-```
-
-```{r}
-min(Housing_ridge$results$RMSE)
-```
-
-```{r}
-min(Housing_Tree$results$RMSE)
-```
-
-The tree predictions give slightly lower RMSPE.
-
-### Predictions on New Data
-
-We now predict the sale price of the five new houses using each technique.
-
-Ordinary Least-Squares model:
-
-```{r}
-OLS_pred <- predict(Housing_OLS, newdata=Houses_sc_New)
-head(OLS_pred)
-```
-
-Ridge regression model:
-
-We use the `Customers_sc_New_MAT` dataset, since the `glmnet` package requires inputs in matrix form.
-
-```{r}
-ridge_pred <- predict(ridge_mod, newx=Houses_sc_New_MAT)
-head(ridge_pred)
-```
-
-Decision tree:
-
-```{r}
-tree_pred <- predict(Housing_Best_Tree, newdata=Houses_sc_New)
-head(tree_pred)
-```
-
-\newpage
 
 ## Assessing a Classifier's Performance
 
