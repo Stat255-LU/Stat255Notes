@@ -1752,7 +1752,7 @@ Do the data provide evidence of a quadratic relationship between a neighborhood'
 
 Calculate the approximate distance from employment centers where property values are at their highest (hint: recall that a quadratic function of the form $f(x) = ax^2 + bx + c$ attains its vertex at $x=-b/(2a)$).
 
-### 9)
+### 9)  {.unnumbered}
 
 The plots below show four different scenarios of a model involving response variable $y$, a quantitative explanatory variable $x_1$ and a categorical explanatory variable $x_2$ with categories $A$ and $B$.
 
