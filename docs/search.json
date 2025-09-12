@@ -14,7 +14,7 @@
     "href": "Ch1.html",
     "title": "1  Visualizing and Summarizing Data",
     "section": "",
-    "text": "Learning Outcomes\nConceptual Learning Outcomes\n1. Distinguish between categorical and quantitative variables.\n2. Interpret data graphics (histogram, density plot, box plot, violin plot, scatterplot, bar graph).\n3. Interpret summary statistics (mean, median, standard deviation, and IQR).\nComputational Learning Outcomes\nA. Calculate summary statistics R.\nB. Create data visualizations in R.\nC. Create reproducible reports in R.*\nD. Use GitHub for version control.*",
+    "text": "Learning Outcomes\nConceptual Learning Outcomes\n1. Interpret and draw connections between data graphics (histogram, density plot, box plot, violin plot, scatterplot, bar graph) and summary statistics (mean, median, standard deviation, and IQR).\nComputational Learning Outcomes\nA. Calculate summary statistics R.\nB. Create data visualizations in R.\nC. Create reproducible reports in R.*\nD. Use GitHub for version control.*",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Visualizing and Summarizing Data</span>"
     ]
@@ -64,7 +64,7 @@
     "href": "Ch2.html",
     "title": "2  Introduction to Statistical Models",
     "section": "",
-    "text": "Learning Outcomes\nConceptual Learning Outcomes\n4. Use regression models to calculate estimates and predictions.\n5. Interpret coefficient estimates in regression models in context.\n6. Calculate and interpret regression sums of squares SSR, SSM, and SST, and coefficient of determination,\\(R^2\\).\n7. Calculate and interpret F-statistics for comparing models.\n8. Draw conclusions about model estimates, \\(R^2\\), and F-statistics using graphical representations of data.\n9. Explain the least squares estimation process.\nComputational Learning Outcomes\nE. Fit statistical models in R and interpret results.",
+    "text": "Learning Outcomes\nConceptual Learning Outcomes\n2. Use regression models to calculate estimates and predictions.\n3. Interpret coefficient estimates in regression models in context.\n4. Calculate and interpret regression sums of squares SSR, SSM, and SST, and coefficient of determination, \\(R^2\\), and F-statistics.  5. Draw conclusions about model estimates, \\(R^2\\), and F-statistics using graphical representations of data.\n6. Explain the least squares estimation process.\nComputational Learning Outcomes\nE. Fit statistical models in R and interpret results.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introduction to Statistical Models</span>"
     ]
@@ -124,7 +124,7 @@
     "href": "Ch3.html",
     "title": "3  Simulation-Based Inference",
     "section": "",
-    "text": "Learning Outcomes\nConceptual Learning Outcomes\n10. Interpret and distinguish between sample standard deviation and standard error of a sampling distribution for a statistic.\n11. Explain how to use bootstrapping to calculate confidence intervals.\n12. Interpret confidence intervals in context.\n13. Describe the steps of a permutation-based hypothesis test in context (including writing hypotheses, identifying a test statistic, and explaining how to use permutation to obtain a p-value.)  \n14. Interpret p-values in context. \n15. Compare and contrast the conclusions we can draw from confidence intervals and hypothesis tests.\nComputational Learning Outcomes\nF. Perform bootstrapping in R.\nG. Perform permutation-based hypothesis tests in R.",
+    "text": "Learning Outcomes\nConceptual Learning Outcomes\n7. Interpret and distinguish between sample standard deviation and standard error of a sampling distribution for a statistic.\n8. Explain how to use bootstrapping to calculate confidence intervals.\n9. Interpret confidence intervals in context.\n10. Describe the steps of a permutation-based hypothesis test in context (including writing hypotheses, identifying a test statistic, and explaining how to use permutation to obtain a p-value.)  \n11. Interpret p-values and draw conclusions from hypothesis tests in context. \n12. Compare and contrast the conclusions we can draw from confidence intervals and hypothesis tests.\nComputational Learning Outcomes\nF. Perform bootstrapping in R.\nG. Perform permutation-based hypothesis tests in R.",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Simulation-Based Inference</span>"
     ]
@@ -184,7 +184,7 @@
     "href": "Ch4.html",
     "title": "4  Inference from Models",
     "section": "",
-    "text": "Learning Outcomes\nConceptual Learning Outcomes\n16. State the assumptions of the ordinary regression model in context. \n17. State the hypotheses associated with each p-value in the lm summary table and explain what we should conclude from each test. \n18. Interpret quantities in the R lm summary output including standard errors, residual standard error, \\(R^2\\), and the F-statistic.\n19. Use standard error formulas to calculate quantities in R model summary output (including estimates, standard errors, t-statistics, \\(R^2\\), and F-statistics), as well as output for associated tests and confidence intervals.\n20. Distinguish between confidence intervals for model parameters, confidence for expected response, and prediction intervals, and identify the sources of variability contributing to each.\n21. Explain the regression effect in context. \n22. Identify situations where multiple testing error is a concern and explain how to correct for such errors.\n23. Identify situations where a statistically discernible result might not be practically important, or when a large p-value might still be meaningful.\nComputational Learning Outcomes\nH. Perform hypothesis tests and calculate confidence and prediction intervals based on models using R.",
+    "text": "Learning Outcomes\nConceptual Learning Outcomes\n13. Use standard error formulas to calculate quantities in R model summary output (including estimates, standard errors, t-statistics, \\(R^2\\), and F-statistics), as well as output for associated tests and confidence intervals.\n14. State the hypotheses associated with each p-value in the lm summary table and explain what we should conclude from each test. \n15. Interpret quantities in the R lm summary output including standard errors, residual standard error, \\(R^2\\), and the F-statistic.\n16. Interpret confidence intervals for expected response and prediction intervals and explain the sources of variability that contribute to each.\n17. Explain the regression effect in context.  \n18. Think beyond the p-value and draw appropriate conclusions (i) in situations involving multiple testing; (ii) when statistically discernible results might not be practically important, or (iii) when a large p-value might still be meaningful.\nComputational Learning Outcomes\nH. Perform hypothesis tests and calculate confidence and prediction intervals based on models using R.",
     "crumbs": [
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Inference from Models</span>"
     ]
@@ -264,7 +264,7 @@
     "href": "Ch5.html",
     "title": "5  Building and Assessing Models",
     "section": "",
-    "text": "Learning Outcomes\nConceptual Learning Outcomes\n24. State the assumptions of the normal error regression model and check their validity using residual plots, qq plots, and other information.\n25. Interpret regression coefficients in models involving log transformations.\n26. Calculate predicted values for models involving log transformations.\n27. Interpret regression coefficient estimates on models with interaction terms.\n28. Calculate predicted values for models with interaction terms.\n29. Draw conclusions about models involving polynomial terms and interactions based on graphical representations of data.\n30. Identify instances of confounding and Simpson’s paradox and draw conclusions in these situations.\n31. Explain how multicollinearity impacts predictions and confidence/prediction intervals.\n32. Determine whether it is appropriate to add terms to a model using information such as \\(R^2\\), F-statistic, residual plots, correlation, and other visual representations.\nComputational Learning Outcomes\nI. Build regression models involving nonlinear terms and interactions in R.",
+    "text": "Learning Outcomes\nConceptual Learning Outcomes\n19. State the assumptions of the normal error regression model and check their validity using residual plots, qq plots, and other information.\n20. Interpret regression coefficients and calculate predictions using models that involve log transformations.\n21. Interpret regression coefficient estimates and calculate predictions using models with interaction.\n22. Draw conclusions about models involving polynomial terms and interactions based on graphical representations of data.\n23. Determine whether it is appropriate to add terms to a model considering factors such as confounding variables, Simpson’s paradox, multicollinearity, \\(R^2\\), F-statistic, and residual plots.\nComputational Learning Outcomes\nI. Build regression models involving nonlinear terms and interactions in R.",
     "crumbs": [
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Building and Assessing Models</span>"
     ]
@@ -334,7 +334,7 @@
     "href": "Ch6.html",
     "title": "6  Logistic Regression",
     "section": "",
-    "text": "Learning Outcomes\nConceptual Learning Outcomes\n33. Identify situations where it is appropriate to use a logistic regression model.\n34. Calculate probabilities and odds using logistic regression.\n35. Interpret logistic regression coefficients in context.\n36. Draw conclusions about logistic regression models based on graphical representations of data.\nComputational Learning Outcomes\nJ. Perform logistic regression in R.",
+    "text": "Learning Outcomes\nConceptual Learning Outcomes\n24. Calculate probabilities and odds using logistic regression.\n25. Interpret logistic regression coefficients in context.\nComputational Learning Outcomes\nJ. Perform logistic regression in R.",
     "crumbs": [
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>Logistic Regression</span>"
     ]
@@ -374,7 +374,7 @@
     "href": "Ch7.html",
     "title": "7  Predictive Modeling",
     "section": "",
-    "text": "Learning Outcomes\nConceptual Learning Outcomes\n36. Explain how model complexity relates to training and test error, prediction variance and bias, and overfitting. \n37. Explain how to use cross-validation in model selection. \n38. Explain how complexity parameters associated with ridge regression, decision trees, and splines impact variance, bias, and likelihood of overfitting. \n39. Make predictions from a decision tree. \n40. Calculate classification accuracy, sensitivity, specificity, confusion matrix, and receiver operating characteristic curves.\n41. Assess ethical considerations associated with predictive models in context.\nComputational Learning Outcomes\nK. Perform cross-validation to build and assess predictive models in R.\nL. Make predictions on new data using predictive models in R.",
+    "text": "Learning Outcomes\nConceptual Learning Outcomes\n26. Explain how model complexity relates to training and test error, prediction variance and bias, and overfitting. \n27. Explain how to use cross-validation in model selection. \n28. Explain how complexity parameters associated with ridge regression, decision trees, and splines impact variance, bias, and likelihood of overfitting. \n29. Make predictions from a decision tree. \n30. Calculate classification accuracy, sensitivity, specificity, confusion matrix, and receiver operating characteristic curves.\n31. Assess ethical considerations associated with predictive models in context.\nComputational Learning Outcomes\nK. Perform cross-validation to build and assess predictive models in R.\nL. Make predictions on new data using predictive models in R.",
     "crumbs": [
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>Predictive Modeling</span>"
     ]

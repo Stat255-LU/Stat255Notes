@@ -3,12 +3,12 @@
 ### Learning Outcomes {.unnumbered}
 
 **Conceptual Learning Outcomes**\
-10. Interpret and distinguish between sample standard deviation and standard error of a sampling distribution for a statistic.\
-11. Explain how to use bootstrapping to calculate confidence intervals.\
-12. Interpret confidence intervals in context.\
-13. Describe the steps of a permutation-based hypothesis test in context (including writing hypotheses, identifying a test statistic, and explaining how to use permutation to obtain a p-value.) \     
-14. Interpret p-values in context. \
-15. Compare and contrast the conclusions we can draw from confidence intervals and hypothesis tests.\
+7. Interpret and distinguish between sample standard deviation and standard error of a sampling distribution for a statistic.\
+8. Explain how to use bootstrapping to calculate confidence intervals.\
+9. Interpret confidence intervals in context.\
+10. Describe the steps of a permutation-based hypothesis test in context (including writing hypotheses, identifying a test statistic, and explaining how to use permutation to obtain a p-value.)  \
+11. Interpret p-values and draw conclusions from hypothesis tests in context. \
+12. Compare and contrast the conclusions we can draw from confidence intervals and hypothesis tests.\
 
 **Computational Learning Outcomes**\
 F. Perform bootstrapping in R.\
@@ -1280,14 +1280,13 @@ It is important to note that we are **not** saying that we are 95% confident tha
 
 ### Bootstrapping Cautions
 
-While bootstrapping is a popular and robust procedure for calculating confidence intervals, it does have cautions and limitations. We should be sure to use the bootstrap procedure appropriate for our context. 
+While bootstrapping is a popular and robust procedure for calculating confidence intervals, it does have cautions and limitations. We should be sure to use the bootstrap procedure appropriate for our context.
 
+1.  A standard-error bootstrap interval is appropriate when the sampling distribution for our statistic is roughly symmetric and bell-shaped. When this is not true, a percentile bootstrap interval can be used as long as there are no gaps or breaks in the bootstrap distribution.
 
-1. A standard-error bootstrap interval is appropriate when the sampling distribution for our statistic is roughly symmetric and bell-shaped. When this is not true, a percentile bootstrap interval can be used as long as there are no gaps or breaks in the bootstrap distribution. 
+2.  In situations where there are gaps and breaks in the bootstrap distribution, then the bootstrap distribution may not be a reasonable approximation of the sampling distribution we are interested in.
 
-2. In situations where there are gaps and breaks in the bootstrap distribution, then the bootstrap distribution may not be a reasonable approximation of the sampling distribution we are interested in.
-
-3. When working with a categorical variable, it is a good idea to resample in each group, with sizes matching those in the original samples. For example, in the Florida lakes study, rather than resampling 53 lakes, we would ideally resample 33 Northern lakes and 20 Southern lakes, matching the numbers from the original study.  The `mosaic` package, which we used to do bootstrapping does not allow this option, unfortunately. In this case, the sample sizes are similar enough that this issue will not have a big impact on our results. If sample sizes within groups were small or very different, we may want to write our own code to do this. 
+3.  When working with a categorical variable, it is a good idea to resample in each group, with sizes matching those in the original samples. For example, in the Florida lakes study, rather than resampling 53 lakes, we would ideally resample 33 Northern lakes and 20 Southern lakes, matching the numbers from the original study. The `mosaic` package, which we used to do bootstrapping does not allow this option, unfortunately. In this case, the sample sizes are similar enough that this issue will not have a big impact on our results. If sample sizes within groups were small or very different, we may want to write our own code to do this.
 
 \newpage
 
@@ -1864,7 +1863,7 @@ kable(Lakes_merc_cond_Tab)
 
 We see that mean mercury level is highest in the deepest lakes, and lowest in the shallowest lakes. We'll again want to investigate whether the differences we see could be evidence of a relationship between depth and mercury level, or whether differences like these could have plausibly occurred even if there was no relationship.
 
-We fit a model to the data. The `deep` category is used as a baseline, and the other two are included as terms in the model. 
+We fit a model to the data. The `deep` category is used as a baseline, and the other two are included as terms in the model.
 
 The model equation is:
 
@@ -1872,7 +1871,7 @@ $$
 \widehat{\text{Mercury}} = b_0 + b_1\times\text{DepthMedium} + b_2\times\text{DepthShallow}
 $$
 
-The coefficient estimates are:  
+The coefficient estimates are:
 
 ```{r}
 M_Lakes_merc_depth <- lm(data=FloridaLakes, Mercury~Depth)
@@ -1881,14 +1880,13 @@ M_Lakes_merc_depth
 
 **Interpretations**
 
-$b_0$ - the average mercury content in deep lakes in Florida is 0.604 ppm.   
+$b_0$ - the average mercury content in deep lakes in Florida is 0.604 ppm.
 
-$b_1$ - the average mercury content in medium lakes in Florida is 0.013 ppm less than in deep lakes.   
+$b_1$ - the average mercury content in medium lakes in Florida is 0.013 ppm less than in deep lakes.
 
-$b_2$ - the average mercury content in shallow lakes in Florida is 0.18 ppm less than in deep lakes.  
+$b_2$ - the average mercury content in shallow lakes in Florida is 0.18 ppm less than in deep lakes.
 
-
-We want to test whether there is a relationship between depth and mercury level. If there is, then we would expect the average mercury level to differ between at least some shallow, medium, and deep lakes. 
+We want to test whether there is a relationship between depth and mercury level. If there is, then we would expect the average mercury level to differ between at least some shallow, medium, and deep lakes.
 
 The hypotheses are
 

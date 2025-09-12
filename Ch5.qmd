@@ -3,15 +3,11 @@
 ### Learning Outcomes {.unnumbered}
 
 **Conceptual Learning Outcomes**\
-24. State the assumptions of the normal error regression model and check their validity using residual plots, qq plots, and other information.\
-25. Interpret regression coefficients in models involving log transformations.\
-26. Calculate predicted values for models involving log transformations.\
-27. Interpret regression coefficient estimates on models with interaction terms.\
-28. Calculate predicted values for models with interaction terms.\
-29. Draw conclusions about models involving polynomial terms and interactions based on graphical representations of data.\
-30. Identify instances of confounding and Simpson's paradox and draw conclusions in these situations.\
-31. Explain how multicollinearity impacts predictions and confidence/prediction intervals.\
-32. Determine whether it is appropriate to add terms to a model using information such as $R^2$, F-statistic, residual plots, correlation, and other visual representations.
+19. State the assumptions of the normal error regression model and check their validity using residual plots, qq plots, and other information.\
+20. Interpret regression coefficients and calculate predictions using models that involve log transformations.\
+21. Interpret regression coefficient estimates and calculate predictions using models with interaction. \
+22. Draw conclusions about models involving polynomial terms and interactions based on graphical representations of data.\
+23. Determine whether it is appropriate to add terms to a model considering factors such as confounding variables, Simpson's paradox, multicollinearity, $R^2$, F-statistic, and residual plots. 
 
 **Computational Learning Outcomes**\
 I. Build regression models involving nonlinear terms and interactions in R.
@@ -191,7 +187,7 @@ When the independence assumption is violated we need to use more advanced kinds 
 #### Summary of Checks for Model Assumptions {.unnumbered}
 
 | Model assumption | How to detect violation |
-|------------------------------------|------------------------------------|
+|----|----|
 | Linearity | Curvature in residual plot |
 | Constant Variance | Funnel shape in residual plot |
 | Normality | Skewness in histogram of residuals or departure from diag. line in QQ plot |
@@ -304,7 +300,7 @@ In situations where some model assumptions appear to be violated, we might be ok
 The table below provides guidance on the potential impact of model assumption violation on predicted values, confidence intervals, and prediction intervals.
 
 | Model assumption Violated | Predicted Values | Confidence Intervals | Prediction Intervals |
-|------------------|------------------|------------------|------------------|
+|----|----|----|----|
 | Linearity | Unreliable | Unreliable | Unreliable |
 | Constant Variance | Reliable | Somewhat unreliable - Some too wide, others too narrow | Very unreliable - Some too wide, others too narrow |
 | Normality | Reliable | Possibly unreliable - might be symmetric when they shouldn't be. Might be okay when skewness isn't bad and sample size is large. | Very unreliable - will be symmetric when they shouldn't be |
@@ -1756,11 +1752,9 @@ Do the data provide evidence of a quadratic relationship between a neighborhood'
 
 Calculate the approximate distance from employment centers where property values are at their highest (hint: recall that a quadratic function of the form $f(x) = ax^2 + bx + c$ attains its vertex at $x=-b/(2a)$).
 
-
-
 ### 9)
 
-The plots below show four different scenarios of a model involving response variable $y$, a quantitative explanatory variable $x_1$ and a categorical explanatory variable $x_2$ with categories $A$ and $B$. 
+The plots below show four different scenarios of a model involving response variable $y$, a quantitative explanatory variable $x_1$ and a categorical explanatory variable $x_2$ with categories $A$ and $B$.
 
 The model is
 
@@ -1768,7 +1762,7 @@ $$
 y = b_0 + b_1\times x_1 + b_2\times x_2B + b_3\times x_1 \times x_2B + \epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, \sigma)
 $$
 
-For each of the four plots, state whether $b_0$, $b_1$, $b_2$, and $b_3$ are positive, negative, or zero. 
+For each of the four plots, state whether $b_0$, $b_1$, $b_2$, and $b_3$ are positive, negative, or zero.
 
 ```{r, fig.height=8, fig.width=8, echo=FALSE}
 x1 <- runif(50, 0, 10)
@@ -1804,9 +1798,6 @@ P4 <- ggplot(data=df4, aes(x=x1, y=y, color=x2)) + geom_point() +
 
 grid.arrange(P1, P2, P3, P4, ncol=2)
 ```
-
-
-
 
 ### 10) {.unnumbered}
 
@@ -1873,7 +1864,7 @@ ii) Millennium Force, a steel coaster that opened in 2000.
 
 Which model's predictions do you think are more accurate? Why?
 
-#### f)  {.unnumbered}
+#### f) {.unnumbered}
 
 Is the following statement correct? Why or why not?
 
@@ -1943,7 +1934,6 @@ i)  Superman Ultimate Flight, a flying (non sit-down) coaster with duration 180 
 ii) Viper, a sit-down coaster with duration 105 seconds
 
 Which model's predictions do you think are more accurate? Why?
-
 
 ### 12) {.unnumbered}
 

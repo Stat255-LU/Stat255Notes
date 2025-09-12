@@ -3,12 +3,12 @@
 ### Learning Outcomes {.unnumbered}
 
 **Conceptual Learning Outcomes**\
-36. Explain how model complexity relates to training and test error, prediction variance and bias, and overfitting. \
-37. Explain how to use cross-validation in model selection. \
-38. Explain how complexity parameters associated with ridge regression, decision trees, and splines impact variance, bias, and likelihood of overfitting. \
-39. Make predictions from a decision tree. \
-40. Calculate classification accuracy, sensitivity, specificity, confusion matrix, and receiver operating characteristic curves.\
-41. Assess ethical considerations associated with predictive models in context.
+26. Explain how model complexity relates to training and test error, prediction variance and bias, and overfitting. \
+27. Explain how to use cross-validation in model selection. \
+28. Explain how complexity parameters associated with ridge regression, decision trees, and splines impact variance, bias, and likelihood of overfitting. \
+29. Make predictions from a decision tree. \
+30. Calculate classification accuracy, sensitivity, specificity, confusion matrix, and receiver operating characteristic curves.\
+31. Assess ethical considerations associated with predictive models in context.
 
 **Computational Learning Outcomes**\
 K. Perform cross-validation to build and assess predictive models in R.\

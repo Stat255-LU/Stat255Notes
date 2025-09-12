@@ -3,12 +3,11 @@
 ### Learning Outcomes {.unnumbered}
 
 **Conceptual Learning Outcomes**\
-4. Use regression models to calculate estimates and predictions.\
-5. Interpret coefficient estimates in regression models in context.\
-6. Calculate and interpret regression sums of squares SSR, SSM, and SST, and coefficient of determination,$R^2$.\
-7. Calculate and interpret F-statistics for comparing models.\
-8. Draw conclusions about model estimates, $R^2$, and F-statistics using graphical representations of data.\
-9. Explain the least squares estimation process.
+2. Use regression models to calculate estimates and predictions.\
+3. Interpret coefficient estimates in regression models in context.\
+4. Calculate and interpret regression sums of squares SSR, SSM, and SST, and coefficient of determination, $R^2$, and F-statistics.\  
+5. Draw conclusions about model estimates, $R^2$, and F-statistics using graphical representations of data.\
+6. Explain the least squares estimation process.
 
 **Computational Learning Outcomes**\
 E. Fit statistical models in R and interpret results.
