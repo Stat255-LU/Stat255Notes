@@ -495,7 +495,7 @@ The scatterplot matrix is useful for helping us notice key trends in our data. H
 
 ### 1) {.unnumbered}
 
-The `Coasters` contains information on roller coasters around the world. More information about the variables are available [here](https://math.montana.edu/courses/s216/data/rollercoaster_descrip.html).
+The `Coasters` dataset contains information on roller coasters around the world. More information about the variables are available [here](https://math.montana.edu/courses/s216/data/rollercoaster_descrip.html).
 
 ```{r, echo=FALSE}
 Coasters <- read.csv("Coasters.csv")

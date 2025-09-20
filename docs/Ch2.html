@@ -2170,7 +2170,7 @@ Coefficients:
 </section>
 <section id="c-2" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="c-2">c)</h4>
-<p>We now drop design from the model and use only duration as an explanatory variable. The <span class="math inline">\(R^2\)</span> value is shown below.</p>
+<p>We now drop design from the model in (a) and use only duration as an explanatory variable. The <span class="math inline">\(R^2\)</span> value is shown below.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a>M_Coasters_speed_dur <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data=</span>Coasters_filtered, Speed <span class="sc">~</span> Duration)</span>
 <span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_Coasters_speed_dur)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2187,8 +2187,8 @@ Coefficients:
 <div class="cell">
 <div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Coasters_filtered, <span class="fu">aes</span>(<span class="at">y=</span>Speed, <span class="at">x=</span>Max_Height, <span class="at">color=</span>Design)) <span class="sc">+</span> </span>
 <span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb122-3"><a href="#cb122-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Top Speed in mph"</span>) <span class="sc">+</span> </span>
-<span id="cb122-4"><a href="#cb122-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Max Height in Feet"</span>) <span class="sc">+</span> </span>
+<span id="cb122-3"><a href="#cb122-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Top Speed in mph"</span>) <span class="sc">+</span> </span>
+<span id="cb122-4"><a href="#cb122-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Max Height in Feet"</span>) <span class="sc">+</span> </span>
 <span id="cb122-5"><a href="#cb122-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_parallel_slopes</span>(<span class="at">se=</span><span class="cn">FALSE</span>)<span class="sc">+</span></span>
 <span id="cb122-6"><a href="#cb122-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Speed by Height and Type"</span>) <span class="sc">+</span> </span>
 <span id="cb122-7"><a href="#cb122-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">125</span>)) <span class="sc">+</span></span>
@@ -2263,7 +2263,7 @@ Coefficients:
 </div>
 </div>
 </div>
-<p>Consider two models. Model 1 accounts for only the categorical variable, while Model 2 accounts for both the quantitative variable <span class="math inline">\(x\)</span> and the categorical variable.</p>
+<p>Consider three models. Model 1 accounts for only the quantitative variable <span class="math inline">\(x\)</span>. Model 2 accounts for only the categorical variable, while Model 3 accounts for both the quantitative variable <span class="math inline">\(x\)</span> and the categorical variable.</p>
 <p>Model 1:</p>
 <p><span class="math display">\[
 \hat{y} = b_0 + b_1x
@@ -2391,7 +2391,7 @@ Coefficients:
 <p>Continue with the models in Question 11.</p>
 <section id="a-7" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="a-7">a)</h4>
-<p>The F-statistic for comparing Model 2 to Model 3 is shown below. Based on the size of this F-statistic, what can we conclude about the variable(s) in these models?</p>
+<p>The F-statistic for comparing Model 0 to Model 1 is shown below. Based on the size of this F-statistic, what can we conclude about the variable(s) in these models?</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb139"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb139-1"><a href="#cb139-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(M_Coasters_speed_dur, M_Coasters_speed_0)<span class="sc">$</span>F[<span class="dv">2</span>] <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">

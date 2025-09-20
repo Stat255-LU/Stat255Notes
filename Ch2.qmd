@@ -5,9 +5,9 @@
 **Conceptual Learning Outcomes**\
 2. Use regression models to calculate estimates and predictions.\
 3. Interpret coefficient estimates in regression models in context.\
-4. Calculate and interpret regression sums of squares SSR, SSM, and SST, and coefficient of determination, $R^2$, and F-statistics.\     
-5. Draw conclusions about model estimates, $R^2$, and F-statistics using graphical representations of data.\     
-6. Explain the least squares estimation process.    
+4. Calculate and interpret regression sums of squares SSR, SSM, and SST, and coefficient of determination, $R^2$, and F-statistics. \
+5. Draw conclusions about model estimates, $R^2$, and F-statistics using graphical representations of data. \
+6. Explain the least squares estimation process.
 
 **Computational Learning Outcomes**\
 E. Fit statistical models in R and interpret results.
@@ -1613,7 +1613,7 @@ Does adding year built appear to help predict the speed of a coaster? Explain yo
 
 #### c) {.unnumbered}
 
-We now drop design from the model and use only duration as an explanatory variable. The $R^2$ value is shown below.
+We now drop design from the model in (a) and use only duration as an explanatory variable. The $R^2$ value is shown below.
 
 ```{r}
 M_Coasters_speed_dur <- lm(data=Coasters_filtered, Speed ~ Duration)
@@ -1629,8 +1629,8 @@ The scatterplot shows the relationship between top speed of a coaster (in mph) a
 ```{r, fig.width=8, fig.height=5}
 ggplot(data=Coasters_filtered, aes(y=Speed, x=Max_Height, color=Design)) + 
   geom_point() + 
-  xlab("Top Speed in mph") + 
-  ylab("Max Height in Feet") + 
+  ylab("Top Speed in mph") + 
+  xlab("Max Height in Feet") + 
   geom_parallel_slopes(se=FALSE)+
   ggtitle("Speed by Height and Type") + 
   ylim(c(0,125)) +
@@ -1702,7 +1702,7 @@ summary(lm(data=df, y~factor(AB)))
 summary(lm(data=df, y~x+factor(AB)))
 ```
 
-Consider two models. Model 1 accounts for only the categorical variable, while Model 2 accounts for both the quantitative variable $x$ and the categorical variable.
+Consider three models. Model 1 accounts for only the quantitative variable $x$. Model 2 accounts for only the categorical variable, while Model 3 accounts for both the quantitative variable $x$ and the categorical variable.
 
 Model 1:
 
@@ -1857,7 +1857,7 @@ Continue with the models in Question 11.
 
 #### a) {.unnumbered}
 
-The F-statistic for comparing Model 2 to Model 3 is shown below. Based on the size of this F-statistic, what can we conclude about the variable(s) in these models?
+The F-statistic for comparing Model 0 to Model 1 is shown below. Based on the size of this F-statistic, what can we conclude about the variable(s) in these models?
 
 ```{r}
 anova(M_Coasters_speed_dur, M_Coasters_speed_0)$F[2] |> round(1)
