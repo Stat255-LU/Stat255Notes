@@ -334,6 +334,10 @@ The mean, median, and standard deviation in prices is shown below.
 
 ```{r}
 library(knitr)
+Houses_Summary <- Houses |> summarize(Mean_Price = mean(price, na.rm=TRUE),
+                                      Median_Price = median(price, na.rm=TRUE), 
+                                      StDev_Price = sd(price, na.rm = TRUE),
+                                      Number_of_Houses = n()) 
 kable(Houses_Summary)
 ```
 
@@ -901,7 +905,7 @@ $$
 $$
 \begin{aligned}
 F &= \frac{\frac{\text{SSR}_{\text{Reduced}}-\text{SSR}_{\text{Full}}}{p-q}}{\frac{\text{SSR}_{\text{Full}}}{n-(p+1)}} \\
-&=\frac{\frac{`r SSR_M_House_price_sqft_wf` - `r SSR_M_House_price_sqft`}{2-1}}{\frac{`r SSR_M_House_price_sqft_wf`}{200-(2+1)}} \\  
+&=\frac{\frac{`r round(SSR_M_House_price_sqft_wf,2)` - `r round(SSR_M_House_price_sqft,2)`}{2-1}}{\frac{`r round(SSR_M_House_price_sqft_wf,2)`}{200-(2+1)}} \\  
 & = `r anova(M_House_price_sqft_wf, M_House_price_sqft)$F[2] |>round(2)` 
 \end{aligned}
 $$
@@ -927,7 +931,7 @@ Full Model: $$\widehat{\text{Price}}= b_0+ b_1 \times\text{sqft\_living}+ b_2\ti
 $$
 \begin{aligned}
 F &= \frac{\frac{\text{SSR}_{\text{Reduced}}-\text{SSR}_{\text{Full}}}{p-q}}{\frac{\text{SSR}_{\text{Full}}}{n-(p+1)}} \\
-&=\frac{\frac{`r SSR_M_House_price_sqft_wf_age` - `r SSR_M_House_price_sqft_wf`}{3-2}}{\frac{`r SSR_M_House_price_sqft_wf`}{200-(3+1)}} \\  
+&=\frac{\frac{`r round(SSR_M_House_price_sqft_wf_age,2)` - `r round(SSR_M_House_price_sqft_wf,2)`}{3-2}}{\frac{`r round(SSR_M_House_price_sqft_wf,2)`}{200-(3+1)}} \\  
 & = `r anova(M_House_price_sqft_wf_age, M_House_price_sqft_wf)$F[2] |>round(2)` 
 \end{aligned}
 $$
@@ -974,10 +978,10 @@ M_df2_F  <- summary(lm(data=df2, y~Group))$fstatistic[1]
 ```
 
 |   | Scenario 1 | Scenario 2 |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | variation between groups | High | Low |
 | variation within groups | Low | High |
-| F Statistic | Large ($F=$`r M_df1_F`) | Small ($F=$`M_df2_F`) |
+| F Statistic | Large ($F=`r M_df1_F |> round(1)`$) | Small ($F=`r M_df2_F|> round(1)`$) |
 | Result | Evidence of Group Differences | No evidence of differences |
 
 We'll use F-statistics to compare the prices of waterfront houses to non-waterfront houses, and also to compare the three different conditions of houses.
@@ -1027,7 +1031,7 @@ The F-statistic is
 $$
 \begin{aligned}
 F &= \frac{\frac{\text{SSR}_{\text{Reduced}}-\text{SSR}_{\text{Full}}}{p-q}}{\frac{\text{SSR}_{\text{Full}}}{n-(p+1)}} \\
-&=\frac{\frac{`r SST_M_House_price` - `r SSR_M_House_price_wf`}{1-0}}{\frac{`r SSR_M_House_price_wf`}{200-(1+1)}} \\  
+&=\frac{\frac{`r SST_M_House_price |> round(0)` - `r SSR_M_House_price_wf |> round(0)`}{1-0}}{\frac{`r SSR_M_House_price_wf  |> round(0)`}{200-(1+1)}} \\  
 & = `r summary(M_House_price_wf)$fstatistic[1] |>round(2)` 
 \end{aligned}
 $$
@@ -1099,7 +1103,7 @@ The F-statistic is
 $$
 \begin{aligned}
 F &= \frac{\frac{\text{SSR}_{\text{Reduced}}-\text{SSR}_{\text{Full}}}{p-q}}{\frac{\text{SSR}_{\text{Full}}}{n-(p+1)}} \\
-&=\frac{\frac{`r SST_M_House_price` - `r SSR_M_House_price_cond`}{2-0}}{\frac{`r SSR_M_House_price_cond`}{200-(2+1)}} \\  
+&=\frac{\frac{`r SST_M_House_price  |> round(0)` - `r SSR_M_House_price_cond  |> round(0)`}{2-0}}{\frac{`r SSR_M_House_price_cond  |> round(0)`}{200-(2+1)}} \\  
 & = `r summary(M_House_price_cond)$fstatistic[1] |>round(2)` 
 \end{aligned}
 $$
@@ -1174,11 +1178,11 @@ Thus, we see that the F-statistic is closely related to $R^2$, but it's calculat
 
 So, for dataset A in the illustration,
 
-$$F= \frac{`r summary(M_dfA)$r.squared|> round(4)`}{`1 - r summary(M_dfA)$r.squared|> round(4)`} \times (4-2)` = `r summary(M_dfA)$r.squared/(1-summary(M_dfA)$r.squared)*(4-2)|> round(2)`$$,
+$$F= \frac{`r summary(M_dfA)$r.squared|> round(4)`}{1 - `r summary(M_dfA)$r.squared|> round(4)`} \times (4-2)` = `r summary(M_dfA)$r.squared/(1-summary(M_dfA)$r.squared)*(4-2)|> round(2)`$$,
 
 while for dataset B,
 
-$$F= \frac{`r summary(M_dfB)$r.squared|> round(4)`}{`1 - r summary(M_dfB)$r.squared|> round(4)`} \times (4-2)` = `r summary(M_dfB)$r.squared/(1-summary(M_dfB)$r.squared)*(91-2)|> round(2)`$$.
+$$F= \frac{`r summary(M_dfB)$r.squared|> round(4)`}{1 - `r summary(M_dfB)$r.squared|> round(4)`} \times (91-2)` = `r summary(M_dfB)$r.squared/(1-summary(M_dfB)$r.squared)*(91-2)|> round(2)`$$.
 
 While the scenarios had similar $R^2$ values, Scenario B had a much greater F-statistic, due to the larger sample, size which provides more evidence of a relationship.
 
