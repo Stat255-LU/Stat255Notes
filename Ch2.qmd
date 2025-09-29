@@ -1912,7 +1912,7 @@ M_Coasters_speed_dur_des
 Suppose that instead of using these, we used the model used the model with the estimates of $b_0$, $b_1$, and $b_2$ given below.
 
 $$
-\widehat{\text{Speed}} = 25 + 0.25\times\text{MaxHeight} + 3\times{\text{DesignSitDown}}
+\widehat{\text{Speed}} = 25 + 0.25\times\text{Duration} + 3\times{\text{DesignSitDown}}
 $$
 
 Can we say how SST, SSR, and $R^2$ for this new model would compare to those in the model using the estimates produced by R? Would they increase, decrease, or stay the same? Why?
