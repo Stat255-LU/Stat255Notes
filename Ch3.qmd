@@ -2344,7 +2344,7 @@ We fit a model of the form
 
 $$
 \begin{aligned}
-\widehat{\text{Cost}} & = b_0 + b_1 \text{GMdensity}
+\widehat{\text{Friends}} & = b_0 + b_1 \text{GMdensity}
 \end{aligned}
 $$ where the GMdensity is a measure of grey matter density in the brain. The GM density variable was standardized, so a person who has average grey matter density will have `GMdensity =0`, and the GMdensity variable can be interpreted as the number of standard deviations a person is above or below the average amount of grey matter density.
 
@@ -2422,7 +2422,7 @@ FB_b0_b1_Bootstrap_plot
 ```
 
 ```{r}
-Books_b0_b1_Bootstrap |> summarize(Mean = mean(X1) |> round(1), 
+FB_b0_b1_Bootstrap |> summarize(Mean = mean(X1) |> round(1), 
                                       SE=sd(X1) |> round(1))
 ```
 
@@ -2783,7 +2783,7 @@ State whether the difference or effect is statistically discernible. Also state 
 
 Say whether zero would be contained in a 95% confidence interval for the parameter of interest.
 
-#### 13) {.unnumbered}
+### 13) {.unnumbered}
 
 The Bootstrap distribution for the difference in average cost of books in natural science classes, compared with humanities classes, was given in Question 6(c). If we perform a permutation-based hypothesis test for the null hypothesis that there is no difference in average books costs among natural science courses, compared to humanities courses, how would the distribution of mean differences compare to the bootstrap distribution from 6(c)? What would be different about it? Would the p-value associated with the hypothesis test be more or less than 0.05? Explain your answer.
 
