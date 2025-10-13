@@ -278,6 +278,7 @@ window.Quarto = {
   <li><a href="#section-9" id="toc-section-9" class="nav-link" data-scroll-target="#section-9">10)</a></li>
   <li><a href="#section-10" id="toc-section-10" class="nav-link" data-scroll-target="#section-10">11)</a></li>
   <li><a href="#section-11" id="toc-section-11" class="nav-link" data-scroll-target="#section-11">12)</a></li>
+  <li><a href="#section-12" id="toc-section-12" class="nav-link" data-scroll-target="#section-12">13)</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -3918,10 +3919,10 @@ Coefficients:
 </div>
 <p>p-value:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb271"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb271-1"><a href="#cb271-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop</span>(<span class="sc">~</span> (schtypprivate <span class="sc">&gt;</span> <span class="fl">8.128</span>), <span class="at">data =</span> science_schtyp_perm_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb271"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb271-1"><a href="#cb271-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop</span>(<span class="sc">~</span> (F <span class="sc">&gt;</span> <span class="fl">8.128</span>), <span class="at">data =</span> science_schtyp_perm_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>prop_TRUE 
-        0 </code></pre>
+   0.0056 </code></pre>
 </div>
 </div>
 <section id="a-6" class="level4 unnumbered">
@@ -4035,12 +4036,12 @@ Coefficients:
 <h4 class="unnumbered anchored" data-anchor-id="g-1">g)</h4>
 <p>Say whether zero would be contained in a 95% confidence interval for the parameter of interest.</p>
 </section>
-<section id="section-12" class="level4 unnumbered">
-<h4 class="unnumbered anchored" data-anchor-id="section-12">13)</h4>
-<p>The Bootstrap distribution for the difference in average cost of books in natural science classes, compared with humanities classes, was given in Question 6(c). If we perform a permutation-based hypothesis test for the null hypothesis that there is no difference in average books costs among natural science courses, compared to humanities courses, how would the distribution of mean differences compare to the bootstrap distribution from 6(c)? What would be different about it? Would the p-value associated with the hypothesis test be more or less than 0.05? Explain your answer.</p>
-
-
 </section>
+<section id="section-12" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="section-12">13)</h3>
+<p>The Bootstrap distribution for the difference in average cost of books in natural science classes, compared with humanities classes, was given in Question 5(c). If we perform a permutation-based hypothesis test for the null hypothesis that there is no difference in average books costs among natural science courses, compared to humanities courses, how would the distribution of mean differences compare to the bootstrap distribution from 5(c)? What would be different about it? Would the p-value associated with the hypothesis test be more or less than 0.05? Explain your answer.</p>
+
+
 </section>
 </section>
 

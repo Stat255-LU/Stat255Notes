@@ -2679,7 +2679,7 @@ science_prog_perm_test_plot
 p-value:
 
 ```{r}
-prop(~ (schtypprivate > 8.128), data = science_schtyp_perm_test)
+prop(~ (F > 8.128), data = science_schtyp_perm_test)
 ```
 
 #### a) {.unnumbered}
@@ -2785,7 +2785,7 @@ Say whether zero would be contained in a 95% confidence interval for the paramet
 
 ### 13) {.unnumbered}
 
-The Bootstrap distribution for the difference in average cost of books in natural science classes, compared with humanities classes, was given in Question 6(c). If we perform a permutation-based hypothesis test for the null hypothesis that there is no difference in average books costs among natural science courses, compared to humanities courses, how would the distribution of mean differences compare to the bootstrap distribution from 6(c)? What would be different about it? Would the p-value associated with the hypothesis test be more or less than 0.05? Explain your answer.
+The Bootstrap distribution for the difference in average cost of books in natural science classes, compared with humanities classes, was given in Question 5(c). If we perform a permutation-based hypothesis test for the null hypothesis that there is no difference in average books costs among natural science courses, compared to humanities courses, how would the distribution of mean differences compare to the bootstrap distribution from 5(c)? What would be different about it? Would the p-value associated with the hypothesis test be more or less than 0.05? Explain your answer.
 
 ```{r, echo=FALSE}
 #save.image(file = "Environment.RData")
