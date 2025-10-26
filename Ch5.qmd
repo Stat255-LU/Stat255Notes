@@ -1278,14 +1278,14 @@ Let's next investigate the effect of a car's gas mileage on price. There are two
 ```{r}
 P1 <- ggplot(data=Cars2020, aes(x=HwyMPG, y=log(Price))) + geom_point() + stat_smooth(method="lm", se=FALSE) + theme_bw() 
 
-P2 <- ggplot(data=Cars2020, aes(x=HwyMPG, y=log(Price))) + geom_point() + stat_smooth(method="lm", se=FALSE) + theme_bw() 
+P2 <- ggplot(data=Cars2020, aes(x=Weight, y=log(Price))) + geom_point() + stat_smooth(method="lm", se=FALSE) + theme_bw() 
 
 P3 <- ggplot(data=Cars2020, aes(x=Weight, y=HwyMPG)) + geom_point() + stat_smooth(method="lm", se=FALSE) + theme_bw() 
 
 grid.arrange(P1, P2, P3, ncol=3)
 ```
 
-We see that both highway MPG and weight are negatively associated with price, and that there is also a negative relationship between weight and highway MPG.
+We see that both highway MPG is negatively associated with price, weight is positively associated with price, and that there is also a negative relationship between weight and highway MPG.
 
 Let's add highway gas mileage to our model, along with acceleration time.
 
@@ -1324,11 +1324,11 @@ M_Cars3 <- lm(data=Cars2020, log(Price) ~ Acc060 + HwyMPG + Weight)
 summary(M_Cars3)
 ```
 
-Notice that when weight is added to the model, the coefficient on HwyMPG changes signs and is now positive. This means that assuming we are comparing cars of the same acceleration time and weight, one with higher highway gas mileage is expected to cost more than one with lower gas mileage. The difference is small, with price expected to multiply by about $$e^{`r M_Cars3$coef[3] |> round(2)`} =`r exp(M_Cars3$coef[3]) |> round(2)`$$ (a `r (1-exp(M_Cars3$coef[3]))*100 |>round(0)`) percent increase), and not statistically discernible (high p-value). So, there really doesn't appear to be much of a relationship at all between price and gas mileage, after accounting for acceleration time and weight.
+Notice that when weight is added to the model, the coefficient on HwyMPG changes signs and is now positive. This means that assuming we are comparing cars of the same acceleration time and weight, one with higher highway gas mileage is expected to cost more than one with lower gas mileage. The difference is small, with price expected to multiply by about $$e^{`r M_Cars3$coef[3] |> round(2)`} =`r exp(M_Cars3$coef[3]) |> round(3)`$$ (a `r ((exp(M_Cars3$coef[3])-1)*100) |>round(1)`) percent increase), and not statistically discernible (high p-value). So, there really doesn't appear to be much of a relationship at all between price and gas mileage, after accounting for acceleration time and weight.
 
 Still, this is a different conclusion than we would have drawn if we had not accounted for weight in the model. It had originally appeared that highway MPG had a strong negative association with price, but we see that once we compare cars of similar weights, there is little to no relationship between price and highway MPG. This is an example of a phenomenon know as **Simpson's Paradox.** In instances of Simpson's Paradox, the relationship between two variables changes directions, or disappears once a third variable is accounted for. The weight variable is called a **confounding variable**. If we don't account for weight, we get a misleading picture of the relationship between highway gas mileage and price.
 
-We saw that accounting for weight helps us better understand the relationship between price and gas mileage. We should also discuss the relationship between price and weight itself. Since weights of cars range from 2,000 to 6,000 lbs, it would be silly to talk about the effect of a single additional pound. Rather, let's examine the effect of a 1,000 pound increase on price of a car. For each additional 1,000 lbs., price is expected to multiply by a factor of $$e^{`r M_Cars3$coef[4] |> round(6)`\times 1000} =`r exp(M_Cars3$coef[4])*1000 |> round(2)`$$, a `r ((exp(M_Cars3$coef[4]*1000))-1)*100 |>round(0)` percent increase.
+We saw that accounting for weight helps us better understand the relationship between price and gas mileage. We should also discuss the relationship between price and weight itself. Since weights of cars range from 2,000 to 6,000 lbs, it would be silly to talk about the effect of a single additional pound. Rather, let's examine the effect of a 1,000 pound increase on price of a car. For each additional 1,000 lbs., price is expected to multiply by a factor of $$e^{`r M_Cars3$coef[4] |> round(6)`\times 1000} =`r exp(M_Cars3$coef[4]*1000) |> round(2)`$$, a `r ((exp(M_Cars3$coef[4]*1000))-1)*100 |>round(0)` percent increase.
 
 Our model with weight and highway gas mileage, in addition to acceleration time, now explains about `r summary(M_Cars3)$r.squared*100 |> round(1)` percent of the variability in log(Price), up from `r summary(M_Cars1)$r.squared*100 |> round(1)` for the model with only acceleration time.
 
