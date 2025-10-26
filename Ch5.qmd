@@ -5,9 +5,9 @@
 **Conceptual Learning Outcomes**\
 19. State the assumptions of the normal error regression model and check their validity using residual plots, qq plots, and other information.\
 20. Interpret regression coefficients and calculate predictions using models that involve log transformations.\
-21. Interpret regression coefficient estimates and calculate predictions using models with interaction. \
+21. Interpret regression coefficient estimates and calculate predictions using models with interaction.\
 22. Draw conclusions about models involving polynomial terms and interactions based on graphical representations of data.\
-23. Determine whether it is appropriate to add terms to a model considering factors such as confounding variables, Simpson's paradox, multicollinearity, $R^2$, F-statistic, and residual plots. 
+23. Determine whether it is appropriate to add terms to a model considering factors such as confounding variables, Simpson's paradox, multicollinearity, $R^2$, F-statistic, and residual plots.
 
 **Computational Learning Outcomes**\
 I. Build regression models involving nonlinear terms and interactions in R.
@@ -187,7 +187,7 @@ When the independence assumption is violated we need to use more advanced kinds 
 #### Summary of Checks for Model Assumptions {.unnumbered}
 
 | Model assumption | How to detect violation |
-|----|----|
+|------------------------------------|------------------------------------|
 | Linearity | Curvature in residual plot |
 | Constant Variance | Funnel shape in residual plot |
 | Normality | Skewness in histogram of residuals or departure from diag. line in QQ plot |
@@ -300,7 +300,7 @@ In situations where some model assumptions appear to be violated, we might be ok
 The table below provides guidance on the potential impact of model assumption violation on predicted values, confidence intervals, and prediction intervals.
 
 | Model assumption Violated | Predicted Values | Confidence Intervals | Prediction Intervals |
-|----|----|----|----|
+|------------------|------------------|------------------|------------------|
 | Linearity | Unreliable | Unreliable | Unreliable |
 | Constant Variance | Reliable | Somewhat unreliable - Some too wide, others too narrow | Very unreliable - Some too wide, others too narrow |
 | Normality | Reliable | Possibly unreliable - might be symmetric when they shouldn't be. Might be okay when skewness isn't bad and sample size is large. | Very unreliable - will be symmetric when they shouldn't be |
@@ -729,7 +729,7 @@ resid_panel(M_logWage_price_yr_age2_ed_job, smoother=TRUE)
 We also check residual by predictor plots.
 
 ```{r, fig.height=8, fig.width=8}
-resid_xpanel(M_logWage_price_yr_age_ed_job, smoother=TRUE)
+resid_xpanel(M_logWage_price_yr_age2_ed_job, smoother=TRUE)
 ```
 
 Notice that the quadratic trend in residuals has gone away in the age plot, telling us that the model with `age^2` has properly accounted for the quadratic trend.
@@ -739,13 +739,13 @@ Notice that the quadratic trend in residuals has gone away in the age plot, tell
 Now that we've found a model that appears to reasonably satisfy model assumptions, let's look at the model summary output.
 
 ```{r}
-summary(M_logWage_price_yr_age_ed_job)
+summary(M_logWage_price_yr_age2_ed_job)
 ```
 
 Since we modeled `log(wage)`, we'll exponentiate the model coefficients to make our interpretations.
 
 ```{r}
-exp(M_logWage_price_yr_age_ed_job$coefficients) |>round(3)
+exp(M_logWage_price_yr_age2_ed_job$coefficients) |>round(3)
 ```
 
 **Interpretations**
@@ -1752,7 +1752,7 @@ Do the data provide evidence of a quadratic relationship between a neighborhood'
 
 Calculate the approximate distance from employment centers where property values are at their highest (hint: recall that a quadratic function of the form $f(x) = ax^2 + bx + c$ attains its vertex at $x=-b/(2a)$).
 
-### 9)  {.unnumbered}
+### 9) {.unnumbered}
 
 The plots below show four different scenarios of a model involving response variable $y$, a quantitative explanatory variable $x_1$ and a categorical explanatory variable $x_2$ with categories $A$ and $B$.
 

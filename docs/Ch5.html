@@ -1084,7 +1084,7 @@ Acc060 0.7905858 0.8497679</code></pre>
 </div>
 <p>We also check residual by predictor plots.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">resid_xpanel</span>(M_logWage_price_yr_age_ed_job, <span class="at">smoother=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">resid_xpanel</span>(M_logWage_price_yr_age2_ed_job, <span class="at">smoother=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1099,46 +1099,50 @@ Acc060 0.7905858 0.8497679</code></pre>
 <h3 data-number="5.3.4" class="anchored" data-anchor-id="model-output"><span class="header-section-number">5.3.4</span> Model Output</h3>
 <p>Now that we’ve found a model that appears to reasonably satisfy model assumptions, let’s look at the model summary output.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_logWage_price_yr_age_ed_job)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(M_logWage_price_yr_age2_ed_job)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = log(wage) ~ year + age + education + jobclass, data = WageSample)
+lm(formula = log(wage) ~ year + age + I(age^2) + education + 
+    jobclass, data = WageSample)
 
 Residuals:
-     Min       1Q   Median       3Q      Max 
--1.29905 -0.14183  0.00267  0.16571  1.19099 
+    Min      1Q  Median      3Q     Max 
+-1.3087 -0.1331  0.0056  0.1652  1.1420 
 
 Coefficients:
-                              Estimate Std. Error t value        Pr(&gt;|t|)    
-(Intercept)                 -23.203853  21.150224  -1.097        0.273689    
-year                          0.013615   0.010551   1.290        0.198117    
-age                           0.005593   0.001758   3.182        0.001655 ** 
-education2. HS Grad           0.186614   0.079941   2.334        0.020395 *  
-education3. Some College      0.296369   0.079602   3.723        0.000245 ***
-education4. College Grad      0.422839   0.083145   5.086 0.0000007346731 ***
-education5. Advanced Degree   0.603682   0.087811   6.875 0.0000000000524 ***
-jobclass2. Information        0.039636   0.043484   0.912        0.362937    
+                               Estimate  Std. Error t value       Pr(&gt;|t|)    
+(Intercept)                 -26.5956726  20.9257600  -1.271        0.20497    
+year                          0.0150231   0.0104326   1.440        0.15116    
+age                           0.0339204   0.0107471   3.156        0.00180 ** 
+I(age^2)                     -0.0003270   0.0001224  -2.671        0.00808 ** 
+education2. HS Grad           0.1970428   0.0790437   2.493        0.01335 *  
+education3. Some College      0.2923319   0.0786263   3.718        0.00025 ***
+education4. College Grad      0.4056835   0.0823616   4.926 0.000001562608 ***
+education5. Advanced Degree   0.5831476   0.0870589   6.698 0.000000000147 ***
+jobclass2. Information        0.0556347   0.0433594   1.283        0.20069    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.3319 on 242 degrees of freedom
-Multiple R-squared:  0.2776,    Adjusted R-squared:  0.2567 
-F-statistic: 13.28 on 7 and 242 DF,  p-value: 0.00000000000001769</code></pre>
+Residual standard error: 0.3278 on 241 degrees of freedom
+Multiple R-squared:  0.2983,    Adjusted R-squared:  0.275 
+F-statistic: 12.81 on 8 and 241 DF,  p-value: 0.000000000000002483</code></pre>
 </div>
 </div>
 <p>Since we modeled <code>log(wage)</code>, we’ll exponentiate the model coefficients to make our interpretations.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(M_logWage_price_yr_age_ed_job<span class="sc">$</span>coefficients) <span class="sc">|&gt;</span><span class="fu">round</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(M_logWage_price_yr_age2_ed_job<span class="sc">$</span>coefficients) <span class="sc">|&gt;</span><span class="fu">round</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                (Intercept)                        year 
-                      0.000                       1.014 
-                        age         education2. HS Grad 
-                      1.006                       1.205 
-   education3. Some College    education4. College Grad 
-                      1.345                       1.526 
-education5. Advanced Degree      jobclass2. Information 
-                      1.829                       1.040 </code></pre>
+                      0.000                       1.015 
+                        age                    I(age^2) 
+                      1.035                       1.000 
+        education2. HS Grad    education3. Some College 
+                      1.218                       1.340 
+   education4. College Grad education5. Advanced Degree 
+                      1.500                       1.792 
+     jobclass2. Information 
+                      1.057 </code></pre>
 </div>
 </div>
 <p><strong>Interpretations</strong></p>
