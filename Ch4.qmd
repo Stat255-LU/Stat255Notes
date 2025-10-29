@@ -2311,7 +2311,7 @@ b)  Suppose we take a random sample of 168 public school students and find that 
 
 ### 8) {.unnumbered}
 
-The residual standard error $s$ is different for the model in Question 1 than in Question 2. Suppose a person says "these are both meant to be the standard deviation in science test scores, so how can they be different?" How should you respond?
+The residual standard error $s$ is different for the model in Question 5 than in Question 6. Suppose a person says "these are both meant to be the standard deviation in science test scores, so how can they be different?" How should you respond?
 
 ### 9) {.unnumbered}
 
