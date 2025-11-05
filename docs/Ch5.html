@@ -1059,9 +1059,9 @@ Acc060 0.7905858 0.8497679</code></pre>
 <p>The model equation is</p>
 <p><span class="math display">\[
 \begin{aligned}
-\text{log(Salary)}_i &amp; = \beta_0 + \beta_1\times\text{Year}_i + \beta_2\times\text{Age}_i  \beta_2\times\text{Age}^2_i + \\
-&amp; + \beta_3\times\text{HSGrad}_i + \beta_4\times\text{SomeColl}_i + \beta_5\times\text{CollegeGrad}_i  \\
-&amp; + \beta_6\times\text{AdvDeg}_i + \beta_7\times\text{JobInf}_i  \\
+\text{log(Salary)}_i &amp; = \beta_0 + \beta_1\times\text{Year}_i + \beta_2\times\text{Age}_i + \beta_3\times\text{Age}^2_i + \\
+&amp; + \beta_4\times\text{HSGrad}_i + \beta_5\times\text{SomeColl}_i + \beta_6\times\text{CollegeGrad}_i  \\
+&amp; + \beta_7\times\text{AdvDeg}_i + \beta_8\times\text{JobInf}_i  \\
 &amp; + \epsilon_i,  \\
 \text{where} \epsilon_i\sim\mathcal{N}(0, \sigma)
 \end{aligned}
@@ -1167,7 +1167,7 @@ F-statistic: 12.81 on 8 and 241 DF,  p-value: 0.000000000000002483</code></pre>
 <p><span class="math display">\[
 -0.00033 \times \text{Age}^2 + 0.03392 \times \text{Age}
 \]</span></p>
-<p>We see that this expression has a negative quadratic coefficient, meaning it will have the shape of a downward facing parabola. A sketch of the equation <span class="math display">\[y=0.18661\times \text{Age}^2 +0.00559 \times \text{Age}\]</span> is shown below.</p>
+<p>We see that this expression has a negative quadratic coefficient, meaning it will have the shape of a downward facing parabola. A sketch of the equation <span class="math display">\[y=-0.00033 \times \text{Age}^2 + 0.03392 \times \text{Age}\]</span> is shown below.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">summary</span>(M_logWage_price_yr_age2_ed_job)<span class="sc">$</span>coefficients[<span class="dv">4</span>]</span>
 <span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">summary</span>(M_logWage_price_yr_age2_ed_job)<span class="sc">$</span>coefficients[<span class="dv">3</span>] </span>

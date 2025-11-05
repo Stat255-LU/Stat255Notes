@@ -706,9 +706,9 @@ The model equation is
 
 $$
 \begin{aligned}
-\text{log(Salary)}_i & = \beta_0 + \beta_1\times\text{Year}_i + \beta_2\times\text{Age}_i  \beta_2\times\text{Age}^2_i + \\
-& + \beta_3\times\text{HSGrad}_i + \beta_4\times\text{SomeColl}_i + \beta_5\times\text{CollegeGrad}_i  \\
-& + \beta_6\times\text{AdvDeg}_i + \beta_7\times\text{JobInf}_i  \\
+\text{log(Salary)}_i & = \beta_0 + \beta_1\times\text{Year}_i + \beta_2\times\text{Age}_i + \beta_3\times\text{Age}^2_i + \\
+& + \beta_4\times\text{HSGrad}_i + \beta_5\times\text{SomeColl}_i + \beta_6\times\text{CollegeGrad}_i  \\
+& + \beta_7\times\text{AdvDeg}_i + \beta_8\times\text{JobInf}_i  \\
 & + \epsilon_i,  \\
 \text{where} \epsilon_i\sim\mathcal{N}(0, \sigma)
 \end{aligned}
@@ -778,7 +778,7 @@ $$
 `r (summary(M_logWage_price_yr_age2_ed_job)$coefficients[4]) |> round(5)` \times \text{Age}^2 + `r (summary(M_logWage_price_yr_age2_ed_job)$coefficients[3]) |> round(5)` \times \text{Age}
 $$
 
-We see that this expression has a negative quadratic coefficient, meaning it will have the shape of a downward facing parabola. A sketch of the equation $$y=`r (summary(M_logWage_price_yr_age_ed_job)$coefficients[4]) |> round(5)`\times \text{Age}^2 +`r (summary(M_logWage_price_yr_age_ed_job)$coefficients[3]) |> round(5)` \times \text{Age}$$ is shown below.
+We see that this expression has a negative quadratic coefficient, meaning it will have the shape of a downward facing parabola. A sketch of the equation $$y=`r (summary(M_logWage_price_yr_age2_ed_job)$coefficients[4]) |> round(5)` \times \text{Age}^2 + `r (summary(M_logWage_price_yr_age2_ed_job)$coefficients[3]) |> round(5)` \times \text{Age}$$ is shown below.
 
 ```{r}
 a <- summary(M_logWage_price_yr_age2_ed_job)$coefficients[4]
