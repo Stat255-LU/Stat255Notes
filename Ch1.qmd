@@ -6,12 +6,12 @@
 1. Interpret and draw connections between data graphics (histogram, density plot, box plot, violin plot, scatterplot, bar graph) and summary statistics (mean, median, standard deviation, and IQR).
 
 **Computational Learning Outcomes**\
-A. Calculate summary statistics R.\
+A. Calculate summary statistics in R.\
 B. Create data visualizations in R.\
 C. Create reproducible reports in R.\*\
 D. Use GitHub for version control.\*
 
--   Computational learning outcomes C and D will be emphasized throughout the course. Outcomes A and B especially pertain to Chapter 1, but will also be used throughout the course.
+- Computational learning outcomes C and D will be emphasized throughout the course. Outcomes A and B especially pertain to Chapter 1, but will also be used throughout the course.
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=FALSE)
@@ -34,7 +34,7 @@ set.seed(07302020)
 
 ## Getting Started in R
 
-We'll work with data on houses that sold in King County, WA, (home of Seattle) between 2014 and 2015.
+We'll work with data on houses that sold in King County, WA, (home of Seattle) between 2014 and 2015. The data used in this section are a subset of the data available in the \[Kaggle "House Sales in King County, USA"\] (https://www.kaggle.com/datasets/harlfoxem/housesalesprediction) dataset.
 
 We begin by loading the `tidyverse` package which can be used to create professional data graphics and summaries.
 
@@ -48,7 +48,7 @@ Houses <- home_prices |> mutate(price=10^price/1000 |> round(0),
                                 waterfront = ifelse(waterfront==1, "Yes", "No"),
                                 ID = row_number())|>
                           rename(yr_renovated = year_renovated)|>
-                          dplyr:: select(ID, price, sqft_living, waterfront, condition, sqft_lot, bedrooms, bathrooms, yr_built)
+                          dplyr::select(ID, price, sqft_living, waterfront, condition, sqft_lot, bedrooms, bathrooms, yr_built)
 Houses$condition <- fct_collapse(Houses$condition, "average or below" = c("poor","fair", "average"))
 
 set.seed(08022025)
@@ -76,11 +76,11 @@ The columns of the dataset, which contain information about the houses, are call
 
 The `glimpse()` command shows the number of observations (rows), and the number of variables, (columns). We also see the name of each variable and its type. Variable types include
 
--   **Categorical variables**, which take on groups or categories, rather than numeric values. In R, these might be coded as logical `<logi>`, character `<chr>`, factor `<fct>` and ordered factor `<ord>`.
+- **Categorical variables**, which take on groups or categories, rather than numeric values. In R, these might be coded as logical `<logi>`, character `<chr>`, factor `<fct>` and ordered factor `<ord>`.
 
--   **Quantitative variables**, which take on meaningful numeric values. These include numeric `<num>`, integer `<int>`, and double `<dbl>`.
+- **Quantitative variables**, which take on meaningful numeric values. These include numeric `<num>`, integer `<int>`, and double `<dbl>`.
 
--   **Date and time variables** take on values that are dates and times, and are denoted `<dttm>`
+- **Date and time variables** take on values that are dates and times, and are denoted `<dttm>`
 
 ```{r}
 glimpse(Houses)
@@ -102,7 +102,7 @@ summary(Houses)
 
 If the dataset contains a large number of variables, narrow down to the ones you are interested in working with. This can be done with the `select()` command. If there are not very many variables to begin with, or you are interested in all of them, then you may skip this step.
 
-Let's create a smaller version of the dataset, with only the columns ID, price, sqft_living, and waterfront. We'll call this `Houses_3var.`
+Let's create a smaller version of the dataset, with only the columns ID, price, sqft_living, and waterfront. We'll call this `Houses_4var.`
 
 ```{r}
 Houses_4var <- Houses |> select(ID, price, sqft_living, waterfront)
@@ -150,31 +150,31 @@ Common ways to characterize the center of a distribution include mean, median, a
 
 For a set of $n$ values $y_i, \ldots, y_n$:
 
--   **mean** ($\bar{y}$) represents the numerical average and is calculated by $\bar{y} =\frac{1}{n}\displaystyle\sum_{i=1}^n y_i$.
+- **mean** ($\bar{y}$) represents the numerical average and is calculated by $\bar{y} =\frac{1}{n}\displaystyle\sum_{i=1}^n y_i$.
 
--   **median** represents the middle number when the values are arranged from least to greatest. If there are an even number of values in the dataset, then the median is given by the average of the middle two numbers.
+- **median** represents the middle number when the values are arranged from least to greatest. If there are an even number of values in the dataset, then the median is given by the average of the middle two numbers.
 
-    -   The median of the upper half of the values is called the **upper (or 3rd) quartile.** This represents the 75th percentile in the distribution.
+  - The median of the upper half of the values is called the **upper (or 3rd) quartile.** This represents the 75th percentile in the distribution.
 
-    -   The median of the lower half of the values is called the **lower (or 1st) quartile.** This represents the 25th percentile in the distribution.
+  - The median of the lower half of the values is called the **lower (or 1st) quartile.** This represents the 25th percentile in the distribution.
 
--   **mode** is the most frequently occurring number in the data.
+- **mode** is the most frequently occurring number in the data.
 
 ### Measures of Spread
 
 Common ways of measuring the amount of spread, or variability, in a variable include:
 
--   **range:** the difference between the maximum and minimum values
+- **range:** the difference between the maximum and minimum values
 
--   **interquartile range:** the difference between the upper and lower quartiles (i.e. the range of the middle 50% of the values).
+- **interquartile range:** the difference between the upper and lower quartiles (i.e. the range of the middle 50% of the values).
 
--   **standard deviation** ($s$): standard deviation is approximately the average deviation between an observation and the mean. It is calculated by
+- **standard deviation** ($s$): standard deviation is approximately the average deviation between an observation and the mean. It is calculated by
 
-    $s =\sqrt{\displaystyle\sum_{i=1}^n \frac{(y_i-\bar{y})^2}{n-1}}$.
+  $s =\sqrt{\displaystyle\sum_{i=1}^n \frac{(y_i-\bar{y})^2}{n-1}}$.
 
-    The square of the standard deviation, called the **variance** is denoted $s^2$.
+  The square of the standard deviation, called the **variance** is denoted $s^2$.
 
-### Calcularing Summary Statistics in R
+### Calculating Summary Statistics in R
 
 Let's calculate the mean, median, and standard deviation, in prices.
 
@@ -201,7 +201,7 @@ kable(Houses_Summary)
 
 **`group_by()`**
 
-The `group_by()` command allows us to calculate summary statistics, with the data broken down by by category.We'll compare waterfront houses to non-waterfront houses.
+The `group_by()` command allows us to calculate summary statistics, with the data broken down by category. We'll compare waterfront houses to non-waterfront houses.
 
 ```{r}
 Houses_Grouped_Summary <- Houses |> group_by(waterfront) |> 
@@ -212,7 +212,7 @@ Houses_Grouped_Summary <- Houses |> group_by(waterfront) |>
 kable(Houses_Grouped_Summary)
 ```
 
-We see that waterfront house tend to be more expensive, on average, and also have more variability (higher standard deviation) in price than non-waterfront houses.
+We see that waterfront houses tend to be more expensive, on average, and also have more variability (higher standard deviation) in price than non-waterfront houses.
 
 \newpage
 
@@ -248,7 +248,7 @@ We see that the distribution of house prices is right-skewed. Most houses cost l
 
 ### Density Plot
 
-Density plots show the distribution for a quantitative variable price. Scores can be compared across categories, like whether or not the house is on a waterfront.
+Density plots show the distribution for the quantitative variable, price. Scores can be compared across categories, like whether or not the house is on a waterfront.
 
 **General Template for Density Plot**
 
@@ -261,7 +261,7 @@ ggplot(data=DatasetName, aes(x=QuantitativeVariable,
   ylab("Frequency") 
 ```
 
-`alpha`, ranging from 0 to 1 dictates transparency.
+`alpha`, ranging from 0 to 1, dictates transparency.
 
 **Density Plot of House Prices**
 
@@ -289,7 +289,7 @@ ggplot(data=DatasetName, aes(x=CategoricalVariable,
   xlab("Variable Name") + ylab("Variable Name") 
 ```
 
-You can make the plot horizontal by adding `+ coordflip()`. You can turn the axis text vertical by adding `theme(axis.text.x = element_text(angle = 90))`.
+You can make the plot horizontal by adding `+ coord_flip()`. You can turn the axis text vertical by adding `theme(axis.text.x = element_text(angle = 90))`.
 
 **Boxplot Comparing Price by Waterfront Status**
 
@@ -395,7 +395,7 @@ ggplot(data=Houses, aes(x=condition)) +
   theme(axis.text.x = element_text(angle = 90))
 ```
 
-We see that the majority of houses are in average or below condition. Some are in good or very good condition, while a few are in very good condition.
+We see that the majority of houses are in average or below condition. Some are in good condition, and a few are in very good condition.
 
 ### Stacked and Side-by-Side Bar Graphs
 
@@ -424,7 +424,7 @@ ggplot(data = Houses, mapping = aes(x = waterfront, fill = condition)) +
   theme(axis.text.x = element_text(angle = 90)) 
 ```
 
-We see that a slightly higher proportion of waterfront houses are in good or very condition than non-waterfront houses.
+We see that a slightly higher proportion of waterfront houses are in good or very good condition than non-waterfront houses.
 
 **Side-by-side Bar Graph Template**
 
@@ -456,13 +456,13 @@ The side by side bar graph conveys similar information to the stacked bar graph.
 
 Correlation plots can be used to visualize relationships between quantitative variables. Correlation is a number between -1 and 1, describing the strength of the linear relationship between two variables. Variables with strong positive correlations will have correlation close to +1, while variables with strong negative correlations will have correlations close to -1. Variables with little to no relationship will have correlation close to 0.
 
-The `cor()` function calculates correlations between quantitative variables. We'll use `select_if` to select only numeric variables. The \`use="complete.obs" command tells R to ignore observations with missing data.
+The `cor()` function calculates correlations between quantitative variables. We'll use `select_if` to select only numeric variables. The `use="complete.obs"` command tells R to ignore observations with missing data.
 
 ```{r}
 cor(select_if(Houses, is.numeric), use="complete.obs") |> round(2)
 ```
 
-The `corrplot()` function in the `corrplot()` package provides a visualization of the correlations. Larger, thicker circles indicate stronger correlations.
+The `corrplot()` function in the `corrplot` package provides a visualization of the correlations. Larger, thicker circles indicate stronger correlations.
 
 ```{r, fig.height=12, fig.width=12}
 library(corrplot)
@@ -544,11 +544,11 @@ How many states had populations under 10 million?
 
 ### 3) {.unnumbered}
 
-The following histograms and boxplots provide information on the average monthly temperatures, in degrees Celsius, for the 24 months in 2015-16, in the cities of Moscow (Russia), Melbourne (Australia), and San Francisco (United States). Use the graphs to answer the following questions.
+The following histograms and boxplots provide information on the average monthly temperatures, in degrees Celsius, for the 24 months in 2014-15, in the cities of Moscow (Russia), Melbourne (Australia), and San Francisco (United States). Use the graphs to answer the following questions.
 
 ```{r, echo=FALSE, fig.width=7, fig.height=4, fig.align='center', message=FALSE, warning=FALSE}
-data("CityTemps")
-Temps <- CityTemps %>% gather(key = City, value = Temperature, Moscow:San.Francisco )
+data("CityTemps2e")
+Temps <- CityTemps2e %>% gather(key = City, value = Temperature, Moscow:San.Francisco )
 ```
 
 ```{r, echo=FALSE}
@@ -584,22 +584,22 @@ How would the mean monthly temperature in Melbourne compare to the median temper
 Shown below are histograms of temperatures in each of the three cities. State which histogram corresponds to each city.
 
 ```{r, fig.width=10, echo=FALSE, fig.height=3}
-Temps <- CityTemps %>% gather(key = City, value = Temperature, Moscow:San.Francisco )
-MelH <- gf_histogram(data=Temps %>% filter(City=="Melbourne"), ~Temperature, fill="blue", color="white")%>% 
- + xlim(c(-10, 25)) + ylim(c(0,5))  + theme_bw() + ggtitle("(A)")
+Temps <- CityTemps2e %>% gather(key = City, value = Temperature, Moscow:San.Francisco )
+MelH <- gf_histogram(data=Temps %>% filter(City=="Melbourne"), ~Temperature, fill="blue", color="white") + 
+  xlim(c(-10, 25)) + ylim(c(0,8))  + theme_bw() + ggtitle("(A)")
 
-MosH <- gf_histogram(data=Temps %>% filter(City=="Moscow"), ~Temperature, fill="blue", color="white")%>% 
-+ xlim(c(-10, 25)) + ylim(c(0,5))  + theme_bw() + ggtitle("(B)")
+MosH <- gf_histogram(data=Temps %>% filter(City=="Moscow"), ~Temperature, fill="blue", color="white")+ 
+  xlim(c(-10, 25)) + ylim(c(0,8))  + theme_bw() + ggtitle("(B)")
 
-SFH <- gf_histogram(data=Temps %>% filter(City=="San.Francisco"), ~Temperature, fill="blue", color="white")%>% 
-+ xlim(c(-10, 25)) + ylim(c(0,5))  + theme_bw() + ggtitle("(C)")
+SFH <- gf_histogram(data=Temps %>% filter(City=="San.Francisco"), ~Temperature, fill="blue", color="white")+ 
+  xlim(c(-10, 25)) + ylim(c(0,8))  + theme_bw() + ggtitle("(C)")
 
 grid.arrange(MelH, MosH,  SFH,  ncol=3)
 ```
 
 ### 4) {.unnumbered}
 
-The American Cancer Society and National Cancer Institute distribute pamphlets to inform patients with cancer abut the nature of the disease and possible treatments. It is important that pamphlets be written at a reading level that patients will be able to understand.
+The American Cancer Society and National Cancer Institute distribute pamphlets to inform patients with cancer about the nature of the disease and possible treatments. It is important that pamphlets be written at a reading level that patients will be able to understand.
 
 The data represent reading levels of 63 adult cancer patients at the Philadelphia Veterans Affairs Medical Center, and the reading levels of 30 pamphlets available to them. (Source:https://ww2.amstat.org/publications/jse/v3n2/datasets.short.html)
 
@@ -723,8 +723,8 @@ Approach 1: Select a random sample of 100 people and ask each person how many pe
 
 Approach 2: Select a random sample of 100 households and ask one person from each household how many people live in the household?
 
-How will mean household size estimates will compare for the two approaches? Will one approach yield a larger estimate of household size? Why or why not?
+How will mean household size estimates compare for the two approaches? Will one approach yield a larger estimate of household size? Why or why not?
 
 ```{r, echo=FALSE}
-#save.image(file = "Environment.RData")
+save.image(file = "Environment.RData")
 ```

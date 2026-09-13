@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>1&nbsp; Visualizing and Summarizing Data – STAT 255 Notes</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -73,10 +79,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-485d01fc63b59abcd3ee1bf1e8e2748d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-d3f7f8e73c8d287b30bcf59c2b563615.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -106,7 +112,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -119,7 +125,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -239,7 +245,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#measures-of-center" id="toc-measures-of-center" class="nav-link" data-scroll-target="#measures-of-center"><span class="header-section-number">1.2.1</span> Measures of Center</a></li>
   <li><a href="#measures-of-spread" id="toc-measures-of-spread" class="nav-link" data-scroll-target="#measures-of-spread"><span class="header-section-number">1.2.2</span> Measures of Spread</a></li>
-  <li><a href="#calcularing-summary-statistics-in-r" id="toc-calcularing-summary-statistics-in-r" class="nav-link" data-scroll-target="#calcularing-summary-statistics-in-r"><span class="header-section-number">1.2.3</span> Calcularing Summary Statistics in R</a></li>
+  <li><a href="#calculating-summary-statistics-in-r" id="toc-calculating-summary-statistics-in-r" class="nav-link" data-scroll-target="#calculating-summary-statistics-in-r"><span class="header-section-number">1.2.3</span> Calculating Summary Statistics in R</a></li>
   <li><a href="#grouped-summaries" id="toc-grouped-summaries" class="nav-link" data-scroll-target="#grouped-summaries"><span class="header-section-number">1.2.4</span> Grouped Summaries</a></li>
   </ul></li>
   <li><a href="#data-visualization" id="toc-data-visualization" class="nav-link" data-scroll-target="#data-visualization"><span class="header-section-number">1.3</span> Data Visualization</a>
@@ -296,7 +302,7 @@ window.Quarto = {
 <p><strong>Conceptual Learning Outcomes</strong><br>
 1. Interpret and draw connections between data graphics (histogram, density plot, box plot, violin plot, scatterplot, bar graph) and summary statistics (mean, median, standard deviation, and IQR).</p>
 <p><strong>Computational Learning Outcomes</strong><br>
-A. Calculate summary statistics R.<br>
+A. Calculate summary statistics in R.<br>
 B. Create data visualizations in R.<br>
 C. Create reproducible reports in R.*<br>
 D. Use GitHub for version control.*</p>
@@ -306,17 +312,17 @@ D. Use GitHub for version control.*</p>
 </section>
 <section id="getting-started-in-r" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="getting-started-in-r"><span class="header-section-number">1.1</span> Getting Started in R</h2>
-<p>We’ll work with data on houses that sold in King County, WA, (home of Seattle) between 2014 and 2015.</p>
+<p>We’ll work with data on houses that sold in King County, WA, (home of Seattle) between 2014 and 2015. The data used in this section are a subset of the data available in the [Kaggle “House Sales in King County, USA”] (https://www.kaggle.com/datasets/harlfoxem/housesalesprediction) dataset.</p>
 <p>We begin by loading the <code>tidyverse</code> package which can be used to create professional data graphics and summaries.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="previewing-the-data" class="level3" data-number="1.1.1">
 <h3 data-number="1.1.1" class="anchored" data-anchor-id="previewing-the-data"><span class="header-section-number">1.1.1</span> Previewing the Data</h3>
 <p><strong><code>head()</code></strong></p>
 <p>The <code>head()</code> function displays the first 5 rows of the dataset.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Houses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Houses)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 9
      ID price sqft_living waterfront condition       sqft_lot bedrooms bathrooms
@@ -340,7 +346,7 @@ D. Use GitHub for version control.*</p>
 <li><p><strong>Date and time variables</strong> take on values that are dates and times, and are denoted <code>&lt;dttm&gt;</code></p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(Houses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(Houses)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 200
 Columns: 9
@@ -359,15 +365,15 @@ $ yr_built    &lt;dbl&gt; 2006, 1914, 1957, 1976, 1981, 1961, 1994, 1978, 1947, 
 <p><strong><code>summary</code></strong></p>
 <p><code>summary</code> displays the mean, minimum, first quartile, median, third quartile, and maximum for each numeric variable, and the number of observations in each category, for categorical variables.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Houses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Houses)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       ID            price         sqft_living    waterfront       
- Min.   :   90   Min.   : 105.0   Min.   : 700   Length:200        
- 1st Qu.: 5162   1st Qu.: 329.5   1st Qu.:1498   Class :character  
- Median :10490   Median : 457.8   Median :2100   Mode  :character  
- Mean   :10743   Mean   : 710.2   Mean   :2316                     
- 3rd Qu.:15605   3rd Qu.: 748.8   3rd Qu.:2815                     
- Max.   :21536   Max.   :4500.0   Max.   :7620                     
+<pre><code>       ID            price         sqft_living       waterfront 
+ Min.   :   90   Min.   : 105.0   Min.   : 700   Length   :200  
+ 1st Qu.: 5162   1st Qu.: 329.5   1st Qu.:1498   N.unique :  2  
+ Median :10490   Median : 457.8   Median :2100   N.blank  :  0  
+ Mean   :10743   Mean   : 710.2   Mean   :2316   Min.nchar:  2  
+ 3rd Qu.:15605   3rd Qu.: 748.8   3rd Qu.:2815   Max.nchar:  3  
+ Max.   :21536   Max.   :4500.0   Max.   :7620                  
             condition      sqft_lot         bedrooms       bathrooms    
  average or below:142   Min.   :   720   Min.   :1.000   Min.   :0.500  
  good            : 47   1st Qu.:  5000   1st Qu.:3.000   1st Qu.:1.750  
@@ -390,10 +396,10 @@ $ yr_built    &lt;dbl&gt; 2006, 1914, 1957, 1976, 1981, 1961, 1994, 1978, 1947, 
 <section id="selecting-columns" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="selecting-columns">Selecting Columns</h4>
 <p>If the dataset contains a large number of variables, narrow down to the ones you are interested in working with. This can be done with the <code>select()</code> command. If there are not very many variables to begin with, or you are interested in all of them, then you may skip this step.</p>
-<p>Let’s create a smaller version of the dataset, with only the columns ID, price, sqft_living, and waterfront. We’ll call this <code>Houses_3var.</code></p>
+<p>Let’s create a smaller version of the dataset, with only the columns ID, price, sqft_living, and waterfront. We’ll call this <code>Houses_4var.</code></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>Houses_4var <span class="ot">&lt;-</span> Houses <span class="sc">|&gt;</span> <span class="fu">select</span>(ID, price, sqft_living, waterfront)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Houses_4var)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>Houses_4var <span class="ot">&lt;-</span> Houses <span class="sc">|&gt;</span> <span class="fu">select</span>(ID, price, sqft_living, waterfront)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Houses_4var)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 4
      ID price sqft_living waterfront
@@ -412,8 +418,8 @@ $ yr_built    &lt;dbl&gt; 2006, 1914, 1957, 1976, 1981, 1961, 1994, 1978, 1947, 
 <p>The <code>filter()</code> command narrows a dataset down to rows that meet specified conditions.</p>
 <p>We’ll filter the data to include only houses built after 2000.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>New_Houses <span class="ot">&lt;-</span> Houses <span class="sc">|&gt;</span> <span class="fu">filter</span>(yr_built<span class="sc">&gt;=</span><span class="dv">2000</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(New_Houses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>New_Houses <span class="ot">&lt;-</span> Houses <span class="sc">|&gt;</span> <span class="fu">filter</span>(yr_built<span class="sc">&gt;=</span><span class="dv">2000</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(New_Houses)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 9
      ID price sqft_living waterfront condition       sqft_lot bedrooms bathrooms
@@ -429,8 +435,8 @@ $ yr_built    &lt;dbl&gt; 2006, 1914, 1957, 1976, 1981, 1961, 1994, 1978, 1947, 
 </div>
 <p>Now, we’ll filter the data to include only houses on the waterfront.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>New_Houses <span class="ot">&lt;-</span> Houses <span class="sc">|&gt;</span> <span class="fu">filter</span>(waterfront <span class="sc">==</span> <span class="st">"Yes"</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(New_Houses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>New_Houses <span class="ot">&lt;-</span> Houses <span class="sc">|&gt;</span> <span class="fu">filter</span>(waterfront <span class="sc">==</span> <span class="st">"Yes"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(New_Houses)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 9
      ID price sqft_living waterfront condition       sqft_lot bedrooms bathrooms
@@ -451,8 +457,8 @@ $ yr_built    &lt;dbl&gt; 2006, 1914, 1957, 1976, 1981, 1961, 1994, 1978, 1947, 
 <p>We can use the <code>mutate()</code> function to create a new variable based on variables already in the dataset.</p>
 <p>Let’s add a variable giving the age of the house, as of 2015.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>Houses <span class="ot">&lt;-</span> Houses <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">age =</span> <span class="dv">2015</span><span class="sc">-</span>yr_built)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Houses) <span class="sc">|&gt;</span> <span class="fu">select</span>(ID, price, sqft_living, waterfront, condition, yr_built, age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>Houses <span class="ot">&lt;-</span> Houses <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">age =</span> <span class="dv">2015</span><span class="sc">-</span>yr_built)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Houses) <span class="sc">|&gt;</span> <span class="fu">select</span>(ID, price, sqft_living, waterfront, condition, yr_built, age)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 7
      ID price sqft_living waterfront condition        yr_built   age
@@ -496,15 +502,15 @@ $ yr_built    &lt;dbl&gt; 2006, 1914, 1957, 1976, 1981, 1961, 1994, 1978, 1947, 
 <p>The square of the standard deviation, called the <strong>variance</strong> is denoted <span class="math inline">\(s^2\)</span>.</p></li>
 </ul>
 </section>
-<section id="calcularing-summary-statistics-in-r" class="level3" data-number="1.2.3">
-<h3 data-number="1.2.3" class="anchored" data-anchor-id="calcularing-summary-statistics-in-r"><span class="header-section-number">1.2.3</span> Calcularing Summary Statistics in R</h3>
+<section id="calculating-summary-statistics-in-r" class="level3" data-number="1.2.3">
+<h3 data-number="1.2.3" class="anchored" data-anchor-id="calculating-summary-statistics-in-r"><span class="header-section-number">1.2.3</span> Calculating Summary Statistics in R</h3>
 <p>Let’s calculate the mean, median, and standard deviation, in prices.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>Houses_Summary <span class="ot">&lt;-</span> Houses <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">Mean_Price =</span> <span class="fu">mean</span>(price, <span class="at">na.rm=</span><span class="cn">TRUE</span>), </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>Houses_Summary <span class="ot">&lt;-</span> Houses <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">Mean_Price =</span> <span class="fu">mean</span>(price, <span class="at">na.rm=</span><span class="cn">TRUE</span>), </span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">Median_Price =</span> <span class="fu">median</span>(price, <span class="at">na.rm=</span><span class="cn">TRUE</span>), </span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">StDev_Price =</span> <span class="fu">sd</span>(price, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">Number_of_Houses =</span> <span class="fu">n</span>()) </span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>Houses_Summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>Houses_Summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 4
   Mean_Price Median_Price StDev_Price Number_of_Houses
@@ -517,8 +523,8 @@ $ yr_built    &lt;dbl&gt; 2006, 1914, 1957, 1976, 1981, 1961, 1994, 1978, 1947, 
 2. The <code>na.rm=TRUE</code> command removes missing values, so that summary statistics can be calculated. It’s not needed here, since this dataset doesn’t include missing values, but if the dataset does include missing values, you will need to include this, in order to do the calculation.</p>
 <p>The <code>kable()</code> function in the <code>knitr()</code> package creates tables with professional appearance.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(Houses_Summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(Houses_Summary)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <thead>
@@ -544,14 +550,14 @@ $ yr_built    &lt;dbl&gt; 2006, 1914, 1957, 1976, 1981, 1961, 1994, 1978, 1947, 
 <section id="grouped-summaries" class="level3" data-number="1.2.4">
 <h3 data-number="1.2.4" class="anchored" data-anchor-id="grouped-summaries"><span class="header-section-number">1.2.4</span> Grouped Summaries</h3>
 <p><strong><code>group_by()</code></strong></p>
-<p>The <code>group_by()</code> command allows us to calculate summary statistics, with the data broken down by by category.We’ll compare waterfront houses to non-waterfront houses.</p>
+<p>The <code>group_by()</code> command allows us to calculate summary statistics, with the data broken down by category. We’ll compare waterfront houses to non-waterfront houses.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>Houses_Grouped_Summary <span class="ot">&lt;-</span> Houses <span class="sc">|&gt;</span> <span class="fu">group_by</span>(waterfront) <span class="sc">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>Houses_Grouped_Summary <span class="ot">&lt;-</span> Houses <span class="sc">|&gt;</span> <span class="fu">group_by</span>(waterfront) <span class="sc">|&gt;</span> </span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="fu">summarize</span>(<span class="at">Mean_Price =</span> <span class="fu">mean</span>(price, <span class="at">na.rm=</span><span class="cn">TRUE</span>),</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">Median_Price =</span> <span class="fu">median</span>(price, <span class="at">na.rm=</span><span class="cn">TRUE</span>), </span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">StDev_Price =</span> <span class="fu">sd</span>(price, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">Number_of_Houses =</span> <span class="fu">n</span>()) </span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(Houses_Grouped_Summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(Houses_Grouped_Summary)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <thead>
@@ -582,7 +588,7 @@ $ yr_built    &lt;dbl&gt; 2006, 1914, 1957, 1976, 1981, 1961, 1994, 1978, 1947, 
 </table>
 </div>
 </div>
-<p>We see that waterfront house tend to be more expensive, on average, and also have more variability (higher standard deviation) in price than non-waterfront houses.</p>
+<p>We see that waterfront houses tend to be more expensive, on average, and also have more variability (higher standard deviation) in price than non-waterfront houses.</p>
 <div style="page-break-after: always;"></div>
 </section>
 </section>
@@ -594,19 +600,19 @@ $ yr_built    &lt;dbl&gt; 2006, 1914, 1957, 1976, 1981, 1961, 1994, 1978, 1947, 
 <p>Histograms are useful for displaying the distribution of a single quantitative variable. In a histogram, the x-axis breaks the variable into ranges of values, and the y-axis displays the number of observations with a value falling in that category (frequency).</p>
 <p><strong>General Template for Histogram</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>DatasetName, <span class="fu">aes</span>(<span class="at">x=</span>VariableName)) <span class="sc">+</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>DatasetName, <span class="fu">aes</span>(<span class="at">x=</span>VariableName)) <span class="sc">+</span> </span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">fill=</span><span class="st">"colorchoice"</span>, <span class="at">color=</span><span class="st">"colorchoice"</span>) <span class="sc">+</span> </span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Plot Title"</span>) <span class="sc">+</span></span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"x-axis label"</span>) <span class="sc">+</span> </span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"y-axis label"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"y-axis label"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Histogram of House Prices</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Houses, <span class="fu">aes</span>(<span class="at">x=</span>price)) <span class="sc">+</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Houses, <span class="fu">aes</span>(<span class="at">x=</span>price)) <span class="sc">+</span> </span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">fill=</span><span class="st">"lightblue"</span>, <span class="at">color=</span><span class="st">"white"</span>) <span class="sc">+</span> </span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribution of House Prices"</span>) <span class="sc">+</span></span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Price (in thousands)"</span>) <span class="sc">+</span> </span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Frequency"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Frequency"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -619,24 +625,24 @@ $ yr_built    &lt;dbl&gt; 2006, 1914, 1957, 1976, 1981, 1961, 1994, 1978, 1947, 
 </section>
 <section id="density-plot" class="level3" data-number="1.3.2">
 <h3 data-number="1.3.2" class="anchored" data-anchor-id="density-plot"><span class="header-section-number">1.3.2</span> Density Plot</h3>
-<p>Density plots show the distribution for a quantitative variable price. Scores can be compared across categories, like whether or not the house is on a waterfront.</p>
+<p>Density plots show the distribution for the quantitative variable, price. Scores can be compared across categories, like whether or not the house is on a waterfront.</p>
 <p><strong>General Template for Density Plot</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>DatasetName, <span class="fu">aes</span>(<span class="at">x=</span>QuantitativeVariable,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>DatasetName, <span class="fu">aes</span>(<span class="at">x=</span>QuantitativeVariable,</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>                             <span class="at">color=</span>CategoricalVariable, <span class="at">fill=</span>CategoricalVariable)) <span class="sc">+</span> </span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span> </span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Plot Title"</span>) <span class="sc">+</span></span>
 <span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Axis Label"</span>) <span class="sc">+</span> </span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Frequency"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Frequency"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><code>alpha</code>, ranging from 0 to 1 dictates transparency.</p>
+<p><code>alpha</code>, ranging from 0 to 1, dictates transparency.</p>
 <p><strong>Density Plot of House Prices</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Houses, <span class="fu">aes</span>(<span class="at">x=</span>price, <span class="at">color=</span>waterfront, <span class="at">fill=</span>waterfront)) <span class="sc">+</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Houses, <span class="fu">aes</span>(<span class="at">x=</span>price, <span class="at">color=</span>waterfront, <span class="at">fill=</span>waterfront)) <span class="sc">+</span> </span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span> </span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribution of Prices"</span>) <span class="sc">+</span></span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"House price (in thousands)"</span>) <span class="sc">+</span> </span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Frequency"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Frequency"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -652,18 +658,18 @@ $ yr_built    &lt;dbl&gt; 2006, 1914, 1957, 1976, 1981, 1961, 1994, 1978, 1947, 
 <p>Boxplots can be used to compare a quantitative variable with a categorical variable. The middle 50% of observations are contained in the “box”, with the upper and lower 25% of the observations in each tail.</p>
 <p><strong>General Template for Boxplot</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>DatasetName, <span class="fu">aes</span>(<span class="at">x=</span>CategoricalVariable, </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>DatasetName, <span class="fu">aes</span>(<span class="at">x=</span>CategoricalVariable, </span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>                             <span class="at">y=</span>QuantitativeVariable)) <span class="sc">+</span> </span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span> </span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Plot Title"</span>) <span class="sc">+</span> </span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Variable Name"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Variable Name"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Variable Name"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Variable Name"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>You can make the plot horizontal by adding <code>+ coordflip()</code>. You can turn the axis text vertical by adding <code>theme(axis.text.x = element_text(angle = 90))</code>.</p>
+<p>You can make the plot horizontal by adding <code>+ coord_flip()</code>. You can turn the axis text vertical by adding <code>theme(axis.text.x = element_text(angle = 90))</code>.</p>
 <p><strong>Boxplot Comparing Price by Waterfront Status</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Houses, <span class="fu">aes</span>(<span class="at">x=</span>waterfront, <span class="at">y=</span>price)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Houses, <span class="fu">aes</span>(<span class="at">x=</span>waterfront, <span class="at">y=</span>price)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span> </span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"House Price by Waterfront Status"</span>) <span class="sc">+</span> </span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Waterfront"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Price (in thousands)"</span>) <span class="sc">+</span> <span class="fu">coord_flip</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Waterfront"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Price (in thousands)"</span>) <span class="sc">+</span> <span class="fu">coord_flip</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -680,19 +686,19 @@ $ yr_built    &lt;dbl&gt; 2006, 1914, 1957, 1976, 1981, 1961, 1994, 1978, 1947, 
 <p>Violin plots are an alternative to boxplots. The width of the violin tells us the density of observations in a given range.</p>
 <p><strong>General Template for Violin Plot</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>DatasetName, <span class="fu">aes</span>(<span class="at">x=</span>CategoricalVariable, <span class="at">y=</span>QuantitativeVariable, </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>DatasetName, <span class="fu">aes</span>(<span class="at">x=</span>CategoricalVariable, <span class="at">y=</span>QuantitativeVariable, </span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>                             <span class="at">fill=</span>CategoricalVariable)) <span class="sc">+</span> </span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>() <span class="sc">+</span> </span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Plot Title"</span>) <span class="sc">+</span> </span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Variable Name"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Variable Name"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Variable Name"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Variable Name"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Violin Plot Comparing Prices by Waterfront</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Houses, <span class="fu">aes</span>(<span class="at">x=</span>waterfront, <span class="at">y=</span>price, <span class="at">fill=</span>waterfront)) <span class="sc">+</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Houses, <span class="fu">aes</span>(<span class="at">x=</span>waterfront, <span class="at">y=</span>price, <span class="at">fill=</span>waterfront)) <span class="sc">+</span> </span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>() <span class="sc">+</span> </span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Price by Waterfront Status"</span>) <span class="sc">+</span> </span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Waterfront"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Price (in thousands)"</span>) <span class="sc">+</span> </span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -708,19 +714,19 @@ $ yr_built    &lt;dbl&gt; 2006, 1914, 1957, 1976, 1981, 1961, 1994, 1978, 1947, 
 <p>Scatterplots are used to visualize the relationship between two quantitative variables.</p>
 <p><strong>Scatterplot Template</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>DatasetName, <span class="fu">aes</span>(<span class="at">x=</span>QuantitativeVariable, <span class="at">y=</span>QuantitativeVariable)) <span class="sc">+</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>DatasetName, <span class="fu">aes</span>(<span class="at">x=</span>QuantitativeVariable, <span class="at">y=</span>QuantitativeVariable)) <span class="sc">+</span> </span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Plot Title"</span>) <span class="sc">+</span> </span>
 <span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Axis Label"</span>) <span class="sc">+</span> </span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Axis Label"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Axis Label"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Scatterplot Comparing Price and Square Feet of Living Space</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Houses, <span class="fu">aes</span>(<span class="at">x=</span>sqft_living, <span class="at">y=</span>price)) <span class="sc">+</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Houses, <span class="fu">aes</span>(<span class="at">x=</span>sqft_living, <span class="at">y=</span>price)) <span class="sc">+</span> </span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Price and Living Space"</span>) <span class="sc">+</span> </span>
 <span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Price (in thousands)"</span>) <span class="sc">+</span> </span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Living Space in sq. ft. "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Living Space in sq. ft. "</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -733,12 +739,12 @@ $ yr_built    &lt;dbl&gt; 2006, 1914, 1957, 1976, 1981, 1961, 1994, 1978, 1947, 
 <p>We can also add color, size, and shape to the scatterplot to display information about other variables.</p>
 <p>We’ll use color to illustrate whether the house is on the waterfront, and size to represent the square footage of the entire lot (including the yard and the house).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Houses, </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Houses, </span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x=</span>sqft_living, <span class="at">y=</span>price, <span class="at">color=</span>waterfront, <span class="at">size=</span>sqft_lot)) <span class="sc">+</span> </span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Price of King County Houses"</span>) <span class="sc">+</span> </span>
 <span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Price (in thousands)"</span>) <span class="sc">+</span> </span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Living Space in sq. ft. "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Living Space in sq. ft. "</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -754,20 +760,20 @@ $ yr_built    &lt;dbl&gt; 2006, 1914, 1957, 1976, 1981, 1961, 1994, 1978, 1947, 
 <p>Bar graphs can be used to visualize one or more categorical variables. A bar graph is similar to a histogram, in that the y-axis again displays frequency, but the x-axis displays categories, instead of ranges of values.</p>
 <p><strong>Bar Graph Template</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>DatasetName, <span class="fu">aes</span>(<span class="at">x=</span>CategoricalVariable)) <span class="sc">+</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>DatasetName, <span class="fu">aes</span>(<span class="at">x=</span>CategoricalVariable)) <span class="sc">+</span> </span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill=</span><span class="st">"colorchoice"</span>,<span class="at">color=</span><span class="st">"colorchoice"</span>)  <span class="sc">+</span> </span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Plot Title"</span>) <span class="sc">+</span> </span>
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Variable Name"</span>) <span class="sc">+</span> </span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Frequency"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Frequency"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Bar Graph by Condition</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Houses, <span class="fu">aes</span>(<span class="at">x=</span>condition)) <span class="sc">+</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>Houses, <span class="fu">aes</span>(<span class="at">x=</span>condition)) <span class="sc">+</span> </span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill=</span><span class="st">"lightblue"</span>,<span class="at">color=</span><span class="st">"white"</span>)  <span class="sc">+</span> </span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Number of Houses by Condition"</span>) <span class="sc">+</span> </span>
 <span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Condition"</span>) <span class="sc">+</span> </span>
 <span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Frequency"</span>) <span class="sc">+</span>   </span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -776,29 +782,29 @@ $ yr_built    &lt;dbl&gt; 2006, 1914, 1957, 1976, 1981, 1961, 1994, 1978, 1947, 
 </div>
 </div>
 </div>
-<p>We see that the majority of houses are in average or below condition. Some are in good or very good condition, while a few are in very good condition.</p>
+<p>We see that the majority of houses are in average or below condition. Some are in good condition, and a few are in very good condition.</p>
 </section>
 <section id="stacked-and-side-by-side-bar-graphs" class="level3" data-number="1.3.7">
 <h3 data-number="1.3.7" class="anchored" data-anchor-id="stacked-and-side-by-side-bar-graphs"><span class="header-section-number">1.3.7</span> Stacked and Side-by-Side Bar Graphs</h3>
 <p><strong>Stacked Bar Graph Template</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> DatasetName, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> CategoricalVariable1, </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> DatasetName, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> CategoricalVariable1, </span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">fill =</span> CategoricalVariable2)) <span class="sc">+</span></span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_count</span>(<span class="at">position=</span><span class="st">"fill"</span>)  <span class="sc">+</span></span>
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Plot Title"</span>) <span class="sc">+</span> </span>
 <span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Variable 1"</span>) <span class="sc">+</span> </span>
 <span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Proportion of Variable 2"</span>) <span class="sc">+</span>   </span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>)) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Stacked Bar Graph Example</strong></p>
 <p>The <code>stat_count(position="fill")</code> command creates a stacked bar graph, comparing two categorical variables. Let’s explore whether waterfront status is related to condition.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Houses, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> waterfront, <span class="at">fill =</span> condition)) <span class="sc">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Houses, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> waterfront, <span class="at">fill =</span> condition)) <span class="sc">+</span></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_count</span>(<span class="at">position=</span><span class="st">"fill"</span>)  <span class="sc">+</span></span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"Condition by Waterfront Status"</span>) <span class="sc">+</span> </span>
 <span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Waterfront Status"</span>) <span class="sc">+</span> </span>
 <span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Condition"</span>) <span class="sc">+</span>   </span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>)) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -807,25 +813,25 @@ $ yr_built    &lt;dbl&gt; 2006, 1914, 1957, 1976, 1981, 1961, 1994, 1978, 1947, 
 </div>
 </div>
 </div>
-<p>We see that a slightly higher proportion of waterfront houses are in good or very condition than non-waterfront houses.</p>
+<p>We see that a slightly higher proportion of waterfront houses are in good or very good condition than non-waterfront houses.</p>
 <p><strong>Side-by-side Bar Graph Template</strong></p>
 <p>We can create a side-by-side bar graph, using <code>position=dodge</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> DatasetName, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> CategoricalVariable1, </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> DatasetName, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> CategoricalVariable1, </span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">fill =</span> CategoricalVariable2)) <span class="sc">+</span></span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
 <span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Plot Title"</span>) <span class="sc">+</span> </span>
 <span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Genre"</span>) <span class="sc">+</span> </span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Frequency"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Frequency"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Side-by-side Bar Graph Example</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Houses, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> waterfront, <span class="at">fill =</span> condition)) <span class="sc">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> Houses, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> waterfront, <span class="at">fill =</span> condition)) <span class="sc">+</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Condition by Waterfront Status"</span>) <span class="sc">+</span> </span>
 <span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Waterfront Status"</span>) <span class="sc">+</span> </span>
 <span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Condition"</span>) <span class="sc">+</span>   </span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>)) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -839,9 +845,9 @@ $ yr_built    &lt;dbl&gt; 2006, 1914, 1957, 1976, 1981, 1961, 1994, 1978, 1947, 
 <section id="correlation-plot" class="level3" data-number="1.3.8">
 <h3 data-number="1.3.8" class="anchored" data-anchor-id="correlation-plot"><span class="header-section-number">1.3.8</span> Correlation Plot</h3>
 <p>Correlation plots can be used to visualize relationships between quantitative variables. Correlation is a number between -1 and 1, describing the strength of the linear relationship between two variables. Variables with strong positive correlations will have correlation close to +1, while variables with strong negative correlations will have correlations close to -1. Variables with little to no relationship will have correlation close to 0.</p>
-<p>The <code>cor()</code> function calculates correlations between quantitative variables. We’ll use <code>select_if</code> to select only numeric variables. The `use=“complete.obs” command tells R to ignore observations with missing data.</p>
+<p>The <code>cor()</code> function calculates correlations between quantitative variables. We’ll use <code>select_if</code> to select only numeric variables. The <code>use="complete.obs"</code> command tells R to ignore observations with missing data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">select_if</span>(Houses, is.numeric), <span class="at">use=</span><span class="st">"complete.obs"</span>) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">select_if</span>(Houses, is.numeric), <span class="at">use=</span><span class="st">"complete.obs"</span>) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>               ID price sqft_living sqft_lot bedrooms bathrooms yr_built   age
 ID           1.00  0.05        0.06     0.02    -0.07      0.11     0.21 -0.21
@@ -854,11 +860,11 @@ yr_built     0.21  0.09        0.27     0.00     0.07      0.42     1.00 -1.00
 age         -0.21 -0.09       -0.27     0.00    -0.07     -0.42    -1.00  1.00</code></pre>
 </div>
 </div>
-<p>The <code>corrplot()</code> function in the <code>corrplot()</code> package provides a visualization of the correlations. Larger, thicker circles indicate stronger correlations.</p>
+<p>The <code>corrplot()</code> function in the <code>corrplot</code> package provides a visualization of the correlations. Larger, thicker circles indicate stronger correlations.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>Corr <span class="ot">&lt;-</span> <span class="fu">cor</span>(<span class="fu">select_if</span>(Houses, is.numeric), <span class="at">use=</span><span class="st">"complete.obs"</span>)</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(Corr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(Corr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -882,8 +888,8 @@ age         -0.21 -0.09       -0.27     0.00    -0.07     -0.42    -1.00  1.00</
 </ol>
 <p>Including too many variables can make these hard to read, so it’s a good idea to use <code>select</code> to narrow down the number of variables.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(Houses <span class="sc">|&gt;</span> <span class="fu">select</span>(price, sqft_living, condition, age))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(Houses <span class="sc">|&gt;</span> <span class="fu">select</span>(price, sqft_living, condition, age))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1042,7 +1048,7 @@ age         -0.21 -0.09       -0.27     0.00    -0.07     -0.42    -1.00  1.00</
 </section>
 <section id="section-4" class="level3 unnumbered">
 <h3 class="unnumbered anchored" data-anchor-id="section-4">3)</h3>
-<p>The following histograms and boxplots provide information on the average monthly temperatures, in degrees Celsius, for the 24 months in 2015-16, in the cities of Moscow (Russia), Melbourne (Australia), and San Francisco (United States). Use the graphs to answer the following questions.</p>
+<p>The following histograms and boxplots provide information on the average monthly temperatures, in degrees Celsius, for the 24 months in 2014-15, in the cities of Moscow (Russia), Melbourne (Australia), and San Francisco (United States). Use the graphs to answer the following questions.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -1088,7 +1094,7 @@ age         -0.21 -0.09       -0.27     0.00    -0.07     -0.42    -1.00  1.00</
 </section>
 <section id="section-5" class="level3 unnumbered">
 <h3 class="unnumbered anchored" data-anchor-id="section-5">4)</h3>
-<p>The American Cancer Society and National Cancer Institute distribute pamphlets to inform patients with cancer abut the nature of the disease and possible treatments. It is important that pamphlets be written at a reading level that patients will be able to understand.</p>
+<p>The American Cancer Society and National Cancer Institute distribute pamphlets to inform patients with cancer about the nature of the disease and possible treatments. It is important that pamphlets be written at a reading level that patients will be able to understand.</p>
 <p>The data represent reading levels of 63 adult cancer patients at the Philadelphia Veterans Affairs Medical Center, and the reading levels of 30 pamphlets available to them. (Source:https://ww2.amstat.org/publications/jse/v3n2/datasets.short.html)</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -1197,7 +1203,7 @@ age         -0.21 -0.09       -0.27     0.00    -0.07     -0.42    -1.00  1.00</
 <p>Suppose that a city is interested in estimating average household size among its residents. The city considers two different approaches for conducting this study.</p>
 <p>Approach 1: Select a random sample of 100 people and ask each person how many people live in their household.</p>
 <p>Approach 2: Select a random sample of 100 households and ask one person from each household how many people live in the household?</p>
-<p>How will mean household size estimates will compare for the two approaches? Will one approach yield a larger estimate of household size? Why or why not?</p>
+<p>How will mean household size estimates compare for the two approaches? Will one approach yield a larger estimate of household size? Why or why not?</p>
 
 
 </section>
@@ -1255,13 +1261,14 @@ age         -0.21 -0.09       -0.27     0.00    -0.07     -0.42    -1.00  1.00</
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
