@@ -42,94 +42,106 @@ load("Environment.Rdata")
 
 ## Sampling Variability
 
-### Population and Sample
+### Barro Colorado Island Forest
 
-In statistics, we often do not have the time, money, or means to collect data on all individuals or units on which we want to draw conclusions. Instead, we might collect data on only a subset of the individuals, and then make inferences about all individuals we are interested in, using the information we collected.
+**Research Question: How much do trees grow in a decade?**
 
-**Vocabulary:**
+Barro Colorado Island, located in the man-made Gatun Lake in the middle of the Panama Canal is home to the world's most heavily researched tropical rainforest. Every individual tree in the 50 hectare forest was permanently numbered with an aluminum tag in 1982 and researchers have visited every tree repeatedly since them, recording measurements on each individual tree. You can read more about the Barro Colorado Island forest study in [this article](https://smithsonian.figshare.com/articles/dataset/_Dataset_Barro_Colorado_Forest_Census_Plot_Data_Version_2012_/25620873) by Condit, Lao, Perez, Dolins, & Hubbell (2012). The data referenced in this section come from this study.
 
-1.  A **population** is the entire set of individuals that we want to draw conclusions about.
-2.  A **sample** is a subset of a population.\
-3.  A **parameter** is a numerical quantity pertaining to an entire population or process.\
-4.  A **statistic** is a numerical quantity calculated from a sample.
+We want to explore how much tree diameters in the forest change in a decade. Researchers visited all 9,189 trees that were in the forest in 2014 and still alive in 2025. They recorded the change in diameter in cm. for each tree. The distribution of changes in tree diameter is shown below.
 
-The purpose of this section is to explore how statistics calculated from a sample compare to the entire population.
-
-We'll work with data from the American National Health and Nutrition Examination survey (NHANES). This is a survey administered to civilian residents of the United States, which aims to collect data on several health and socioeconomic factors.
-
-The dataset contains information on 12,280 adult U.S. residents. While this is really just a sample of all U.S. residents, let's pretend for the purposes of this section that this really was our entire population. Perhaps, we can pretend that these are all the adults living in a certain town.
-
-The first 6 rows of the data are shown below.
-
-```{r, echo=FALSE}
-data(NHANESraw)
-Population <- NHANESraw |> filter(Age >= 18, !is.na(HomeOwn) , !is.na(SleepHrsNight)) |> 
-  select(Gender, Age, Race1, Education, HHIncomeMid, HomeOwn, Height, Weight, SleepHrsNight)  
+```{r}
+BCI_Forest <- readRDS("trees.RDS")
+BCI_Forest <- BCI_Forest |> filter(census %in% c(2014, 2025)) |>
+  pivot_wider(
+    id_cols = unique.id,
+    names_from = census,
+    values_from = -c(unique.id, census),
+    names_glue = "{.value}_{census}"
+  ) |> filter(status_2014 == "alive" & status_2025 == "alive" & !is.na(dbh_2025)& !is.na(dbh_2014)) |> 
+  transmute(unique.id = unique.id, 
+            plot = plot_2025,                                           
+            sp6 = sp6_2025,
+            diameter = dbh_2025/10, #convert mm to cm
+            growth = dbh_2025-dbh_2014,
+            exposure = exposure_2025)
 ```
 
 ```{r}
-head(Population)
+head(BCI_Forest)
 ```
 
-One of the variables `SleepHrsNight` is a self-reported estimate of the number of hours of sleep the participant gets at night or on the weekends.
-
-The histogram shows the distribution of sleep hours among the 12,280 residents in the population.
-
 ```{r}
-Sleep_Plot_Pop <- ggplot(data=Population, aes(x=SleepHrsNight)) + 
-  geom_histogram(fill="blue", boundary=0, binwidth=1, color="white") + 
-  ggtitle("Distribution of Hours of Sleep") + theme_bw()
-Sleep_Plot_Pop
+BCI_Forest_Plot_Pop <- ggplot(data=BCI_Forest, aes(x=growth)) + 
+  geom_histogram(fill="blue", binwidth=10, color="white") + 
+  ggtitle("Change in Tree Diameter in cm") + theme_bw() + xlim(c(-500, 500))
+BCI_Forest_Plot_Pop
 ```
 
-We see that the distribution of sleep hours is roughly symmetric, with most people getting between 5 and 8 hours per night.
-
-We'll calculate the mean and standard deviation in hours of sleep among the population.
-
 ```{r}
-Population |> summarize(Mean_Sleep = mean(SleepHrsNight),
-                        SD_Sleep = sd(SleepHrsNight), 
-                        N= n())
+BCI_Forest |> summarize(Mean_Growth = mean(growth) |> round(1),
+                        Median_Growth = median(growth) |> round(1) ,
+                        SD_Growth = sd(growth) |> round(1), 
+                        N = n())
 ```
 
 Recall that if we fit a statistical model with no explanatory variables, the intercept estimate will be the overall population mean.
 
-In this case, we'll denote the intercept $\beta_0$, rather than $b_0$, as we've done before. It is customary to use Greek letters to denote population parameters, and English letters to denote sample statistics. Since we are fitting the model to all 12,280 adult residents of our fictional town, we'll call the intercept $\beta_0$.
+In this case, we'll denote the intercept $\beta_0$, rather than $b_0$, as we've done before. It is customary to use Greek letters to denote population parameters, and English letters to denote sample statistics. Since we are fitting the model to all 9,189 trees, we'll call the intercept $\beta_0$.
 
 ```{r}
-M_Pop_sleep <- lm(data=Population, SleepHrsNight ~ 1)
-M_Pop_sleep
+M_BCI_growth <- lm(data=BCI_Forest, growth ~ 1)
+M_BCI_growth
 ```
 
 ```{r, echo=FALSE}
-M_Pop_sleep_b0 <- M_Pop_sleep$coef[1] |> round(2)
+M_BCI_growth_b0 <- M_BCI_growth$coef[1] |> round(2)
 ```
 
-The mean number of hours of sleep among all adult residents of the city is $\beta_0 =$ `r M_Pop_sleep_b0` hours.
+On average, tree diameter increased by about $\beta_0 =$ `r M_BCI_growth_b0` cm. between 2014 and 2025.
+
+### Population and Sample
+
+The Barro Colorado Island Forest data are unusual in that researchers actually visited and recorded data on every tree in the sector of the forest. Typically, we do not have the time, money, or means to collect data on all individuals or items of interest. Instead, we collect data on only a subset of the individuals, and then use information from those observed to draw conclusions about the broader set we're interested in.
+
+**Vocabulary:**
+
+1.  A **population** is the entire set of individuals that we want to draw conclusions about.
+2.  A **census** is a study in which the entire population is observed.\
+3.  A **sample** is a subset of a population.\
+4.  A **parameter** is a numerical quantity pertaining to an entire population or process.\
+5.  A **statistic** is a numerical quantity calculated from a sample.
+
+In the Barro Island study, the population of interest is all trees in the 50-hectare section of the forest. Because researchers actually visited all 9,189 trees, this study is an example of a census.
+
+Parameters and statistics are numeric quantities (such a mean, median, proportions, etc.) that describe the population or sample, respectively. In this study, a parameter of interest is the mean growth among all trees. Because we have data on all 9,189 trees, we know that the population mean is `r mean(BCI_Forest$growth) |> round(1)` cm. In most situations, we won't know the exact value of a population parameter since we will only have data on a sample, rather than on the entire population.
+
+In this section, we'll explore how to use statistics computed from samples to draw conclusions about population parameters.
 
 ### Sampling Distribution and Standard Error
 
-We typically won't have data on the full population and won't know the values of parameters like $\beta_0$. Instead, we'll have data on just a sample taken from the population.
-
-To illustrate, we'll take samples of 75 residents and see how the mean hours of sleep in the samples compare to the population.
+Suppose that researchers did not have the time to visit all 9,189 trees in the forest and instead had selected a random sample of 100 trees, recording the change in diameter of just those 100.
 
 **First Sample**
 
-We use the `sample` command to take a random sample of 75 residents. The first 6 residents in the sample are shown below.
+We use the `sample` command to take a random sample of 100 trees. The first 6 residents in the sample are shown below.
 
 ```{r}
-# take sample of 75 residents
-Sample1 <- sample(Population, size = 75)
-head(Sample1)
+set.seed(08202026)
 ```
 
-The distribution of sleep hours among the 75 people in the sample is shown below.
+```{r}
+# take sample of 100 trees
+Sample1 <- slice_sample(BCI_Forest, n = 100)
+```
+
+The distribution of diameter growth for the 100 trees in the sample is shown below.
 
 ```{r}
-Sleep_Plot_Sample1 <- ggplot(data=Sample1, aes(x=SleepHrsNight)) + 
-  geom_histogram(fill="blue", boundary=0, binwidth=1, color="white") + 
-  ggtitle("Distribution of Hours of Sleep in Sample") + theme_bw()
-Sleep_Plot_Sample1
+BCI_Plot_Sample1 <- ggplot(data=Sample1, aes(x=growth)) + 
+  geom_histogram(fill="blue", binwidth=10, color="white") + 
+  ggtitle("Change in Tree Diameter in cm") + theme_bw() + xlim(c(-500, 500))
+BCI_Plot_Sample1
 ```
 
 Notice that while the sample is not the same as the population, it has a roughly similar shape, center, and amount of spread.
@@ -137,164 +149,166 @@ Notice that while the sample is not the same as the population, it has a roughly
 The mean and standard deviation for the sample are shown below.
 
 ```{r}
-Sample1 |> summarize(Mean_Sleep = mean(SleepHrsNight),
-                        SD_Sleep = sd(SleepHrsNight), 
+Sample1 |> summarize(Mean_growth = mean(growth) |> round(2),
+                        SD_growth = sd(growth) |> round(2) , 
                         N= n())
 ```
 
-Notice that the mean hours of sleep differs from that of the population. This is not surprising, as we wouldn't expect a statistic calculated from a sample of 75 to exactly match the parameter calculated from the entire population.
+Notice that the mean growth in the sample differs from that of the population. This is not surprising, as we wouldn't expect a statistic calculated from a sample of 100 to exactly match the parameter calculated from the entire population.
 
 We'll fit a model to the sample data and record the intercept.
 
 ```{r}
-M_Sample1_sleep <- lm(data=Sample1, SleepHrsNight ~ 1)
-M_Sample1_sleep
+M_Sample1_growth <- lm(data=Sample1, growth ~ 1)
+M_Sample1_growth
 ```
 
-In this case, we'll denote the intercept $b_0$, since it is a statistic calculated from our sample. $b_0$ = `r M_Sample1_sleep$coefficients |>round(2)` is an estimate of our population mean $\beta_0$, which we happen to know is `r M_Pop_sleep_b0`
+In this case, we'll denote the intercept $b_0$, since it is a statistic calculated from our sample. $b_0$ = `r M_Sample1_growth$coefficients |>round(2)` is an estimate of our population mean $\beta_0$, which we happen to know is `r M_BCI_growth_b0`
 
 In a real situation, we would typically not know $\beta_0$, and would need to estimate it using $b_0$. Since $b_0$ shouldn't be expected to match $\beta_0$ exactly, we cannot say that $\beta_0$ is exactly $b_0$, but we can say that $\beta_0$ is likely to be "close: to $b_0$. In order to know how "close", we need to know how much the sample statistic $b_0$ could plausibly differ from the population parameter $\beta_0$.
 
-To investigate that, let's take some additional samples of size 75, fit a model to estimate the mean hours of sleep $b_0$ and see how much $b_0$ varies between samples.
+To investigate that, let's take some additional samples of size 100, fit a model to estimate the mean growth $b_0$ and see how much $b_0$ varies between samples.
 
 **Second Sample**
 
 ```{r}
-Sample2 <- sample(Population, size = 75)
-M_Sample2_sleep <- lm(data=Sample2, SleepHrsNight ~ 1)
-M_Sample2_sleep
+Sample2 <- slice_sample(BCI_Forest, n = 100)
+M_Sample2_growth <- lm(data=Sample2, growth ~ 1)
+M_Sample2_growth
 ```
 
 **Third Sample**
 
 ```{r}
-Sample3 <- sample(Population, size = 75)
-M_Sample3_sleep <- lm(data=Sample3, SleepHrsNight ~ 1)
-M_Sample3_sleep
+Sample3 <- slice_sample(BCI_Forest, n = 100)
+M_Sample3_growth <- lm(data=Sample3, growth ~ 1)
+M_Sample3_growth
 ```
 
 **Fourth Sample**
 
 ```{r}
-Sample4 <- sample(Population, size = 75)
-M_Sample4_sleep <- lm(data=Sample4, SleepHrsNight ~ 1)
-M_Sample4_sleep
+Sample4 <- slice_sample(BCI_Forest, n = 100)
+M_Sample4_growth <- lm(data=Sample4, growth ~ 1)
+M_Sample4_growth
 ```
 
 **Fifth Sample**
 
 ```{r}
-Sample5 <- sample(Population, size = 75)
-M_Sample5_sleep <- lm(data=Sample5, SleepHrsNight ~ 1)
-M_Sample5_sleep
+Sample5 <- slice_sample(BCI_Forest, n = 100)
+M_Sample5_growth <- lm(data=Sample5, growth ~ 1)
+M_Sample5_growth
 ```
 
-Let's now take 10,000 more random samples of 75 adult residents and record $b_0$, the estimated mean hours of sleep for each sample.
+We see that the mean growth varies between samples.
+
+Let's now take 10,000 more random samples of 100 trees and record $b_0$, the record estimated mean diameter growth for each sample.
 
 ```{r}
-Samples_sleep <- do(10000)*lm(SleepHrsNight ~ 1, data = sample(Population, size=75))
+Samples_growth <- mosaic::do(10000)*lm(growth  ~ 1, data = slice_sample(BCI_Forest, n=100))
 ```
 
-The histogram below shows the distribution of $b_0$, the mean hours of sleep in the 10,000 different samples.
+The histogram below shows the distribution of $b_0$, the mean tree growth in the 10,000 different samples.
 
 ```{r}
-Samp_Dist_Mean_sleep <- ggplot(data=Samples_sleep, aes(x=Intercept)) +
-  geom_histogram(color="white", fill="lightblue", binwidth=0.01) + 
-  ggtitle("Sampling Distribution for b0 - Mean Hours of Sleep") + 
-  xlab("Mean Hours in Sample") + theme_bw()
-Samp_Dist_Mean_sleep 
+Samp_Dist_Mean_growth <- ggplot(data=Samples_growth, aes(x=Intercept)) +
+  geom_histogram(color="white", fill="lightblue", binwidth=1) + 
+  ggtitle("Sampling Distribution for b0 - Mean Diameter Growth") + 
+  xlab("Mean Growth (in cm.)") + theme_bw()
+Samp_Dist_Mean_growth
 ```
 
-We notice that most of our 10,000 samples yielded means between 6.5 and 7.25 hours and that the distribution is roughly symmetric and bell-shaped.
+We notice that most of our 10,000 samples yielded means between 10 and 40 cm. and that the distribution is roughly symmetric and bell-shaped.
 
-The distribution shown in this histogram is called the **sampling distribution for** $b_0$. The sampling distribution for a statistic shows the distribution of the statistic over many samples.
+The distribution shown in this histogram is called the **sampling distribution for** $b_0$. Since $b_0$ represents the mean tree diameter growth, in this case we can call it the sampling distribution for the mean.The **sampling distribution** for a statistic shows the distribution of the statistic over many samples.
 
 We'll calculate the mean and standard deviation of the sampling distribution. How do these compare to the mean and standard deviation of the population that we saw previously?
 
 ```{r}
-Samples_sleep |> summarize(Mean_b0 = mean(Intercept),
-                              SE_b0 = sd(Intercept), 
+Samples_growth |> summarize(Mean_b0 = mean(Intercept) |> round(1),
+                              SE_b0 = sd(Intercept)|> round(1), 
                               N= n())
 ```
 
-Notice that the mean of the sampling distribution for $b_0$ is about the same as the population mean $\beta_0$ = `r M_Pop_sleep_b0`
+Notice that the mean of the sampling distribution for $b_0$ is about the same as the population mean $\beta_0$ = `r M_BCI_growth_b0`
 
-The standard deviation of the sampling distribution for the mean $b_0$, however, is much less than the population standard deviation of 1.435. This makes sense, since there is much less variability in the sampling distribution for the mean hours of sleep than there was in the distribution of sleep hours for individuals. We saw that most individuals reported getting between 5 and 8 hours per night, while most samples of size 75 resulted in a mean between 6.5 and 7.25 hours, a much narrower range.
+The standard deviation of the sampling distribution for the mean $b_0$, however, is much less than the population standard deviation of `r sd(BCI_Forest$growth) |> round(0)`. This makes sense, since there is much less variability in the sampling distribution for the mean growth than there was in the distribution of growth for individual trees. We saw that some trees grew more than 100 cm. in diameter, while others actually got smaller. On the other hand, the mean growth in samples of 100 typically stayed between 10 and 40 cm.
 
-The standard deviation of the sampling distribution for a statistic is also called the **standard error** of the statistic. In this case, it represents the amount of variability in mean hours of sleep between different samples of 75 residents. This is different than the population standard deviation, which represents the amount of variability in hours of sleep between different individual residents.
+The standard deviation of the sampling distribution for a statistic is also called the **standard error** of the statistic. In this case, it represents the amount of variability in mean diameter growth between different samples of 100 trees. This is different than the population standard deviation, which represents the amount of variability in growth between individual trees.
 
 **Vocabulary:**
 
--   The **sampling distribution** of a statistic is the distribution of values the statistic takes on across many different samples of a given size.\
--   The **standard error** of a statistic is the standard deviation of that statistic's sampling distribution. It measures how much the statistic varies between different samples of a given size.
+- The **sampling distribution** of a statistic is the distribution of values the statistic takes on across many different samples of a given size.\
+- The **standard error** of a statistic is the standard deviation of that statistic's sampling distribution. It measures how much the statistic varies between different samples of a given size.
 
 #### Effect of Sample Size {.unnumbered}
 
 **Question:**
 
-Suppose the sample consisted of 10, or 30, or 200 residents, instead of 75? Would you expect the standard deviation of individual sleep times in the samples to increase, decrease or stay about the same? What about the standard error of the mean sleep time?
+Suppose the sample consisted of 10, or 50, or 200 trees, instead of 100? Would you expect the standard deviation of individual tree growth in the samples to increase, decrease or stay about the same? What about the standard error of the mean growth?
 
-The histogram shows the distribution of sample standard deviations in random samples of each size. These represent the variability in sleep hours between individuals in the sample.
+The histogram shows the distribution of sample standard deviations in random samples of each size. These represent the variability in growth between individual trees in the sample.
 
 ```{r, echo=FALSE}
-set.seed(08282024)
-Sample10 <- sample(Population, size = 10)
-Sample30 <- sample(Population, size = 30)
-Sample75 <- sample(Population, size = 75)
-Sample200 <- sample(Population, size = 200)
+set.seed(08202026)
+Sample10 <- slice_sample(BCI_Forest, n = 10)
+Sample50 <- slice_sample(BCI_Forest, n = 50)
+Sample100 <- slice_sample(BCI_Forest, n = 100)
+Sample200 <- slice_sample(BCI_Forest, n = 200)
 ```
 
 ```{r, echo=FALSE, fig.width=12, fig.height=6}
 
-xrange <- c(0,12)
+xrange <- c(-500,500)
 
-Hist10 <- ggplot(data = Sample10, aes(x=SleepHrsNight)) + 
-  geom_histogram(color="white", fill="lightblue") + 
+Hist10 <- ggplot(data = Sample10, aes(x=growth)) + 
+  geom_histogram(color="white", fill="lightblue", binwidth=10) + 
   ggtitle("n=10") + 
-  xlab("Sleep Hours") + ylab("Frequency") + xlim(xrange) + theme_bw()
+  xlab("Growth") + ylab("Frequency") + xlim(xrange) + theme_bw()
 
-Hist30 <- ggplot(data = Sample30, aes(x=SleepHrsNight)) + 
-  geom_histogram(color="white", fill="lightblue") + 
-  ggtitle("n=30") + 
-  xlab("Sleep Hours") + ylab("Frequency") + xlim(xrange) + theme_bw()
+Hist50 <- ggplot(data = Sample50, aes(x=growth)) + 
+  geom_histogram(color="white", fill="lightblue", binwidth=10) + 
+  ggtitle("n=50") + 
+  xlab("Growth") + ylab("Frequency") + xlim(xrange) + theme_bw()
 
 
-Hist75 <- ggplot(data = Sample75, aes(x=SleepHrsNight)) + 
-  geom_histogram(color="white", fill="lightblue") + 
-  ggtitle("n=75") + 
-  xlab("Sleep Hours") + ylab("Frequency") + xlim(xrange) + theme_bw()
+Hist100 <- ggplot(data = Sample100, aes(x=growth)) + 
+  geom_histogram(color="white", fill="lightblue", binwidth=10) + 
+  ggtitle("n=100") + 
+  xlab("Growth") + ylab("Frequency") + xlim(xrange) + theme_bw()
 
-Hist200 <- ggplot(data = Sample200, aes(x=SleepHrsNight)) + 
-  geom_histogram(color="white", fill="lightblue") + 
+Hist200 <- ggplot(data = Sample200, aes(x=growth)) + 
+  geom_histogram(color="white", fill="lightblue", binwidth=10) + 
   ggtitle("n=200") + 
-  xlab("Sleep Hours") + ylab("Frequency") + xlim(xrange) + theme_bw()
+  xlab("Growth") + ylab("Frequency") + xlim(xrange) + theme_bw()
 
-grid.arrange(Hist10, Hist30, Hist75, Hist200, ncol=2)
+grid.arrange(Hist10, Hist50, Hist100, Hist200, ncol=2)
 ```
 
-Notice that the variability in sleep hours between individual people stays roughly the same, regardless of sample size.
+Notice that the variability in growth between individual trees stays roughly the same, regardless of sample size.
 
-The table shows the standard deviation of individual sleep hours in each of the samples.
+The table shows the standard deviation of individual tree growth in each of the samples.
 
 ```{r, echo=FALSE}
-SD10 <- sd(Sample10$SleepHrsNight)
-SD30 <- sd(Sample30$SleepHrsNight)
-SD75 <- sd(Sample75$SleepHrsNight)
-SD200 <- sd(Sample200$SleepHrsNight)
-Sample_Size <- c(10,30, 75, 200)
-SD <- c(SD10, SD30, SD75, SD200)
+SD10 <- sd(Sample10$growth) |> round(1)
+SD50 <- sd(Sample50$growth) |> round(1)
+SD100 <- sd(Sample100$growth) |> round(1)
+SD200 <- sd(Sample200$growth) |> round(1)
+Sample_Size <- c(10,50, 100, 200)
+SD <- c(SD10, SD50, SD100, SD200)
 kable(data.frame(Sample_Size, SD))
 ```
 
-Sample size does not impact the amount of variability between individual people. Standard deviation in sleep hours does not systematically increase or decrease based one sample size (of course it varies a little based on the people randomly chosen in the sample).
+Sample size does not impact the amount of variability between individuals in a sample. Standard deviation in individual tree growths does not systematically increase or decrease based on sample size (though it will vary randomly between samples). This makes sense, since variability between growths of individual trees has nothing to do with the size of the sample.
 
 Now, we'll examine what happens to the standard error of the mean $b_0$ as the sample size changes.
 
 ```{r, echo=FALSE}
-Mean10 <- do(10000) * lm( SleepHrsNight ~ 1, data = sample(Population, size=10))
-Mean30 <- do(10000) * lm( SleepHrsNight ~ 1, data = sample(Population, size=30))
-Mean75 <- do(10000) * lm( SleepHrsNight ~ 1, data = sample(Population, size=75))
-Mean200 <- do(10000) * lm( SleepHrsNight ~ 1, data = sample(Population, size=200))
+Mean10 <- mosaic::do(10000) * lm( growth ~ 1, data = slice_sample(BCI_Forest, n=10))
+Mean50 <- mosaic::do(10000) * lm( growth ~ 1, data = slice_sample(BCI_Forest, n=50))
+Mean100 <- mosaic::do(10000) * lm( growth ~ 1, data = slice_sample(BCI_Forest, n=100))
+Mean200 <- mosaic::do(10000) * lm( growth ~ 1, data = slice_sample(BCI_Forest, n=200))
 ```
 
 **Distributions of Mean Between Different Samples**
@@ -303,41 +317,41 @@ Mean200 <- do(10000) * lm( SleepHrsNight ~ 1, data = sample(Population, size=200
 Mean10_Plot <- ggplot(data=Mean10, aes(x=Intercept)) +  
   geom_histogram(color="white", fill="lightblue", bins=60) +
   xlab("Sample Mean") + ylab("Frequency") +
-  ggtitle("n=10") + xlim(c(5,9)) + 
+  ggtitle("n=10") + xlim(c(-50,100)) + 
   theme(legend.position = "none") + theme_bw()
 
-Mean30_Plot <- ggplot(data=Mean30, aes(x=Intercept)) +  
+Mean50_Plot <- ggplot(data=Mean50, aes(x=Intercept)) +  
   geom_histogram(color="white", fill="lightblue", bins=60) +
   xlab("Sample Mean") + ylab("Frequency") +
-  ggtitle("n=30") + xlim(c(5,9)) +
+  ggtitle("n=50") + xlim(c(-50,100)) + 
   theme(legend.position = "none")  + theme_bw()
 
-Mean75_Plot <- ggplot(data=Mean75, aes(x=Intercept)) +  
+Mean100_Plot <- ggplot(data=Mean100, aes(x=Intercept)) +  
   geom_histogram(color="white", fill="lightblue", bins=100) +
   xlab("Sample Mean") + ylab("Frequency") +
-  ggtitle("n=75") + xlim(c(5,9)) +
+  ggtitle("n=100") + xlim(c(-50,100)) + 
   theme(legend.position = "none")  + theme_bw()
 
 Mean200_Plot <- ggplot(data=Mean200, aes(x=Intercept)) +  
   geom_histogram(color="white", fill="lightblue", bins=100) +
   xlab("Sample Mean") + ylab("Frequency") +
-  ggtitle("n=200") + xlim(c(5,9)) +
+  ggtitle("n=200") + xlim(c(-50,100)) + 
   theme(legend.position = "none")  + theme_bw()
 
-grid.arrange(Mean10_Plot, Mean30_Plot, Mean75_Plot, Mean200_Plot, ncol=2)
+grid.arrange(Mean10_Plot, Mean50_Plot, Mean100_Plot, Mean200_Plot, ncol=2)
 ```
 
-Notice that as the sample size increases, the sampling distribution of the mean becomes more symmetric and bell-shaped, and also more concentrated around the population mean $\mu$.
+Notice that as the sample size increases, the sampling distribution of the mean becomes more symmetric and bell-shaped, and also more concentrated around the population mean $\beta_0$.
 
 The table shows the standard error of the mean for samples of different size:
 
 ```{r, echo=FALSE}
-SE10 <- sd(Mean10$Intercept)
-SE30 <- sd(Mean30$Intercept)
-SE75 <- sd(Mean75$Intercept)
-SE200 <- sd(Mean200$Intercept)
-Sample_Size <- c(10,30,75,200)
-SE <- c(SE10, SE30, SE75, SE200)
+SE10 <- sd(Mean10$Intercept) |> round(1)
+SE50 <- sd(Mean50$Intercept) |> round(1)
+SE100 <- sd(Mean100$Intercept) |> round(1)
+SE200 <- sd(Mean200$Intercept) |> round(1)
+Sample_Size <- c(10,50,100,200)
+SE <- c(SE10, SE50, SE100, SE200)
 kable(data.frame(Sample_Size, SE))
 ```
 
@@ -351,50 +365,46 @@ We saw that while statistics calculated from individual samples deviate from pop
 
 Thus, when we have only a single sample, we can use the sample statistic as an estimate of the population parameter, provided we allow for a certain margin of error. The question is how much margin of error do we need?
 
-The sampling distribution for the mean hours of sleep is shown again below. The population mean ($\beta_0=6.856$) is marked by the purple dotted line. The gold bar at the bottom of the histogram represents the range of sample proportions that lie within $\pm 2$ standard errors of the true population mean:
+The sampling distribution for the mean diameter growth is shown again below. The population mean $\beta_0=$ `r mean(BCI_Forest$growth) |> round(1)` is marked by the purple dotted line. The gold bar at the bottom of the histogram represents the range of sample means that lie within $\pm 2$ standard errors of the true population mean:
 
 ```{r, echo=FALSE}
-beta0 <- mean(Population$SleepHrsNight)
-b0 <- mean(Sample1$SleepHrsNight)
-SE_b0 <- sd(Samples_sleep$Intercept)
+beta0 <- mean(BCI_Forest$growth)
+b0 <- mean(Sample1$growth)
+SE_b0 <- sd(Samples_growth$Intercept)
 ```
 
-`r round(M_Pop_sleep_b0,2)` - 2(`r round(SE_b0 ,2)`) = `r round(M_Pop_sleep_b0 -2*SE_b0 ,2)` to \newline
+`r round(M_BCI_growth_b0,2)` - 2(`r round(SE_b0 ,2)`) = `r round(M_BCI_growth_b0 -2*SE_b0 ,2)` to \newline
 
-`r round(M_Pop_sleep_b0,2)` + 2(`r round(SE_b0 ,2)`) = `r round(M_Pop_sleep_b0 +2*SE_b0 ,2)`.
+`r round(M_BCI_growth_b0,2)` + 2(`r round(SE_b0 ,2)`) = `r round(M_BCI_growth_b0 +2*SE_b0 ,2)`.
 
 ```{r}
-Samp_Dist_Mean_sleep + geom_vline(xintercept=M_Pop_sleep_b0, color="purple", linetype="dotted", linewidth=2) +
-  geom_segment(aes(x= M_Pop_sleep_b0 - 2*SE_b0, xend= M_Pop_sleep_b0 + 2*SE_b0, y=20, yend=20), color="gold", size=20, alpha=0.01) 
+Samp_Dist_Mean_growth + geom_vline(xintercept=M_BCI_growth_b0, color="purple", linetype="dotted", linewidth=2) +
+  geom_segment(aes(x= M_BCI_growth_b0 - 2*SE_b0, xend= M_BCI_growth_b0 + 2*SE_b0, y=20, yend=20), color="gold", size=20, alpha=0.01) 
 ```
 
-We calculate the proportion of samples whose mean hours of sleep lies within $\pm 2$ standard errors of the true proportion.
+We calculate the proportion of samples whose mean growth lies within $\pm 2$ standard errors of the true mean.
 
 ```{r}
-Lower <- M_Pop_sleep_b0 - 2*SE_b0 
-Upper <- M_Pop_sleep_b0 + 2*SE_b0 
-sum((Samples_sleep$Intercept >=Lower) & (Samples_sleep$Intercept <= Upper))
+Lower <- M_BCI_growth_b0 - 2*SE_b0 
+Upper <- M_BCI_growth_b0 + 2*SE_b0 
+sum((Samples_growth$Intercept >=Lower) & (Samples_growth$Intercept <= Upper))
 ```
 
 Approximately 95% of the 10,000 samples produced proportions within $\pm 2$ standard errors of the true population mean.
 
-In a real situation, we won't have access to the entire population, but only a single sample. For example, recall our original sample of 75 people, in which we observed a proportion of on-time arrivals of $b_0=$ `r mean(Sample1$SleepHrsNight)|>round(2)`.
+In a real situation, we won't have access to the entire population, but only a single sample. For example, recall our original sample of 100 trees, in which we observed a mean diameter growth of $b_0=$ `r mean(Sample1$growth)|>round(2)`.
 
-Since we now know that 95% of all samples produce proportions that lie within two standard errors of the population mean, we can obtain an estimate of the population mean $\beta_0$ by adding and subtracting $2\times \text{SE}(b_0)$ from our observed sample estimate $b_0$.
+Since we now know that 95% of all samples produce sample means that lie within two standard errors of the population mean, we can obtain an estimate of the population mean $\beta_0$ by adding and subtracting $2\times \text{SE}(b_0)$ from our observed sample estimate $b_0$.
 
 Using probability theory, it can be shown generally that if the sampling distribution of a statistic is symmetric and bell shaped, then approximately 95% of all samples will produce sample statistics that lie within two standard errors of the corresponding population parameter. Such an interval is called an approximate 95% **confidence interval** for the population parameter.
 
 **Approximate 95% confidence interval:** If the sampling distribution of a statistic is symmetric and bell-shaped, a 95% confidence interval for the population parameter is:
 
-$$
-\text{Statistic} \pm 2\times \text{Standard Error}, 
-$$
+$$\text{Statistic} \pm 2\times \text{Standard Error}, $$
 
 More generally, if we want to use a level of confidence that is different than 95%, we can adjust the value we multiply the standard error by. In general, a standard error confidence interval has the form:
 
-$$
-\text{Statistic} \pm m\times \text{Standard Error}, 
-$$
+$$\text{Statistic} \pm m\times \text{Standard Error}, $$
 
 where the value of $m$ depends on the desired level of confidence.
 
@@ -406,14 +416,12 @@ knitr::include_graphics("Emp_Rule.png")
 
 #### Example: 95% Confidence Interval for $\beta_0$ {.unnumbered}
 
-We'll calculate a 95% confidence interval for the mean hours of sleep in our fictional city, using our original sample where $b_0$ = `r mean(Sample1$SleepHrsNight)|>round(2)`. The 95% confidence interval is:
+We'll calculate a 95% confidence interval for the mean diameter growth, using our original sample where $b_0$ = `r mean(Sample1$growth)|>round(2)`. The 95% confidence interval is:
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 & b_0 \pm 2\times \text{SE}(b_0) \\
 & = `r round(b0,2)` \pm 2(`r round(SE_b0,2)`)
-\end{aligned}
-$$
+\end{aligned}$$
 
 The confidence interval is:
 
@@ -421,26 +429,24 @@ The confidence interval is:
 c(b0 - 2*SE_b0, b0 + 2*SE_b0) |> as.numeric() |> round(2)
 ```
 
-Based on our sample of 75 residents, we can be 95% confident that the mean number of hours of sleep among all residents in the city is between `r round(b0 - 2*SE_b0, 2)` and `r round(b0 + 2*SE_b0, 2)` hours.
+Based on our sample of 100 trees, we can be 95% confident that the mean diameter growth among all trees in this section of the Barro Colorado Island forest from 2014 to 2025 was between `r round(b0 - 2*SE_b0, 2)` and `r round(b0 + 2*SE_b0, 2)` cm
 
 Knowing what we do about the true value of the population parameter $\beta_0$, we can see that our interval does indeed contain the true population value of $\beta_0=$ `r beta0|>round(2)`.
 
 #### What does 95% Confidence Mean? {.unnumbered}
 
-Suppose, instead of $\beta_0=$ `r beta0`, our sample of 75 had resulted in a mean of $\beta_0=$ `r 6.3`. We can see from the sampling distribution that some samples did produce means that low.
+Suppose, instead of $\beta_0=$ `r beta0`, our sample of 100 had resulted in a mean of $\beta_0=$ `r 35` cm? We can see from the sampling distribution that some samples did produce means that low.
 
 Then, using the same formula we would obtain an approximate 95% confidence interval of
 
-$$
-\begin{aligned}
-& 6.3 \pm 2\times \text{SE}(b_0) \\
-& = `r 6.3` \pm 2(`r round(SE_b0,2)`)
-\end{aligned}
-$$
+$$\begin{aligned}
+& 30 \pm 2\times \text{SE}(b_0) \\
+& = `r 35` \pm 2(`r round(SE_b0,2)`)
+\end{aligned}$$
 
-which is `r round(6.3 - 2*SE_b0, 2)` to `r round(6.3 + 2*SE_b0, 2)`.
+which is `r round(35 - 2*SE_b0, 2)` to `r round(35 + 2*SE_b0, 2)`.
 
-Notice that this interval does not contain the true value of $\beta_0=6.85$. Does this mean we did something wrong when we calculated the confidence interval?
+Notice that this interval does not contain the true value of $\beta_0=$ `r beta0|>round(1)`. Does this mean we did something wrong when we calculated the confidence interval?
 
 The answer is "no". Notice we claimed to be only "95%" confident that our interval contains the true value of the population parameter $\beta_0$. This means that we should expect 5% of samples taken randomly to yield a sample mean $b_0$ so different from the population mean $\beta_0$, that the resulting confidence interval would not contain the true value of $\beta_0$. This does not mean we did anything wrong, just that we obtained an unusual sample just by chance. Since our procedure, namely adding and subtracting two standard errors, is designed to work 95% of the time, we can expect such samples to be rare.
 
@@ -451,7 +457,7 @@ To further understand the meaning of "95% confidence", let's explore what happen
 The table below displays the value of $b_0$, for the first 20 samples we took, along with the lower and upper bounds of the confidence interval, and whether or not the confidence interval contains the true parameter value $\beta_0$ (either 1=`TRUE` or 0=`FALSE`).
 
 ```{r}
-Samples_df_b0 <- Samples_sleep %>% mutate(Sample = row_number(),
+Samples_df_b0 <- Samples_growth %>% mutate(Sample = row_number(),
                                                 b_0 = Intercept,
                                                 Lower = b_0 - 2*SE_b0, 
                                                 Upper = b_0 + 2*SE_b0,
@@ -475,10 +481,10 @@ ggplot(data=Samples_df_b0[1:100,], aes(y=Sample, x=b_0)) +
 
 Out of these 100 samples, `r sum(Samples_df_b0$Contains_beta0[1:100]==TRUE)` contain the true value of the population parameter $p$. This is close to the desired 95% confidence level.
 
-The picture shows confidence intervals produced by the first 100 samples, but we actually took 10,000 different samples of 75 residents. Let's calculate how many of these samples produced confidence intervals that contain the true value of $p$.
+The picture shows confidence intervals produced by the first 100 samples, but we actually took 10,000 different samples of 100 trees. Let's calculate how many of these samples produced confidence intervals that contain the true value of $\beta_0$.
 
 ```{r}
-prop(Samples_df_b0$Contains_beta0 == TRUE)
+mosaic::prop(Samples_df_b0$Contains_beta0 == TRUE)
 ```
 
 Again, notice that close to 95% of the samples produced confidence intervals contain the true population parameter $\beta_0$. Note that for the red intervals that do not contain $p$ nothing was done incorrectly. The sample was taken at random, and the confidence interval was calculated using the correct formula. It just happened that by chance, we obtained a sample mean $b_0$ that was unusually high or low, leading to an interval that did not capture the true population parameter. This, of course, happens rarely, and approximately 95% of the samples do, in fact, result in intervals that contain the true value of $b_0$.
@@ -487,7 +493,7 @@ This brings us back to the question "what does 95% confidence mean?". An approxi
 
 It might be tempting to say that "there is approximately a 95% chance" that the population parameter lies within the confidence interval, but this is incorrect. In the statistical framework used here (known as classical, or frequentist statistics), the population parameter is assumed to be a fixed, but (typically) unknown number. It either is within the interval, or it isn't. We just (typically) don't know which. There's nothing random about whether or not the parameter value is in our interval, so it doesn't make sense to speak of it in terms of chance or randomness. Randomness comes into play due to the fact that we selected a random sample, which will produce a statistic likely to differ from the population parameter due to sampling variability. A different statistical framework, known as *Bayesian statistics* approaches this differently, and would allow us to use randomness and chance to describe our beliefs about any uncertain quantity, including a population proportion. In this class, however, we'll stick to the classical frequentist interpretation.
 
-Of course, you might ask why we needed to calculate a confidence interval for the mean hours of sleep among all residents in the first place, since we actually have data on all 12,280 residents in our fictional town and already know the mean hours of sleep. The answer is that we don't. But, in most real situations, we will only have data from a single sample, not the entire population, and we won't know the true population parameter. We'll be able to build on the ideas of sampling distributions and standard error that we learned about in this section to calculate confidence intervals in those scenarios.
+Of course, you might ask why we needed to calculate a confidence interval for the mean tree diameter growth among all trees in the first place, since we actually have data on all 9,189 trees in the hectare of the forest and already know the mean growth. The answer is that we don't. But, in most real situations, we will only have data from a single sample, not the entire population, and we won't know the true population parameter. We'll be able to build on the ideas of sampling distributions and standard error that we learned about in this section to calculate confidence intervals in those scenarios.
 
 \newpage
 
@@ -495,9 +501,13 @@ Of course, you might ask why we needed to calculate a confidence interval for th
 
 ### Mercury Concentration in Florida Lakes
 
+**Research Question: Do Mercury levels in Florida lakes exceed environmental standards?**
+
 A 2004 study by Lange, T., Royals, H. and Connor, L. examined Mercury accumulation in large-mouth bass, taken from a sample of 53 Florida Lakes. If Mercury accumulation exceeds 0.5 ppm, then there are environmental concerns. In fact, the legal safety limit in Canada is 0.5 ppm, although it is 1 ppm in the United States.
 
 In our sample, we have data on 53 lakes, out of more than 30,000 lakes in the the state of Florida. We'll attempt to draw conclusions about the entire population, consisting of all lakes in Florida, using data from our sample of 53. It is not clear how the lakes in this sample of 53 were selected, or how representative they are of all lakes in the state of Florida. Let's assume for our purposes that the lakes in the sample can be reasonably thought of as being representative of all lakes in Florida.
+
+The Florida Lakes data come from the `Lock5Data` R package.
 
 ```{r Bass, echo=FALSE, out.width = '50%', fig.cap="https://www.maine.gov/ifw/fish-wildlife/fisheries/species-information/largemouth-bass.html"}
 knitr::include_graphics("Bass.png")
@@ -511,12 +521,6 @@ FloridaLakes <- FloridaLakes |> rename(Mercury = AvgMercury) |>
 
 ```{r}
 glimpse(FloridaLakes)
-```
-
-We'll divide the state along route 50, which runs East-West, passing through Northern Orlando.
-
-```{r, echo=FALSE, out.width = '30%', fig.cap="from Google Maps"}
-knitr::include_graphics("Florida.png")
 ```
 
 Our data come from a sample of 53 lakes, out of more then 30,000 in the entire state of Florida. The mercury levels of the 53 lakes in the sample are shown in the table below.
@@ -546,11 +550,9 @@ FloridaLakes |> summarize(Mean_Hg = mean(Mercury),
 
 Thinking in terms of models, we can estimate the mean mercury level by fitting a model with no explanatory variables. The model equation is
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 \widehat{\text{Mercury}} & = b_0
-\end{aligned}
-$$
+\end{aligned}$$
 
 ```{r}
 M_Lakes_merc_0 <- lm(data=FloridaLakes, Mercury~1)
@@ -559,7 +561,7 @@ M_Lakes_merc_0
 
 We see that in our sample of 53 lakes, the mean mercury level is 0.527 ppm., which is just above Canada's legal limit, though below the United States' limit.
 
-Suppose we want to estimate the mean mercury level among all Florida lakes. As we saw in the previous section, we should not expect the population proportion to exactly match the sample, due to random variability between samples. We can, however, use the sample statistic as an estimates and construct confidence intervals for the unknown population proportions.
+Suppose we want to estimate the mean mercury level among all Florida lakes. As we saw in the previous section, we should not expect the population mean to exactly match the sample, due to random variability between samples. We can, however, use the sample statistic as an estimates and construct confidence intervals for the unknown population means.
 
 In order to construct the confidence interval, we need to know how much each statistic could vary between different samples of size 53. That is, we need to know the standard error. In the previous section, we calculated the standard error by taking 10,000 different samples of the same size as ours from the population, calculating the proportion for each sample, and then calculating the standard deviation of the proportions obtained from these 10,000 different samples. This procedure will not work here, however, because unlike the previous example where we really did have data on the entire population of our city's residents, we do not have data on all 30,000+ lakes in Florida. We cannot take a lot of different samples of size 53 from the population of all lakes, and thus, cannot obtain the sampling distributions for our statistics or calculate their standard errors. Instead, we'll use a process that closely mimics what we did in Section 3.1, using only the information from the 53 lakes contained in our sample.
 
@@ -689,8 +691,8 @@ ggplot(data=Bootstrap3, aes(x=Mercury)) +
 ```
 
 ```{r}
-M_Lakes_merc_0_Boot2 <- lm(data=Bootstrap3, Mercury~1)
-M_Lakes_merc_0_Boot2
+M_Lakes_merc_0_Boot3 <- lm(data=Bootstrap3, Mercury~1)
+M_Lakes_merc_0_Boot3
 ```
 
 ### Bootstrap Distribution for Mean
@@ -739,9 +741,9 @@ Notice that the standard error of the mean is much less than the sample standard
 
 **Interpretations of sample standard deviation and standard error of the mean**
 
--   The sample standard deviation (0.341) measures the amount of variability in mercury levels between the 53 individual lakes in our sample.
+- The sample standard deviation (0.341) measures the amount of variability in mercury levels between the 53 individual lakes in our sample.
 
--   The standard error of the mean (`r SE_mean`) measures the amount of variability in sample mean mercury levels between different samples of size 53.
+- The standard error of the mean (`r SE_mean`) measures the amount of variability in sample mean mercury levels between different samples of size 53.
 
 There is more variability between mercury levels in individual lakes than there is between average mercury levels in different samples of size 53.
 
@@ -749,18 +751,14 @@ There is more variability between mercury levels in individual lakes than there 
 
 We calculate an approximate 95% confidence interval using the formula:
 
-$$
-\text{Statistic} \pm 2\times\text{Standard Error}
-$$
+$$\text{Statistic} \pm 2\times\text{Standard Error}$$
 
 In this case, the statistic of interest is the sample mean $b_0=0.527$. The approximate confidence interval is
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 & \bar{x} \pm 2\times\text{SE}(\bar{x}) \\
 & = 0.527 \pm 2\times\text{`r SE_mean`}
-\end{aligned}
-$$
+\end{aligned}$$
 
 ```{r, echo=FALSE}
 CI <- confint(Lakes_Bootstrap_Mean, level = 0.95, parm= c("Intercept"), method = "stderr")
@@ -792,13 +790,21 @@ CI_SE
 
 Notice that the standard error confidence interval closely matches the percentile interval. This will be true when the bootstrap distribution is symmetric and bell-shaped. When the bootstrap distribution is not symmetric and bell-shaped, then the percentile interval will be more reliable than the standard error interval.
 
+**Conclusion:** Based on our sample of 53 lakes, we estimate that the mean mercury level among all Florida lakes is between about 0.4 and 0.6 ppm. This is safely below the US legal limit of 1 ppm, though right around the 0.5 ppm, which is Canada's legal limit. This interval is based on the assumption that our sample of 53 lakes is reasonably representative of all lakes in Florida.
+
 ## Bootstrapping Model Coefficients
 
 We've seen how to use bootstrapping to obtain confidence intervals for the mean mercury level among all Florida lakes. We can use the same process to obtain confidence intervals for other statistics, such as coefficients $b_0$, $b_1$, representing differences in means, or slopes, like we saw in Chapter 2.
 
+We'll divide the state along route 50, which runs East-West, passing through Northern Orlando.
+
+```{r, echo=FALSE, out.width = '30%', fig.cap="from Google Maps"}
+knitr::include_graphics("Florida.png")
+```
+
 ### CI for Difference in Means
 
-Suppose we want to compare mercury levels for lakes in Northern Florida to lakes in Southern Florida.
+**Research Question: How do Mercury mercury levels in Lakes in Northern Florida compare to lakes in Southern Florida?**
 
 The boxplot shows and table below describe the distribution of mercury levels for lakes in Northern Florida, compared to Southern Florida.
 
@@ -820,12 +826,10 @@ In our sample of 33 Northern Lakes and 20 Southern Lakes, we saw a difference of
 
 We'll use a statistical model to calculate the average mercury levels in Northern and Southern Florida.
 
-$$
-\widehat{\text{Mercury}} = b_0 +b_1\times{\text{South}}
-$$
+$$\widehat{\text{Mercury}} = b_0 +b_1\times{\text{South}}$$
 
--   $b_0$ represents the mean mercury level for lakes in North Florida, and\
--   $b_1$ represents the mean difference in mercury level for lakes in South Florida, compared to North Florida
+- $b_0$ represents the mean mercury level for lakes in North Florida, and\
+- $b_1$ represents the mean difference in mercury level for lakes in South Florida, compared to North Florida
 
 The estimates for corresponding to the original sample are shown below.
 
@@ -836,7 +840,7 @@ M_Lakes_merc_loc
 
 A confidence interval for $b_0$ will tell us a range of plausible values for the mean mercury level among all lakes in Northern Florida.
 
-A confidence interval for $b_1$ will tell us a range of plausible values for the mean mercury level among all lakes in Southern Florida.
+A confidence interval for $b_1$ will tell us a range of plausible values for the difference in mean mercury level among all lakes in Southern Florida, compared to Northern Florida.
 
 We can obtain these confidence intervals by fitting a regression model to each of our bootstrap samples and recording the values of the statistics $b_0$ and $b_1$ in the bootstrap samples.
 
@@ -903,7 +907,7 @@ M_Lakes_merc_loc_Boot2 <- lm(Mercury ~ Location, data = Bootstrap2)
 M_Lakes_merc_loc_Boot2
 ```
 
-The bootstrap estimates are $b_1$ = `r M_Lakes_merc_loc_Boot2$coef[1]` and $b_1$ = `r M_Lakes_merc_loc_Boot2$coef[2]`.
+The bootstrap estimates are $b_0$ = `r M_Lakes_merc_loc_Boot2$coef[1]` and $b_1$ = `r M_Lakes_merc_loc_Boot2$coef[2]`.
 
 We'll now take 10,000 different bootstrap samples and look at the bootstrap distribution for $b_1$, the difference in mean mercury levels between lakes in Southern and Northern Florida
 
@@ -940,37 +944,30 @@ SE_b0 <- sd(M_Lakes_merc_loc_Bootstrap$Intercept)
 SE_b0
 ```
 
-This tells us how much the mean mercury level among lakes in Northern Florida would vary between different samples of 20 Northern lakes.
+This tells us how much the mean mercury level among lakes in Northern Florida would vary between different samples of 33 Northern lakes.
 
 A 95% confidence interval for the mean mercury level among all lakes in Northern Florida is given by
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 & b_0 \pm 2\times\text{SE}(b_0) \\
 & = 0.425 \pm 2\times{0.046}
-\end{aligned}
-$$
+\end{aligned}$$
 
 The standard error for $b_1$ is
-
-```{r}
-SE_b0 <- sd(M_Lakes_merc_loc_Bootstrap$Intercept)
-SE_b0
-```
-
-This tells us how much the difference in mean mercury level between lakes in Northern and Southern Florida would vary between different samples of 53 lakes.
 
 ```{r}
 SE_b1 <- sd(M_Lakes_merc_loc_Bootstrap$LocationS)
 SE_b1
 ```
 
-$$
-\begin{aligned}
+This tells us how much the difference in mean mercury level would be expected to vary between samples of 20 Southern Florida Lakes and 33 Northern Florida lakes.
+
+A 95% confidence interval for the difference in mean mercury level between all Southern and Northern Florida lakes is given by
+
+$$\begin{aligned}
 & b_1 \pm 2\times\text{SE}(b_1) \\
 & = 0.271 \pm 2\times{0.097}
-\end{aligned}
-$$
+\end{aligned}$$
 
 We can calculate these intervals automatically in R using the `confint` command. When calculating confidence intervals for a regression model we add `parm = c("Intercept", "LocationS")` to tell it to return intervals for the interval and the estimate associated with LocationS. If we leave out the `parm` argument, R will return additional confidence intervals that we aren't interested in here.
 
@@ -997,19 +994,23 @@ grid.arrange(CI_Plot_b0, CI_Plot_b1)
 
 ```
 
+\***Conclusions:**
+
 We are 95% confident that the mean mercury level among all lakes in Northern Florida is between `r round(CI$lower[1],2)` and `r round(CI$upper[1],2)` ppm.
 
-We are 95% confident that the mean mercury level among all lakes in Southern Florida is between `r round(CI$upper[2],2)` and `r round(CI$upper[2],2)` higher than the mean mercury level among all lakes in Northern Florida.
+We are 95% confident that the mean mercury level among all lakes in Southern Florida is between `r round(CI$lower[2],2)` and `r round(CI$upper[2],2)` higher than the mean mercury level among all lakes in Northern Florida.
+
+Since the confidence interval for the difference does not include 0, we have evidence that mercury levels are higher, on average, in Southern Florida than in Northern Florida. The size of the difference, however, is not very clear, given the width of the interval. A difference of 0.1 ppm is fairly small and perhaps not very meaningful, while a difference as big as 0.4 ppm would be a meaningful difference.
 
 ### CI for Regression Slope
+
+**Research Question: Is there a relationship between mercury concentration and pH level in Florida Lakes?**
 
 Now, suppose we also want to investigate whether there is a relationship between a lake's mercury level and pH. We'll add pH to the model.
 
 The model equation is:
 
-$$
-\widehat{\text{Mercury}} = b_0 + b_1\times{\text{South}} + b_2\times{\text{pH}}
-$$
+$$\widehat{\text{Mercury}} = b_0 + b_1\times{\text{South}} + b_2\times{\text{pH}}$$
 
 In this model:\
 - $b_0$ represents the mean mercury level among all lakes in Northern Florida with pH level 0. Since lakes will not have pH level 0 in reality, the intercept no longer has a meaningful interpretation.\
@@ -1034,9 +1035,9 @@ M_Lakes_merc_loc_pH <- lm(data=FloridaLakes, Mercury ~ Location + pH)
 M_Lakes_merc_loc_pH
 ```
 
--   On average, lakes with pH level 0 are expected to have a mercury level of 1.4 ppm. Since no lake has a pH of 0, this is not a meaningful interpretation.  
--   On average, lakes in Southern Florida are expected to have a mercury level 0.255 ppm higher than lakes in Northern Florida with the same pH.\
--   For each one-unit increase in pH, mercury level is expected to decrease by 0.15 ppm, assuming location is the same.
+- On average, lakes with pH level 0 are expected to have a mercury level of 1.4 ppm. Since no lake has a pH of 0, this is not a meaningful interpretation.  
+- On average, lakes in Southern Florida are expected to have a mercury level 0.255 ppm higher than lakes in Northern Florida with the same pH.\
+- For each one-unit increase in pH, mercury level is expected to decrease by 0.15 ppm, assuming location is the same.
 
 As before, $b_0$, $b_1$, and $b_2$ are estimates calculated from a single sample of 53 lakes. We can use them as estimates of the coefficients we would see if we were able to fit a regression model to all Florida lakes.
 
@@ -1120,12 +1121,10 @@ This tells us how much the slope associated with pH would vary between different
 
 A 95% confidence interval is
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 & b_2 \pm 2\times\text{SE}(b_2) \\
 & = -0.15 \pm 2\times{0.024}
-\end{aligned}
-$$
+\end{aligned}$$
 
 The `confint()` command displays this confidence interval, as well as those associated with $b_0$ and $b_1$.
 
@@ -1145,9 +1144,11 @@ CI_Plot_b2 <- M_Lakes_merc_loc_pH_Bootstrap_Plot_b2 +
 CI_Plot_b2
 ```
 
-We are 95% confident that for each one-unit increase in pH, mercury level is expected to decrease between about 0.1 and 0.19 ppm.
+**Conclusion** We are 95% confident that for each one-unit increase in pH, mercury level is expected to decrease between about 0.1 and 0.19 ppm.
 
 ### CI for Regression Response
+
+**Research Question: What is the expected mercury level in a lake in Southern Florida with a neutral pH level of 7?**
 
 In addition to calculating a confidence interval for the quantities associated with our estimates $b_0$, $b_1$, and $b_2$, we can also calculate a confidence interval for the average mercury level among all lakes with a given location and pH.
 
@@ -1155,27 +1156,21 @@ We'll calculate a confidence interval for the average mercury level among all la
 
 The regression model equation is
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 \widehat{\text{Mercury}} & = b_0 + b_1\times\text{LocationS} + b_2\times\text{pH}
-\end{aligned}
-$$
+\end{aligned}$$
 
 so the expected mercury level among all lakes in Southern Florida with $\text{pH} = 7$ is
 
-$$
-b_0 + b_1 + 7b_2
-$$
+$$b_0 + b_1 + 7b_2$$
 
 Plugging in the model estimates of $b_0$, $b_1$, and $b_2$,
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 \widehat{\text{Mercury}} & = b_0 + b_1\times\text{LocationS} + b_2\times\text{pH}  \\
 \ & = 1.407 + 0.255(1) - 0.148(7) \\
 & \approx 0.626
-\end{aligned}
-$$
+\end{aligned}$$
 
 We can also calculate this using the `predict` function.
 
@@ -1252,12 +1247,10 @@ This tells us how much the estimated mercury level among lakes in Southern Flori
 
 A 95% confidence interval for mean mercury level among lakes in Southern Florida with pH=7 is
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 & b_0 + b_1 + 7b_2 \pm 2\times\text{SE}(b_0 + b_1 + 7b_2) \\
 & = 0.625 \pm 2\times{0.059}
-\end{aligned}
-$$
+\end{aligned}$$
 
 We can also calculate the confidence interval using the `confint()` command below.
 
@@ -1274,7 +1267,7 @@ M_Lakes_merc_locS_pH7_Bootstrap_Plot  +
                 color="gold", size=10, alpha=0.01) 
 ```
 
-We are 95% confident that the mean mercury level among lakes in Southern Florida with pH=7 is between 0.51 and 0.74 ppm.
+**Conclusion:** We are 95% confident that the mean mercury level among lakes in Southern Florida with pH=7 is between 0.51 and 0.74 ppm.
 
 It is important to note that we are **not** saying that we are 95% confident that the mercury level of an individual lake in South Florida with a pH of 7 will lie in this range. Confidence intervals are about population parameters like averages, rather than about individuals. An interval pertaining to mercury levels in individual lakes would need to be wider than this one. We'll talk about how to obtain these kinds of intervals later in the course.
 
@@ -1293,6 +1286,8 @@ While bootstrapping is a popular and robust procedure for calculating confidence
 ## Permutation-Based Hypothesis Testing
 
 ### Mercury in Lakes: N vs S
+
+**Research Question: Is there evidence of a difference in mean mercury level between lakes in Northern and Southern Florida?**
 
 Recall the comparison of mercury levels in lakes in Northern Florida, compared to Southern Florida. The boxplot and table below, also seen in the previous section, show the distribution of mercury levels among the 33 northern and 20 southern lakes in the sample.
 
@@ -1319,8 +1314,8 @@ As we've seen, we can use a statistical model to estimate a lake's mercury level
 
 $\widehat{\text{Hg}} = b_0 +b_1\times\text{South}$
 
--   $b_0$ represents the mean mercury level for lakes in North Florida, and\
--   $b_1$ represents the mean difference in mercury level for lakes in South Florida, compared to North Florida
+- $b_0$ represents the mean mercury level for lakes in North Florida, and\
+- $b_1$ represents the mean difference in mercury level for lakes in South Florida, compared to North Florida
 
 Fitting the model in R, we obtain the estimates for $b_0$ and $b_1$.
 
@@ -1329,13 +1324,11 @@ M_Lakes_loc <- lm(data=FloridaLakes, Mercury ~ Location)
 M_Lakes_loc
 ```
 
-$$
-\widehat{\text{Hg}} = `r M_Lakes_loc$coef[1] |> round(2)`+`r M_Lakes_loc$coef[2]|> round(2)`\times\text{South}
-$$
+$$\widehat{\text{Hg}} = `r M_Lakes_loc$coef[1] |> round(2)`+`r M_Lakes_loc$coef[2]|> round(2)`\times\text{South}$$
 
--   $b_1 = 0.272= 0.6965 - 0.4245$ is equal to the difference in mean mercury levels between Northern and Southern lakes. (We've already seen that for categorical variables, the least-squares estimate is the mean, so this makes sense.)
+- $b_1 = 0.272= 0.6965 - 0.4245$ is equal to the difference in mean mercury levels between Northern and Southern lakes. (We've already seen that for categorical variables, the least-squares estimate is the mean, so this makes sense.)
 
--   We can use $b_1$ to assess the size of the difference in mean mercury concentration levels.
+- We can use $b_1$ to assess the size of the difference in mean mercury concentration levels.
 
 #### Hypotheses and Key Question {.unnumbered}
 
@@ -1537,7 +1530,7 @@ We only observed a difference between the groups as extreme or more extreme than
 
 The probability of getting a difference in means as extreme or more extreme than 0.272 ppm by chance, when there is no relationship between location and mercury level is about `r prop(~ (abs(LocationS) > 0.272), data = Lakes_merc_loc_perm_test)`.
 
-It is very unlikely that we would have observed a result like we did by chance alone. Thus, we have strong evidence that there is a difference in average mercury level between lakes in Northern and Southern Florida. In this case, there is strong evidence that mercury level is higher in Southern Florida lakes than Northern Florida lakes.
+**Conclusion:** It is very unlikely that we would have observed a result like we did by chance alone. Thus, we have strong evidence that there is a difference in average mercury level between lakes in Northern and Southern Florida. In this case, there is strong evidence that mercury level is higher in Southern Florida lakes than Northern Florida lakes.
 
 Recall that in the previous section, we found that we could be 95% confident that the mean mercury level among all lakes in Southern Florida is between 0.08 and 0.46 higher than the mean mercury level among all lakes in Northern Florida.
 
@@ -1567,6 +1560,8 @@ knitr::include_graphics("pvals.png")
 
 ### Chlorophyll in Lakes: N vs S
 
+**Research Question: Is there evidence of a difference in mean chlorophyll between lakes in Northern and Southern Florida?**
+
 Chlorophyll, which comes from plants, is also present in water. Unlike mercury, higher levels of chlorophyll are not dangerous, but the amount of chlorophyll can be an indicator of plant life in the lake. We'll test whether we have evidence of a difference in mean amount of chlorophyll between lakes in Northern and Southern Florida.
 
 The boxplot and table below show the distribution of chlorophyll levels among the 33 northern and 20 southern lakes in the sample.
@@ -1586,7 +1581,7 @@ Lakes_chlor_loc_tab <- FloridaLakes %>% group_by(Location) %>%
 kable(Lakes_chlor_loc_tab)
 ```
 
-We see that on average mercury levels were higher among the lakes in northern Florida by about 4 mg/$m^3$. We'll use a permutation test to investigate whether such a difference could occur by random selection of lakes if there is really no relationship between chlorophyll and location.
+We see that on average chlorophyll levels were higher among the lakes in northern Florida by about 4 mg/$m^3$. We'll use a permutation test to investigate whether such a difference could occur by random selection of lakes if there is really no relationship between chlorophyll and location.
 
 The hypotheses are:
 
@@ -1598,8 +1593,8 @@ The model equation is
 
 $\widehat{\text{Chlorophyll}} = b_0 +b_1\times\text{South}$
 
--   $b_0$ represents the mean chlorophyll amount for lakes in North Florida, and\
--   $b_1$ represents the mean difference in chlorophyll amount for lakes in South Florida, compared to North Florida
+- $b_0$ represents the mean chlorophyll amount for lakes in North Florida, and\
+- $b_1$ represents the mean difference in chlorophyll amount for lakes in South Florida, compared to North Florida
 
 Fitting the model in R, we obtain the estimates for $b_0$ and $b_1$.
 
@@ -1620,7 +1615,7 @@ The values of $b_1$, the estimate pertaining to `LocationS` obtained for the fir
 Lakes_chlor_loc_perm_test <- do(10000) * lm(Chlorophyll ~ shuffle(Location), data = FloridaLakes)
 ```
 
-The histogram shows the distribution of differences in the group means observed in our simulation. The red lines indicate the difference we actually observed in the data (0.272), as well as an equally large difference in the opposite direction (-0.272).
+The histogram shows the distribution of differences in the group means observed in our simulation.
 
 ```{r}
 Estimate <- -3.922
@@ -1640,7 +1635,7 @@ Lakes_chlor_loc_perm_test_plot
 
 This time, the red lines are not very extreme. The difference of -3.9 mg/$m^3$ seen in our sample happens quite often, even in a situation where there is really no relationship between location and chlorophyll amount.
 
-Our p-value, represemtomg the proportion of simulations resulting in difference in means more extreme than 3.9 is
+Our p-value, representing the proportion of simulations resulting in difference in means more extreme than 3.9, is
 
 ```{r}
 prop(~ (abs(LocationS) > 3.9), data = Lakes_chlor_loc_perm_test)
@@ -1648,11 +1643,13 @@ prop(~ (abs(LocationS) > 3.9), data = Lakes_chlor_loc_perm_test)
 
 This p-value represents the probability of observing a difference in means as extreme or more extreme than -3.9 $mg/m^3$ if there is really no relationship between location and chlorophyll amount.
 
-Since the p-value is quite large (much bigger than common criteria like 0.05 or 0.10), we cannot rule out the null hypothesis. It would not be unusual to see data like we did in a situation where the null hypothesis is actually true. Thus, we do not have enough evidence to conclude that average chlorophyll amount differs between lakes in Northern and Southern Florida.
+**Conclusion:** Since the p-value is quite large (much bigger than common criteria like 0.05 or 0.10), we cannot rule out the null hypothesis. It would not be unusual to see data like we did in a situation where the null hypothesis is actually true. Thus, we do not have enough evidence to conclude that average chlorophyll amount differs between lakes in Northern and Southern Florida.
 
 Just because we cannot rule out, or reject, the null hypothesis does not mean that we should believe it is true. Afterall, we did observe an average difference of about 4 $mg/m^3$. It's just that given the size of our sample and the amount of variability in the data, we cannot be sure that this difference didn't occur by chance associated with random selection of the lakes. Thus, while we do not reject the null hypothesis, we also shouldn't accept it, or believe it to be true. We shouldn't say that we believe that chlorophyll amount is the same in Northern and Southern Florida, only that we don't have enough evidence to conclude that it differs. "Accepting" the null hypothesis is a common fallacy committed in hypothesis testing that has sometimes had disastrous implications in scientific research.
 
 ### Effect of pH on Mercury
+
+**Research Question: Is there evidence of a relationship between Mercury level and pH in Florida Lakes?**
 
 Next, we'll investigate whether there is a relationship between a lake's mercury level and it's pH, a measure of the acidity of a lake. A pH of 7 is considered neutral, while a lower pH indicates that the water is more acidic and higher pH indicates that the water is more basic.
 
@@ -1668,9 +1665,7 @@ There seems to be a strong relationship between the two, but we should investiga
 
 The regression equation is
 
-$$
-\widehat{\text{Mercury}} = b_0 + b_1\times\text{pH}
-$$
+$$\widehat{\text{Mercury}} = b_0 + b_1\times\text{pH}$$
 
 Regression estimates $b_0$ and $b_1$ are shown below.
 
@@ -1696,7 +1691,7 @@ ggplot(data=df, aes(x=pH, y=Hg, color=InSample)) + geom_point() + ylab("Mercury"
 
 **Key Question:**
 
--   How likely is it that we would have observed a slope (i.e. a value of $b_1$) as extreme as 0.15 by chance, if there is really no relationship between mercury level and pH?
+- How likely is it that we would have observed a slope (i.e. a value of $b_1$) as extreme as 0.15 by chance, if there is really no relationship between mercury level and pH?
 
 **Null Hypothesis:** Among all Florida lakes, there is no relationship between mercury level and pH.
 
@@ -1834,13 +1829,13 @@ The p-value represents the probability of observing a slope as extreme or more e
 
 It is extremely unlikely that we would observe a value of $b_1$ as extreme as -0.15 by chance, if there is really no relationship between mercury level and pH. In fact, this never happened in any of our 10,000 simulations!
 
-There is very strong evidence of a relationship mercury level and pH.
-
-A low p-value tells us only that there is evidence of a relationship, not that it is practically meaningful. We have seen that for each one-unit increase in pH, mercury level is expected to decrease by 0.15 ppm on average, which seems like a pretty meaningful decrease, especially considering that mercury levels typically stay between 0 and 1.
+**Conclusion:** There is very strong evidence of a relationship mercury level and pH. The low p-value tells us only that there is evidence of a relationship, not that it is practically meaningful. We have seen that for each one-unit increase in pH, mercury level is expected to decrease by 0.15 ppm on average, which seems like a pretty meaningful decrease, especially considering that mercury levels typically stay between 0 and 1.
 
 We used the slope as our test statistic to measure the evidence of the relationship between the explanatory and response variables. In fact, we could have also used the correlation coefficient $r$ as our test statistic, and we would have gotten the same p-value. Either slope or correlation may be used for a hypothesis test involving two quantitative variables, but we will use slope in this class.
 
 ### F-Test for Comparing Three or More Groups
+
+**Research Question: Is there evidence of a difference in mean mercury level between shallow, medium, and deep lakes in Florida?**
 
 Next, we'll investigate whether mercury levels tend to differ between lakes of different depths. The `Depth` variable classifies lakes as either shallow (less than 15 feet at deepest point), medium (15-30 feet deep), or deep (deeper than 30 feet).
 
@@ -1867,9 +1862,7 @@ We fit a model to the data. The `deep` category is used as a baseline, and the o
 
 The model equation is:
 
-$$
-\widehat{\text{Mercury}} = b_0 + b_1\times\text{DepthMedium} + b_2\times\text{DepthShallow}
-$$
+$$\widehat{\text{Mercury}} = b_0 + b_1\times\text{DepthMedium} + b_2\times\text{DepthShallow}$$
 
 The coefficient estimates are:
 
@@ -1892,7 +1885,7 @@ The hypotheses are
 
 **Null Hypothesis:** There is no difference in average mercury levels between shallow, medium, and deep lakes.
 
-**Alternative Hypothesis:** There is no difference in average mercury levels between shallow, medium, and deep lakes.
+**Alternative Hypothesis:** There is a difference in average mercury levels between shallow, medium, and deep lakes.
 
 If we were only comparing two groups, we could use the difference in means as a test statistic, like we did when testing for differences in location. But with three groups, we would have three different differences in means to test (shallow-medium, shallow-deep, medium-deep). We need a single statistic that can measure the size of differences between all three groups. An F-statistic can do this, so we'll use the F-statistic as our test statistic here.
 
@@ -1956,7 +1949,7 @@ Lakes_merc_depth_perm1 <- do(1) * lm(Mercury ~ ShuffledDepth , data = Lakes_shuf
 Lakes_merc_depth_perm1$F
 ```
 
-The F-statistic observed in the shuffled data is `Lakes_merc_depth_perm1$F`.
+The F-statistic observed in the shuffled data is `r Lakes_merc_depth_perm1$F`.
 
 **Second Permutation**
 
@@ -2060,9 +2053,7 @@ prop(~ (F > 1.628), data = Lakes_merc_depth_perm_test)
 
 This p-value represents the probabilty of observing an F-statistic as extreme or more extreme than we 1.628 if there is really no relationship between a lake's depth and mercury level.
 
-Since the p-value is large, it is plausible that we would see differences like we did in the actual data in a situation where the null hypothesis is true.
-
-We cannot reject the null hypothesis. We do not have enough evidence to say that average mercury levels differ between shallow, medium, and deep lakes.
+**Conclusion:** Since the p-value is large, it is plausible that we would see differences like we did in the actual data in a situation where the null hypothesis is true. We cannot reject the null hypothesis. We do not have enough evidence to say that average mercury levels differ between shallow, medium, and deep lakes.
 
 We are not saying that we think mercury levels are the same between the three different depths (i.e. we're not accepting the null hypothesis), just that we don't have enough evidence to say that they differ.
 
@@ -2088,21 +2079,21 @@ The statement provides the following six principles for responsible use of hypot
 
 The statement provides important guidance for us to consider as we work with hypothesis testing in this class, as well as in future classes and potentially in our own research.
 
--   A hypothesis test can only tell us the strength of evidence against the null hypothesis. The absence of evidence against the null hypothesis should not be interpreted as evidence for the null hypothesis.
+- A hypothesis test can only tell us the strength of evidence against the null hypothesis. The absence of evidence against the null hypothesis should not be interpreted as evidence for the null hypothesis.
 
--   We should never say that the data support/prove/confirm the null hypothesis.
+- We should never say that the data support/prove/confirm the null hypothesis.
 
--   We can only say that the data do not provide evidence against the null hypothesis.
+- We can only say that the data do not provide evidence against the null hypothesis.
 
 **What to conclude from p-values and what not to:**
 
--   A low p-value provides evidence against the null hypothesis. It suggests the test statistic we observed is inconsistent with the null hypothesis.
+- A low p-value provides evidence against the null hypothesis. It suggests the test statistic we observed is inconsistent with the null hypothesis.
 
--   A low p-value does **not** tell us that the difference or relationship we observed is meaningful in a practical sense. Researchers should look at the size of the difference or strength of the relationship in the sample before deciding whether it merits being acted upon.
+- A low p-value does **not** tell us that the difference or relationship we observed is meaningful in a practical sense. Researchers should look at the size of the difference or strength of the relationship in the sample before deciding whether it merits being acted upon.
 
--   A high p-value means that the data could have plausibly been obtained when the null hypothesis is true. The test statistic we observed is consistent with what we would have expected to see when the null hypothesis is true, and thus we cannot rule out the null hypothesis.
+- A high p-value means that the data could have plausibly been obtained when the null hypothesis is true. The test statistic we observed is consistent with what we would have expected to see when the null hypothesis is true, and thus we cannot rule out the null hypothesis.
 
--   A high p-value does **not** mean that the null hypothesis is true or probably true. A p-value can only tell us the strength of evidence against the null hypothesis, and should never be interpreted as support for the null hypothesis.
+- A high p-value does **not** mean that the null hypothesis is true or probably true. A p-value can only tell us the strength of evidence against the null hypothesis, and should never be interpreted as support for the null hypothesis.
 
 Just because our result is consistent with the null hypothesis does not mean that we should believe that null hypothesis is true. Lack of evidence against a claim does not necessarily mean that the claim is true.
 
@@ -2112,31 +2103,31 @@ A hypothesis test can be thought of as being analogous to a courtroom trial, whe
 
 **Things to say when the p-value is small:**
 
--   The data are not consistent with the null hypothesis.\
--   We have evidence against the null hypothesis.\
--   We detect a difference or effect.\
--   The difference or effect is statistically discernible.
+- The data are not consistent with the null hypothesis.\
+- We have evidence against the null hypothesis.\
+- We detect a difference or effect.\
+- The difference or effect is statistically discernible.
 
 **Things NOT to say based on a small p-value alone:**
 
--   The difference is practically meaningful or significant.\
--   We should take action based on the result.
+- The difference is practically meaningful or significant.\
+- We should take action based on the result.
 
 In some cases, a small p-value might merit taking action, but it is important to also consider the size of the difference, the method of in which the data were collected, and how representative it is, as well as the costs and benefits of a potential decision, rather than acting on a p-value alone.
 
 **Things to say when the p-value is large:**
 
--   The data are consistent with the null hypothesis.\
--   We do not have enough evidence against the null hypothesis.\
--   We cannot reject the null hypothesis.\
--   The null hypothesis is plausible.
+- The data are consistent with the null hypothesis.\
+- We do not have enough evidence against the null hypothesis.\
+- We cannot reject the null hypothesis.\
+- The null hypothesis is plausible.
 
 **Things NOT to say when the p-value is large:**
 
--   The data support the null hypothesis.\
--   The data provide evidence for the null hypothesis.\
--   We accept the null hypothesis.\
--   We conclude that the null hypothesis is true.
+- The data support the null hypothesis.\
+- The data provide evidence for the null hypothesis.\
+- We accept the null hypothesis.\
+- We conclude that the null hypothesis is true.
 
 ## Practice Questions
 
@@ -2197,11 +2188,9 @@ NutritionStudy |> summarize(Mean_Chol = mean(Cholesterol),
 
 We use a model with only an intercept term to estimate the mean cholesterol among all hospital patients with similar conditions. The model is
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 \widehat{\text{Cholesterol}} & = b_0
-\end{aligned}
-$$ R output for the model is shown below.
+\end{aligned}$$ R output for the model is shown below.
 
 ```{r}
 M_Nut_chol_0 <- lm(data=NutritionStudy, Cholesterol~1)
@@ -2250,11 +2239,9 @@ Data are from samples of ten courses in each of four disciplines at a liberal ar
 
 We fit a model of the form
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 \widehat{\text{Cost}} & = b_0 + b_1 \text{Humanities} + b_2 \text{NaturalScience} + b_3 \text{SocialScience},
-\end{aligned}
-$$ where the Humanities, NaturalScience, and SocialScience variables all have value 1 if the course is in that field and 0 otherwise.
+\end{aligned}$$ where the Humanities, NaturalScience, and SocialScience variables all have value 1 if the course is in that field and 0 otherwise.
 
 Model estimates are shown below.
 
@@ -2342,11 +2329,9 @@ A 2012 study in Great Britain examines the relationship between the number of fr
 
 We fit a model of the form
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 \widehat{\text{Friends}} & = b_0 + b_1 \text{GMdensity}
-\end{aligned}
-$$ where the GMdensity is a measure of grey matter density in the brain. The GM density variable was standardized, so a person who has average grey matter density will have `GMdensity =0`, and the GMdensity variable can be interpreted as the number of standard deviations a person is above or below the average amount of grey matter density.
+\end{aligned}$$ where the GMdensity is a measure of grey matter density in the brain. The GM density variable was standardized, so a person who has average grey matter density will have `GMdensity =0`, and the GMdensity variable can be interpreted as the number of standard deviations a person is above or below the average amount of grey matter density.
 
 Model estimates are shown below.
 
@@ -2462,10 +2447,13 @@ For the cholesterol study in Questions 2 and 4, a person suggests that we could 
 
 ### 9) {.unnumbered}
 
-Each day, United Airlines has a flight from Boston to San Francisco, departing at 6 am (Eastern time). The flight is scheduled to arrive in San Francisco at 9:30 am (Pacific time). This results in an expected total flight duration of 6.5 hours (390 minutes). Due to weather conditions, however, the exact duration of the flight varies from day to day. A random sample of flights from 31 different days was selected. The times of the 28 flights are shown below, listed from smallest to largest.
+Each day, United Airlines has a flight from Boston to San Francisco, departing at 6 am (Eastern time). The flight is scheduled to arrive in San Francisco at 9:30 am (Pacific time). This results in an expected total flight duration of 6.5 hours (390 minutes). Due to weather conditions, however, the exact duration of the flight varies from day to day. A random sample of flights from 28 different days was selected. The times of the 28 flights are shown below, listed from shortest to longest.
 
 ```{r, echo=FALSE}
-sort(Flight433$AirTime)
+library(Lock5Data)
+data("Flight433_3e")
+Flight433 <- Flight433_3e
+Flight433 |> arrange(AirTime)
 ```
 
 The mean, standard deviation, and sample size in flight times are shown below.
@@ -2473,8 +2461,7 @@ The mean, standard deviation, and sample size in flight times are shown below.
 ```{r, echo=FALSE, fig.height=1, fig.width=6, message=FALSE, warning=FALSE}
 library(knitr)
 library(kableExtra)
-data("Flight433")
-T <- data.frame(Flight433)  %>% dplyr::summarize(Mean=mean(AirTime), StDev=sd(AirTime), n=n())
+T <- data.frame(Flight433)  %>% dplyr::summarize(Mean=mean(AirTime)|> round(1), StDev=sd(AirTime)|> round(1), n=n())
 kable(T)
 ```
 
@@ -2483,7 +2470,7 @@ A 95% bootstrap standard error confidence interval for the mean flight time for 
 ```{r}
 Flights_Bootstrap <- do(10000) * lm( AirTime ~ 1, 
                                 data = resample(Flight433, replace=TRUE))
-confint(Flights_Bootstrap, parm="Intercept", level=0.95, method="se")
+confint(Flights_Bootstrap, parm="Intercept", level=0.95, method="se") 
 ```
 
 A manager sees the data and confidence interval and says:
@@ -2560,11 +2547,9 @@ We want to know whether there is evidence of a difference in average science tes
 
 We fit a model of the form
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 \widehat{\text{Score}} & = b_0 + b_1 \text{Public}
-\end{aligned}
-$$ Model estimates are shown below.
+\end{aligned}$$ Model estimates are shown below.
 
 ```{r}
 M_Seniors_science_schtyp <- lm(data=HSSeniors, science ~ schtyp)
@@ -2635,11 +2620,9 @@ We want to know whether there is evidence of differences in average science test
 
 We fit a model of the form
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 \widehat{\text{Score}} & = b_0 + b_1 \text{general} + b_2 \text{vocational}
-\end{aligned}
-$$ Model estimates are shown below.
+\end{aligned}$$ Model estimates are shown below.
 
 ```{r}
 M_Seniors_science_prog <- lm(data=HSSeniors, science ~ prog)
@@ -2712,11 +2695,9 @@ We want to know whether there is evidence of a relationship between students' sc
 
 We fit a model of the form
 
-$$
-\begin{aligned}
+$$\begin{aligned}
 \widehat{\text{Score}} & = b_0 + b_1 \text{Writing}
-\end{aligned}
-$$
+\end{aligned}$$
 
 Model estimates are shown below.
 
@@ -2788,5 +2769,5 @@ Say whether zero would be contained in a 95% confidence interval for the paramet
 The Bootstrap distribution for the difference in average cost of books in natural science classes, compared with humanities classes, was given in Question 5(c). If we perform a permutation-based hypothesis test for the null hypothesis that there is no difference in average books costs among natural science courses, compared to humanities courses, how would the distribution of mean differences compare to the bootstrap distribution from 5(c)? What would be different about it? Would the p-value associated with the hypothesis test be more or less than 0.05? Explain your answer.
 
 ```{r, echo=FALSE}
-#save.image(file = "Environment.RData")
+save.image(file = "Environment.RData")
 ```

@@ -6,12 +6,12 @@ project:
 book:
   title: "STAT 255 Notes"
   author: "Andrew J. Sage"
-  date: "September 10, 2025"
+  date: "September 14, 2026"
   chapters:
     - index.qmd
     - Ch1.qmd
     - Ch2.qmd
-#    - Ch3.qmd
+    - Ch3.qmd
 #    - Ch4.qmd
 #    - Ch5.qmd
 #    - Ch6.qmd
