@@ -1002,7 +1002,17 @@ gf_dist("t", df=51, geom = "area", fill = ~ (abs(x)< abs(ts)), show.legend=FALSE
 **Permutation - based p-value**
 
 ```{r, fig.height=4, fig.width=6}
-Lakes_merc_pH_perm_test_plot
+Estimate <- -0.1523
+Extreme <- abs(Lakes_merc_pH_perm_test$pH) > 0.1523
+  
+  
+Lakes_merc_pH_perm_test_plot <- ggplot(data=Lakes_merc_pH_perm_test, aes(x=pH)) + 
+  geom_histogram(aes(fill = Extreme), color="white") + 
+  scale_fill_manual(values = c("FALSE" = "blue", "TRUE" = "red")) +
+  geom_vline(xintercept=c(Estimate, -1*Estimate), color="red") + 
+  xlab("Lakes pH: Simulated Value of b1") + ylab("Frequency") + 
+  ggtitle("Distribution of b1 under assumption of no relationship") +
+  theme(legend.position = "none") + theme_bw()
 ```
 
 ```{r}
