@@ -13,7 +13,7 @@
 I. Build regression models involving nonlinear terms and interactions in R.
 
 ```{r, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=TRUE)
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=FALSE)
 library(ggformula)
 library(moderndive)
 library(gridExtra)
@@ -252,7 +252,6 @@ The plots for checking these assumptions are shown below.
 ```{r, fig.width=10, fig.height=6}
 M_Lakes_merc_pH <- lm(data=FloridaLakes, Mercury ~ pH)
 ```
-
 
 ```{r}
 resid_panel(model = M_Lakes_merc_pH, smoother=TRUE)
@@ -814,7 +813,6 @@ $$
 
 years.
 
-
 ```{r}
 summary(WageSample)
 ```
@@ -822,7 +820,6 @@ summary(WageSample)
 ```{r}
 ggpairs(WageSample)
 ```
-
 
 ```{r}
 P1 <- ggplot(data=WageSample, aes(x=age, y=wage)) + geom_point() + theme_bw() 
@@ -839,7 +836,6 @@ summary(M_wage_year_age)
 resid_panel(M_wage_year_age, smoother = TRUE)
 ```
 
-
 ```{r}
 M_logwage_year_age <- lm(data=WageSample, log(wage) ~ year+age)
 summary(M_logwage_year_age)
@@ -853,7 +849,6 @@ P4 <- ggplot(data=WageSample, aes(x=jobclass, y=wage)) + geom_boxplot()  + theme
 
 grid.arrange(P1, P2, P3, P4, ncol=2)
 ```
-
 
 ```{r}
 M_logwage_year_age_edu <- lm(data=WageSample, log(wage) ~ year + age + education)
@@ -887,7 +882,6 @@ resid_panel(M_logwage_year_age_edu_jobclass)
 resid_xpanel(M_logwage_year_age_edu_jobclass, smoother=TRUE)
 ```
 
-
 ```{r}
 M_logwage_year_age2_edu_jobclass <- lm(data=WageSample, log(wage) ~ year + age + I(age^2) + education + jobclass)
 summary(M_logwage_year_age2_edu_jobclass)
@@ -900,12 +894,10 @@ resid_panel(M_logwage_year_age2_edu_jobclass, smoother = TRUE)
 ```{r}
 resid_xpanel(M_logwage_year_age2_edu_jobclass, smoother = TRUE)
 ```
+
 ```{r}
 summary(M_logwage_year_age2_edu_jobclass)
 ```
-
-
-
 
 ## Models with Interaction
 
@@ -2036,4 +2028,3 @@ B. The t-statistic associated with the `carat` variable.\
 C. The p-value associated with the `carat` variable.\
 D. The $R^2$ value.\
 E. The predicted price for a diamond of Very Good cut, with 1 carat and x=5.
-

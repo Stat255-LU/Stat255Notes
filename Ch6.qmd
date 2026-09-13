@@ -10,7 +10,7 @@
 J. Perform logistic regression in R.
 
 ```{r, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=TRUE)
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=FALSE)
 library(ggformula)
 library(moderndive)
 library(gridExtra)
@@ -446,4 +446,3 @@ Do the data provide evidence that gre score affects the probability of successfu
 #### c) {.unnumbered}
 
 Which model should we use (this one or the one in Question 2) to make inferences? Explain your answer.
-

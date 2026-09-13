@@ -14,7 +14,7 @@
 H. Perform hypothesis tests and calculate confidence and prediction intervals based on models using R.
 
 ```{r, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=TRUE)
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=FALSE)
 library(ggformula)
 library(moderndive)
 library(gridExtra)
@@ -2385,4 +2385,3 @@ b)  There was disagreement within the Federal Drug Administration about whether 
 c)  Suppose the same difference in walking distances had been observed, but the p-value had been 0.072 instead of 0.012? Would this change your thoughts on whether the drug should be approved? Why or why not?
 
 NOTE: In the end, the FDA approved the drug, while requiring its producer to conduct additional future tests and noting that approval could be withdrawn if those tests did not confirm a clinical benefit. Results and discussion of the study are available [here](https://www.fiercebiotech.com/biotech/sarepta-therapeutics-announces-a-continued-benefit-on-walking-test-through-62-weeks-phase), and [here](https://pubmed.ncbi.nlm.nih.gov/26573217/.).
-

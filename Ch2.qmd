@@ -13,7 +13,7 @@
 E. Fit statistical models in R and interpret results.
 
 ```{r, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=TRUE)
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, fig.height = 3, fig.width = 7, cache=FALSE)
 library(ggformula)
 library(moderndive)
 library(gridExtra)
@@ -1880,4 +1880,3 @@ Substitute $b_0 = 79$ into the expression from part A, so that $b_1$ is the only
 **Option C - suggested for students who have not taken calculus**
 
 Substitute $b_0 = 79$ into the expression from part A, so that $b_1$ is the only variable in the expression. Use an online graphing calculator (such as https://www.desmos.com/calculator) to graph SSR as a function of $b_1$ (hint, make $b_1$ the x-variable). Show that SSR is minimized when $b_1=1.5$. Include a screen shot of your graph.
-
