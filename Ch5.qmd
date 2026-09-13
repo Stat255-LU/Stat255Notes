@@ -2022,5 +2022,5 @@ D. The $R^2$ value.\
 E. The predicted price for a diamond of Very Good cut, with 1 carat and x=5.
 
 ```{r, echo=FALSE}
-save.image(file = "Environment.RData")
+#save.image(file = "Environment.RData")
 ```

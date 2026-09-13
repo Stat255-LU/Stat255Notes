@@ -2387,5 +2387,5 @@ c)  Suppose the same difference in walking distances had been observed, but the 
 NOTE: In the end, the FDA approved the drug, while requiring its producer to conduct additional future tests and noting that approval could be withdrawn if those tests did not confirm a clinical benefit. Results and discussion of the study are available [here](https://www.fiercebiotech.com/biotech/sarepta-therapeutics-announces-a-continued-benefit-on-walking-test-through-62-weeks-phase), and [here](https://pubmed.ncbi.nlm.nih.gov/26573217/.).
 
 ```{r, echo=FALSE}
-save.image(file = "Environment.RData")
+#save.image(file = "Environment.RData")
 ```
