@@ -214,6 +214,10 @@ We should only use the p-values and confidence intervals provided by R, which de
 The `resid_panel` function in the `ggResidpanel` package produces the four plots shown above.
 
 ```{r, fig.width=10, fig.height=6}
+M_Lakes_merc_loc <- lm(data=FloridaLakes, Mercury ~ Location)
+```
+
+```{r}
 resid_panel(model = M_Lakes_merc_loc)
 ```
 
@@ -246,6 +250,11 @@ We should only use the p-values and confidence intervals provided by R, which de
 The plots for checking these assumptions are shown below.
 
 ```{r, fig.width=10, fig.height=6}
+M_Lakes_merc_pH <- lm(data=FloridaLakes, Mercury ~ pH)
+```
+
+
+```{r}
 resid_panel(model = M_Lakes_merc_pH, smoother=TRUE)
 ```
 
@@ -278,6 +287,10 @@ Several reasons come to mind that might cause us to doubt the validity of these 
 The plots for checking these assumptions are shown below.
 
 ```{r, fig.width=10, fig.height=6}
+M_House_price_wf_sqft <- lm(data=Houses, price~waterfront + sqft_living)
+```
+
+```{r}
 resid_panel(model = M_House_price_wf_sqft, smoother=TRUE)
 ```
 
@@ -801,8 +814,6 @@ $$
 
 years.
 
-````{=html}
-<!--
 
 ```{r}
 summary(WageSample)
@@ -894,8 +905,7 @@ summary(M_logwage_year_age2_edu_jobclass)
 ```
 
 
--->
-````
+
 
 ## Models with Interaction
 
@@ -910,6 +920,12 @@ $$
 Recall that this model assumes the slope relating price and square footage is the same ($b_2$) for houses on the waterfront as for houses not on the waterfront. An illustration of the model is shown below.
 
 ```{r}
+Plot_House_price_wf_sqft <- ggplot(data=Houses, aes(x=sqft_living, y=price, color=waterfront)) + 
+  geom_point() + 
+  theme_bw() + 
+  geom_parallel_slopes(se=FALSE) 
+
+
 Plot_House_price_wf_sqft
 ```
 
@@ -2021,6 +2037,3 @@ C. The p-value associated with the `carat` variable.\
 D. The $R^2$ value.\
 E. The predicted price for a diamond of Very Good cut, with 1 carat and x=5.
 
-```{r, echo=FALSE}
-#save.image(file = "Environment.RData")
-```

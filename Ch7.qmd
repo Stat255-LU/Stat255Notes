@@ -1562,6 +1562,3 @@ Any data-driven analysis depends on assumptions, and sound judgment and awarenes
 - Be sure that model is predicting what you intend it to\
 - Reflective of biases inherent in the data on which it was trained
 
-```{r, echo=FALSE}
-#save.image(file = "Environment.RData")
-```

@@ -447,6 +447,3 @@ Do the data provide evidence that gre score affects the probability of successfu
 
 Which model should we use (this one or the one in Question 2) to make inferences? Explain your answer.
 
-```{r, echo=FALSE}
-save.image(file = "Environment.RData")
-```
