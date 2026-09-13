@@ -34,7 +34,7 @@ set.seed(07302020)
 ```
 
 ```{r, echo=FALSE}
-load("Environment.Rdata")
+load("Environment.RData")
 ```
 
 ## Modeling for Prediction
@@ -47,9 +47,9 @@ We've seen that when we model for interpretation, we encounter a tradeoff betwee
 
 **Predictive Modeling Vocabulary**
 
--   The new data on which we make predictions are called **test data**.
+- The new data on which we make predictions are called **test data**.
 
--   The data used to fit the model are called **training data**.
+- The data used to fit the model are called **training data**.
 
 In the training data, we know the values of the explanatory and response variables. In the test data, we know only the values of the explanatory variables and want to predict the values of the response variable.
 
@@ -105,7 +105,7 @@ P8 <- ggplot(data=Sampdf, aes(y=y, x=x)) + geom_point() + stat_smooth(method="lm
 grid.arrange(P0, P1, P2, P3, P4, P5, P6, P7, P8)
 ```
 
-The plot below shows models of degree 0, 1, 3, and 7 fit to the training data on the same plot. 
+The plot below shows models of degree 0, 1, 3, and 7 fit to the training data on the same plot.
 
 ```{r, echo=FALSE, fig.height=5, fig.width=8}
 ggplot(data = Sampdf, aes(x=x, y=y)) + 
@@ -127,13 +127,11 @@ We see that the flexibility of the model increases as we add higher-order terms.
 
 ### Predicting New Data
 
-Now, suppose we have a new dataset of 100 x-values, and want to predict $y$. The new data are shown below.  
+Now, suppose we have a new dataset of 100 x-values, and want to predict $y$. The new data are shown below.
 
 ```{r, fig.height=5, fig.width=8, echo=FALSE}
 ggplot(data=Newdf, aes(y=y, x=x))+geom_point() + theme_bw()
 ```
-
-
 
 We fit polynomial models of degree 0 through 8 to the data.
 
@@ -149,8 +147,7 @@ Sim_M7 <- lm(data=Sampdf, y~x+I(x^2)+I(x^3)+I(x^4)+I(x^5)+I(x^6)+I(x^7))
 Sim_M8 <- lm(data=Sampdf, y~x+I(x^2)+I(x^3)+I(x^4)+I(x^5)+I(x^6)+I(x^7)+I(x^8))
 ```
 
-
-We plot models 0, 1, 3, and 7 and see which best fits the data. 
+We plot models 0, 1, 3, and 7 and see which best fits the data.
 
 ```{r, echo=FALSE, fig.height=5, fig.width=8,}
 # Create a sequence of x values for smooth curves
@@ -189,8 +186,7 @@ ggplot() +
   theme(legend.position = "right")
 ```
 
-Notice that while there were some high y-values on around x=1 in the training data, which pulled model 7 upward in that region, these values are not present in the new data. Model M7 appears to overpredict most of the y-values in this region. It appears that the behavior in the training data close to $x=1$ was due more to noise than signal, and the more flexible model suffers because it responds too aggressively to the noise.   
-
+Notice that while there were some high y-values on around x=1 in the training data, which pulled model 7 upward in that region, these values are not present in the new data. Model M7 appears to overpredict most of the y-values in this region. It appears that the behavior in the training data close to $x=1$ was due more to noise than signal, and the more flexible model suffers because it responds too aggressively to the noise.
 
 We predict the values of the new observations, using each of the 9 models.
 
@@ -205,8 +201,6 @@ Newdf$Deg6Pred <- predict(Sim_M6, newdata=Newdf)
 Newdf$Deg7Pred <- predict(Sim_M7, newdata=Newdf)
 Newdf$Deg8Pred <- predict(Sim_M8, newdata=Newdf)
 ```
-
-
 
 In fact, since these data were simulated, we know the true value of $y$, so we can compare the predicted values to the true ones.
 
@@ -250,9 +244,6 @@ Notice that making the model more complex beyond third degree not only didn't he
 
 Now, let's examine the behavior if we had fit the models to the data, instead of the test data.
 
-
-
-
 ```{r}
 RMSE0 <- sqrt(mean(Sim_M0$residuals^2))
 RMSE1 <- sqrt(mean(Sim_M1$residuals^2))
@@ -291,8 +282,8 @@ RMSPEdf <- RMSPEdf %>% pivot_longer(c(Test_Error, Train_Error), names_to="Error_
 ggplot(data=RMSPEdf, aes(x=Degree, y=Error, color=Error_Type)) +  geom_point() + ylim(c(2.7,4.5)) + geom_line() + theme_bw()
 ```
 
--   Training error decreases as model becomes more complex\
--   Testing error is lowest for the 3rd degree model, then starts to increase again
+- Training error decreases as model becomes more complex\
+- Testing error is lowest for the 3rd degree model, then starts to increase again
 
 Of the models we looked at, the third degree model does the best. The estimates of its coefficients are shown below.
 
@@ -302,7 +293,7 @@ Sim_M3
 
 In fact, the data were generated from the model $y_i = 0 + 4.5x  - 1.4x^2 +  0.1x^3 + \epsilon_i$, where $\epsilon_i\sim\mathcal{N}(0,3)$
 
-The graph below shows the 100 points in our sample in green and the population of points that could have come from this equation in red.  
+The graph below shows the 100 points in our sample in green and the population of points that could have come from this equation in red.
 
 We compare the true expected response curve (in yellow) to the estimated curve in blue. We see that they are not identical, but close.
 
@@ -595,9 +586,9 @@ Q=& \displaystyle\sum_{i=1}^n (y_i -\hat{y}_i)^2  + \lambda\displaystyle\sum_{j=
 \end{aligned}
 $$
 
--   Small values of $\lambda$ lead to more complex models, with larger $|b_j|$'s.\
--   As $\lambda$ increases, $|b_j|$'s shrink toward 0. The model becomes less complex, thus bias increases, but variance decreases.\
--   We can use cross validation to determine the optimal value of $\lambda$
+- Small values of $\lambda$ lead to more complex models, with larger $|b_j|$'s.\
+- As $\lambda$ increases, $|b_j|$'s shrink toward 0. The model becomes less complex, thus bias increases, but variance decreases.\
+- We can use cross validation to determine the optimal value of $\lambda$
 
 ```{r, echo=FALSE, fig.height=6, fig.width=10, cache=FALSE}
 x <- seq(from=1, to=3, by=0.01)
@@ -757,9 +748,9 @@ rpart.plot(tree, box.palette="RdBu", shadow.col="gray", nn=TRUE, cex=1, extra=1)
 
 We see that the houses are first split based on whether or not their overall quality rating was less than 8. Each of the resulting nodes are then split again, using information from other explanatory variables. Each split partitions the data further, so that houses in the same node can be thought of as being similar to one another.
 
--   The predicted price of a House with overall quality 7, and was built in 1995 is \$200,000.
+- The predicted price of a House with overall quality 7, and was built in 1995 is \$200,000.
 
--   The predicted price of a House overall quality 8 and 1,750 sq. ft. on the first floor is \$370,000.
+- The predicted price of a House overall quality 8 and 1,750 sq. ft. on the first floor is \$370,000.
 
 ### Partitioning in A Decision Tree
 
@@ -804,8 +795,8 @@ ggplot(data=Exdf, aes(x=x1, y=x2)) + geom_point() + geom_text(aes(label=y),hjust
 
 We calcuate the mean y-value in each resulting node:
 
--   $\bar{y}_L = (331+246+213+21+64+114)/6 \approx 164.84$\
--   $\bar{y}_R = (203+155+256+253+257+273+258+326+406)/9 \approx 265.22$
+- $\bar{y}_L = (331+246+213+21+64+114)/6 \approx 164.84$\
+- $\bar{y}_R = (203+155+256+253+257+273+258+326+406)/9 \approx 265.22$
 
 To measure measure the amount of deviation in the node, we calculate the sum of the squared difference between each individual value and the overall mean in each node.
 
@@ -827,7 +818,7 @@ $$
 
 Adding together these two quantities, we obtain an overall measure of the squared deviations between observations in the same node.
 
--   69958.83 + 39947.56 = 109906.4
+- 69958.83 + 39947.56 = 109906.4
 
 **2.Second Possible Split (**$x_1 < 6.5$)
 
@@ -839,8 +830,8 @@ ggplot(data=Exdf, aes(x=x1, y=x2)) + geom_point() + geom_text(aes(label=y),hjust
 
 Using this split,
 
--   $\bar{y}_L = (331+246+213+21+64+114 + 203+155)/8 \approx 168.375$\
--   $\bar{y}_R = (256+253+257+273+258+326+406)/7 \approx 289.857$
+- $\bar{y}_L = (331+246+213+21+64+114 + 203+155)/8 \approx 168.375$\
+- $\bar{y}_R = (256+253+257+273+258+326+406)/7 \approx 289.857$
 
 $$
 \begin{aligned}
@@ -860,7 +851,7 @@ $$
 
 The total squared deviation is:
 
--   71411.88 + 19678.86 = 91090.74
+- 71411.88 + 19678.86 = 91090.74
 
 The split at $x1 < 6.5$ is better than $x_1<5.5$
 
@@ -874,8 +865,8 @@ ggplot(data=Exdf, aes(x=x1, y=x2)) + geom_point()  + geom_hline(yintercept = 5.5
 
 Using this split,
 
--   $\bar{y}_L = (331+246+213+256)/4 \approx 261.5$\
--   $\bar{y}_R = (21 + 64 + \ldots + 406)/11 \approx 211.82$
+- $\bar{y}_L = (331+246+213+256)/4 \approx 261.5$\
+- $\bar{y}_R = (21 + 64 + \ldots + 406)/11 \approx 211.82$
 
 $$
 \begin{aligned}
@@ -895,13 +886,13 @@ $$
 
 The sum of squared deviations is:
 
--   7453 + 131493.6 = 138946.6
+- 7453 + 131493.6 = 138946.6
 
 **Comparison of Splits**
 
--   Of the three split's we've calculated, $\displaystyle\sum_{i=1}^{n_L} (y_i -\bar{y}_L)^2 + \displaystyle\sum_{i=1}^{n_R} (y_i -\bar{y}_R)^2$ is minimized using $x_1 < 6.5$.
+- Of the three split's we've calculated, $\displaystyle\sum_{i=1}^{n_L} (y_i -\bar{y}_L)^2 + \displaystyle\sum_{i=1}^{n_R} (y_i -\bar{y}_R)^2$ is minimized using $x_1 < 6.5$.
 
--   In fact, if we calculate all possible splits over $x_1$ and $x_2$, $\displaystyle\sum_{i=1}^{n_L} (y_i -\bar{y}_L)^2 + \displaystyle\sum_{i=1}^{n_R} (y_i -\bar{y}_R)^2$ is minimized by splitting on $x_1 < 6.5$
+- In fact, if we calculate all possible splits over $x_1$ and $x_2$, $\displaystyle\sum_{i=1}^{n_L} (y_i -\bar{y}_L)^2 + \displaystyle\sum_{i=1}^{n_R} (y_i -\bar{y}_R)^2$ is minimized by splitting on $x_1 < 6.5$
 
 Thus, we perform the first split in the tree, using $x_1 < 6.5$.
 
@@ -1002,9 +993,9 @@ In this situation, the tree outperforms OLS, but does not do as well as the ridg
 
 A popular extension of a decision tree is a random forest. A random forest consists of many (often \~10,000) trees. Predictions are made by averaging predictions from individual trees.
 
--   In order to ensure the trees are different from each other:
-    1.  each tree is grown from a different bootstrap sample of the training data.\
-    2.  when deciding on a split, only a random subset of explanatory variables are considered.
+- In order to ensure the trees are different from each other:
+  1.  each tree is grown from a different bootstrap sample of the training data.\
+  2.  when deciding on a split, only a random subset of explanatory variables are considered.
 
 Growing deep trees ensures low bias. In a random forest, averaging across many deep trees decreases variance, while maintaining low bias.
 
@@ -1016,7 +1007,7 @@ Growing deep trees ensures low bias. In a random forest, averaging across many d
 
 We've seen that we can use polynomial regression to capture nonlinear trends in data.
 
--   A **regression spline** is a piecewise function of polynomials.
+- A **regression spline** is a piecewise function of polynomials.
 
 Here we'll keep thing simple by focusing on a spline with a single explanatory variable. Splines can also be used for multivariate data.
 
@@ -1194,9 +1185,9 @@ We see that RMSPE is minimized using the model with three knots.
 
 Important Considerations:
 
--   how many knots\
--   where to place knots\
--   degree of polynomial
+- how many knots\
+- where to place knots\
+- degree of polynomial
 
 The best choices for all of these will vary between datasets and can be assessed through cross-validation.
 
@@ -1563,14 +1554,14 @@ Any data-driven analysis depends on assumptions, and sound judgment and awarenes
 
 ### Modeling for Prediction
 
--   Goal is to make the most accurate predictions possible.\
--   Not concerned with understanding relationships between variables. Not worried model being to complicated to interpret, as long as it yields good predictions.\
--   Aim for a model that best captures the signal in the data, without being thrown off by noise.\
-    -   Large number of predictors is ok\
-    -   Don't make model so complicated that it overfits the data.\
--   Be sure that model is predicting what you intend it to\
--   Reflective of biases inherent in the data on which it was trained
+- Goal is to make the most accurate predictions possible.\
+- Not concerned with understanding relationships between variables. Not worried model being to complicated to interpret, as long as it yields good predictions.\
+- Aim for a model that best captures the signal in the data, without being thrown off by noise.\
+  - Large number of predictors is ok\
+  - Don't make model so complicated that it overfits the data.\
+- Be sure that model is predicting what you intend it to\
+- Reflective of biases inherent in the data on which it was trained
 
 ```{r, echo=FALSE}
-save.image(file = "Environment.RData")
+#save.image(file = "Environment.RData")
 ```

@@ -32,7 +32,7 @@ set.seed(07302020)
 ```
 
 ```{r, echo=FALSE}
-load("Environment.Rdata")
+load("Environment.RData")
 ```
 
 ## Ordinary Linear Regression Model
@@ -64,10 +64,10 @@ ICplot0
 
 In reality, however, the actual amount dispensed each time it is used will vary due to unknown factors like:
 
--   force applied to dispenser\
--   temperature\
--   build-up of ice cream\
--   other unknown factors
+- force applied to dispenser\
+- temperature\
+- build-up of ice cream\
+- other unknown factors
 
 Thus, if 15 real people held the dispenser and recorded the amount of ice cream they got, the scatter plot we would see would look something like this:
 
@@ -105,8 +105,8 @@ We can think of the noise associated with each person's amount of ice cream as i
 
 A normal distribution is denoted $\mathcal{N}(\mu, \sigma)$.
 
--   $\mu$ represents the mean, or center, of the distribution. When modeling noise, we typically assume $\mu=0$.\
--   $\sigma$ represents the standard deviation in the normal distribution. More noise corresponds to higher values of $\sigma$.
+- $\mu$ represents the mean, or center, of the distribution. When modeling noise, we typically assume $\mu=0$.\
+- $\sigma$ represents the standard deviation in the normal distribution. More noise corresponds to higher values of $\sigma$.
 
 In the ice cream example, $\sigma$ can be thought of as the standard deviation in amount of ice cream dispensed among people who hold the dispenser for the same amount of time.
 
@@ -202,11 +202,11 @@ ggplot(data=Icecream1, aes(x=time, y=amount)) + geom_point() + ggtitle("Icecream
 We fit the model to the simulated data.
 
 ```{r}
-IC_Model <- lm(data=Icecream1, lm(amount~time))
+IC_Model <- lm(data=Icecream1, amount~time)
 IC_Model
 ```
 
-The intercept and slope are $b_0=$ `r IC_Model$coef[1] |> round(2)` and `r IC_Model$coef[2]|>round(2)`.
+The intercept and slope are $b_0=$ `r IC_Model$coef[1] |> round(2)` and $b_1=$ `r IC_Model$coef[2]|>round(2)`.
 
 The estimated regression equation is
 
@@ -217,13 +217,13 @@ $$
 \end{aligned}
 $$
 
-The estimates $b_0$ and $b_1$ are close, but not identical to the the true values of $\beta_0$ and $\beta_1$, which in this case, we know are $\beta_0=0$ and $\beta_1=2$. Typically, the values of $b_0$ and $b_1$ calculated from a sample will deviate from the true values $\beta_0$ and $\beta_1$ due to noise in the observed data.
+The estimates $b_0$ and $b_1$ are close, but not identical to the true values of $\beta_0$ and $\beta_1$, which in this case, we know are $\beta_0=0$ and $\beta_1=2$. Typically, the values of $b_0$ and $b_1$ calculated from a sample will deviate from the true values $\beta_0$ and $\beta_1$ due to noise in the observed data.
 
 It is common for people to be confused about the difference between $\beta_0$ and $\beta_1$ and $b_0$ and $b_1$. To reemphasize the distinction, the Greek letters $\beta_0$ and $\beta_1$ are parameters about the true mechanism or process, which we typically don't know. The English letters $b_0$ and $b_1$ are statistics calculated from the sample of data we have. These will vary from sample to sample. As we did in Chapter 3, we'll use $b_0$ and $b_1$ to estimate and draw inferences about $\beta_0$ and $\beta_1$.
 
 ### Estimating Noise
 
-An estimate for $\sigma$, the amount of variability in amount of ice cream dispensed between people who hold the dispenser for the same amount of time (i.e. the amount of noise) can be estimated as a function of SSR, sample size (n), and number of parameters terms in the model (p), excluding the intercept.
+An estimate for $\sigma$, the amount of variability in amount of ice cream dispensed between people who hold the dispenser for the same amount of time (i.e. the amount of noise) can be estimated as a function of SSR, sample size (n), and number of parameters (terms) in the model (p), excluding the intercept.
 
 $s =\sqrt{\frac{\text{SSR}}{n-(p+1)}} = \sqrt{\frac{\displaystyle\sum_{i=1}^n(y_i-\hat{y}_i)^2}{(n-(p+1))}}$.
 
@@ -252,11 +252,11 @@ $Y_i = \beta_0 + \beta_1X_{i1}+ \ldots + \beta_pX_{ip} + \epsilon_i$, with $\eps
 
 Note that in place of $X_{ip}$, we could have indicators for categories, or functions of $X_{ip}$, such as $X_{ip}^2$, $\text{log}(X_{ip})$, or $\text{sin}(X_{ip})$.
 
--   The quantities $\beta_0, \beta_1, \ldots, \beta_p$ are parameters, pertaining to the true but unknown data generating mechanism.
+- The quantities $\beta_0, \beta_1, \ldots, \beta_p$ are parameters, pertaining to the true but unknown data generating mechanism.
 
--   The estimates $b_0, b_1, \ldots, b_p$, are statistics, calculated from our observed data.\
+- The estimates $b_0, b_1, \ldots, b_p$, are statistics, calculated from our observed data.\
 
--   We use statistics $b_0, b_1, \ldots, b_p$ to obtain confidence intervals and hypothesis tests to make statements about parameters $\beta_0, \beta_1, \ldots, \beta_p$.
+- We use statistics $b_0, b_1, \ldots, b_p$ to obtain confidence intervals and hypothesis tests to make statements about parameters $\beta_0, \beta_1, \ldots, \beta_p$.
 
 ### Model Assumptions
 
@@ -353,7 +353,7 @@ The table below tells us what must be true of the sampling distribution for a st
 
 ### t-tests
 
-A **t-distribution** is a symmetric, bell-shaped curve. Its shape is similar to that of the normal distribution, only it has more area in the tales, and is less concentrated around the center. When the sampling distribution for a statistic is symmetric and bell-shaped, it can be approximated by a t-distribution.
+A **t-distribution** is a symmetric, bell-shaped curve. Its shape is similar to that of the normal distribution, only it has more area in the tails, and is less concentrated around the center. When the sampling distribution for a statistic is symmetric and bell-shaped, it can be approximated by a t-distribution.
 
 The t-distribution depends on a parameter called **degrees of freedom**, which determines the thickness of the distribution's tails. The degrees of freedom is related to the sample size. As the sample size (and thus degrees of freedom) increase, the t-distributions gets closer and closer to a normal distribution with mean 0 and standard deviation 1, which is known as a **standard normal distribution.**
 
@@ -434,7 +434,7 @@ grid.arrange(P1, P2, ncol=2)
 
 ### F-tests
 
-Just as the ratio of a regression statistic to its standard error follows a t-distribution, F-statistics also follow a known probability distribution when the assumptions of the ordinary linear regression model are apropriate.
+Just as the ratio of a regression statistic to its standard error follows a t-distribution, F-statistics also follow a known probability distribution when the assumptions of the ordinary linear regression model are appropriate.
 
 An **F distribution** is a right-skewed distribution. It is defined by two parameters, $\nu_1, \nu_2$, called numerator and denominator degrees of freedom.
 
@@ -455,7 +455,7 @@ approximately follows an F-distribution with $p-q$ and $n-(p+1)$ degrees of free
 
 Like with a t-statistic, we can calculate an F-statistic by looking at how extreme our F-statistic is in its F-distribution.
 
-For an F-distribution with 2 and 20 degrees of freedom, the probability of getting an F-statistic more extreme than 1.8 is about 0.19, while the probability of getting and F-statistic as extreme or more than 4.6 is about 0.02.
+For an F-distribution with 2 and 20 degrees of freedom, the probability of getting an F-statistic more extreme than 1.8 is about 0.19, while the probability of getting an F-statistic as extreme or more than 4.6 is about 0.02.
 
 ```{r, fig.height=4, fig.width=8, echo=FALSE}
 ts1=1.8
@@ -493,7 +493,7 @@ We will move forward by using probability-based inference where appropriate, whi
 
 ## Model-Based Inference
 
-In this section, we'll apply the theories and formulas from the previous section to the models won the Florida lakes data that we saw in Chapter 3. We'll illustrate how to calculate all of the important peices of information provided in the model summary output produced by R.
+In this section, we'll apply the theories and formulas from the previous section to the models on the Florida lakes data that we saw in Chapter 3. We'll illustrate how to calculate all of the important pieces of information provided in the model summary output produced by R.
 
 ### Difference in Means
 
@@ -532,29 +532,29 @@ M_Lakes_merc_loc <- lm(data=FloridaLakes, Mercury ~ Location)
 summary(M_Lakes_merc_loc)
 ```
 
--   **Estimate** gives the least-squares estimates $b_0, b_1, \ldots, b_p$
+- **Estimate** gives the least-squares estimates $b_0, b_1, \ldots, b_p$
 
--   **Standard Error** gives estimates of the standard deviation in the sampling distribution for estimate. It tells us how the estimate is expected to vary between different samples of the given size. These are computed using the formulas in Section 4.2.1.
+- **Standard Error** gives estimates of the standard deviation in the sampling distribution for estimate. It tells us how the estimate is expected to vary between different samples of the given size. These are computed using the formulas in Section 4.2.1.
 
--   **t value** is the estimate divided by its standard error.
+- **t value** is the estimate divided by its standard error.
 
--   **Pr(\>\|t\|)** is a p-value for the hypothesis test associated with the null hypothesis $\beta_j = 0$, where $\beta_j$ is the regression coefficient pertaining to the given line. Note that $\beta_j$ is the unknown population parameter estimated by $b_j$.
+- **Pr(\>\|t\|)** is a p-value for the hypothesis test associated with the null hypothesis $\beta_j = 0$, where $\beta_j$ is the regression coefficient pertaining to the given line. Note that $\beta_j$ is the unknown population parameter estimated by $b_j$.
 
--   The **Residual Standard Error** is $s =\sqrt{\frac{\text{SSR}}{n-(p+1)}} = \sqrt{\frac{\displaystyle\sum_{i=1}^n(y_i-\hat{y}_i)^2}{(n-(p+1))}}$. This is an estimate of $\sigma$, which represents the standard deviation in the distribution of the response variable for given value(s) or category(ies) of explanatory variable(s). It tells us how much variability is expected in the response variable between different individuals with the same values/categories of the explanatory variables.
+- The **Residual Standard Error** is $s =\sqrt{\frac{\text{SSR}}{n-(p+1)}} = \sqrt{\frac{\displaystyle\sum_{i=1}^n(y_i-\hat{y}_i)^2}{(n-(p+1))}}$. This is an estimate of $\sigma$, which represents the standard deviation in the distribution of the response variable for given value(s) or category(ies) of explanatory variable(s). It tells us how much variability is expected in the response variable between different individuals with the same values/categories of the explanatory variables.
 
--   The **degrees of freedom** are $n-(p+1)$.
+- The **degrees of freedom** are $n-(p+1)$.
 
--   The **Multiple R-Squared** value is the $R^2$ value seen in Chapter 2. $R^2 = \frac{\text{SST} -\text{SSR}}{\text{SST}} = \frac{\displaystyle\sum_{i=1}^n(y_i-\hat{y}_i)^2}{\displaystyle\sum_{i=1}^n(y_i-\bar{y}_i)^2}$
+- The **Multiple R-Squared** value is the $R^2$ value seen in Chapter 2. $R^2 = \frac{\text{SST} -\text{SSR}}{\text{SST}}$
 
--   We know that $R^2$ can never decrease when additional variables are added to a model. The **Adjusted-R\^2** value is an alternate version of $R^2$ that is designed to penalize adding variables that do little to explain variation in the response.
+- We know that $R^2$ can never decrease when additional variables are added to a model. The **Adjusted-R\^2** value is an alternate version of $R^2$ that is designed to penalize adding variables that do little to explain variation in the response.
 
--   The **F-statistic** on the bottom line of the R-output corresponds to an F-test of the given model against a reduced model that include no explanatory variables. The p-value on this line is associated with the test of the null hypothesis that there is no relationship between the response variable and any of the explanatory variables. Since SSR for this reduced model is equal to SST, the F-statistic calculation simplifies to:
+- The **F-statistic** on the bottom line of the R-output corresponds to an F-test of the given model against a reduced model that includes no explanatory variables. The p-value on this line is associated with the test of the null hypothesis that there is no relationship between the response variable and any of the explanatory variables. Since SSR for this reduced model is equal to SST, the F-statistic calculation simplifies to:
 
 $$ F=\frac{\frac{SST - SSR}{p}}{\frac{SSR}{n-(p+1)}} $$
 
 The degrees of freedom associated with the F-statistic are given by $p$ and $(n-(p+1))$.
 
--   The **p-value associated with the F-statistic** tells us the probability of obtaining an F-statistic as extreme or more extreme than we did if there is really no relationship between the response variable and any explanatory variables in our model.
+- The **p-value associated with the F-statistic** tells us the probability of obtaining an F-statistic as extreme or more extreme than we did if there is really no relationship between the response variable and any explanatory variables in our model.
 
 **Calculations in Summary Output**
 
@@ -710,7 +710,7 @@ In our sample, the average mercury level among lakes in Northern Florida is 7.7 
 
 $t=\frac{{b_1}}{\text{SE}(b_1)} = \frac{0.27195}{0.08985} = 3.027$
 
-In our sample, the average mercury level among lakes in Southern Florida is 3 standard errors higher than we would expect it to be if the there was really no difference in average mercury levels between lakes in Northern and Southern Florida. Equivalently, we could say that the mean mercury level among lakes in Southern Florida is 3 standard errors higher than in Northern Florida.
+In our sample, the average mercury level among lakes in Southern Florida is 3 standard errors higher than we would expect it to be if there was really no difference in average mercury levels between lakes in Northern and Southern Florida. Equivalently, we could say that the mean mercury level among lakes in Southern Florida is 3 standard errors higher than in Northern Florida.
 
 #### Pr(\>\|t\|) {.unnumbered}
 
@@ -787,7 +787,7 @@ Lakes_merc_loc_perm_test_plot
 prop(~ (abs(LocationS) > 0.272), data = Lakes_merc_loc_perm_test)
 ```
 
-The formula-based confidence interval and p-value are very close to those produced by simulation. Both approximations, so they are not expected to be identical, but should be close. They lead us to the same conclusion, namely that there is a difference in mean mercury level between lakes in Northern and Southern Florida and that the difference is somewhere between about 0.10 and 0.45 ppm.
+The formula-based confidence interval and p-value are very close to those produced by simulation. Both are approximations, so they are not expected to be identical, but should be close. They lead us to the same conclusion, namely that there is a difference in mean mercury level between lakes in Northern and Southern Florida and that the difference is somewhere between about 0.10 and 0.45 ppm.
 
 ### Regression Slope and Intercept
 
@@ -848,17 +848,17 @@ Mean_pH <- mean(FloridaLakes$pH)
 sum((FloridaLakes$pH-Mean_pH)^2)
 ```
 
-#### Residual Standard Error {.unlabeled}
+#### Residual Standard Error {.unnumbered}
 
 $$ s =\sqrt{\frac{\text{SSR}}{n-(p+1)}} = \sqrt{\frac{\text{SSR}}{n-(p+1)}} = \sqrt{\frac{4.045513}{53-(1+1)}}=0.2816 $$
 
 The degrees of freedom associated with this estimate is $53-(1+1) = 51$.
 
-#### Multiple R-Squared {.unlabeled}
+#### Multiple R-Squared {.unnumbered}
 
 $$ R^2 = \frac{6.047875 - 4.045513}{6.047875} = 0.3311 $$
 
-#### F-Statistic {.unlabeled}
+#### F-Statistic {.unnumbered}
 
 The F-statistic is
 
@@ -869,7 +869,7 @@ This F-statistic is associated with 1 and 51 degrees of freedom.
 #### p-value associated with F-statistic {.unnumbered}
 
 ```{r}
-gf_dist("f", df1=1, df2=51, geom = "area", fill = ~ (x < 9.162), show.legend=FALSE) + geom_vline(xintercept=25.24, color="red")  + xlab("F") + theme_bw() + xlim(c(0,30)) 
+gf_dist("f", df1=1, df2=51, geom = "area", fill = ~ (x < 25.24), show.legend=FALSE) + geom_vline(xintercept=25.24, color="red")  + xlab("F") + theme_bw() + xlim(c(0,30)) 
 ```
 
 ```{r}
@@ -926,7 +926,7 @@ confint(M_Lakes_merc_pH, level=0.95)
 
 **Null Hypothesis:** The average mercury level among all Florida lakes with pH = 0 is 0. ($\beta_0=0$).
 
-**Alternative Hypothesis:** The average mercury level among all Florida lakes with pH = 0 not 0. ($\beta_0 \neq 0$).
+**Alternative Hypothesis:** The average mercury level among all Florida lakes with pH = 0 is not 0. ($\beta_0 \neq 0$).
 
 Since there are no lakes with pH level 0, this is not a meaningful test.
 
@@ -940,9 +940,9 @@ Since there are no lakes with pH level 0, this is not a meaningful test.
 
 **t-statistic for b_0**
 
-$t=\frac{{b_j}}{\text{SE}(b_j)} = \frac{1.53}{2.03} = 7.72$
+$t=\frac{{b_j}}{\text{SE}(b_j)} = \frac{1.53}{0.203} = 7.72$
 
-In our sample, the mean mercury level in lakes with pH 0 is estimated to be 7 standard errors lower than we would expect if the mean mercury level in lakes with pH 0 was 0. This is not a meaningful interpretation since no lakes have pH 0.
+In our sample, the mean mercury level in lakes with pH 0 is estimated to be 7 standard errors higher than we would expect if the mean mercury level in lakes with pH 0 was 0. This is not a meaningful interpretation since no lakes have pH 0.
 
 **t-statistic for b_1**
 
@@ -1049,7 +1049,7 @@ Mean_merc <- mean(FloridaLakes$Mercury)
 sum((FloridaLakes$Mercury-Mean_merc)^2)
 ```
 
-#### Residual Standard Error {.unlabeled}
+#### Residual Standard Error {.unnumbered}
 
 Since there are no explanatory variables in this model, p=0.
 
@@ -1191,13 +1191,13 @@ The large p-value tells us we do not have enough evidence to conclude that a mod
 
 $b_0 = 0.604$ - the average mercury content in deep lakes in Florida is 0.604 ppm.
 
-$b_1 = 0.013$ - the average mercury content in medium lakes in Florida is 0.013 ppm less than in deep lakes.
+$b_1 = - 0.013$ - the average mercury content in medium lakes in Florida is 0.013 ppm less than in deep lakes.
 
-$b_2 = 0.18$ - the average mercury content in shallow lakes in Florida is 0.18 ppm less than in deep lakes.
+$b_2 = - 0.18$ - the average mercury content in shallow lakes in Florida is 0.18 ppm less than in deep lakes.
 
 #### Standard Errors {.unnumbered}
 
-$SE(b_0)=\frac{s}{\sqrt{n_\text{Deep}}} = \frac{0.604}{\sqrt{15}} \approx 0.087$
+$SE(b_0)=\frac{s}{\sqrt{n_\text{Deep}}} = \frac{0.337}{\sqrt{15}} \approx 0.087$
 
 $SE(b_1)=s\sqrt{\frac{1}{\text{Deep}}+\frac{1}{\text{Medium}}} = 0.317\sqrt{\frac{1}{15}+\frac{1}{16}} = 0.1211$
 
@@ -1212,7 +1212,7 @@ A 95% confidence interval for $\beta_0$ is given by
 $$
 \begin{aligned}
 & b_0 \pm 2\times\text{SE}(b_0) \\
-& = -0.01275 \pm 2\times{0.087} \\
+& = 0.604 \pm 2\times{0.087} \\
 & = (0.43, 0.78)
 \end{aligned}
 $$
@@ -1235,9 +1235,9 @@ A 95% confidence interval for $\beta_2$ is given by
 
 $$
 \begin{aligned}
-& b_1 \pm 2\times\text{SE}(b_1) \\
+& b_2 \pm 2\times\text{SE}(b_2) \\
 & = -0.17582 \pm 2\times{0.1128} \\
-& = (0.09, 0.45)
+& = (-0.40, 0.05)
 \end{aligned}
 $$
 
@@ -1283,13 +1283,13 @@ In our sample, the average mercury level among deep lakes in Florida is 6.9 stan
 
 $t=\frac{{b_1}}{\text{SE}(b_1)} = \frac{-0.01275}{0.12111} = -0.105$
 
-In our sample, the average mercury level among all medium lakes in Florida is 0.1 standard errors lower than we would expect it to be if the there was really no difference in average mercury levels between deep and medium lakes in Florida. Equivalently, we could say that the mean mercury level among lakes in medium depth lakes is 0.1 standard errors lower than in deep lakes.
+In our sample, the average mercury level among all medium lakes in Florida is 0.1 standard errors lower than we would expect it to be if there was really no difference in average mercury levels between deep and medium lakes in Florida. Equivalently, we could say that the mean mercury level among lakes in medium depth lakes is 0.1 standard errors lower than in deep lakes.
 
 **t-statistic for** $b_2$:
 
 $t=\frac{{b_2}}{\text{SE}(b_2)} = \frac{-0.17582}{0.11284} = -1.558$
 
-In our sample, the average mercury level among all shallow lakes in Florida is 1.56 standard errors lower than we would expect it to be if the there was really no difference in average mercury levels between deep and shallow lakes in Florida. Equivalently, we could say that the mean mercury level among lakes in shallow depth lakes is 1.56 standard errors lower than in deep lakes.
+In our sample, the average mercury level among all shallow lakes in Florida is 1.56 standard errors lower than we would expect it to be if there was really no difference in average mercury levels between deep and shallow lakes in Florida. Equivalently, we could say that the mean mercury level among lakes in shallow depth lakes is 1.56 standard errors lower than in deep lakes.
 
 #### Pr(\>\|t\|) {.unnumbered}
 
@@ -1346,7 +1346,7 @@ If we only ran one test and rejected the null hypothesis if the p-value is less 
 
 One popular strategy for avoiding false positives when performing multiple tests is to simply multiple each p-value by the number of tests being run. This approach is called the **Bonferroni Correction**. In this case, since we are running three tests, instead of rejecting a null hypothesis when the p-value for the individual test is less than 0.05, we would need it to be less than $0.05/3 = 0.0167$. This ensures that the probability of wrongly rejecting the null hypothesis in *any* of our tests remains 0.05. The downside to the **Bonferroni Correction** is that it is a conservative method and can prevent us from detecting differences that are actually there. Other, more advanced methods, have been suggested in specific situations to try to improve on Bonferroni's approach and controlling multiple testing error remains an active area of research in statistics and biostatistics.
 
-In R, we can implement the Bonferroni correction using `adjust="Bonferroni` in the `pairs` command.
+In R, we can implement the Bonferroni correction using `adjust="Bonferroni"` in the `pairs` command.
 
 ```{r}
 library(emmeans)
@@ -1445,7 +1445,7 @@ A confidence interval only needs to account for uncertainty associated with samp
 
 ### Calculating Confidence Intervals
 
-An estimate for the expected among of ice cream when a person holds the dispenser for three seconds is $b_0 + 3b_1$. In our model, we estimated $b_0$ = `r IC_Model$coef[1] |> round(2)` and $b_1$ = `r IC_Model$coef[2] |> round(2)`, so the estimated amount of ice cream is $$`r IC_Model$coef[1] |> round(2)`+ 3\times`r IC_Model$coef[2] |> round(2)` = `r (IC_Model$coef[1] + 3*IC_Model$coef[2]) |> round(2)`$$ oz.
+An estimate for the expected amount of ice cream when a person holds the dispenser for three seconds is $b_0 + 3b_1$. In our model, we estimated $b_0$ = `r IC_Model$coef[1] |> round(2)` and $b_1$ = `r IC_Model$coef[2] |> round(2)`, so the estimated amount of ice cream is $$`r IC_Model$coef[1] |> round(2)`+ 3\times`r IC_Model$coef[2] |> round(2)` = `r (IC_Model$coef[1] + 3*IC_Model$coef[2]) |> round(2)`$$ oz.
 
 ```{r, echo=FALSE}
 b0 <- IC_Model$coefficients[1] |> round(2)
@@ -1504,7 +1504,7 @@ We are 95% confident that the average amount of ice cream dispensed when the dis
 
 Note there are small differences in the calculation, due to rounding and technicalities. R actually uses a number slightly different than 2 in its calculation, but the results are similar and these are all approximations anyway.
 
-The plot shows 95% the estimated regression line from our sample (in blue), along with "true" regression line in read (which we wouldn't know in a real situation). The shaded gray area represents a 95% confidence interval for the average amount of ice cream dispensed for a given amount of time the dispenser is held.
+The plot shows the estimated regression line from our sample (in blue), along with "true" regression line in read (which we wouldn't know in a real situation). The shaded gray area represents a 95% confidence interval for the average amount of ice cream dispensed for a given amount of time the dispenser is held.
 
 ```{r, fig.height=4, fig.width = 8, echo=FALSE}
 ggplot(data=Icecream1, aes(x=time, y=amount)) + geom_point() + ggtitle("Icecream Dispensed") + xlab("Time Pressing dispenser") + ylab("Amount Dispensed") + stat_smooth(method="lm", se=TRUE) + geom_abline(slope=2, intercept=0, color="red")  + xlim(c(1.5,5)) + ylim(c(2.5,10)) + theme_bw()
@@ -1539,7 +1539,7 @@ To perform the calculation in R, we simply change `interval="confidence"` to `in
 predict(IC_Model, newdata=data.frame(time=3), interval = "prediction", level=0.95)
 ```
 
-We are 95% confident that in individual who holds the dispenser for 3 seconds will get between `r round(predict(IC_Model, newdata=data.frame(time=3), interval = "predict", level=0.95)[2],2)` and `r round(predict(IC_Model, newdata=data.frame(time=3), interval = "predict", level=0.95)[3],2)` oz of ice cream.
+We are 95% confident that an individual who holds the dispenser for 3 seconds will get between `r round(predict(IC_Model, newdata=data.frame(time=3), interval = "predict", level=0.95)[2],2)` and `r round(predict(IC_Model, newdata=data.frame(time=3), interval = "predict", level=0.95)[3],2)` oz of ice cream.
 
 We add the red line, displaying prediction intervals for the amount of ice cream an individual person is expected to receive for a given amount of time holding the dispenser. Notice that the prediction intervals are considerably wider than the confidence intervals for the average amount, due to variability between individuals.
 
@@ -1658,13 +1658,13 @@ The blue line represents the least squares regression line. The black line repre
 
 We do see a positive relationship between the exam scores, as we would expect. On average students who scored higher on the first exam also did on the second one. If we look deeper, however, we notice some interesting results.
 
--   There were 6 students who scored below a 70 on the first exam. Of these, 5 improved their score on the second exam (as indicated by the fact that they lie above the black line).
+- There were 6 students who scored below a 70 on the first exam. Of these, 5 improved their score on the second exam (as indicated by the fact that they lie above the black line).
 
--   There were 7 students who scored a 90 or above on the first exam. Of these, only 2 improved on the second exam.
+- There were 7 students who scored a 90 or above on the first exam. Of these, only 2 improved on the second exam.
 
 At first glance, a professor might think that the students who struggled on the first exam had begun studying harder, strengthened their understanding of the material, and thus improved on the second exam. Meanwhile, the professor might conclude that the students who had done well on the first exam had gotten lazy and not prepared or learned the material as well for the second exam. While these explanations may be true, there is another explanation we should consider here.
 
-We can think of a student's score on an exam as being a combination of their skill (or understanding) and luck. A certain with a strong understanding of the material will certainly be better positioned to score higher than a student with a weak understanding. Still, there are other factors that will affect an exam score, such as how the person is feeling on the day of the exam, or which questions are on the exam.
+We can think of a student's score on an exam as being a combination of their skill (or understanding) and luck. A student with a strong understanding of the material will certainly be better positioned to score higher than a student with a weak understanding. Still, there are other factors that will affect an exam score, such as how the person is feeling on the day of the exam, or which questions are on the exam.
 
 A student who scores very high on the first exam likely knew the material well, and also experienced some good luck. Perhaps they got a good night's sleep before the exam and the questions that were on the test were over the topics they knew best. If the student keeps studying and preparing just as well for the second exam, we would expect their skill level and understanding of the material to be just as good, but they may still see a slip in their score if their luck doesn't hold up as well. Perhaps they aren't feeling as well during the exam, or the professor happens to choose an exam question on their least favorite topic. Conversely, a student who scores very low on the first exam likely had a low understanding of the material and also experienced some bad luck. Unless they take action to improve their work in the class, it is unlikely that their level of understanding will be any better on the second exam, but their score may still improve if they get even average luck.
 
@@ -1715,7 +1715,7 @@ While it may be the case that the weak teams got better and the good teams got w
 
 A 1973 article by Kahneman, D. and Tversky, A., "On the Psychology of Prediction," Pysch. Rev. 80:237-251 describes an instance of the regression effect in the training of air force pilots.
 
-Trainees were praised after performing well and criticized after performing badly. The flight instructors observed that "high praise for good execution of complex maneuvers typically results in a decrements of performance on the next try."
+Trainees were praised after performing well and criticized after performing badly. The flight instructors observed that "high praise for good execution of complex maneuvers typically results in a decrement in performance on the next try."
 
 Kahneman and Tversky write that :
 
@@ -1723,9 +1723,9 @@ Kahneman and Tversky write that :
 
 ## Responsible Statistical Inference
 
-While statistics offer insight that have lead to great advances in science, medicine, business and economics and many other areas, they have also been misused, (either intentionally or unintentionally) in ways that have resulted in harm. In an effort to better educate the public, the American Statistical Association released a report in 2016, highlighting common misuses of p-values, and the notion of statistical significance. Kenneth Rothman, Professor of Epidemiology at Boston University School of Public Health wrote:
+While statistics offer insight that have led to great advances in science, medicine, business and economics and many other areas, they have also been misused, (either intentionally or unintentionally) in ways that have resulted in harm. In an effort to better educate the public, the American Statistical Association released a report in 2016, highlighting common misuses of p-values, and the notion of statistical significance. Kenneth Rothman, Professor of Epidemiology at Boston University School of Public Health wrote:
 
--   “(S)cientists have embraced and even avidly pursued meaningless differences solely because they are statistically significant, and have ignored important effects because they failed to pass the screen of statistical significance...It is a safe bet that people have suffered or died because scientists (and editors, regulators, journalists and others) have used significance tests to interpret results, and have consequently failed to identify the most beneficial courses of action.” -ASA statement on p-values, 2016
+- “(S)cientists have embraced and even avidly pursued meaningless differences solely because they are statistically significant, and have ignored important effects because they failed to pass the screen of statistical significance...It is a safe bet that people have suffered or died because scientists (and editors, regulators, journalists and others) have used significance tests to interpret results, and have consequently failed to identify the most beneficial courses of action.” -ASA statement on p-values, 2016
 
 In this section, we'll look at some real scenarios where it might be tempting to make an improper conclusion based on data. Think carefully about each scenario and identify possible misinterpretations that might arise. Then think about what conclusions or actions would be appropriate in each scenario.
 
@@ -1735,25 +1735,25 @@ Keep in mind the following guidelines for responsible statistical inference.
 
 Performing responsible statistical inference requires understanding what p-values do and do not tell us, and how they should and should not be interpreted.
 
--   A low p-value tells us that the data we observed are inconsistent with our null hypothesis or some assumption we make in our model.
+- A low p-value tells us that the data we observed are inconsistent with our null hypothesis or some assumption we make in our model.
 
--   A large p-value tells us that the data we observed could have plausibly been obtained under our supposed model and null hypothesis.
+- A large p-value tells us that the data we observed could have plausibly been obtained under our supposed model and null hypothesis.
 
--   A p-value never provides evidence supporting the null hypothesis, it only tells us the strength of evidence against it.
+- A p-value never provides evidence supporting the null hypothesis, it only tells us the strength of evidence against it.
 
--   A p-value is impacted by
+- A p-value is impacted by
 
-    -   the size of the difference between group, or change per unit increase (effect size)\
-    -   the amount of variability in the data\
-    -   the sample size
+  - the size of the difference between group, or change per unit increase (effect size)\
+  - the amount of variability in the data\
+  - the sample size
 
--   Sometimes, a p-value tells us more about sample size, than relationship we're actually interested in.
+- Sometimes, a p-value tells us more about sample size, than relationship we're actually interested in.
 
--   A p-value does not tell us the "size" of a difference or effect, or whether it is practically meaningful.
+- A p-value does not tell us the "size" of a difference or effect, or whether it is practically meaningful.
 
--   We should only generalize results from a hypothesis test performed on a sample to a larger population or process if the sample is representative of the population or process (such as when the sample is randomly selected).
+- We should only generalize results from a hypothesis test performed on a sample to a larger population or process if the sample is representative of the population or process (such as when the sample is randomly selected).
 
--   A correlation between two variables does not necessarily imply a causal relationship.
+- A correlation between two variables does not necessarily imply a causal relationship.
 
 ### Multiple Testing Error
 
@@ -1761,7 +1761,7 @@ In Section 4.3.4, we talked about the risk of detecting false positives when per
 
 An obvious example of multiple testing error occurred in a [2008 article by New Scientist](https://www.newscientist.com/article/dn13754-breakfast-cereals-boost-chances-of-conceiving-boys/) whose title made the surprising claim: "Breakfast cereals boost chances of conceiving boys." Although the article lacks details on the underlying study, researchers, in fact, tracked the eating habits of women who were attempting to become pregnant. They tracked 133 different food items, and tested whether there was a difference in the proportion of baby boys conceived between women who ate the food, compared to those who didn't. Of the 133 foods tested, only breakfast cereal showed a significant difference.
 
-If none of the food items had any effect on the likelihood of a baby being born male, we should expect to obtain p-values less than 0.05 for $0.05 \times 133 = 6.6$ food items, just by chance. The probability of getting at least one p-value less than 0.05 is $1-0.95^{133} = 99.9\%$. The link between sex at birth and the mother's consumption of breakfast cereal was almost certainly one of these false positives, resulting from performing 133 tests simultaneously. This [xkcd comic](https://xkcd.com/882/)? illustrates the faulty reasoning at play here.
+If none of the food items had any effect on the likelihood of a baby being born male, we should expect to obtain p-values less than 0.05 for $0.05 \times 133 = 6.6$ food items, just by chance. The probability of getting at least one p-value less than 0.05 is $1-0.95^{133} = 99.9\%$. The link between sex at birth and the mother's consumption of breakfast cereal was almost certainly one of these false positives, resulting from performing 133 tests simultaneously. This [xkcd comic](https://xkcd.com/882/) illustrates the faulty reasoning at play here.
 
 It is important to use the Bonferroni correction, or some other kind of correction to control for false positives when performing multiple tests simultaneously.
 
@@ -1769,8 +1769,8 @@ It is important to use the Bonferroni correction, or some other kind of correcti
 
 A traveler lives in New York and wants to fly to Chicago. They consider flying out of two New York airports:
 
--   Newark (EWR)\
--   LaGuardia (LGA)
+- Newark (EWR)\
+- LaGuardia (LGA)
 
 We have data on the times of flights from both airports to Chicago's O'Hare airport from 2013 (more than 14,000 flights).
 
@@ -1820,11 +1820,11 @@ Confidence Interval for Flights:
 confint(M_Flights)
 ```
 
--   Flights from LGA are estimated to take 2.5 minutes longer than flights from EWR on average.
+- Flights from LGA are estimated to take 2.5 minutes longer than flights from EWR on average.
 
--   The very low p-value provides strong evidence of a difference in mean flight time.
+- The very low p-value provides strong evidence of a difference in mean flight time.
 
--   We are 95% confident that flights from LGA to ORD take between 2.2 and 2.9 minutes longer, on average, than flights from EWR to ORD.
+- We are 95% confident that flights from LGA to ORD take between 2.2 and 2.9 minutes longer, on average, than flights from EWR to ORD.
 
 We obtained a small p-value, and thus a statistically discernible difference in mean flight time to Chicago between the two airports. And yet, the difference is very small (between 2-3 minutes). Most travelers would not make their decision on this basis, and would likely prioritize other factors, such as price and convenience. In this case, the small p-value is due to the fact that we have a very large sample size, rather than a meaningful difference in outcomes.
 
@@ -1868,11 +1868,11 @@ summary(M_Birthwt)
 confint(M_Birthwt)
 ```
 
--   The average birth weight of babies whose mothers are smokers is estimated to be about 0.42 lbs less than the average birthweight for babies whose mothers are nonsmokers.
+- The average birth weight of babies whose mothers are smokers is estimated to be about 0.42 lbs less than the average birthweight for babies whose mothers are nonsmokers.
 
--   The large p-value of 0.23, tells us that there is not enough evidence to say that a mother's smoking is associated with lower birth weights. It is plausible that this difference could have occurred by chance.
+- The large p-value of 0.23, tells us that there is not enough evidence to say that a mother's smoking is associated with lower birth weights. It is plausible that this difference could have occurred by chance.
 
--   We are 95% confident that the average birtweight of babies whose mothers are smokers is between 1.12 lbs less and 0.27 lbs more than the average birthweight for babies whose mothers are nonsmokers.
+- We are 95% confident that the average birtweight of babies whose mothers are smokers is between 1.12 lbs less and 0.27 lbs more than the average birthweight for babies whose mothers are nonsmokers.
 
 Many studies have shown that a mother's smoking puts a baby at risk of low birthweight. Do our results contradict this research? Should we conclude that smoking has no impact on birthweights?
 
@@ -1895,23 +1895,23 @@ confint(M_Birthwt_Full)
 
 Notice that the estimated difference in birth weights is actually smaller in the full dataset than in the subset (though 0.3 lbs is still a pretty big difference for babies), and yet now the p-value is much smaller. Why do you think this happened? What should we learn from this?
 
-We saw that a difference that was not statistically discernible for the sample of 80 babies became discernible when we had a larger sample. The large p-value from the initial study was due to a small sample size, rather than the lack of an effect of smoking. It wasn't that smoking didn't have an effect on birth weight, only that the sample was too small to detect it conclusively, given the amount of variability in the data. Had the researchers stopped and "accepted" the null hypothesis, concluding that smoking during pregnancy had no effect on the baby's health, they would have been making a disasterous mistake!
+We saw that a difference that was not statistically discernible for the sample of 80 babies became discernible when we had a larger sample. The large p-value from the initial study was due to a small sample size, rather than the lack of an effect of smoking. It wasn't that smoking didn't have an effect on birth weight, only that the sample was too small to detect it conclusively, given the amount of variability in the data. Had the researchers stopped and "accepted" the null hypothesis, concluding that smoking during pregnancy had no effect on the baby's health, they would have been making a disastrous mistake!
 
 ### Cautions and Advice
 
 **p-values are only (a small) part of a statistical analysis.**
 
--   For small samples, real differences might not be statistically significant.\
-    -Don't accept null hypothesis. Gather more information.\
--   For large, even very small differences will be statistically significant.\
-    -Look at confidence interval. Is difference practically important?\
--   When many hypotheses are tested at once (such as many food items) some will produce a significant result just by change.\
-    -Use a multiple testing correction, such as Bonferroni\
--   Interpret p-values on a “sliding scale”
-    -   0.049 is practically the same as 0.051
--   Is sample representative of larger population?\
--   Were treatments randomly assigned (for experiments)?\
--   Are there other variables to consider?
+- For small samples, real differences might not be statistically significant.\
+  -Don't accept null hypothesis. Gather more information.\
+- For large, even very small differences will be statistically significant.\
+  -Look at confidence interval. Is difference practically important?\
+- When many hypotheses are tested at once (such as many food items) some will produce a significant result just by change.\
+  -Use a multiple testing correction, such as Bonferroni\
+- Interpret p-values on a “sliding scale”
+  - 0.049 is practically the same as 0.051
+- Is sample representative of larger population?\
+- Were treatments randomly assigned (for experiments)?\
+- Are there other variables to consider?
 
 ## Practice Questions
 
@@ -2014,24 +2014,24 @@ set.seed(10082020)
 # set times 
 n <- 60
 time <- runif(n , 2, 5)
-
+  
 noise <-rnorm(n, 0, 0.2) %>% round(2)  #generate noise from normal distribution
 amount <- 2*time + noise  # calculate observed amounts
-IcecreamA <- data.frame(time, signal, noise, amount) # set up data table
+IcecreamA <- data.frame(time,  amount) # set up data table
 
 
 noise <-rnorm(n, 0, 3) %>% round(2)  #generate noise from normal distribution
 amount <- 3*time + noise  # calculate observed amounts
-IcecreamB <- data.frame(time, signal, noise, amount) # set up data table
+IcecreamB <- data.frame(time, amount) # set up data table
 
 
 noise <-rnorm(n, 0, 1) %>% round(2)  #generate noise from normal distribution
 amount <- 1*time + noise  # calculate observed amounts
-IcecreamC <- data.frame(time, signal, noise, amount) # set up data table
+IcecreamC <- data.frame(time,  amount) # set up data table
 
 noise <-rnorm(n, 0, 0.5) %>% round(2)  #generate noise from normal distribution
 amount <- 0.1*time + noise + 5  # calculate observed amounts
-IcecreamD <- data.frame(time, signal, noise, amount) # set up data table
+IcecreamD <- data.frame(time, amount) # set up data table
 
 PlotA <- ggplot(data=IcecreamA, aes(x=time, y=amount)) + geom_point()  + 
   xlim(c(1.5,5)) + ylim(c(0,16)) + ggtitle("A)") + 
@@ -2224,7 +2224,7 @@ State the four assumptions of the ordinary regression model and explain what the
 The model output is shown below, along with some quantities that can be used to calculate the model estimates.
 
 ```{r}
-M_Seniors_science_write <- lm(data=HSSeniors, lm(data=HSSeniors, science~write))
+M_Seniors_science_write <- lm(data=HSSeniors, science~write)
 ```
 
 ![M2 Output](Ch4_2.png){.class width="110%" height="110%"}
@@ -2279,7 +2279,7 @@ Write the null hypothesis associated with the p-value on the line `intercept`. W
 
 #### g) {.unnumbered}
 
-Write the null hypothesis associated with the p-value on the line `wrire`. What (if anything) should we conclude from this p-value?
+Write the null hypothesis associated with the p-value on the line `write`. What (if anything) should we conclude from this p-value?
 
 ##### h) {.unnumbered}
 
@@ -2385,3 +2385,7 @@ b)  There was disagreement within the Federal Drug Administration about whether 
 c)  Suppose the same difference in walking distances had been observed, but the p-value had been 0.072 instead of 0.012? Would this change your thoughts on whether the drug should be approved? Why or why not?
 
 NOTE: In the end, the FDA approved the drug, while requiring its producer to conduct additional future tests and noting that approval could be withdrawn if those tests did not confirm a clinical benefit. Results and discussion of the study are available [here](https://www.fiercebiotech.com/biotech/sarepta-therapeutics-announces-a-continued-benefit-on-walking-test-through-62-weeks-phase), and [here](https://pubmed.ncbi.nlm.nih.gov/26573217/.).
+
+```{r, echo=FALSE}
+save.image(file = "Environment.RData")
+```

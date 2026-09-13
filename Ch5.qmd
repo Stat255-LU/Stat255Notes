@@ -32,7 +32,7 @@ set.seed(07302020)
 ```
 
 ```{r, echo=FALSE}
-load("Environment.Rdata")
+load("Environment.RData")
 ```
 
 ## Regression Assumptions Checks
@@ -47,7 +47,7 @@ The statement $Y_i = \beta_0 + \beta_1X_{i1}+ \ldots + \beta_pX_{ip} + \epsilon_
 
 3.  Constant Variance: Regardless of the values of $X_1, X_2, \ldots, X_p$, the variance (or standard deviation) in the normal distribution for $Y$ is the same.
 
-4.  Independence: The response value for each observation is not affected by any of the other observations (expect due to explanatory variables included in the model).
+4.  Independence: The response value for each observation is not affected by any of the other observations (except due to explanatory variables included in the model).
 
 **Illustration of Model Assumptions**
 
@@ -69,11 +69,11 @@ The following plots are useful when assessing the appropriateness of the normal 
 
 2.  Histogram of standardized residuals
 
-    -   heavy skewness indicates a problem with normality assumption
+    - heavy skewness indicates a problem with normality assumption
 
 3.  Normal quantile plot
 
-    -   severe departures from diagonal line indicate problem with normality assumption
+    - severe departures from diagonal line indicate problem with normality assumption
 
 ```{r, include=FALSE}
 set.seed(10102021)
@@ -97,8 +97,8 @@ ind_viol_Model <- lm(data=Violations, amount_ind_viol~time)
 
 A residual vs predicted plot is useful for detecting issues with the linearity or constant variance assumption.
 
--   curvature indicates a problem with linearity assumption\
--   "funnel" or "megaphone" shape indicates problem with constant variance assumption
+- curvature indicates a problem with linearity assumption\
+- "funnel" or "megaphone" shape indicates problem with constant variance assumption
 
 ```{r, fig.height=4, fig.width=12, echo=FALSE}
 P1 <- resid_panel(no_viol_Model, plots="resid", smoother=TRUE) + 
@@ -122,7 +122,7 @@ If there is only one explanatory variable, plotting the residuals against that v
 
 A histogram of the residuals is useful for assessing the normality assumption.
 
--   Severe skewness indicates violation of normality assumption
+- Severe skewness indicates violation of normality assumption
 
 ```{r, fig.height=4, fig.width=8, echo=FALSE}
 P1 <- resid_panel(no_viol_Model, plots="hist") + 
@@ -141,7 +141,7 @@ Sometimes histograms can be inconclusive, especially when sample size is smaller
 
 A Normal quantile-quantile plot displays quantiles of the residuals against the expected quantiles of a normal distribution.
 
--   Severe departures from diagonal line indicate a problem with normality assumption.
+- Severe departures from diagonal line indicate a problem with normality assumption.
 
 ```{r, fig.height=4, fig.width=8, echo=FALSE}
 P1 <- resid_panel(no_viol_Model, plots="qq") + 
@@ -207,7 +207,7 @@ When we use the normal error regression model, we are assuming the following:
 
 3.  Constant Variance: the normal distribution for mercury concentrations in North Florida has the same standard deviation as the normal distribution for mercury concentrations in South Florida
 
-4.  Independence: no two lakes are any more alike than any others, except for being in the north or south, which we account for in the model. We might have concerns about this, do to some lakes being geographically closer to each other than others.
+4.  Independence: no two lakes are any more alike than any others, except for being in the north or south, which we account for in the model. We might have concerns about this, due to some lakes being geographically closer to each other than others.
 
 We should only use the p-values and confidence intervals provided by R, which depend on the t-distribution approximation, if we believe these assumptions are reasonable.
 
@@ -259,7 +259,7 @@ We saw that the confidence interval and p-value associated with $b_1$ when we us
 
 Recall the model for estimating price of a house, using size, waterfront status, and an interaction term.
 
-$\text{Price}_i = \beta_0 + \beta_1\text{Sq.Ft.}_{i}+ \beta_2\text{Waterfront}_{i} + \epsilon_i$, where $\epsilon_i\sim\mathcal{N}(0,\sigma)$.
+$\text{Price}_i = \beta_0 + \beta_1\text{Waterfront}_{i}+ \beta_2\text{Sq.Ft.}_{i} + \epsilon_i$, where $\epsilon_i\sim\mathcal{N}(0,\sigma)$.
 
 The model assumes:
 
@@ -278,7 +278,7 @@ Several reasons come to mind that might cause us to doubt the validity of these 
 The plots for checking these assumptions are shown below.
 
 ```{r, fig.width=10, fig.height=6}
-resid_panel(model = M_House_price_sqft_wf, smoother=TRUE)
+resid_panel(model = M_House_price_wf_sqft, smoother=TRUE)
 ```
 
 The plots reveal several concerns. In the residual plot, there is some sign of a nonlinear trend, though this is not too severe. Of greater concern is the megaphone shape, as we see much more vertical spread in residuals for houses with higher predicted prices on the right side of the graph than for ones with lower predicted prices on the left.
@@ -312,11 +312,11 @@ When model assumptions are a concern, consider a using a transformation of the d
 
 ## Transformations
 
-When there are violations of model assumptions, we can sometimes correct for these by modeling a a function of the response variable, rather than the response variable itself. When the histogram of residuals and normal qq plot show signs of right-skewness, modeling a logarithm of the response variable is often helpful.
+When there are violations of model assumptions, we can sometimes correct for these by modeling a function of the response variable, rather than the response variable itself. When the histogram of residuals and normal qq plot show signs of right-skewness, modeling a logarithm of the response variable is often helpful.
 
 ### Example: Modeling Car Prices
 
-We'll work with data on a set of 110 new cars, released in 2020. The data come from the `LockData5` package in R.
+We'll work with data on a set of 110 new cars, released in 2020. The data come from the `Lock5Data` package in R.
 
 ```{r}
 library(Lock5Data)
@@ -467,7 +467,7 @@ $$
 \end{aligned}
 $$
 
-When using the `predict` command, R gives predictions are for log(Price), so we need to exponentiate.
+When using the `predict` command, R gives predictions for log(Price), so we need to exponentiate.
 
 ```{r}
 #predicted log of price
@@ -488,14 +488,14 @@ $$
 \begin{aligned}
 \text{Log of Expected Price} & = \beta_0 + \beta_1\times \text{Acc060}\  \text{, Thus:} \\
 \text{ Expected Price} & = e^{\beta_0 + \beta_1\times \text{Acc060} } \\
- & e^{\beta_0}e^{\beta_1 \times \text{Acc060}} \\
- & e^{\beta_0}(e^{\beta_1})^\text{Acc060}
+ & = e^{\beta_0}e^{\beta_1 \times \text{Acc060}} \\
+ & = e^{\beta_0}(e^{\beta_1})^\text{Acc060}
 \end{aligned}
 $$
 
--   We see that when $\text{Acc060}=0$, the expected price is $e^{\beta_0}$. So, $e^{\beta_0}$ is theoretically the expected price of a car that can accelerate from 0 to 60 mph in no time, but this is not a meaningful interpretation.
+- We see that when $\text{Acc060}=0$, the expected price is $e^{\beta_0}$. So, $e^{\beta_0}$ is theoretically the expected price of a car that can accelerate from 0 to 60 mph in no time, but this is not a meaningful interpretation.
 
--   We see that for each additional second it takes to accelerate from 0 to 60 mph, the exponent on $e^{\beta_1}$, increases by one, meaning price is expected to multiply by an additional $e^{\beta_1}$. **For each additional second it takes a car to accelerate, price is expected to multiply by a factor of** $e^{b_1}$.
+- We see that for each additional second it takes to accelerate from 0 to 60 mph, the exponent on $e^{\beta_1}$, increases by one, meaning price is expected to multiply by an additional $e^{\beta_1}$. **For each additional second it takes a car to accelerate, price is expected to multiply by a factor of** $e^{b_1}$.
 
 We calculate $e^{b_0}$ and $e^{b_1}$ in R, and interpret the estimates.
 
@@ -503,7 +503,7 @@ We calculate $e^{b_0}$ and $e^{b_1}$ in R, and interpret the estimates.
 exp(M_Cars_logprice_acc060$coefficients)
 ```
 
--   For each additional second in acceleration time, price is expected to multiply by a a factor of $e^{`r Cars_Log_b1`}$ = `r exp(M_Cars_logprice_acc060$coefficients[2]) |> round(2)`. Thus, each 1-second increase in acceleration time is estimated to be associated with a `r ((1-exp(M_Cars_logprice_acc060$coefficients[2]))*100) |> round(0)`% drop in price, on average.
+- For each additional second in acceleration time, price is expected to multiply by a a factor of $e^{`r Cars_Log_b1`}$ = `r exp(M_Cars_logprice_acc060$coefficients[2]) |> round(2)`. Thus, each 1-second increase in acceleration time is estimated to be associated with a `r ((1-exp(M_Cars_logprice_acc060$coefficients[2]))*100) |> round(0)`% drop in price, on average.
 
 **Confidence Interval for** $e^{\beta_1}$
 
@@ -511,7 +511,7 @@ exp(M_Cars_logprice_acc060$coefficients)
 exp(confint(M_Cars_logprice_acc060, level=0.95, parm="Acc060"))
 ```
 
--   We are 95% confident that for each additional second in acceleration time, the price of a car multiplies by a factor between `r (exp(confint(M_Cars_logprice_acc060, level=0.95, parm="Acc060")))[1]|>round(2)` and `r (exp(confint(M_Cars_logprice_acc060, level=0.95, parm="Acc060")))[2]|>round(2)`, an estimated decrease between `r ((1-(exp(confint(M_Cars_logprice_acc060, level=0.95, parm="Acc060")))[2])*100)|>round(0)` and `r ((1-(exp(confint(M_Cars_logprice_acc060, level=0.95, parm="Acc060")))[1])*100)|>round(0)` percent.
+- We are 95% confident that for each additional second in acceleration time, the price of a car multiplies by a factor between `r (exp(confint(M_Cars_logprice_acc060, level=0.95, parm="Acc060")))[1]|>round(2)` and `r (exp(confint(M_Cars_logprice_acc060, level=0.95, parm="Acc060")))[2]|>round(2)`, an estimated decrease between `r ((1-(exp(confint(M_Cars_logprice_acc060, level=0.95, parm="Acc060")))[2])*100)|>round(0)` and `r ((1-(exp(confint(M_Cars_logprice_acc060, level=0.95, parm="Acc060")))[1])*100)|>round(0)` percent.
 
 **Log Model CI for Expected Response**
 
@@ -609,8 +609,8 @@ In this section, we looked at a transformation involving a single quantitative e
 
 If the explanatory variable is categorical:\
 
--   $e^{\beta_0}$ represents the expected response in the baseline category\
--   $e^{\beta_j}$ represents the number of times larger the expected response in category $j$ is, compared to the baseline category.
+- $e^{\beta_0}$ represents the expected response in the baseline category\
+- $e^{\beta_j}$ represents the number of times larger the expected response in category $j$ is, compared to the baseline category.
 
 When working with multiple regression models, it is still important to mention holding other variables constant when interpreting parameters associated with one of the variables.
 
@@ -752,19 +752,19 @@ exp(M_logWage_price_yr_age2_ed_job$coefficients) |>round(3)
 
 Since the intercept would refer to things like year 0 and a person of age 0, it does not make sense to interpret. The interpretation of the age coefficient gets tricky since it involves a quadratic term, so we'll interpret the other variables first.
 
--   For each year since 1993, average salary is expected to multiply by `r exp(M_logWage_price_yr_age_ed_job$coefficients)[2] |>round(3)`, a `r ((exp(M_logWage_price_yr_age_ed_job$coefficients)[2] -1) |>round(3))*100` percent increase, assuming all other variables are held constant. Since the p-value on `year` is large, we cannot conclusively say that salaries are changing over time.
+- For each year since 1993, average salary is expected to multiply by `r exp(M_logWage_price_yr_age2_ed_job$coefficients)[2] |>round(3)`, a `r ((exp(M_logWage_price_yr_age2_ed_job$coefficients)[2] -1) |>round(3))*100` percent increase, assuming all other variables are held constant. Since the p-value on `year` is large, we cannot conclusively say that salaries are changing over time.
 
--   Workers with a high school degree are estimated to make `r ((exp(M_logWage_price_yr_age_ed_job$coefficients)[5] -1) |>round(3))*100` percent more than workers with less than a high school degree, assuming all other variables are held constant.
+- Workers with a high school degree are estimated to make `r ((exp(M_logWage_price_yr_age2_ed_job$coefficients)[5] -1) |>round(3))*100` percent more than workers with less than a high school degree, assuming all other variables are held constant.
 
--   Workers with some college are estimated to make `r ((exp(M_logWage_price_yr_age_ed_job$coefficients)[6] -1) |>round(3))*100` percent more than workers with less than a high school degree, assuming all other variables are held constant.
+- Workers with some college are estimated to make `r ((exp(M_logWage_price_yr_age2_ed_job$coefficients)[6] -1) |>round(3))*100` percent more than workers with less than a high school degree, assuming all other variables are held constant.
 
--   Workers with a college degree are estimated to make `r ((exp(M_logWage_price_yr_age_ed_job$coefficients)[7] -1) |>round(3))*100` percent more than workers with less than a high school degree, assuming all other variables are held constant.
+- Workers with a college degree are estimated to make `r ((exp(M_logWage_price_yr_age2_ed_job$coefficients)[7] -1) |>round(3))*100` percent more than workers with less than a high school degree, assuming all other variables are held constant.
 
--   Workers with a college degree are estimated to make `r ((exp(M_logWage_price_yr_age_ed_job$coefficients)[8] -1) |>round(3))*100` percent more than workers with less than a high school degree, assuming all other variables are held constant.
+- Workers with an advanced degree are estimated to make `r ((exp(M_logWage_price_yr_age2_ed_job$coefficients)[8] -1) |>round(3))*100` percent more than workers with less than a high school degree, assuming all other variables are held constant.
 
 The differences in education levels are all statistically discernible.
 
--   Workers with an informational job are estimated to make `r ((exp(M_logWage_price_yr_age_ed_job$coefficients)[9] -1) |>round(3))*100` percent more than workers with an industrial one, assuming all other variables are held constant. This difference is not big enough to be statistically discernible.
+- Workers with an informational job are estimated to make `r ((exp(M_logWage_price_yr_age2_ed_job$coefficients)[9] -1) |>round(3))*100` percent more than workers with an industrial one, assuming all other variables are held constant. This difference is not big enough to be statistically discernible.
 
 ### Interpreting the Quadratic Term
 
@@ -904,13 +904,13 @@ summary(M_logwage_year_age2_edu_jobclass)
 In Chapter 2, we modeled the price of a house in King County, Washington, using its size in square feet, and whether or not it was on the waterfront as explanatory variable. We used a multiple regression model of the form
 
 $$
-\widehat{Price} = b_0 + b_1\times\text{SqFt} + b_2\times\text{Waterfront}
+\widehat{Price} = b_0 + b_1\times\text{Waterfront} + b_2\times\text{SqFt}
 $$
 
-Recall that this model assumes the slope relating price and square footage is the same ($b_1$) for houses on the waterfront as for houses not on the waterfront. An illustration of the model is shown below.
+Recall that this model assumes the slope relating price and square footage is the same ($b_2$) for houses on the waterfront as for houses not on the waterfront. An illustration of the model is shown below.
 
 ```{r}
-Plot_House_price_sqft_wf
+Plot_House_price_wf_sqft
 ```
 
 This assumption of the rate of change in price with respect to living space being the same for waterfront houses, as for non-waterfront houses might be unrealistic.
@@ -932,7 +932,7 @@ If we want to allow for different slopes between waterfront and non-waterfront h
 The model equation is
 
 $$
-\widehat{Price} = b_0 + b_1\times\text{Sq. Ft.} + b_2\times\text{waterfront} + b_3\times\text{Sq.Ft}\times\text{Waterfront}
+\widehat{Price} = b_0 + b_1\times\text{Waterfront} + b_2\times\text{Sq. Ft.} + b_3\times\text{Waterfront}\times\text{Sq.Ft}
 $$
 
 The last term is called an **interaction term.**
@@ -941,21 +941,21 @@ For a house on the waterfront ($\text{waterfront}=1$), the equation relating pri
 
 $$
 \begin{aligned}
-\widehat{Price} & = b_0 + b_1\times\text{Sq. Ft.} + b_2\times\text{1} + b_3\times\text{Sq.Ft}\times\text{1} \\
-& = (b_0+b_2) + (b_1+b_3)\times{\text{Sq. Ft.}}
+\widehat{Price} & = b_0 + b_1\times\text{1} + b_2\times\text{Sq. Ft.} + b_3\times\text{1}\times\text{Sq.Ft} \\
+& = (b_0+b_1) + (b_2+b_3)\times{\text{Sq. Ft.}}
 \end{aligned}
 $$ For a house not on the waterfront ($\text{waterfront}=0$), the equation relating price to square feet is
 
 $$
 \begin{aligned}
-\widehat{Price} & = b_0 + b_1\times\text{Sq. Ft.} + b_2\times\text{0} + b_3\times\text{Sq.Ft}\times\text{0} \\
-& = b_0 + b_1\times{\text{Sq. Ft}}
+\widehat{Price} & = b_0 + b_1\times\text{0} + b_2\times\text{Sq. Ft.} + b_3\times\text{0}\times\text{Sq.Ft} \\
+& = b_0 + b_2\times{\text{Sq. Ft}}
 \end{aligned}
 $$
 
-The intercept is $b_0$ for non-waterfront houses, and $b_0 + b_2$ for waterfront houses.
+The intercept is $b_0$ for non-waterfront houses, and $b_0 + b_1$ for waterfront houses.
 
-The slope is $b_1$ for non-waterfront houses, and $b_1 + b_3$ for waterfront houses.
+The slope is $b_2$ for non-waterfront houses, and $b_2 + b_3$ for waterfront houses.
 
 Thus, the model allows both the slope and intercept to differ between waterfront and non-waterfront houses.
 
@@ -969,30 +969,30 @@ To fit a model with variables `var1` and `var2` and their interaction, you can d
 `var1:var2` means include the interaction term, and `var1*var2` means include both variables plus the interaction. (Note: we should never include an interaction term without also including the variables individually.)
 
 ```{r}
-M_House_price_sqft_wf_int <- lm(data=Houses, price~sqft_living*waterfront)
-summary(M_House_price_sqft_wf_int)
+M_House_price_wf_sqft_int <- lm(data=Houses, price~waterfront*sqft_living)
+summary(M_House_price_wf_sqft_int)
 ```
 
 ```{r, echo=FALSE}
-House_Int_b0 <- M_House_price_sqft_wf_int$coef[1] |>round(2)
-House_Int_b1 <- M_House_price_sqft_wf_int$coef[2] |>round(2)
-House_Int_b2 <- M_House_price_sqft_wf_int$coef[3] |>round(2)
-House_Int_b3 <- M_House_price_sqft_wf_int$coef[4] |>round(2)
+House_Int_b0 <- M_House_price_wf_sqft_int$coef[1] |>round(2)
+House_Int_b1 <- M_House_price_wf_sqft_int$coef[2] |>round(2)
+House_Int_b2 <- M_House_price_wf_sqft_int$coef[3] |>round(2)
+House_Int_b3 <- M_House_price_wf_sqft_int$coef[4] |>round(2)
 ```
 
 The regression equation is
 
 $$
-\widehat{Price} = `r House_Int_b0` + `r House_Int_b1`\times\text{Sq. Ft.}  + `r House_Int_b2`\times\text{Waterfront} + `r House_Int_b3`\times\text{Sq.Ft}\times\text{Waterfront}
+\widehat{Price} = `r House_Int_b0` + `r House_Int_b1`\times\text{Waterfront} + `r House_Int_b2`\times\text{Sq. Ft.}  + `r House_Int_b3`\times\text{Waterfront}\times\text{Sq.Ft}
 $$
 
 For a house on the waterfront ($\text{waterfront}=1$), the equation is
 
 $$
 \begin{aligned}
-\widehat{Price} & = `r House_Int_b0` + `r House_Int_b1`\times\text{Sq. Ft.} `r House_Int_b2` \times\text{1} + `r House_Int_b3`\times\text{Sq.Ft}\times\text{1} \\
-& = (`r House_Int_b0` + `r House_Int_b2`) + (`r House_Int_b1`+`r House_Int_b3`)\times{\text{Sq. Ft.}} \\
-& = `r House_Int_b0 + House_Int_b2` + `r House_Int_b1 + House_Int_b3`\times{\text{Sq. Ft.}}
+\widehat{Price} & = `r House_Int_b0` + `r House_Int_b1`\times\text{1} + `r House_Int_b2`\times\text{Sq. Ft.} + `r House_Int_b3`\times\text{1}\times\text{Sq.Ft} \\
+& = (`r House_Int_b0` + `r House_Int_b1`) + (`r House_Int_b2`+`r House_Int_b3`)\times{\text{Sq. Ft.}} \\
+& = `r House_Int_b0 + House_Int_b1` + `r House_Int_b2 + House_Int_b3`\times{\text{Sq. Ft.}}
 \end{aligned}
 $$
 
@@ -1000,30 +1000,30 @@ For a house not on the waterfront ($\text{waterfront}=0$), the equation is
 
 $$
 \begin{aligned}
-\widehat{Price} & = `r House_Int_b0` + `r House_Int_b1`\times\text{Sq. Ft.} `r House_Int_b2` \times\text{0} + `r House_Int_b3`\times\text{Sq.Ft}\times\text{0} \\
-& = `r House_Int_b0` + `r House_Int_b1`\times{\text{Sq. Ft.}} 
+\widehat{Price} & = `r House_Int_b0` + `r House_Int_b1`\times\text{0} + `r House_Int_b2`\times\text{Sq. Ft.} + `r House_Int_b3`\times\text{0}\times\text{Sq.Ft} \\
+& = `r House_Int_b0` + `r House_Int_b2`\times{\text{Sq. Ft.}} 
 \end{aligned}
 $$ **Interpretation**
 
-When interpreting $b_0$ and $b_1$, we need to state that the interpretations apply only to the "baseline" category (in this case non-waterfront houses).
+When interpreting $b_0$ and $b_2$, we need to state that the interpretations apply only to the "baseline" category (in this case non-waterfront houses).
 
 In a model with interaction, it does not make sense to talk about holding one variable constant when interpreting the effect of the other, since the effect of one variable depends on the value or category of the other. Instead, we must state the value or category of one variable when interpreting the effect of the other.
 
 **Interpretations:**
 
--   $b_0$ - On average, a house with 0 square feet that is not on the waterfront is expected to cost `r House_Int_b0` thousand dollars. This is not a sensible interpretation since there are no houses with 0 square feet.
+- $b_0$ - On average, a house with 0 square feet that is not on the waterfront is expected to cost `r House_Int_b0` thousand dollars. This is not a sensible interpretation since there are no houses with 0 square feet.
 
--   $b_1$ - For each additional square foot in size, the price of a non-waterfront house is expected to increase by `r House_Int_b1` thousand dollars.
+- $b_1$ - On average, the price of a waterfront house with 0 square feet is expected to be `r House_Int_b1` thousand dollars less than the price of a non-waterfront house with 0 square feet. This is not a sensible interpretation in this case.
 
--   $b_2$ - On average, the price of a waterfront house with 0 square feet is expected to be `r House_Int_b2` thousand dollars less than the price of a non-waterfront house with 0 square feet. This is not a sensible interpretation in this case.
+- $b_2$ - For each additional square foot in size, the price of a non-waterfront house is expected to increase by `r House_Int_b2` thousand dollars.
 
--   $b_3$ - For each additional square foot in size, the price of a waterfront house is expected to increase by `r House_Int_b3` thousand dollars more than a non-waterfront house.
+- $b_3$ - For each additional square foot in size, the price of a waterfront house is expected to increase by `r House_Int_b3` thousand dollars more than a non-waterfront house.
 
-Alternatively, we could interpret $b_0+b_2$ and $b_1+b_3$ together.
+Alternatively, we could interpret $b_0+b_1$ and $b_2+b_3$ together.
 
--   $b_0 + b_2$ - On average, a house with 0 square feet that is on the waterfront is expected to cost `r House_Int_b0 +House_Int_b2` thousand dollars. This is not a sensible interpretation since there are no houses with 0 square feet.
+- $b_0 + b_1$ - On average, a house with 0 square feet that is on the waterfront is expected to cost `r House_Int_b0 +House_Int_b1` thousand dollars. This is not a sensible interpretation since there are no houses with 0 square feet.
 
--   $b_1 + b_3$ - For each additional square foot in size, the price of a waterfront house is expected to increase by `r House_Int_b1 +House_Int_b3` thousand dollars.
+- $b_2 + b_3$ - For each additional square foot in size, the price of a waterfront house is expected to increase by `r House_Int_b2 +House_Int_b3` thousand dollars.
 
 **Prediction**
 
@@ -1034,11 +1034,11 @@ Houses[c(1,16), ] %>% select(ID, price, sqft_living, waterfront)
 ```
 
 $$
-\widehat{Price}_1 =  `r House_Int_b0` + `r House_Int_b1`\times `r Houses$sqft_living[1]`  + `r House_Int_b2`\times0 + `r House_Int_b3`\times `r Houses$sqft_living[1]` \times 0 = `r (House_Int_b0 + House_Int_b2) |> round(0)` \text{ thousand dollars}
+\widehat{Price}_1 =  `r House_Int_b0` + `r House_Int_b1`\times0 + `r House_Int_b2`\times `r Houses$sqft_living[1]`  + `r House_Int_b3`\times0\times `r Houses$sqft_living[1]` = `r (House_Int_b0 + House_Int_b2*Houses$sqft_living[1]) |> round(0)` \text{ thousand dollars}
 $$
 
 $$
-\widehat{Price}_2 =  `r House_Int_b0` + `r House_Int_b1`\times `r Houses$sqft_living[1]`  + `r House_Int_b2`\times1 + `r House_Int_b3`\times `r Houses$sqft_living[1]` \times 1 = `r House_Int_b0 + House_Int_b2 + (House_Int_b1 + House_Int_b3)*Houses$sqft_living[1] |> round(0)` \text{ thousand dollars}
+\widehat{Price}_2 =  `r House_Int_b0` + `r House_Int_b1`\times1 + `r House_Int_b2`\times `r Houses$sqft_living[1]`  + `r House_Int_b3`\times `r Houses$sqft_living[1]` \times 1 = `r House_Int_b0 + House_Int_b1 + (House_Int_b2 + House_Int_b3)*Houses$sqft_living[1] |> round(0)` \text{ thousand dollars}
 $$
 
 We'll calculate $R^2$ for the model with and without the interaction term.
@@ -1046,21 +1046,21 @@ We'll calculate $R^2$ for the model with and without the interaction term.
 **Model with Interaction**
 
 ```{r}
-summary(M_House_price_sqft_wf_int)$r.squared
+summary(M_House_price_wf_sqft_int)$r.squared
 ```
 
 **Model without Interaction**
 
 ```{r}
-summary(M_House_price_sqft_wf)$r.squared
+summary(M_House_price_wf_sqft)$r.squared
 ```
 
-We see that adding an interaction term improved the proportion of variability in house price explained by the model from `r summary(M_House_price_sqft_wf_int)$r.squared |> round(2)` to `r summary(M_House_price_sqft_wf)$r.squared |> round(2)`. This is a fairly notable increase.
+We see that adding an interaction term improved the proportion of variability in house price explained by the model from `r summary(M_House_price_wf_sqft)$r.squared |> round(2)` to `r summary(M_House_price_wf_sqft_int)$r.squared |> round(2)`. This is a fairly notable increase.
 
 We can also perform an ANOVA F-test to compare a full model that includes the interaction term to a reduced model that doesn't.
 
 ```{r}
-anova(M_House_price_sqft_wf, M_House_price_sqft_wf_int)
+anova(M_House_price_wf_sqft, M_House_price_wf_sqft_int)
 ```
 
 The large F-statistic and small p-value provides strong evidence that the model with interaction better explains variability in price than the model without interaction. There is strong reason for including the interaction term in the model.
@@ -1082,14 +1082,18 @@ Let's consider three different models:
 **Model 1 (Acc060 only):**
 
 $$
-\widehat{LogPrice} = b_0 + b_1\times\text{Acc060} + b_3\times\text{DriveFWD} + b_2\times\text{DriveRWD} 
-$$ Model 1 assumes that log(price) changes linearly with acceleration time and that drive type has no effect on price.
+\widehat{LogPrice} = b_0 + b_1\times\text{Acc060} 
+$$
+
+Model 1 assumes that log(price) changes linearly with acceleration time and that drive type has no effect on price.
 
 **Model 2 (Acc060 and Drive - No interaction):**
 
 $$
 \widehat{LogPrice} = b_0 + b_1\times\text{Acc060} + b_3\times\text{DriveFWD} + b_2\times\text{DriveRWD} 
-$$ Model 2 assumes log(price) changes linearly with acceleration time. Some drive types might be more or less expensive than others, but the rate of change in price with respect to acceleration time (i.e. the slope) is the same for each drive type.
+$$
+
+Model 2 assumes log(price) changes linearly with acceleration time. Some drive types might be more or less expensive than others, but the rate of change in price with respect to acceleration time (i.e. the slope) is the same for each drive type.
 
 **Model 3 (Acc060 and Drive - with Interaction):**
 
@@ -1203,10 +1207,10 @@ We'll examine strategies for modeling in two different contexts. In this chapter
 
 We'll need to think about things like:
 
--   which explanatory variables should we include in the model, and how many?\
--   should we include any interaction terms?\
--   should we use any nonlinear terms?\
--   should we use a transformation of the response variable?
+- which explanatory variables should we include in the model, and how many?\
+- should we include any interaction terms?\
+- should we use any nonlinear terms?\
+- should we use a transformation of the response variable?
 
 In this section we'll go through a set of steps to build a model that will help us understand factors that contribute to the price of a car.
 
@@ -1214,27 +1218,27 @@ In this section we'll go through a set of steps to build a model that will help 
 
 The Cars2020 dataset from the `Lock5Data` R package contains several variables with information pertaining to the price of a new 2020 car. These include:
 
--   `Make`\
--   `Manufacturer` (e.g. Chevrolet, Toyota, etc.)\
--   `Model` - Car model (e.g. Impala, Highlander, ...)\
--   `Type` - Vehicle category (Hatchback, Minivan, Sedan, Sporty, SUV, or Wagon)\
--   `Price` - Lowest MSRP (in \$1,000)\
--   `CityMPG` - City miles per gallon (EPA)\
--   `HwyMPG` - Highway miles per gallon (EPA)\
--   `Seating` - Seating capacity\
--   `Drive` - Type of drive (AWD, FWD, or RWD)\
--   `Acc030` - Time (in seconds) to go from 0 to 30 mph\
--   `Acc060` - Time (in seconds) to go from 0 to 60 mph\
--   `QtrMile` - Time (in seconds) to go 1/4 mile\
--   `Braking` - Distance to stop from 60 mph (dry pavement)\
--   `FuelCap` - Fuel capacity (in gallons)\
--   `Length` - Length (in inches)\
--   `Width` - Width (in inches)\
--   `Height` - Height (in inches)\
--   `Wheelbase` - Wheelbase (in inches)\
--   `UTurn` - Diameter (in feet) needed for a U-turn\
--   `Weight` - Curb weight (in pounds)\
--   `Size` - Large, Midsized, or Small
+- `Make`\
+- `Manufacturer` (e.g. Chevrolet, Toyota, etc.)\
+- `Model` - Car model (e.g. Impala, Highlander, ...)\
+- `Type` - Vehicle category (Hatchback, Minivan, Sedan, Sporty, SUV, or Wagon)\
+- `Price` - Lowest MSRP (in \$1,000)\
+- `CityMPG` - City miles per gallon (EPA)\
+- `HwyMPG` - Highway miles per gallon (EPA)\
+- `Seating` - Seating capacity\
+- `Drive` - Type of drive (AWD, FWD, or RWD)\
+- `Acc030` - Time (in seconds) to go from 0 to 30 mph\
+- `Acc060` - Time (in seconds) to go from 0 to 60 mph\
+- `QtrMile` - Time (in seconds) to go 1/4 mile\
+- `Braking` - Distance to stop from 60 mph (dry pavement)\
+- `FuelCap` - Fuel capacity (in gallons)\
+- `Length` - Length (in inches)\
+- `Width` - Width (in inches)\
+- `Height` - Height (in inches)\
+- `Wheelbase` - Wheelbase (in inches)\
+- `UTurn` - Diameter (in feet) needed for a U-turn\
+- `Weight` - Curb weight (in pounds)\
+- `Size` - Large, Midsized, or Small
 
 We'll start by creating some graphs and tables to explore the data.
 
@@ -1285,7 +1289,7 @@ P3 <- ggplot(data=Cars2020, aes(x=Weight, y=HwyMPG)) + geom_point() + stat_smoot
 grid.arrange(P1, P2, P3, ncol=3)
 ```
 
-We see that both highway MPG is negatively associated with price, weight is positively associated with price, and that there is also a negative relationship between weight and highway MPG.
+We see that highway MPG is negatively associated with price, weight is positively associated with price, and that there is also a negative relationship between weight and highway MPG.
 
 Let's add highway gas mileage to our model, along with acceleration time.
 
@@ -1298,7 +1302,7 @@ As the plot showed, highway MPG has a negative coefficient. Assuming acceleratio
 
 It may be surprising to learn that cars that get better gas mileage tend to be less expensive than those with lower gas mileage. We see in the summary output that the p-value associated with `HwyMPG` is small, indicating a statistically discernible relationship.
 
-We've learned, however, that when something seems unusual, we should think deeper. We noticed that highway gas mileage was negatively associated with weight, and that both are negatively associated with price. Since heaviest cars tend to also be the most expensive, it may be that cars that get better gas mileage are less expensive because they they are smaller and weigh less.
+We've learned, however, that when something seems unusual, we should think deeper. We noticed that highway gas mileage was negatively associated with weight, and that both are negatively associated with price. Since heaviest cars tend to also be the most expensive, it may be that cars that get better gas mileage are less expensive because they are smaller and weigh less.
 
 In the figure below we break the cars into three categories, based on their weight.
 
@@ -1317,14 +1321,14 @@ stat_smooth(method="lm", se=FALSE) + xlab("Highway MPG") + theme_bw()
 
 Once we compare cars of similar weights, we see that there is little to no relationship between highway MPG and price. The negative trend for low weight cars is due primarily to one outlier, while the other two weights show slightly positive to no trend. This is different than the strong negative relationship we saw in the previous graph.
 
-Let's add weight to the model and see what happens to to estimate associated with highway MPG.
+Let's add weight to the model and see what happens to estimate associated with highway MPG.
 
 ```{r}
 M_Cars3 <- lm(data=Cars2020, log(Price) ~ Acc060 + HwyMPG + Weight)
 summary(M_Cars3)
 ```
 
-Notice that when weight is added to the model, the coefficient on HwyMPG changes signs and is now positive. This means that assuming we are comparing cars of the same acceleration time and weight, one with higher highway gas mileage is expected to cost more than one with lower gas mileage. The difference is small, with price expected to multiply by about $$e^{`r M_Cars3$coef[3] |> round(2)`} =`r exp(M_Cars3$coef[3]) |> round(3)`$$ (a `r ((exp(M_Cars3$coef[3])-1)*100) |>round(1)`) percent increase), and not statistically discernible (high p-value). So, there really doesn't appear to be much of a relationship at all between price and gas mileage, after accounting for acceleration time and weight.
+Notice that when weight is added to the model, the coefficient on HwyMPG changes signs and is now positive. This means that assuming we are comparing cars of the same acceleration time and weight, one with higher highway gas mileage is expected to cost more than one with lower gas mileage. The difference is small, with price expected to multiply by about $$e^{`r M_Cars3$coef[3] |> round(2)`} =`r exp(M_Cars3$coef[3]) |> round(3)`$$ (a `r ((exp(M_Cars3$coef[3])-1)*100) |>round(1)` percent increase), and not statistically discernible (high p-value). So, there really doesn't appear to be much of a relationship at all between price and gas mileage, after accounting for acceleration time and weight.
 
 Still, this is a different conclusion than we would have drawn if we had not accounted for weight in the model. It had originally appeared that highway MPG had a strong negative association with price, but we see that once we compare cars of similar weights, there is little to no relationship between price and highway MPG. This is an example of a phenomenon know as **Simpson's Paradox.** In instances of Simpson's Paradox, the relationship between two variables changes directions, or disappears once a third variable is accounted for. The weight variable is called a **confounding variable**. If we don't account for weight, we get a misleading picture of the relationship between highway gas mileage and price.
 
@@ -1383,7 +1387,7 @@ Suppose we want to predict the price of a car that can accelerate from 0 to 60 m
 ```{r}
 exp(predict(M_Cars3, newdata = data.frame(Acc060=9.5, 
                                           Weight = 4000, HwyMPG = 25, 
-                                          QtrMile=17.3), level=0.95, 
+                                          QtrMile=17.5), level=0.95, 
                                           interval="prediction"))
 ```
 
@@ -1393,7 +1397,7 @@ exp(predict(M_Cars3, newdata = data.frame(Acc060=9.5,
 exp(predict(M_Cars5, newdata = data.frame(Acc060=9.5, 
                                           Weight = 4000, 
                                           HwyMPG = 25, 
-                                          QtrMile=17.3), 
+                                          QtrMile=17.5), 
                                           level=0.95, interval="prediction"))
 ```
 
@@ -1409,7 +1413,7 @@ P2 <- ggplot(data=Cars2020, aes(x=log(Price), y=Drive)) + geom_boxplot() + ggtit
 grid.arrange(P1, P2, ncol=2)
 ```
 
-We've already included information about size, through the weight variable, so we won't `Size` it too. Let's add drive type to the model.
+We've already included information about size, through the weight variable, so we won't include it too. Let's add drive type to the model.
 
 ```{r}
 M_Cars6 <- lm(data=Cars2020, log(Price) ~ Acc060 + HwyMPG + Weight + Drive)
@@ -1464,13 +1468,13 @@ Since we used a log transformation, we should interpret $e^{b_j}$ rather than $b
 exp(M_Cars6$coefficients) |> round(4)
 ```
 
-The intercept theoretically tells us that a car that accelerates from 0 to 60 mph in no time, gets 0 mpg, weighs 0 lbs, and is AWD would be expected to cost `r exp(M_Cars6$coefficients) |> round(4)` thousand dollars. This statement is nonsensical and we shouldn't try to interpret the intercept.
+The intercept theoretically tells us that a car that accelerates from 0 to 60 mph in no time, gets 0 mpg, weighs 0 lbs, and is AWD would be expected to cost `r exp(M_Cars6$coefficients)[1] |> round(4)` thousand dollars. This statement is nonsensical and we shouldn't try to interpret the intercept.
 
-The price of a car is expected to decrease by `r ((1-exp(M_Cars6$coefficients[2]))*100) |> round(0)` percent for each additional second it takes to accelerate from 0 to 60 mph, assumping highway MPG, weight and type of drive are held constant.
+The price of a car is expected to decrease by `r ((1-exp(M_Cars6$coefficients[2]))*100) |> round(0)` percent for each additional second it takes to accelerate from 0 to 60 mph, assuming highway MPG, weight and type of drive are held constant.
 
-The price of a car is expected to increase by `r ((exp(M_Cars6$coefficients[3])-1)*100) |> round(1)` percent for each additional highway MPG, assumping acceleration time, weight and type of drive are held constant.
+The price of a car is expected to increase by `r ((exp(M_Cars6$coefficients[3])-1)*100) |> round(1)` percent for each additional highway MPG, assuming acceleration time, weight and type of drive are held constant.
 
-The price of a car is expected to increase by `r ((exp(M_Cars6$coefficients[4])-1)*100) |> round(3)` percent for each additional pound in weight, assumping acceleration time, highway MPG, and type of drive are held constant. This is equivalent to a `r ((exp(M_Cars6$coefficients[4])-1)*100*1000) |> round(0)` percent increase for each additional 1,000 pounds in weight.
+The price of a car is expected to increase by `r ((exp(M_Cars6$coefficients[4])-1)*100) |> round(3)` percent for each additional pound in weight, assuming acceleration time, highway MPG, and type of drive are held constant. This is equivalent to a `r ((exp(M_Cars6$coefficients[4])-1)*100*1000) |> round(0)` percent increase for each additional 1,000 pounds in weight.
 
 FWD cars are expected to cost `r ((1-exp(M_Cars6$coefficients[5]))*100) |> round(0)` less than AWD cars, assuming acceleration time, highway MPG, and weight are held constant.
 
@@ -1498,7 +1502,7 @@ Exponentiating, we obtain
 exp(predict(M_Cars6, newdata=newcar, interval="confidence", level=0.95))
 ```
 
-We are 95% confident that the average price of all new 2020 cars that weigh 3000 lbs, take 8 seconds to accelerate from 0 to 60 mph, weigh 3,000 lbs, and have all wheel drive will cost between `r (exp(predict(M_Cars6, newdata=newcar, interval="confidence", level=0.95))[2]) |> round(0)` and `r (exp(predict(M_Cars6, newdata=newcar, interval="confidence", level=0.95))[3]) |> round(0)` thousand dollars.
+We are 95% confident that the average price of all new 2020 cars that weigh 3000 lbs, take 8 seconds to accelerate from 0 to 60 mph, and have all wheel drive will cost between `r (exp(predict(M_Cars6, newdata=newcar, interval="confidence", level=0.95))[2]) |> round(0)` and `r (exp(predict(M_Cars6, newdata=newcar, interval="confidence", level=0.95))[3]) |> round(0)` thousand dollars.
 
 Next, we calculate a prediction interval for an individual car with these characteristics.
 
@@ -1506,7 +1510,7 @@ Next, we calculate a prediction interval for an individual car with these charac
 exp(predict(M_Cars6, newdata=newcar, interval="prediction", level=0.95))
 ```
 
-We are 95% confident that the price of an individual car that weighs 3000 lbs, takes 8 seconds to accelerate from 0 to 60 mph, weighs 3,000 lbs, and has all wheel drive will cost between `r (exp(predict(M_Cars6, newdata=newcar, interval="prediction", level=0.95))[2]) |> round(0)` and `r (exp(predict(M_Cars6, newdata=newcar, interval="prediction", level=0.95))[3]) |> round(0)` thousand dollars.
+We are 95% confident that the price of an individual car that weighs 3000 lbs, takes 8 seconds to accelerate from 0 to 60 mph, and has all wheel drive will cost between `r (exp(predict(M_Cars6, newdata=newcar, interval="prediction", level=0.95))[2]) |> round(0)` and `r (exp(predict(M_Cars6, newdata=newcar, interval="prediction", level=0.95))[3]) |> round(0)` thousand dollars.
 
 ### Model Building Summary
 
@@ -1514,14 +1518,14 @@ Consider the following when building a model for the purpose of interpreting par
 
 **Characteristics of a good model:**
 
--   Model driven by research question
--   Include variables of interest\
--   Include potential confounding variables\
--   Avoid including highly correlated explanatory variables\
--   Avoid messy transformations and interactions where possible\
--   Use residual plots to assess appropriateness of model assumptions\
--   Aim for high $R^2$ but not highest\
--   Aim for model complex enough to capture nature of data, but simple enough to give clear interpretations\
+- Model driven by research question
+- Include variables of interest\
+- Include potential confounding variables\
+- Avoid including highly correlated explanatory variables\
+- Avoid messy transformations and interactions where possible\
+- Use residual plots to assess appropriateness of model assumptions\
+- Aim for high $R^2$ but not highest\
+- Aim for model complex enough to capture nature of data, but simple enough to give clear interpretations\
 
 Keep in mind, there is no single correct model, but there are common characteristics of a good model. While two statisticians might use different models for a given set of data, they will hopefully lead to reasonably similar conclusions if constructed carefully.
 
@@ -1531,7 +1535,7 @@ Keep in mind, there is no single correct model, but there are common characteris
 
 ## Practice Questions
 
-We'll work with data on 120 houses that sold in the states of CA, NJ, NY, and PA. in 2019. The data are part of the `Lock5Data` package.
+We'll work with data on 120 houses that sold in the states of CA, NJ, NY, and PA in 2019. The data are part of the `Lock5Data` package.
 
 ```{r, include=FALSE}
 options(scipen=999)
@@ -1540,7 +1544,8 @@ library(knitr)
 library(openintro)
 library(gridExtra)
 library(Lock5Data)
-data("HomesForSale")
+data("HomesForSale2e")
+HomesForSale <- HomesForSale2e |> mutate(State=as.factor(State))
 ```
 
 The dataset is called `HomesForSale`. The first six rows of the dataset are shown here.
@@ -1577,7 +1582,7 @@ $$
 \text{log(Price)} = \beta_0 + \beta_1\times\text{Size}+ \beta_2\times\text{StateNJ}+ \beta_3\times\text{StateNY}+ \beta_4\times\text{StatePA} + \epsilon_i, \text{ where } \epsilon_i\sim\mathcal{N}(0, \sigma)
 $$
 
-The model summary output and display the model summary output is displayed below.
+The model summary output is displayed below.
 
 ```{r, echo=FALSE}
 options(scipen=999)
@@ -1661,7 +1666,7 @@ How do the predicted prices and confidence and prediction intervals for the mode
 
 ### 7) {.unnumbered}
 
-Continnuing with the house price dataset in Questions 1-6, we add information about the number of bedrooms and bathrooms, in addition to size and state, to the model to predict log(price).
+Continuing with the house price dataset in Questions 1-6, we add information about the number of bedrooms and bathrooms, in addition to size and state, to the model to predict log(price).
 
 ```{r}
 M1 <- lm(data=HomesForSale, log(Price) ~ Beds + Baths + Size + State)
@@ -2015,3 +2020,7 @@ B. The t-statistic associated with the `carat` variable.\
 C. The p-value associated with the `carat` variable.\
 D. The $R^2$ value.\
 E. The predicted price for a diamond of Very Good cut, with 1 carat and x=5.
+
+```{r, echo=FALSE}
+save.image(file = "Environment.RData")
+```
