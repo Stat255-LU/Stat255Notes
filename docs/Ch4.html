@@ -2078,7 +2078,7 @@ s=\sqrt\frac{{SSR}}{n-(p+1)} = \sqrt{\frac{10.66}{15-(1+1)}} = 0.91
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a>temp_var <span class="ot">&lt;-</span> <span class="fu">predict</span>(M_Lakes_merc_pH, <span class="at">interval=</span><span class="st">"prediction"</span>)</span>
 <span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a>new_df <span class="ot">&lt;-</span> <span class="fu">cbind</span>(FloridaLakes, temp_var)</span>
 <span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>new_df, <span class="fu">aes</span>(<span class="at">x=</span>pH, <span class="at">y=</span>Mercury)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"pH"</span>,</span>
-<span id="cb108-4"><a href="#cb108-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">y=</span><span class="st">"Amount"</span>) <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span>lm, <span class="at">se=</span><span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb108-4"><a href="#cb108-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">y=</span><span class="st">"Mercury"</span>) <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span>lm, <span class="at">se=</span><span class="cn">TRUE</span>) <span class="sc">+</span></span>
 <span id="cb108-5"><a href="#cb108-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span>lwr), <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
 <span id="cb108-6"><a href="#cb108-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span>upr), <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>() </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -2126,7 +2126,7 @@ s=\sqrt\frac{{SSR}}{n-(p+1)} = \sqrt{\frac{10.66}{15-(1+1)}} = 0.91
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a>temp_var <span class="ot">&lt;-</span> <span class="fu">predict</span>(M_Lakes_merc_loc, <span class="at">interval=</span><span class="st">"prediction"</span>)</span>
 <span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a>new_df <span class="ot">&lt;-</span> <span class="fu">cbind</span>(FloridaLakes, temp_var)</span>
 <span id="cb114-3"><a href="#cb114-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>new_df, <span class="fu">aes</span>(<span class="at">x=</span>Location, <span class="at">y=</span>Mercury)) <span class="sc">+</span> <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.2</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Location"</span>,</span>
-<span id="cb114-4"><a href="#cb114-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">y=</span><span class="st">"Amount"</span>) <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span>lm, <span class="at">se=</span><span class="cn">TRUE</span>)  <span class="sc">+</span></span>
+<span id="cb114-4"><a href="#cb114-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">y=</span><span class="st">"Mercury"</span>) <span class="sc">+</span> <span class="fu">stat_smooth</span>(<span class="at">method=</span>lm, <span class="at">se=</span><span class="cn">TRUE</span>)  <span class="sc">+</span></span>
 <span id="cb114-5"><a href="#cb114-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="st">"N"</span>, <span class="at">ymin=</span><span class="dv">0</span>, <span class="at">ymax=</span><span class="fl">1.07</span>), <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
 <span id="cb114-6"><a href="#cb114-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="st">"S"</span>, <span class="at">ymin=</span><span class="fl">0.04</span>, <span class="at">ymax=</span><span class="fl">1.35</span>), <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
 <span id="cb114-7"><a href="#cb114-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="st">"N"</span>, <span class="at">ymin=</span><span class="fl">0.31</span>, <span class="at">ymax=</span><span class="fl">0.54</span>), <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
@@ -2683,7 +2683,7 @@ y = \beta_0 + \beta_1\text{GroupB}+ \epsilon_i, \text{ where } \epsilon_i\sim{\t
 <pre><code>[1] 19507.5</code></pre>
 </div>
 </div>
-<p><strong>Calculate the values that go in blanks (A)-(L) in the model output. Show your calculations. You may use the values in the tables and R output below.</strong></p>
+<p><strong>Calculate the values that go in the blanks in the model output. Show your calculations. You may use the values in the tables and R output below.</strong></p>
 </section>
 <section id="c" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="c">c)</h4>
@@ -2798,7 +2798,7 @@ schtypprivate -2.026447  5.50859</code></pre>
 <pre><code>[1] 17878.87</code></pre>
 </div>
 </div>
-<p><strong>Calculate the values that go in blanks (A)-(J) in the model output. Show your calculations. You may use the values in the tables and R output below.</strong></p>
+<p><strong>Calculate the values that go in the blanks in the model output. Show your calculations. You may use the values in the tables and R output below.</strong></p>
 </section>
 <section id="c-1" class="level4 unnumbered">
 <h4 class="unnumbered anchored" data-anchor-id="c-1">c)</h4>

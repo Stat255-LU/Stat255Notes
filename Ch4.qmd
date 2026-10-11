@@ -1599,7 +1599,7 @@ This interval is very wide, and a bit nonsensical, since mercury content can't b
 temp_var <- predict(M_Lakes_merc_pH, interval="prediction")
 new_df <- cbind(FloridaLakes, temp_var)
 ggplot(data=new_df, aes(x=pH, y=Mercury)) + geom_point() + labs(x="pH",
-          y="Amount") + stat_smooth(method=lm, se=TRUE) +
+          y="Mercury") + stat_smooth(method=lm, se=TRUE) +
     geom_line(aes(y=lwr), color = "red", linetype = "dashed") +
     geom_line(aes(y=upr), color = "red", linetype = "dashed") + theme_bw() 
 ```
@@ -1640,7 +1640,7 @@ Confidence intervals for the mean are shown in blue, and prediction intervals fo
 temp_var <- predict(M_Lakes_merc_loc, interval="prediction")
 new_df <- cbind(FloridaLakes, temp_var)
 ggplot(data=new_df, aes(x=Location, y=Mercury)) + geom_jitter(width=0.2) + labs(x="Location",
-          y="Amount") + stat_smooth(method=lm, se=TRUE)  +
+          y="Mercury") + stat_smooth(method=lm, se=TRUE)  +
     geom_errorbar(aes(x="N", ymin=0, ymax=1.07), color = "red") + theme_bw() + 
       geom_errorbar(aes(x="S", ymin=0.04, ymax=1.35), color = "red") + theme_bw() +
     geom_errorbar(aes(x="N", ymin=0.31, ymax=0.54), color = "blue") + theme_bw() + 
@@ -2173,7 +2173,7 @@ SST:
 sum((HSSeniors$science-mean(HSSeniors$science))^2)
 ```
 
-**Calculate the values that go in blanks (A)-(L) in the model output. Show your calculations. You may use the values in the tables and R output below.**
+**Calculate the values that go in the blanks in the model output. Show your calculations. You may use the values in the tables and R output below.**
 
 #### c) {.unnumbered}
 
@@ -2269,7 +2269,7 @@ $\displaystyle\sum_{i=1}^n(x_i-\bar{x})^2$:
 sum((HSSeniors$write-mean(HSSeniors$write))^2)
 ```
 
-**Calculate the values that go in blanks (A)-(J) in the model output. Show your calculations. You may use the values in the tables and R output below.**
+**Calculate the values that go in the blanks in the model output. Show your calculations. You may use the values in the tables and R output below.**
 
 #### c) {.unnumbered}
 

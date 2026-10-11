@@ -1148,7 +1148,7 @@ CI_Plot_b2
 
 ### CI for Regression Response
 
-**Research Question: What is the expected mercury level in a lake in Southern Florida with a neutral pH level of 7?**
+**Research Question: What is the mean mercury level among lakes in Southern Florida with a neutral pH level of 7?**
 
 In addition to calculating a confidence interval for the quantities associated with our estimates $b_0$, $b_1$, and $b_2$, we can also calculate a confidence interval for the average mercury level among all lakes with a given location and pH.
 
