@@ -217,7 +217,7 @@ The `resid_panel` function in the `ggResidpanel` package produces the four plots
 M_Lakes_merc_loc <- lm(data=FloridaLakes, Mercury ~ Location)
 ```
 
-```{r}
+```{r, fig.width=10, fig.height=6}
 resid_panel(model = M_Lakes_merc_loc)
 ```
 
@@ -253,7 +253,7 @@ The plots for checking these assumptions are shown below.
 M_Lakes_merc_pH <- lm(data=FloridaLakes, Mercury ~ pH)
 ```
 
-```{r}
+```{r, fig.width=12, fig.height=8}
 resid_panel(model = M_Lakes_merc_pH, smoother=TRUE)
 ```
 
@@ -289,7 +289,7 @@ The plots for checking these assumptions are shown below.
 M_House_price_wf_sqft <- lm(data=Houses, price~waterfront + sqft_living)
 ```
 
-```{r}
+```{r, fig.width=12, fig.height=8}
 resid_panel(model = M_House_price_wf_sqft, smoother=TRUE)
 ```
 
@@ -387,7 +387,7 @@ Before we draw conclusions from this model, however, we should check the assumpt
 
 Diagnostic plots are shown below.
 
-```{r, fig.width=12, fig.height=6}
+```{r, fig.width=12, fig.height=8}
 resid_panel(M_Cars_price_acc060, smoother=TRUE)
 ```
 
@@ -434,7 +434,7 @@ Before interpreting the coefficients, we'll check the residual plots for the log
 
 **Assumption Check for Model on Log Price**
 
-```{r,  fig.width=9, fig.height=6}
+```{r, fig.width=12, fig.height=8}
 resid_panel(M_Cars_logprice_acc060, smoother=TRUE)
 ```
 
@@ -817,7 +817,7 @@ years.
 summary(WageSample)
 ```
 
-```{r}
+```{r, fig.width=12, fig.height=8}
 ggpairs(WageSample)
 ```
 
@@ -832,7 +832,7 @@ M_wage_year_age <- lm(data=WageSample, wage ~ year+age)
 summary(M_wage_year_age)
 ```
 
-```{r}
+```{r, fig.width=12, fig.height=8}
 resid_panel(M_wage_year_age, smoother = TRUE)
 ```
 
@@ -874,11 +874,11 @@ M_logwage_year_age_edu_jobclass_maritl <- lm(data=WageSample, log(wage) ~ year +
 anova(M_logwage_year_age_edu_jobclass, M_logwage_year_age_edu_jobclass_maritl)
 ```
 
-```{r}
+```{r, fig.width=12, fig.height=8}
 resid_panel(M_logwage_year_age_edu_jobclass)
 ```
 
-```{r}
+```{r, fig.width=12, fig.height=8}
 resid_xpanel(M_logwage_year_age_edu_jobclass, smoother=TRUE)
 ```
 
@@ -887,11 +887,11 @@ M_logwage_year_age2_edu_jobclass <- lm(data=WageSample, log(wage) ~ year + age +
 summary(M_logwage_year_age2_edu_jobclass)
 ```
 
-```{r}
+```{r, fig.width=12, fig.height=8}
 resid_panel(M_logwage_year_age2_edu_jobclass, smoother = TRUE)
 ```
 
-```{r}
+```{r, fig.width=12, fig.height=8}
 resid_xpanel(M_logwage_year_age2_edu_jobclass, smoother = TRUE)
 ```
 
@@ -1448,7 +1448,7 @@ We'll use residuals to check the model assumptions.
 
 **Residual by Predicted Plot, Histogram of Residuals, and Normal Quantile-Quantile Plot**
 
-```{r, fig.width=9, fig.height=4}
+```{r, fig.width=12, fig.height=8}
 resid_panel(M_Cars6, smoother=TRUE)
 ```
 
@@ -1456,7 +1456,7 @@ There is slight concern about constant variance, but otherwise, the model assump
 
 **Residual by Predictor Plots**
 
-```{r, fig.width=9, fig.height=4}
+```{r, fig.width=12, fig.height=8}
 resid_xpanel(M_Cars6, smoother=TRUE)
 ```
 
@@ -1576,7 +1576,7 @@ M_Homes_price_size_state <- lm(data=HomesForSale, Price ~ Size + State)
 
 The plots below can be used to check the assumptions associated with Model M1.
 
-```{r, fig.width=8, fig.height=8, echo=FALSE}
+```{r, fig.width=12, fig.height=8}
 resid_panel(M_Homes_price_size_state, smoother=TRUE)
 ```
 
@@ -1713,11 +1713,11 @@ data(Boston)
 M_Boston_logmedv_chas_dis <- lm(data=Boston, log(medv) ~ chas + dis)
 ```
 
-```{r}
+```{r, fig.width=12, fig.height=8}
 resid_panel(M_Boston_logmedv_chas_dis, smoother=TRUE)
 ```
 
-```{r}
+```{r, fig.width=12, fig.height=8}
 resid_xpanel(M_Boston_logmedv_chas_dis, smoother=TRUE)
 ```
 
