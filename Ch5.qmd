@@ -218,7 +218,7 @@ M_Lakes_merc_loc <- lm(data=FloridaLakes, Mercury ~ Location)
 ```
 
 ```{r, fig.width=10, fig.height=6}
-resid_panel(model = M_Lakes_merc_loc)
+resid_panel(model = M_Lakes_merc_loc, smoother=FALSE)
 ```
 
 Notice that we see two lines of predicted values and residuals. This makes sense since all lakes in North Florida will have the same predicted value, as will all lakes in Southern Florida.
@@ -1553,7 +1553,7 @@ library(openintro)
 library(gridExtra)
 library(Lock5Data)
 data("HomesForSale2e")
-HomesForSale <- HomesForSale2e |> mutate(State=as.factor(State))
+HomesForSale <- HomesForSale2e |> mutate(State=as.factor(State)) |> mutate(Size = Size*1000)
 ```
 
 The dataset is called `HomesForSale`. The first six rows of the dataset are shown here.
